@@ -1,0 +1,1 @@
+gulp & ionic build android & adb install -r D:\icox\findness-app\platforms\android\build\outputs\apk\android-debug.apk
