@@ -1,4 +1,9 @@
 /* Empty. Add your own CSS if you like */
-.hidden{
-    display:none;
+.hidden {
+    display: none;
+}
+
+.bottom-div {
+    position: absolute;
+    bottom: 30px;
 }

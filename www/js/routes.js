@@ -1,6 +1,24 @@
 app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
 
+        .state('slides', {
+            url: '/slides',
+            templateUrl: 'templates/slides.html',
+            controller: 'SlidesCtrl'
+        })
+
+        .state('register', {
+            url: '/register',
+            templateUrl: 'templates/register.html',
+            controller: 'RegisterCtrl'
+        })
+
+        .state('login', {
+            url: '/login',
+            templateUrl: 'templates/login.html',
+            controller: 'LoginCtrl'
+        })
+
         .state('app', {
             url: '/app',
             abstract: true,
@@ -18,5 +36,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/map');
+    //if (window.localStorage.getItem('verified') == 2) {
+    if (false) {
+        $urlRouterProvider.otherwise('/app/map');
+    } else {
+        $urlRouterProvider.otherwise('/slides');
+    }
 });
