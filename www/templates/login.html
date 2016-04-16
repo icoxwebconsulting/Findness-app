@@ -1,15 +1,13 @@
 <ion-view>
     <ion-content has-bouncing="false">
 
-        <div class="row">
-            <div class="col text-center login-txt">
-                No te preocupes, no publicaremos nada sin <br>
-                preguntarte antes.
-            </div>
+        <div class="padding">
+            <img src="img/findness.png" class="center" />
         </div>
+
         <div class="list">
             <label class="item item-input">
-                <span class="input-label">E-Mail</span>
+                <span class="input-label">Email</span>
                 <input ng-model="data.email" type="email">
             </label>
             <label class="item item-input">
@@ -20,9 +18,9 @@
             <div class="row">
                 <div class="col">
                     <button ng-disabled="!data.email || !data.password" ng-click="login()"
-                            class="button button-full entrar">Entrar
+                            class="button button-full button-positive">Ingresar
                     </button>
-                    <a ui-sref="base.recover" class="recordar">Recordar Contraseña</a>
+                    <a href="#">Recordar Contraseña</a>
                 </div>
             </div>
         </div>
