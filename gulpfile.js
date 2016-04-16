@@ -15,6 +15,8 @@ var paths = {
         './www/css/style.css'
     ],
     js: [
+        './www/lib/angular-resource/angular-resource.min.js',
+        './www/lib/bcryptjs/dist/bcrypt.min.js',
         './www/js/**/*.js'
     ]
 };

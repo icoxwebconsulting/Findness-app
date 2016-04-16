@@ -1,41 +1,38 @@
 <ion-view>
-    <ion-content has-bouncing="false">
-        <div class="list">
-            <label class="item item-input">
-                <span class="input-label">E-Mail</span>
-                <input ng-model="data.email" type="email">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Contraseña</span>
-                <input ng-model="data.password" type="password">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Confirmar</span>
-                <input ng-model="data.repassword" type="password">
-            </label>
 
-            <div class="item">
-                <div class="row">
-                    <div class="col-1">
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="data.privacy_police">
-                        </label>
-                    </div>
-                    <div class="col">
-                        <a ui-sref="terms.privacy_police"
-                           style="text-decoration: none; color: black; vertical-align: sub;">
-                            He leido y acepto la política de <br>
-                            privacidad
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <ion-header-bar align-title="center" class="bar-calm">
+        <h1 class="title">Crear cuenta</h1>
+    </ion-header-bar>
+
+    <ion-content has-bouncing="false">
+
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Nombre</span>
+                <input type="text" placeholder="Escriba su nombre" ng-model="data.name">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Apellido</span>
+                <input type="text" placeholder="Escriba su apellido" ng-model="data.lastName">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="email" placeholder="Escriba su email" ng-model="data.email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Contraseña</span>
+                <input type="password" placeholder="Elija una contraseña" ng-model="data.password">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Confirmar contraseña</span>
+                <input type="password" placeholder="Repita su contraseña" ng-model="data.confirmpassword">
+            </label>
         </div>
+
         <div class="row">
             <div class="col">
-                <button ng-click="signup()" ng-disabled="!data.privacy_police || !data.email || !data.password"
-                        class="button button-full entrar">Crear
-                    Cuenta
+                <button ng-click="register()" ng-disabled="!data.email || !data.password || !data.name"
+                        class="button button-full button-positive">Registrarse
                 </button>
             </div>
         </div>

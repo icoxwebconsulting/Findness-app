@@ -1,4 +1,4 @@
-var app = angular.module('findness', ['ionic'])
+var app = angular.module('findness', ['ionic', 'ngResource'])
 
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
