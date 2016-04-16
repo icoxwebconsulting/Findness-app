@@ -10,6 +10,7 @@ app.factory('user', function (customer) {
         console.log(registrationData.salt);
         return customer().save(registrationData).$promise
             .then(function (response) {
+                console.log(response);
                 // userDatastore.setVerified(1);
                 // userDatastore.setCustomerId(response.customer);
                 // userDatastore.setCountryCode(registrationData.countryCode)

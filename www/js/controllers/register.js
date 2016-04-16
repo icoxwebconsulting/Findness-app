@@ -38,19 +38,19 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             });
         }
         else {
-            // $ionicLoading.show({
-            //     template: 'Creando Cuenta...'
-            // });
+            $ionicLoading.show({
+                template: 'Creando Cuenta...'
+            });
 
             user.register({
-                username: $scope.data.usuario,
+                username: $scope.data.username,
                 firstName: $scope.data.name,
                 lastName: $scope.data.lastName,
                 password: $scope.data.password
             }).then(function () {
                 $ionicLoading.hide();
 
-                $state.go('app.map');
+                //$state.go('app.map');
             }, function (error) {
                 $ionicLoading.hide();
 

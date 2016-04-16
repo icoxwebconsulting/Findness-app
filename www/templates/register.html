@@ -16,6 +16,10 @@
                 <input type="text" placeholder="Escriba su apellido" ng-model="data.lastName">
             </label>
             <label class="item item-input item-stacked-label">
+                <span class="input-label">Nombre de usuario</span>
+                <input type="text" placeholder="Elija un nombre de usuario" ng-model="data.username">
+            </label>
+            <label class="item item-input item-stacked-label">
                 <span class="input-label">Email</span>
                 <input type="email" placeholder="Escriba su email" ng-model="data.email">
             </label>
@@ -31,7 +35,7 @@
 
         <div class="row">
             <div class="col">
-                <button ng-click="register()" ng-disabled="!data.email || !data.password || !data.name"
+                <button ng-click="register()" ng-disabled="!data.email || !data.password || !data.name || !data.username"
                         class="button button-full button-positive">Registrarse
                 </button>
             </div>
