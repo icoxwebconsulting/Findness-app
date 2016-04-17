@@ -1,6 +1,6 @@
 var app = angular.module('findness', ['ionic', 'ngResource'])
 
-    .run(function ($ionicPlatform) {
+    .run(function ($ionicPlatform, userDatastore) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -13,5 +13,13 @@ var app = angular.module('findness', ['ionic', 'ngResource'])
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
+
+            init();
         });
+
+        function init() {
+            //sqliteDatastore.initDb();
+            //pushNotification.init();
+            //pushNotification.listenNotification(messageReceived.processReceivedMessage);
+        }
     });

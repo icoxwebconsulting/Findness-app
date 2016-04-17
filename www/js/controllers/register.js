@@ -27,12 +27,12 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 title: "Ingrese su Contraseña"
             });
         }
-        else if (!$scope.data.confirmpassword) {
+        else if (!$scope.data.confirmPassword) {
             $ionicPopup.alert({
                 title: "Confirme su Contraseña"
             });
         }
-        else if ($scope.data.password !== $scope.data.confirmpassword) {
+        else if ($scope.data.password !== $scope.data.confirmPassword) {
             $ionicPopup.alert({
                 title: "Las contraseñas no coinciden"
             });
@@ -43,14 +43,20 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             });
 
             user.register({
-                username: $scope.data.username,
+                username: $scope.data.email,
                 firstName: $scope.data.name,
                 lastName: $scope.data.lastName,
                 password: $scope.data.password
-            }).then(function () {
+            }).then(function (result) {
+                console.log("este es el result",result);
                 $ionicLoading.hide();
-
-                //$state.go('app.map');
+                if (result) {
+                    $state.go('app.map');
+                } else {
+                    $ionicPopup.alert({
+                        title: "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde."
+                    });
+                }
             }, function (error) {
                 $ionicLoading.hide();
 

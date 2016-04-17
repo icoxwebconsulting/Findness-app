@@ -36,8 +36,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         });
 
     // if none of the above states are matched, use this as the fallback
-    //if (window.localStorage.getItem('verified') == 2) {
-    if (false) {
+    if (window.localStorage.getItem('isLogged') == 1) {
         $urlRouterProvider.otherwise('/app/map');
     } else {
         $urlRouterProvider.otherwise('/slides');

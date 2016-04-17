@@ -29,6 +29,13 @@
       },
       "locator": "cordova-plugin-googlemaps",
       "id": "cordova-plugin-googlemaps"
+    },
+    {
+      "variables": {
+        "SENDER_ID": "850066050595"//este es el de mum, se necesita generar el de findness
+      },
+      "locator": "phonegap-plugin-push",
+      "id": "phonegap-plugin-push"
     }
   ],
   "cordovaPlatforms": [

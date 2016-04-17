@@ -1,4 +1,4 @@
-app.controller('LoginCtrl', function ($scope, $state, $http, $ionicLoading, $ionicPopup) {//user
+app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user) {
 
     $scope.data = {};
     $scope.error = false;
@@ -8,7 +8,7 @@ app.controller('LoginCtrl', function ($scope, $state, $http, $ionicLoading, $ion
 
         if (!$scope.data.email) {
             $ionicPopup.alert({
-                title: "Ingrese su E-mail"
+                title: "Ingrese su Email"
             });
         }
         else if (!$scope.data.password) {
@@ -21,17 +21,20 @@ app.controller('LoginCtrl', function ($scope, $state, $http, $ionicLoading, $ion
                 template: 'Verificando ...'
             });
 
-            // user.login($scope.data).then(function () {
-            //     $ionicLoading.hide();
-            //
-            //     $state.go('mainLayout.main');
-            // }, function (error) {
-            //     $ionicLoading.hide();
-            //
-            //     $ionicPopup.alert({
-            //         title: error.message
-            //     });
-            // });
+            user.login({
+                username: $scope.data.email,
+                password: $scope.data.password
+            }).then(function () {
+                $ionicLoading.hide();
+
+                $state.go('app.map');
+            }, function (error) {
+                $ionicLoading.hide();
+
+                $ionicPopup.alert({
+                    title: error.message
+                });
+            });
         }
     };
 });

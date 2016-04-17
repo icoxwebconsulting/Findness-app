@@ -1,7 +1,14 @@
-app.controller('MainCtrl', function ($scope, $ionicPlatform, $ionicSideMenuDelegate) {
+app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideMenuDelegate, userDatastore, user) {
 
     //$scope.isMenuOpen = $ionicSideMenuDelegate.isOpen.bind($ionicSideMenuDelegate);
-    
+
+    userDatastore.setRefreshingAccessToken(0);
+
+    user.refreshAccessToken()
+        .then(function () {
+
+        });
+
     $scope.menuVisible = false;
 
     $ionicPlatform.onHardwareBackButton(function () {
@@ -11,6 +18,11 @@ app.controller('MainCtrl', function ($scope, $ionicPlatform, $ionicSideMenuDeleg
     });
 
     $scope.toggleMenu = function () {
-        $scope.menuVisible = ! $scope.menuVisible;
+        $scope.menuVisible = !$scope.menuVisible;
     };
+
+    $scope.logout = function () {
+        user.deleteUserData();
+        $state.go('login');
+    }
 });

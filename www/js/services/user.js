@@ -1,122 +1,117 @@
-app.factory('user', function (customer) {
-/*
- $q, $rootScope, OAUTH_CONF, userDatastore, device, deviceDatastore,
- pushNotification, Contacts
-* */
+app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, OAUTH_CONF, pushNotification) {
+
     function register(registrationData) {
         var bcrypt = dcodeIO.bcrypt;
         //generar y agregar salt
         registrationData.salt = bcrypt.genSaltSync(10);
-        console.log(registrationData.salt);
+        registrationData.password = bcrypt.hashSync(registrationData.password, registrationData.salt);
+
         return customer().save(registrationData).$promise
             .then(function (response) {
                 console.log(response);
-                // userDatastore.setVerified(1);
-                // userDatastore.setCustomerId(response.customer);
-                // userDatastore.setCountryCode(registrationData.countryCode)
+                if (response.id) {
+                    userDatastore.setIsLogged(1);
+                    userDatastore.setCustomerId(response.id);
+                    userDatastore.setPassword(response.password);
+                    userDatastore.setUsername(response.username);
+                    userDatastore.setTokens(response.access_token, response.refresh_token);
+                    return registerDevice();
+                } else {
+                    return false;
+                }
             });
     }
 
-    // function registerDevice() {
-    //     var deviceToken = pushNotification.getRegistrationId();
-    //
-    //     function register(token) {
-    //         var data = {
-    //             token: token,
-    //             os: 'Android'
-    //         };
-    //         return device(userDatastore.getTokens().accessToken).save(data).$promise
-    //             .then(function (response) {
-    //                 deviceDatastore.setDeviceId(response.device);
-    //                 return true;
-    //             })
-    //             .catch(function () {
-    //                 deviceDatastore.setDeviceId(token);
-    //                 return true;
-    //             });
-    //     }
-    //
-    //     if (deviceToken) {
-    //         return register(deviceToken);
-    //     } else {
-    //         var deferred = $q.defer();
-    //
-    //         $rootScope.$on('pushRegistrationId', function (pushRegistrationId) {
-    //             register(pushRegistrationId)
-    //                 .then(function () {
-    //                     deferred.resolve(true);
-    //                 });
-    //         });
-    //
-    //         return deferred.promise;
-    //     }
-    // }
-    //
-    // function verifyCode(code) {
-    //     var confirmationData = {
-    //         customer: userDatastore.getCustomerId(),
-    //         confirmationCode: code
-    //     };
-    //     return customer().confirm(confirmationData).$promise
-    //         .then(function (response) {
-    //             userDatastore.setVerified(2);
-    //             userDatastore.setNumber(response.username);
-    //             userDatastore.setPassword(response.password);
-    //             return requestAccessToken();
-    //         })
-    //         .then(function () {
-    //             Contacts.loadContacts();
-    //             return registerDevice();
-    //         });
-    // }
-    //
-    // function requestAccessToken() {
-    //     var authData = {
-    //         client_id: OAUTH_CONF.CLIENT_ID,
-    //         client_secret: OAUTH_CONF.CLIENT_SECRET,
-    //         grant_type: 'password',
-    //         redirect_uri: 'www.mum.com'
-    //     };
-    //     return customer(userDatastore.getNumber(), userDatastore.getPassword()).requestAccessToken(authData).$promise
-    //         .then(function (response) {
-    //             userDatastore.setTokens(response.access_token, response.refresh_token);
-    //         });
-    // }
-    //
-    // function refreshAccessToken() {
-    //     var deferred = $q.defer();
-    //
-    //     // refresh access_token every minute
-    //     setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
-    //
-    //     if (userDatastore.isRefreshingAccessToken() == 0 && userDatastore.isVerified()) {
-    //         userDatastore.setRefreshingAccessToken(1);
-    //         var authData = {
-    //             client_id: OAUTH_CONF.CLIENT_ID,
-    //             client_secret: OAUTH_CONF.CLIENT_SECRET,
-    //             grant_type: 'refresh_token',
-    //             redirect_uri: 'www.mum.com',
-    //             refresh_token: userDatastore.getTokens().refreshToken
-    //         };
-    //         return customer(userDatastore.getNumber(), userDatastore.getPassword()).refreshAccessToken(authData).$promise
-    //             .then(function (response) {
-    //                 userDatastore.setTokens(response.access_token, response.refresh_token);
-    //                 userDatastore.setRefreshingAccessToken(0);
-    //             })
-    //             .catch(function () {
-    //                 requestAccessToken(function () {
-    //                     userDatastore.setRefreshingAccessToken(0);
-    //                 }, function () {
-    //                     userDatastore.setRefreshingAccessToken(0);
-    //                 });
-    //             });
-    //     } else {
-    //         deferred.resolve(true);
-    //     }
-    //
-    //     return deferred.promise;
-    // }
-    //
+    function login(loginData) {
+        return customer().save(loginData).$promise
+            .then(function (response) {
+                if (response.id) {
+                    userDatastore.setIsLogged(1);
+                    userDatastore.setCustomerId(response.id);
+                    userDatastore.setPassword(response.password);
+                    userDatastore.setUsername(response.username);
+                    userDatastore.setTokens(response.access_token, response.refresh_token);
+                    return registerDevice();
+                } else {
+                    return false;
+                }
+            });
+    }
+
+    function logout() {
+        //borrar datos
+        userDatastore.deleteUserData();
+    }
+
+    function registerDevice() {
+        var deviceToken = pushNotification.getRegistrationId();
+
+        function register(token) {
+            var data = {
+                token: token,
+                os: 'Android'
+            };
+            return device(userDatastore.getTokens().accessToken).save(data).$promise
+                .then(function (response) {
+                    deviceDatastore.setDeviceId(response.device);
+                    return true;
+                })
+                .catch(function () {
+                    deviceDatastore.setDeviceId(token);
+                    return true;
+                });
+        }
+
+        if (deviceToken) {
+            return register(deviceToken);
+        } else {
+            var deferred = $q.defer();
+
+            $rootScope.$on('pushRegistrationId', function (pushRegistrationId) {
+                register(pushRegistrationId)
+                    .then(function () {
+                        deferred.resolve(true);
+                    });
+            });
+
+            return deferred.promise;
+        }
+    }
+
+    function refreshAccessToken() {
+        var deferred = $q.defer();
+
+        // refresh access_token every minute
+        setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
+
+        if (userDatastore.isRefreshingAccessToken() == 0 && userDatastore.getIsLogged()) {
+            userDatastore.setRefreshingAccessToken(1);
+            var authData = {
+                client_id: OAUTH_CONF.CLIENT_ID,
+                client_secret: OAUTH_CONF.CLIENT_SECRET,
+                grant_type: 'refresh_token',
+                redirect_uri: 'www.findness.com',
+                refresh_token: userDatastore.getTokens().refreshToken
+            };
+            return customer(userDatastore.getUsername(), userDatastore.getPassword()).refreshAccessToken(authData).$promise
+                .then(function (response) {
+                    userDatastore.setTokens(response.access_token, response.refresh_token);
+                    userDatastore.setRefreshingAccessToken(0);
+                })
+                .catch(function () {
+                    requestAccessToken(function () {
+                        userDatastore.setRefreshingAccessToken(0);
+                    }, function () {
+                        userDatastore.setRefreshingAccessToken(0);
+                    });
+                });
+        } else {
+            deferred.resolve(true);
+        }
+
+        return deferred.promise;
+    }
+
     // function setProfile(displayName, avatarPath, avatarData, avatarMimeType) {
     //     var params = {
     //         customer: userDatastore.getCustomerId()
@@ -153,7 +148,9 @@ app.factory('user', function (customer) {
         // refreshAccessToken: refreshAccessToken,
         // setProfile: setProfile,
         // verifyCode: verifyCode,
-        register: register //,
+        register: register,
+        login: login,
+        logout: logout
         // getProfile: getProfile
     };
 });
