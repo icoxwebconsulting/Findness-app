@@ -5,17 +5,19 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         //generar y agregar salt
         registrationData.salt = bcrypt.genSaltSync(10);
         registrationData.password = bcrypt.hashSync(registrationData.password, registrationData.salt);
+        registrationData.salt = registrationData.salt.slice(7);
 
         return customer().save(registrationData).$promise
             .then(function (response) {
                 console.log(response);
                 if (response.id) {
-                    userDatastore.setIsLogged(1);
                     userDatastore.setCustomerId(response.id);
-                    userDatastore.setPassword(response.password);
+                    userDatastore.setPassword(registrationData.password);
                     userDatastore.setUsername(response.username);
-                    userDatastore.setTokens(response.access_token, response.refresh_token);
-                    return registerDevice();
+                    userDatastore.setSalt(registrationData.salt);
+                    //return registerDevice();
+                    //realizar login
+                    login();
                 } else {
                     return false;
                 }
@@ -23,19 +25,32 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function login(loginData) {
-        return customer().save(loginData).$promise
-            .then(function (response) {
-                if (response.id) {
-                    userDatastore.setIsLogged(1);
-                    userDatastore.setCustomerId(response.id);
-                    userDatastore.setPassword(response.password);
-                    userDatastore.setUsername(response.username);
-                    userDatastore.setTokens(response.access_token, response.refresh_token);
-                    return registerDevice();
-                } else {
-                    return false;
-                }
-            });
+        var bcrypt = dcodeIO.bcrypt;
+        //obtengo el salt
+        return customer().requestSalt({
+            customer: loginData.username
+        }).$promise.then(function (response) {
+            console.log("respuesta del salt");
+            var salt = '$2a$10$' + response.salt;
+            loginData.password = bcrypt.hashSync(loginData.password, salt);
+
+            customer().requestAccessToken(loginData).$promise
+                .then(function (response) {
+                    console.log("respuesta login");
+                    console.log(response);
+                    return;
+                    if (response.id) {
+                        userDatastore.setIsLogged(1);
+                        userDatastore.setCustomerId(response.id);
+                        userDatastore.setPassword(response.password);
+                        userDatastore.setUsername(response.username);
+                        userDatastore.setTokens(response.access_token, response.refresh_token);
+                        return registerDevice();
+                    } else {
+                        return false;
+                    }
+                });
+        });
     }
 
     function logout() {
@@ -145,7 +160,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     return {
         // getVerified: userDatastore.getVerified,
         // isVerified: userDatastore.isVerified,
-        // refreshAccessToken: refreshAccessToken,
+        refreshAccessToken: refreshAccessToken,
         // setProfile: setProfile,
         // verifyCode: verifyCode,
         register: register,

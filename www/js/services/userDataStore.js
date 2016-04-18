@@ -52,6 +52,10 @@ app.factory('userDatastore', function () {
         window.localStorage.setItem('refreshingAccessToken', refreshing);
     }
 
+    function getRefreshingAccessToken() {
+        return window.localStorage.getItem('refreshingAccessToken');
+    }
+
     function setProfile(displayName, avatarURL) {
         window.localStorage.setItem('displayName', displayName);
         window.localStorage.setItem('avatarURL', avatarURL);
@@ -74,6 +78,14 @@ app.factory('userDatastore', function () {
         window.localStorage.removeItem('device_id');
     }
 
+    function setSalt(salt, username) {
+        window.localStorage.setItem('salt', salt + '::' + username);
+    }
+
+    function getSalt() {
+        return window.localStorage.getItem('salt') || false;
+    }
+
     return {
         setIsLogged: setIsLogged,
         getIsLogged: getIsLogged,
@@ -87,8 +99,11 @@ app.factory('userDatastore', function () {
         getPassword: getPassword,
         isRefreshingAccessToken: isRefreshingAccessToken,
         setRefreshingAccessToken: setRefreshingAccessToken,
+        getRefreshingAccessToken: getRefreshingAccessToken,
         setProfile: setProfile,
         getProfile: getProfile,
-        deleteUserData: deleteUserData
+        deleteUserData: deleteUserData,
+        setSalt: setSalt,
+        getSalt: getSalt
     };
 });
