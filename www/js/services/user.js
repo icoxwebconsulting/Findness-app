@@ -1,4 +1,4 @@
-app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, OAUTH_CONF, pushNotification) {
+app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, OAUTH_CONF, pushNotification, $http) {
 
     function register(registrationData) {
         var bcrypt = dcodeIO.bcrypt;
@@ -34,22 +34,39 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             var salt = '$2a$10$' + response.salt;
             loginData.password = bcrypt.hashSync(loginData.password, salt);
 
-            customer().requestAccessToken(loginData).$promise
-                .then(function (response) {
-                    console.log("respuesta login");
-                    console.log(response);
-                    return;
-                    if (response.id) {
-                        userDatastore.setIsLogged(1);
-                        userDatastore.setCustomerId(response.id);
-                        userDatastore.setPassword(response.password);
-                        userDatastore.setUsername(response.username);
-                        userDatastore.setTokens(response.access_token, response.refresh_token);
-                        return registerDevice();
-                    } else {
-                        return false;
-                    }
-                });
+            return $http({
+                method: 'GET',
+                url: OAUTH_CONF.OAUTH_HOST + 'token?client_id=' + OAUTH_CONF.CLIENT_ID + '&client_secret=' + OAUTH_CONF.CLIENT_SECRET + '&grant_type=password&redirect_uri=www.findness.com',
+                headers: {
+                    username: loginData.username,
+                    password: loginData.password
+                }
+            }).$promise.then(function (response) {
+                console.log(response)
+                if(response.data.access_token){
+                    userDatastore.setIsLogged(1);
+                    userDatastore.setPassword(loginData.password);
+                    userDatastore.setUsername(loginData.username);
+                    userDatastore.setTokens(response.data.access_token, response.data.refresh_token);
+                }
+            });
+
+            // customer().requestAccessToken(loginData).$promise
+            //     .then(function (response) {
+            //         console.log("respuesta login");
+            //         console.log(response);
+            //         return;
+            //         if (response.id) {
+            //             userDatastore.setIsLogged(1);
+            //             userDatastore.setCustomerId(response.id);
+            //             userDatastore.setPassword(response.password);
+            //             userDatastore.setUsername(response.username);
+            //             userDatastore.setTokens(response.access_token, response.refresh_token);
+            //             return registerDevice();
+            //         } else {
+            //             return false;
+            //         }
+            //     });
         });
     }
 

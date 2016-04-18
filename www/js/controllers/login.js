@@ -26,7 +26,7 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
                 password: $scope.data.password
             }).then(function () {
                 $ionicLoading.hide();
-
+                
                 $state.go('app.map');
             }, function (error) {
                 $ionicLoading.hide();
