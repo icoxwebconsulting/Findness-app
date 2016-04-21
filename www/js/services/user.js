@@ -27,6 +27,8 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     function login(loginData) {
         var bcrypt = dcodeIO.bcrypt;
         //obtengo el salt
+        var deferred = $q.defer();
+
         return customer().requestSalt({
             customer: loginData.username
         }).$promise.then(function (response) {
@@ -34,45 +36,38 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             var salt = '$2a$10$' + response.salt;
             loginData.password = bcrypt.hashSync(loginData.password, salt);
 
-            return $http({
+            $http({
                 method: 'GET',
                 url: OAUTH_CONF.OAUTH_HOST + 'token?client_id=' + OAUTH_CONF.CLIENT_ID + '&client_secret=' + OAUTH_CONF.CLIENT_SECRET + '&grant_type=password&redirect_uri=www.findness.com',
                 headers: {
                     username: loginData.username,
                     password: loginData.password
                 }
-            }).$promise.then(function (response) {
-                console.log(response)
-                if(response.data.access_token){
+            }).then(function (response) {
+                pushNotification.init();
+                if (response.data.access_token) {
                     userDatastore.setIsLogged(1);
                     userDatastore.setPassword(loginData.password);
                     userDatastore.setUsername(loginData.username);
                     userDatastore.setTokens(response.data.access_token, response.data.refresh_token);
+
+                    console.log("antes de register device")
+                    return registerDevice().then(function () {
+                        console.log("ok de register device")
+                    });
                 }
             });
-
-            // customer().requestAccessToken(loginData).$promise
-            //     .then(function (response) {
-            //         console.log("respuesta login");
-            //         console.log(response);
-            //         return;
-            //         if (response.id) {
-            //             userDatastore.setIsLogged(1);
-            //             userDatastore.setCustomerId(response.id);
-            //             userDatastore.setPassword(response.password);
-            //             userDatastore.setUsername(response.username);
-            //             userDatastore.setTokens(response.access_token, response.refresh_token);
-            //             return registerDevice();
-            //         } else {
-            //             return false;
-            //         }
-            //     });
         });
+
+        return deferred.promise;
     }
 
     function logout() {
-        //borrar datos
-        userDatastore.deleteUserData();
+        //desregistrar dispositivo
+        return customer().logout().$promise
+            .then(function () {
+                userDatastore.deleteUserData();
+            });
     }
 
     function registerDevice() {
@@ -144,45 +139,10 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         return deferred.promise;
     }
 
-    // function setProfile(displayName, avatarPath, avatarData, avatarMimeType) {
-    //     var params = {
-    //         customer: userDatastore.getCustomerId()
-    //     };
-    //     var profileData = {
-    //         displayName: displayName,
-    //         avatarData: avatarData,
-    //         avatarMimeType: avatarMimeType
-    //     };
-    //     return customer(null, null, userDatastore.getTokens().accessToken).setProfile(params, profileData).$promise
-    //         .then(function (response) {
-    //             userDatastore.setProfile(response.display_name, avatarPath ? avatarPath : getProfile().avatarURL);
-    //         });
-    // }
-    //
-    // function getProfile() {
-    //     var profile = userDatastore.getProfile();
-    //     if (profile.avatarURL == null ||
-    //         profile.avatarURL == undefined ||
-    //         profile.avatarURL == 'undefined') {
-    //         profile.avatarURL = 'img/person.png';
-    //     }
-    //     if (profile.displayName == null ||
-    //         profile.displayName == undefined ||
-    //         profile.displayName == 'undefined') {
-    //         profile.displayName = userDatastore.getNumber();
-    //     }
-    //     return profile;
-    // }
-
     return {
-        // getVerified: userDatastore.getVerified,
-        // isVerified: userDatastore.isVerified,
         refreshAccessToken: refreshAccessToken,
-        // setProfile: setProfile,
-        // verifyCode: verifyCode,
         register: register,
         login: login,
         logout: logout
-        // getProfile: getProfile
     };
 });

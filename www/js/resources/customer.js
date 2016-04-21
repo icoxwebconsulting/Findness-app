@@ -1,4 +1,4 @@
-app.factory('customer', function ($resource, userDatastore, SERVER_CONF, OAUTH_CONF) {
+app.factory('customer', function ($resource, userDatastore, deviceDatastore, SERVER_CONF, OAUTH_CONF) {
     return function (username, password, token) {
         return $resource(SERVER_CONF.API_HOST + 'customers/:customer', {customer: '@customer'}, {
             requestAccessToken: {
@@ -20,6 +20,10 @@ app.factory('customer', function ($resource, userDatastore, SERVER_CONF, OAUTH_C
             requestSalt: {
                 method: 'GET',
                 url: SERVER_CONF.API_HOST + 'customers/:customer/salt'
+            },
+            logout: {
+                method: 'DELETE',
+                url: SERVER_CONF.API_HOST + 'devices/' + deviceDatastore.getDeviceId() || 0
             }
         });
     }

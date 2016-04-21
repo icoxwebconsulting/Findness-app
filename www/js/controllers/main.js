@@ -22,7 +22,8 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
     };
 
     $scope.logout = function () {
-        user.deleteUserData();
-        $state.go('login');
+        user.logout().then(function () {
+            $state.go('login');
+        });
     }
 });
