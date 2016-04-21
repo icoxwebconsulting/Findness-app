@@ -23,7 +23,7 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-	{
+    {
       "variables": {
         "API_KEY_FOR_ANDROID": "AIzaSyDrJUnTZXgFzkv5AcEPJyulf-HzBRKFmtg"
       },
@@ -36,7 +36,8 @@
       },
       "locator": "phonegap-plugin-push",
       "id": "phonegap-plugin-push"
-    }
+    },
+    "cordova-plugin-geolocation"
   ],
   "cordovaPlatforms": [
     "android",
