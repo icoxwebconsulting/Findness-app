@@ -25,14 +25,14 @@
     "ionic-plugin-keyboard",
     {
       "variables": {
-        "API_KEY_FOR_ANDROID": "AIzaSyDrJUnTZXgFzkv5AcEPJyulf-HzBRKFmtg"
+        "API_KEY_FOR_ANDROID": "AIzaSyBZ0Vz5_Ud1WDLevnr9_nF-zSeojTS0N2w"
       },
       "locator": "cordova-plugin-googlemaps",
       "id": "cordova-plugin-googlemaps"
     },
     {
       "variables": {
-        "SENDER_ID": "721698048653"
+        "SENDER_ID": "435649935280"
       },
       "locator": "phonegap-plugin-push",
       "id": "phonegap-plugin-push"
