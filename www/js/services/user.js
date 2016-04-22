@@ -139,6 +139,19 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         return deferred.promise;
     }
 
+    function requestAccessToken() {
+        var authData = {
+            client_id: OAUTH_CONF.CLIENT_ID,
+            client_secret: OAUTH_CONF.CLIENT_SECRET,
+            grant_type: 'password',
+            redirect_uri: 'www.findness.com'
+        };
+        return customer(userDatastore.getUsername(), userDatastore.getPassword()).requestAccessToken(authData).$promise
+            .then(function (response) {
+                userDatastore.setTokens(response.access_token, response.refresh_token);
+            });
+    }
+
     return {
         refreshAccessToken: refreshAccessToken,
         register: register,
