@@ -32,7 +32,6 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         return customer().requestSalt({
             customer: loginData.username
         }).$promise.then(function (response) {
-            console.log("respuesta del salt");
             var salt = '$2a$10$' + response.salt;
             loginData.password = bcrypt.hashSync(loginData.password, salt);
 
@@ -50,13 +49,15 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                     userDatastore.setPassword(loginData.password);
                     userDatastore.setUsername(loginData.username);
                     userDatastore.setTokens(response.data.access_token, response.data.refresh_token);
-
-                    console.log("antes de register device")
-                    return registerDevice().then(function () {
-                        console.log("ok de register device")
-                    });
+                    
+                    // return registerDevice().then(function () {
+                    //     console.log("ok de register device")
+                    // });
+                    deferred.resolve();
                 }
             });
+        }).catch(function (e) {
+            deferred.reject(e);
         });
 
         return deferred.promise;

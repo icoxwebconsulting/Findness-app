@@ -1,4 +1,4 @@
-var app = angular.module('findness', ['ionic', 'ngResource'])
+var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete'])
 
     .run(function ($ionicPlatform, userDatastore) {
         $ionicPlatform.ready(function () {

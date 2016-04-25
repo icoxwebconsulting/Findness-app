@@ -12,11 +12,13 @@ var merge = require('merge-stream');
 var paths = {
     css: [
         './www/lib/ionic/css/ionic.css',
+        './www/ib/ion-autocomplete/dist/ion-autocomplete.css',
         './www/css/style.css'
     ],
     js: [
         './www/lib/angular-resource/angular-resource.min.js',
         './www/lib/bcryptjs/dist/bcrypt.min.js',
+        './www/lib/ion-autocomplete/dist/ion-autocomplete.js',
         './www/js/**/*.js'
     ]
 };
