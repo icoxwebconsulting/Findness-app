@@ -13,7 +13,6 @@ var paths = {
     css: [
         './www/lib/ionic/css/ionic.css',
         './www/ib/ion-autocomplete/dist/ion-autocomplete.css',
-        './www/ib/Ionicons/css/ionicons.min.css',
         './www/css/style.css'
     ],
     js: [
