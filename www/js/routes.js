@@ -34,6 +34,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                     controller: 'MapCtrl'
                 }
             }
+        })
+
+        .state('app.filter', {
+            url: '/filter',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/filters.html',
+                    controller: 'FiltersCtrl'
+                }
+            }
         });
 
     // if none of the above states are matched, use this as the fallback

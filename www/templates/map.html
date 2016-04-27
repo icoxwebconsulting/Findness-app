@@ -1,5 +1,5 @@
 <script id="filters-modal.html" type="text/ng-template">
-    <div class="modal">
+    <div class="modal" style="z-index: 100">
         <header class="bar bar-header bar-positive">
             <h1 class="title">Filtros</h1>
             <div class="button button-clear" ng-click="closeModal()"><span class="icon ion-close"></span></div>
@@ -11,13 +11,11 @@
                 <ion-radio ng-model="choice" ng-value="'c'">Seleccionar punto</ion-radio>
                 <ion-radio ng-model="choice" ng-value="'d'">Listado CNAE</ion-radio>
             </ion-list>
-            <div>
-                <div class="list">
-                    <div class="item range range-positive">
-                        <i class="icon ion-ios-sunny-outline"></i>
-                        <input type="range" name="volume" min="1" max="10" value="{{data.pickupAfter}}">
-                        <i class="icon ion-ios-sunny"></i>
-                    </div>
+            <div class="list">
+                <div class="item range range-positive">
+                    <i class="icon ion-ios-sunny-outline"></i>
+                    <input type="range" name="volume" min="1" max="10" value="{{data.pickupAfter}}">
+                    <i class="icon ion-ios-sunny"></i>
                 </div>
             </div>
         </content>

@@ -43,7 +43,7 @@ app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal,
     })
 
     $scope.chooseFilter = function () {
-        $scope.modal.show();
+        $state.go("app.filter");
     }
     
     $scope.closeModal = function () {
