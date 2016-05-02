@@ -30,14 +30,8 @@
       "locator": "cordova-plugin-googlemaps",
       "id": "cordova-plugin-googlemaps"
     },
-    {
-      "variables": {
-        "SENDER_ID": "435649935280"
-      },
-      "locator": "phonegap-plugin-push",
-      "id": "phonegap-plugin-push"
-    },
-    "cordova-plugin-geolocation"
+    "cordova-plugin-geolocation",
+    "cordova-plugin-compat"
   ],
   "cordovaPlatforms": [
     "android",

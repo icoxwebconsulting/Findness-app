@@ -44,6 +44,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                     controller: 'FiltersCtrl'
                 }
             }
+        })
+
+        .state('app.payment', {
+            url: '/payment',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/payment.html',
+                    controller: 'PaymentCtrl'
+                }
+            }
         });
 
     // if none of the above states are matched, use this as the fallback

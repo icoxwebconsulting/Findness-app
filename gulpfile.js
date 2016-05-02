@@ -19,6 +19,7 @@ var paths = {
         './www/lib/angular-resource/angular-resource.min.js',
         './www/lib/bcryptjs/dist/bcrypt.min.js',
         './www/lib/ion-autocomplete/dist/ion-autocomplete.js',
+        './www/lib/angular-credit-cards/release/angular-credit-cards.js',
         './www/js/**/*.js'
     ]
 };

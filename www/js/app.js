@@ -1,6 +1,6 @@
-var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete'])
+var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete', 'credit-cards'])
 
-    .run(function ($ionicPlatform, userDatastore) {
+    .run(function ($ionicPlatform, PAYMENT_CONF) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -19,7 +19,7 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete']
 
         function init() {
             //sqliteDatastore.initDb();
-            //pushNotification.init();
-            //pushNotification.listenNotification(messageReceived.processReceivedMessage);
+            <!-- Fill in your publishable key -->
+            Stripe.setPublishableKey(PAYMENT_CONF.STRIPE_KEY);
         }
     });

@@ -8,6 +8,7 @@
     "bcryptjs": "^2.3.0",
     "angular-resource": "^1.5.3",
     "ion-autocomplete": "^0.3.2",
-    "Ionicons": "ionicons#^2.0.1"
+    "Ionicons": "ionicons#^2.0.1",
+    "angular-credit-cards": "^3.0.0"
   }
 }

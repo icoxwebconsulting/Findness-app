@@ -11,3 +11,10 @@ app.constant("OAUTH_CONF", {
 
     REFRESH_INTERVAL: 600000
 });
+
+app.constant("PAYMENT_CONF", {
+
+    STRIPE_KEY: "YOUR_STRIPE_KEY",
+    STRIPE_SECRET: "YOUR_STRIPE_SECRET",
+    STRIPE_HOST: "https://api.stripe.com/v1/"
+});
