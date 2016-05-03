@@ -1,0 +1,53 @@
+<ion-view view-title="Filtros">
+    <ion-content>
+        <content has-header="true" padding="true">
+            <ion-list>
+                <ion-radio ng-model="choice" ng-value="'A'">Localización geográfica</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'B'">Radial</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'C'">Seleccionar punto</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'D'">Listado CNAE</ion-radio>
+            </ion-list>
+            <div class="list" ng-show="choice=='A'">
+                <div class="item item-divider">
+                    Su búsqueda se realizará por localización geográfica (código postal, ciudad, etc.)
+                </div>
+            </div>
+            <div class="list" ng-show="choice=='B'">
+                <div class="item item-divider">
+                    Cubrir un radio de {{data.pickupAfter}} km
+                </div>
+                <div class="item range range-positive">
+                    <i class="icon ion-ios-minus-outline"></i>
+                    <input type="range" name="volume" min="1" max="10" value="{{data.pickupAfter}}"
+                           ng-model="data.pickupAfter">
+                    <i class="icon ion-ios-plus-outline"></i>
+                </div>
+            </div>
+            <div class="list" ng-show="choice=='C'">
+                <div class="item item-divider">
+                    Podrá establecer un punto en el mapa desde donde se extenderá su búsqueda
+                </div>
+            </div>
+            <!--<div class="list" ng-show="choice=='D'">-->
+                <!--<div class="item item-divider">-->
+                    <!---->
+                <!--</div>-->
+            <!--</div>-->
+            <form ng-show="choice=='D'">
+                <label class="item item-input">
+                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
+                           autocomplete="off"
+                           ng-model="model"
+                           item-value-key="name"
+                           item-view-value-key="view"
+                           items-method="getTestItems(query)"
+                           items-method-value-key="items"
+                           placeholder="Enter test query ..."
+                           items-clicked-method="itemsClicked(callback)"
+                           items-removed-method="itemsRemoved(callback)"
+                           max-selected-items="3"/>
+                </label>
+            </form>
+        </content>
+    </ion-content>
+</ion-view>
