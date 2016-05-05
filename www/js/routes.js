@@ -54,7 +54,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                     controller: 'PaymentCtrl'
                 }
             }
-        });
+        })
+
+        .state('app.paypal', {
+            url: '/paypal',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/paypal.html',
+                    controller: 'PaypalCtrl'
+                }
+            }
+        })
 
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage.getItem('isLogged') == 1) {

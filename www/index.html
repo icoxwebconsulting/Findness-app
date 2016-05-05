@@ -24,6 +24,11 @@
     <script type="text/javascript">
         //declarando variable global map
         var map;
+        //manejo del plugin de custom url schemes
+        var handleOpenURL = function(url) {
+            console.log("RECEIVED URL: " + url);
+            window.localStorage.setItem("external_load", url);
+        };
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSAh9FA0fIj1PxsN6x50yBbdjbLnldfwY">

@@ -1,6 +1,6 @@
 var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete', 'credit-cards'])
 
-    .run(function ($ionicPlatform, PAYMENT_CONF) {
+    .run(function ($ionicPlatform, $state, PAYMENT_CONF) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -15,6 +15,10 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
             }
 
             init();
+
+            if (localStorage.getItem("external_load") != null) {
+                $state.go("app.paypal");
+            }
         });
 
         function init() {

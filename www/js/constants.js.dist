@@ -16,5 +16,9 @@ app.constant("PAYMENT_CONF", {
 
     STRIPE_KEY: "YOUR_STRIPE_KEY",
     STRIPE_SECRET: "YOUR_STRIPE_SECRET",
-    STRIPE_HOST: "https://api.stripe.com/v1/"
+    STRIPE_HOST: "https://api.stripe.com/v1/",
+
+    PAYPAL_HOST: "https://api.sandbox.paypal.com/v1/",
+    PAYPAL_CLIENT_ID: "AXRnIdF6qTgK9DENZUfL98ERf7M8ZnJx-Ds62nqE3oq7EY5yDwMDynRPAXkK56u4bqA7twj9UJYqdZ8G",
+    PAYPAL_SECRET: "EK9Ir00gOzF1KKgAOa9BZ3ecZvtszgHVjmBEQMaPZ5GLXYOjFnZE-QEVBgeTfQoGcNGPkpyM-3hwjWGt"
 });
