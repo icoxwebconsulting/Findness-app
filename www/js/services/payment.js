@@ -1,6 +1,7 @@
-app.factory('paymentSrv', function ($q, $rootScope, $http, PAYMENT_CONF) {
+app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_CONF) {
 
-    function processStripePayment(data, callback) {
+    function processStripePayment(data) {
+        var deferred = $q.defer();
         $http({
             method: "POST",
             url: PAYMENT_CONF.STRIPE_HOST + 'charges',
@@ -9,11 +10,17 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, PAYMENT_CONF) {
                 Authorization: 'Bearer ' + PAYMENT_CONF.STRIPE_SECRET,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-        }).then(function mySucces(response) {
-            callback(response);
-        }, function myError(response) {
-            callback(response);
+        }).then(function success(response) {
+            if (response.status == 200) {
+                deferred.resolve(response.data);
+            } else {
+                deferred.reject(response);
+            }
+        }, function error(response) {
+            deferred.reject(response);
         });
+
+        return deferred.promise;
     }
 
     function requestPayPalAccessToken() {
@@ -37,8 +44,8 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, PAYMENT_CONF) {
 
         return deferred.promise;
     }
-    
-    function requestStripeToken(info){
+
+    function requestStripeToken(info) {
         var deferred = $q.defer();
 
         Stripe.card.createToken({
@@ -46,14 +53,14 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, PAYMENT_CONF) {
             cvc: info.cvc,
             exp_month: info.exp_month,
             exp_year: info.exp_year
-        }, function(status, response){
+        }, function (status, response) {
             if (status == 200) {
                 deferred.resolve(response);
             } else {
                 deferred.reject(response);
             }
         });
-        
+
         return deferred.promise;
     }
 
@@ -103,11 +110,18 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, PAYMENT_CONF) {
         return deferred.promise;
     }
 
+    function registerSuccessPayment(data) {
+        return transaction().save(data).$promise.then(function (response) {
+            console.log(response);
+        });
+    }
+
     return {
         processStripePayment: processStripePayment,
         requestPayPalAccessToken: requestPayPalAccessToken,
         requestStripeToken: requestStripeToken,
         processPayPalPayment: processPayPalPayment,
-        executePayPalPayment: executePayPalPayment
+        executePayPalPayment: executePayPalPayment,
+        registerSuccessPayment: registerSuccessPayment
     };
 });

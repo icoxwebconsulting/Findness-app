@@ -1,19 +1,37 @@
 <ion-view view-title="Pagos">
     <ion-content>
         <content has-header="true" padding="true">
-            <button class="button button-block button-positive" ng-click="setPaymentType(1)">
-                Pagar con Tarjeta de crédito
-            </button>
+            <div class="list">
+                <pre>card = {{card | json}}</pre>
+                <pre>paymentForm = {{paymentForm | json}}</pre>
+                <div class="item item-divider">
+                    Métodos de pago
+                </div>
+                <div ng-show="paymentType==0">
+                    <div class="item padding">
+                        <button class="button button-block button-positive" ng-click="setPaymentType(1)">
+                            Pagar con Tarjeta de crédito
+                        </button>
+                    </div>
+                    <div class="item padding">
+                        <button class="button button-block button-positive" ng-click="setPaymentType(2)">
+                            Pagar con saldo paypal
+                        </button>
+                    </div>
+                    <div class="item padding">
+                        <button class="button button-block button-positive" ng-click="setPaymentType(3)">
+                            Pagar con tarjeta en paypal
+                        </button>
+                    </div>
+                </div>
+                <div class="item padding" ng-show="paymentType!=0">
+                    <button class="button button-block button-positive" ng-click="setPaymentType(0)">
+                        Elegir otro método de pago
+                    </button>
+                </div>
+            </div>
 
-            <button class="button button-block button-positive" ng-click="setPaymentType(2)">
-                Pagar con saldo paypal
-            </button>
-
-            <button class="button button-block button-positive" ng-click="setPaymentType(3)">
-                Pagar con tarjeta en paypal
-            </button>
-
-            <form name="paymentForm" class="padding" ng-submit="makeCreditCardPayment(card)" ng-show="paymentType!=2 && paymentType != undefined">
+            <form name="paymentForm" novalidate class="padding" ng-submit="makeCreditCardPayment(card)" ng-show="paymentType==1 || paymentType==3">
 
                 <label class="item item-input item-select">
                     <div class="input-label">
@@ -31,37 +49,37 @@
 
                 <label class="item item-input item-stacked-label padding">
                     Número de tarjeta
-                    <input type="number" ng-model="card.number" name="cardNumber" cc-number cc-type="card.cardType" style="height:30px;border:1px solid grey; padding-left:10px" />
+                    <input type="text" ng-model="card.number" name="cardNumber" cc-number cc-type="card.cardType" cc-format style="height:30px;border:1px solid grey; padding-left:10px" />
                 </label>
 
                 <label class="item item-input item-stacked-label padding" ng-show="paymentType==3">
                     Primer nombre
-                    <input type="text" ng-model="card.firstName" name="firstName" style="height:30px;border:1px solid grey; padding-left:10px" />
+                    <input type="text" ng-model="firstName" name="firstName" style="height:30px;border:1px solid grey; padding-left:10px" />
                 </label>
 
                 <label class="item item-input item-stacked-label padding" ng-show="paymentType==3">
                     Primer apellido
-                    <input type="text" ng-model="card.lastName" name="lastName" style="height:30px;border:1px solid grey; padding-left:10px" />
+                    <input type="text" ng-model="lastName" name="lastName" style="height:30px;border:1px solid grey; padding-left:10px" />
                 </label>
 
                 <label class="item item-input item-stacked-label padding">
                     CVC
-                    <input type="number" ng-model="card.cvc" cc-type="cardNumber.$ccType"
+                    <input type="text" ng-model="card.cvc" cc-type="cardNumber.$ccType"
                            style="height:30px;border:1px solid grey; padding-left:10px"/>
                 </label>
                 <label class="item item-input item-stacked-label padding">
                     Expiration Date:
                     <div cc-exp>
-                        <input ng-model="card.exp_month" type="number" cc-exp-month style="height:30px;width:50px;border:1px solid grey; text-align:center" />
-                        <input ng-model="card.exp_year" type="number" cc-exp-year style="height:30px;width:50px;border:1px solid grey; text-align:center" />
+                        <input ng-model="card.exp_month" type="text" cc-exp-month style="height:30px;width:50px;border:1px solid grey; text-align:center; display: inline;" /> /  <!-- -->
+                        <input ng-model="card.exp_year" type="text" cc-exp-year style="height:30px;width:50px;border:1px solid grey; text-align:center; display: inline;" />
                     </div>
                 </label>
                 <div class="padding">
-                    <button type="submit" ng-disabled="paymentForm.$invalid" class="button button-block button-positive">REALIZAR PAGO</button>
+                    <button type="submit" ng-disabled="paymentForm.$invalid || buttonDisabled" ng-dblclick="return;" class="button button-block button-positive">REALIZAR PAGO</button>
                 </div>
             </form>
 
-            <form name="paymentFormPaypal" class="padding" ng-submit="makePayPalPayment(card, true)" ng-show="paymentType==1">
+            <form name="paymentFormPaypal" class="padding" ng-submit="makePayPalPayment(card, true)" ng-show="paymentType==2">
 
                 <label class="item item-input item-select">
                     <div class="input-label">

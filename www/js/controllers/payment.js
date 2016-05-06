@@ -1,39 +1,88 @@
-app.controller('PaymentCtrl', function ($scope, $state, paymentSrv) {
+app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup) {
 
     $scope.cardType = {};
     $scope.card = {};
-    $scope.paymentType;
+    $scope.paymentType = 0;
+    $scope.firstName;
+    $scope.lastName;
     $scope.products = [
-        {amount: 1, title: " 1$ combo"},
-        {amount: 5, title: " 5$ combo"},
-        {amount: 10, title: " 10$ combo"}
+        {amount: 1.0, title: " 1$ combo"},
+        {amount: 5.0, title: " 5$ combo"},
+        {amount: 10.0, title: " 10$ combo"}
     ];
+    $scope.buttonDisabled = false;
 
     $scope.setPaymentType = function (value) {
         $scope.paymentType = value;
     };
 
+    function showAlert(error) {
+        $ionicPopup.alert({
+            title: 'Estado del pago',
+            template: '<p style="text-align: center">No se pudo procesar su pago, intente nuevamente.<br />Error: ' + error + '</p>'
+        });
+    }
+
+    function showLoading() {
+        $ionicLoading.show({
+            template: '<p>Procesando pago...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
+    }
+
+    function showConfirmation(){
+        $ionicLoading.show({
+            template: '<p>Registrando pago...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
+    }
+
     function makeStripePayment(_cardInformation) {
+        $scope.buttonDisabled = true;
+        showLoading();
 
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
-                "amount": parseFloat(_cardInformation.amount),
+                "amount": parseFloat(_cardInformation.amount) * 100,
                 "currency": "usd",
                 "source": response.id,
                 "description": "Charge for test@example.com"
             };
 
-            paymentSrv.processStripePayment(data).then(function () {
-                //TODO: cambio a ventana de confirmación
+            return paymentSrv.processStripePayment(data).then(function (response) {
+                console.log("en respuesta pago", response);
+                showConfirmation();
+                return registerPayment({
+                    balance: parseFloat(_cardInformation.amount),
+                    operator: 3,
+                    transactionId: response.id,
+                    cardId: response.source.id
+                });
             });
 
-        }).catch(function () {
+        }).catch(function (error) {
             //TODO: handle error
+            console.log(error);
+        }).finally(function () {
+            $scope.buttonDisabled = false;
+            $ionicLoading.hide();
+        });
+    }
+
+    function registerPayment(data) {
+        return paymentSrv.registerSuccessPayment(data).then(function (response) {
+            console.log("respuesta servicio de registro", response)
         });
     }
 
     $scope.makePayPalPayment = function (_cardInformation, paypal) {
-        //TODO: card.amount para el monto
+        $scope.buttonDisabled = true;
+        console.log(_cardInformation);
+        if (!paypal && ($scope.firstName == "" || $scope.lastName == "")) {
+            return;
+            // $scope.firstName == "test";
+            // $scope.lastName == " test";
+        }
+
+        showLoading();
 
         var payer = {};
         if (paypal) {
@@ -46,12 +95,12 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv) {
                 {
                     "credit_card": {
                         "number": _cardInformation.number,
-                        "type": _cardInformation.cardType,
+                        "type": _cardInformation.cardType.toLowerCase(),
                         "expire_month": _cardInformation.exp_month,
                         "expire_year": _cardInformation.exp_year,
                         "cvv2": _cardInformation.cvc,
-                        "first_name": _cardInformation.firstName,
-                        "last_name": _cardInformation.lastName
+                        "first_name": $scope.firstName,
+                        "last_name": $scope.lastName
                     }
                 }
             ];
@@ -67,7 +116,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv) {
             "transactions": [
                 {
                     "amount": {
-                        "total": "1.47",
+                        "total": _cardInformation.amount + ".00",
                         "currency": "USD"
                     },
                     "description": "This is the payment transaction description."
@@ -78,28 +127,42 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv) {
         paymentSrv.requestPayPalAccessToken().then(function (tokenData) {
             localStorage.setItem("paypal_access_token", tokenData.access_token);
 
-            paymentSrv.processPayPalPayment(data, tokenData.access_token).then(function (response) {
+            return paymentSrv.processPayPalPayment(data, tokenData.access_token).then(function (response) {
+                console.log("dentro del then que procesa el response");
                 if ($scope.paymentType == 2) {
                     //pago con saldo paypal, el usuario debe confirmar
                     localStorage.setItem("execute_url", JSON.stringify(response.links[1]));
                     //localStorage.setItem("pay_id", response.id);
+                    $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
-                    //TODO: pago con tarjeta, redireccionar
+                    return registerPayment({
+                        balance: parseFloat(_cardInformation.amount),
+                        operator: 2,
+                        transactionId: response.id,
+                        cardId: response.cart
+                    });
                 }
             })
+        }).then(function () {
+            console.log("en el then")
         }).catch(function (error) {
-            //TODO: handle error
+            showAlert(error.statusText);
+        }).finally(function (error) {
+            console.log("en el finally");
+            $ionicLoading.hide();
+            $scope.buttonDisabled = false;
         });
     };
 
     $scope.makeCreditCardPayment = function (_cardInformation) {
+        console.log($scope.paymentType);
         if ($scope.paymentType == 1) {
             //pago con stripe
             makeStripePayment(_cardInformation);
         } else {
             //pago con tarjeta en paypal
-            makePayPalPayment(_cardInformation, false);
+            $scope.makePayPalPayment(_cardInformation, false);
         }
     }
 });
