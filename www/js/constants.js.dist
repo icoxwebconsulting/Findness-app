@@ -12,6 +12,10 @@ app.constant("OAUTH_CONF", {
     REFRESH_INTERVAL: 600000
 });
 
+app.constant("APP_STORE_CONF", {
+    webStore: true
+});
+
 app.constant("PAYMENT_CONF", {
 
     STRIPE_KEY: "YOUR_STRIPE_KEY",

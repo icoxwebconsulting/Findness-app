@@ -39,7 +39,8 @@
       },
       "locator": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
       "id": "plugin.google.maps"
-    }
+    },
+    "cordova-sqlite-storage"
   ],
   "cordovaPlatforms": [
     "android",
