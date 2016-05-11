@@ -1,8 +1,8 @@
-app.controller('FiltersCtrl', function ($scope, $state) {
+app.controller('FiltersCtrl', function ($scope, $state, $filter, filters) {
 
     $scope.data = {};
     $scope.data.pickupAfter = 5;
-    
+
     $scope.choice;
 
     $scope.$on('$ionicView.enter', function (e) {
@@ -27,11 +27,22 @@ app.controller('FiltersCtrl', function ($scope, $state) {
         return {items: []};
     };
 
+    $scope.getItems = function (query) {
+        if (query) {
+            filters.getCnaes().then(function (cnaes) {
+                console.log("antes de retornar cnaes", cnaes);
+                return {items: cnaes};
+            });
+            //$filter('filter')(cnaes, expression, comparator)
+        }
+        return {items: []};
+    };
+
     $scope.itemsClicked = function (callback) {
         $scope.clickedValueModel = callback;
     };
     $scope.itemsRemoved = function (callback) {
         $scope.removedValueModel = callback;
     };
-    
+
 });
