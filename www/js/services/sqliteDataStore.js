@@ -76,12 +76,26 @@ app.factory('sqliteDatastore', function ($q, APP_STORE_CONF) {
         return execute(query);
     }
 
+    function createTableEnterprises(){
+        var query = 'CREATE TABLE IF NOT EXISTS enterprises (' +
+            'id INTEGER PRIMARY KEY,' + //
+            'id_external INTEGER NOT NULL,' +
+            'social_reason TEXT,' + //
+            'social_object TEXT,' +
+            'latitude TEXT,' +
+            'longitude TEXT,' +
+            'created DATETIME,' + //
+            'updated DATETIME)';
+        return execute(query);
+    }
+
     function createTables() {
         $q.all([
             createTableTransactions(),
             createTableBalance(),
             createTableMapRoute(),
-            createTableMapRoutePath()
+            createTableMapRoutePath(),
+            createTableEnterprises()
         ]).then(function (value) {
             setDbExist(true);
         }, function (reason) {
