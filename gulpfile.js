@@ -20,6 +20,8 @@ var paths = {
         './www/lib/bcryptjs/dist/bcrypt.min.js',
         './www/lib/ion-autocomplete/dist/ion-autocomplete.js',
         './www/lib/angular-credit-cards/release/angular-credit-cards.js',
+        './www/lib/moment/min/moment.min.js',
+        './www/lib/moment/locale/es.js',
         './www/js/**/*.js'
     ]
 };

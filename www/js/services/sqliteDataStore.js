@@ -37,9 +37,11 @@ app.factory('sqliteDatastore', function ($q, APP_STORE_CONF) {
         var query = 'CREATE TABLE IF NOT EXISTS transactions (' +
             'id INTEGER PRIMARY KEY AUTOINCREMENT,' + //
             'id_registered TEXT,' + //
-            'operator INTEGER NOT NULL,' + //
+            'operator INTEGER NOT NULL,' + //paypal 2, stripe 3
             'reference TEXT,' + //
-            'status INT,' + //
+            'status INT,' + //0 no realizada, 1 efectiva, 2 negada
+            'amount REAL NOT NULL,' +
+            'comment TEXT,' + //error u otro
             'created DATETIME,' + //
             'updated DATETIME)';
         return execute(query);
@@ -47,7 +49,7 @@ app.factory('sqliteDatastore', function ($q, APP_STORE_CONF) {
 
     function createTableBalance() {
         var query = 'CREATE TABLE IF NOT EXISTS balance (' +
-            'balance REAL NOT NULL,' +
+            'balance REAL DEFAULT 0,' +
             'created DATETIME,' + //
             'updated DATETIME)';
         return execute(query);
@@ -76,7 +78,7 @@ app.factory('sqliteDatastore', function ($q, APP_STORE_CONF) {
         return execute(query);
     }
 
-    function createTableEnterprises(){
+    function createTableEnterprises() {
         var query = 'CREATE TABLE IF NOT EXISTS enterprises (' +
             'id INTEGER PRIMARY KEY,' + //
             'id_external INTEGER NOT NULL,' +

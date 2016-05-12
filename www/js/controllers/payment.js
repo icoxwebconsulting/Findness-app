@@ -1,4 +1,4 @@
-app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup) {
+app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, transactionStorage) {
 
     $scope.cardType = {};
     $scope.card = {};
@@ -29,7 +29,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         });
     }
 
-    function showConfirmation(){
+    function showConfirmation() {
         $ionicLoading.show({
             template: '<p>Registrando pago...</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });
@@ -44,18 +44,25 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                 "amount": parseFloat(_cardInformation.amount) * 100,
                 "currency": "usd",
                 "source": response.id,
-                "description": "Charge for test@example.com"
+                "description": "Cargo Findness"
             };
 
             return paymentSrv.processStripePayment(data).then(function (response) {
-                console.log("en respuesta pago", response);
                 showConfirmation();
+                transactionStorage.saveTransaction({
+                    id_registered: response.id,
+                    operator: 3,
+                    reference: response.source.id,
+                    status: (response.status == "succeeded") ? 1 : 2,
+                    amount: response.amount / 100
+                });
                 return registerPayment({
                     balance: parseFloat(_cardInformation.amount),
                     operator: 3,
                     transactionId: response.id,
                     cardId: response.source.id
                 });
+                //TODO: una vez registrado el pago se debe actualizar el balance del usuario
             });
 
         }).catch(function (error) {
@@ -136,11 +143,18 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
+                    transactionStorage.saveTransaction({
+                        id_registered: response.id,
+                        operator: 2,
+                        reference: response.payer.payer_info.payer_id,
+                        status: (response.state == "approved") ? 1 : 2,
+                        amount: response.transactions.amount.total
+                    });
                     return registerPayment({
                         balance: parseFloat(_cardInformation.amount),
                         operator: 2,
                         transactionId: response.id,
-                        cardId: response.cart
+                        cardId: response.payer.payer_info.payer_id
                     });
                 }
             })

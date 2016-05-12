@@ -26,3 +26,7 @@ app.constant("PAYMENT_CONF", {
     PAYPAL_CLIENT_ID: "AXRnIdF6qTgK9DENZUfL98ERf7M8ZnJx-Ds62nqE3oq7EY5yDwMDynRPAXkK56u4bqA7twj9UJYqdZ8G",
     PAYPAL_SECRET: "EK9Ir00gOzF1KKgAOa9BZ3ecZvtszgHVjmBEQMaPZ5GLXYOjFnZE-QEVBgeTfQoGcNGPkpyM-3hwjWGt"
 });
+
+app.constant("DATETIME_FORMAT_CONF", {
+    dateTimeFormat : "YYYY-MM-DD HH:mm:ss"
+})
