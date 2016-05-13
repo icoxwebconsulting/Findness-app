@@ -8,11 +8,11 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 var uglify = require('gulp-uglify');
 var merge = require('merge-stream');
-
+//ion-autocomplete/dist/ion-autocomplete.css
 var paths = {
     css: [
         './www/lib/ionic/css/ionic.css',
-        './www/ib/ion-autocomplete/dist/ion-autocomplete.css',
+        './www/lib/ion-autocomplete/dist/ion-autocomplete.css',
         './www/css/style.css'
     ],
     js: [

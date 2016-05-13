@@ -1,4 +1,4 @@
-angular.module('app').service('transactionStorage', function ($q, sqliteDatastore, DATETIME_FORMAT_CONF) {
+app.service('transactionStorage', function ($q, sqliteDatastore, DATETIME_FORMAT_CONF) {
 
     var sqlDateTimeFormat = DATETIME_FORMAT_CONF.dateTimeFormat;
     

@@ -40,7 +40,11 @@ app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal,
                 marker.setPosition(e.latLng);
             });
         }
-    })
+    });
+    
+    $scope.search = function () {
+        
+    }
 
     $scope.chooseFilter = function () {
         $state.go("app.filter");

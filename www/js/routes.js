@@ -40,7 +40,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/filter',
             views: {
                 'menuContent': {
-                    templateUrl: 'templates/filters.html',
+                    templateUrl: 'templates/cnae.html',
                     controller: 'FiltersCtrl'
                 }
             }

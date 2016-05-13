@@ -1,4 +1,4 @@
-app.factory('filters', function ($q, $rootScope, $http) {
+app.factory('filterSrv', function ($q, $http, $filter, $timeout) {
 
     var cnaes;
 
@@ -18,17 +18,24 @@ app.factory('filters', function ($q, $rootScope, $http) {
         return deferred.promise;
     }
 
-    function getCnaes() {
+    function filter(cnaes, query) {
+        return cnaes;
+    }
+
+    function getCnaes(query) {
         var deferred = $q.defer();
+        //$filter('filter')(cnaes, expression, comparator)
+        //TODO: filtrar aqui
         if (!cnaes) {
             readCnaesJson().then(function (data) {
                 cnaes = data;
-                console.log("hizo el resolve ", cnaes);
-                deferred.resolve(cnaes);
+                console.log("hizo el resolve ");
+
+                deferred.resolve(filter(cnaes, query));
             })
         } else {
             console.log("ya existe cnae");
-            deferred.resolve(cnaes);
+            deferred.resolve(filter(cnaes, query));
         }
 
         return deferred.promise;
