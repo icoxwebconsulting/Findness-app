@@ -28,21 +28,17 @@
                     Podrá establecer un punto en el mapa desde donde se extenderá su búsqueda
                 </div>
             </div>
-            <!--<div class="list" ng-show="choice=='D'">-->
-                <!--<div class="item item-divider">-->
-                    <!---->
-                <!--</div>-->
-            <!--</div>-->
+
             <form ng-show="choice=='D'">
                 <label class="item item-input">
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
                            ng-model="model"
-                           item-value-key="name"
-                           item-view-value-key="view"
-                           items-method="getTestItems(query)"
+                           item-value-key="id"
+                           item-view-value-key="name"
                            items-method-value-key="items"
-                           placeholder="Ingrese su búsqueda ..."
+                           items-method="getItems(query)"
+                           placeholder="Buscar CNAE..."
                            items-clicked-method="itemsClicked(callback)"
                            items-removed-method="itemsRemoved(callback)"
                            max-selected-items="3"/>

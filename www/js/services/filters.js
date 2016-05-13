@@ -19,23 +19,33 @@ app.factory('filterSrv', function ($q, $http, $filter, $timeout) {
     }
 
     function filter(cnaes, query) {
-        return cnaes;
+        return cnaes.items.filter(function (el) {
+            return el.view.indexOf(query) > -1
+        });
     }
 
     function getCnaes(query) {
         var deferred = $q.defer();
-        //$filter('filter')(cnaes, expression, comparator)
-        //TODO: filtrar aqui
+
         if (!cnaes) {
             readCnaesJson().then(function (data) {
                 cnaes = data;
                 console.log("hizo el resolve ");
-
-                deferred.resolve(filter(cnaes, query));
+                var filtered = filter(cnaes, query)
+                console.log("va a retornar", filtered.length, "de la búsqueda", query)
+                console.log(filtered);
+                deferred.resolve({
+                    items: filtered
+                });
             })
         } else {
             console.log("ya existe cnae");
-            deferred.resolve(filter(cnaes, query));
+            var filtered = filter(cnaes, query)
+            console.log("va a retornar", filtered.length, "de la búsqueda", query)
+            console.log(filtered);
+            deferred.resolve({
+                items: filtered
+            });
         }
 
         return deferred.promise;

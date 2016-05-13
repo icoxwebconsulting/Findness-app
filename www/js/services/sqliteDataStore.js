@@ -94,10 +94,10 @@ app.factory('sqliteDatastore', function ($q, APP_STORE_CONF) {
     function createTables() {
         $q.all([
             createTableTransactions(),
-            createTableBalance(),
-            createTableMapRoute(),
-            createTableMapRoutePath(),
-            createTableEnterprises()
+            createTableBalance()//,
+            //createTableMapRoute(),
+            //createTableMapRoutePath(),
+            //createTableEnterprises()
         ]).then(function (value) {
             setDbExist(true);
         }, function (reason) {
