@@ -7,13 +7,13 @@
                 <ion-radio ng-model="choice" ng-value="'C'">Seleccionar punto</ion-radio>
                 <ion-radio ng-model="choice" ng-value="'D'">Listado de CNAE:</ion-radio>
             </ion-list>
-            <div class="list" ng-show="choice=='A'">
-                <div class="item item-divider">
+            <div class="card" ng-show="choice=='A'">
+                <div class="item item-text-wrap">
                     Su búsqueda se realizará por localización geográfica (código postal, ciudad, etc.)
                 </div>
             </div>
-            <div class="list" ng-show="choice=='B'">
-                <div class="item item-divider">
+            <div class="card" ng-show="choice=='B'">
+                <div class="item item-text-wrap">
                     Cubrir un radio de {{data.pickupAfter}} km
                 </div>
                 <div class="item range range-positive">
@@ -23,13 +23,18 @@
                     <i class="icon ion-ios-plus-outline"></i>
                 </div>
             </div>
-            <div class="list" ng-show="choice=='C'">
-                <div class="item item-divider">
-                    Podrá establecer un punto en el mapa desde donde se extenderá su búsqueda
+            <div class="card" ng-show="choice=='C'">
+                <div class="item item-text-wrap">
+                    Podrá establecer un punto en el mapa desde donde se extenderá su búsqueda.
                 </div>
             </div>
 
             <form ng-show="choice=='D'">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        Puede seleccionar varios CNAES, los CNAE de 2 dígitos incluyen sus subcategorías.
+                    </div>
+                </div>
                 <label class="item item-input">
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
@@ -38,7 +43,7 @@
                            item-view-value-key="id"
                            items-method-value-key="items"
                            items-method="getItems(query)"
-                           placeholder="Buscar CNAE..."
+                           placeholder="Click aquí para buscar..."
                            items-clicked-method="itemsClicked(callback)"
                            items-removed-method="itemsRemoved(callback)"
                            select-items-label="Seleccione los CNAES correspondientes..."

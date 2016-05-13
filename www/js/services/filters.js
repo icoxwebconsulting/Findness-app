@@ -1,6 +1,9 @@
-app.factory('filterSrv', function ($q, $http, $filter, $timeout) {
+app.factory('filterSrv', function ($q, $http) {
 
     var cnaes;
+    //
+    var selectedCnaes;
+    var selectedFilter;
 
     function readCnaesJson() {
         var deferred = $q.defer();
@@ -47,7 +50,37 @@ app.factory('filterSrv', function ($q, $http, $filter, $timeout) {
         return deferred.promise;
     }
 
+    function omitirAcentos(text) {
+        var acentos = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÇç";
+        var original = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuucc";
+        for (var i = 0; i < acentos.length; i++) {
+            text = text.replace(acentos.charAt(i), original.charAt(i));
+        }
+        return text;
+    }
+
+    function getSelectedCnaes() {
+        return selectedCnaes;
+    }
+
+    function setSelectedCnaes(selection) {
+        selectedCnaes = selection;
+    }
+
+    function getSelectedFilter() {
+        return selectedFilter;
+    }
+
+    function setSelectedFilter(selection) {
+        selectedFilter = selection;
+    }
+
     return {
-        getCnaes: getCnaes
+        getCnaes: getCnaes,
+        getSelectedCnaes: getSelectedCnaes,
+        setSelectedCnaes: setSelectedCnaes,
+        omitirAcentos: omitirAcentos,
+        getSelectedFilter: getSelectedFilter,
+        setSelectedFilter: setSelectedFilter
     };
 });

@@ -1,26 +1,20 @@
 app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
 
+    $scope.data = {};
+    $scope.data.pickupAfter = 5;
     $scope.model = "";
     $scope.clickedValueModel = "";
     $scope.removedValueModel = "";
+    $scope.choice;
 
 
-    $scope.$on('$ionicView.enter', function (e) {
-
+    $scope.$on('$ionicView.leave', function (e) {
+        filterSrv.setSelectedFilter($scope.choice);
     });
-
-    function omitirAcentos(text) {
-        var acentos = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÇç";
-        var original = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuucc";
-        for (var i=0; i<acentos.length; i++) {
-            text = text.replace(acentos.charAt(i), original.charAt(i));
-        }
-        return text;
-    }
 
     $scope.getItems = function (query) {
         if (query && (query.length > 2 || (query[0] == '0' && query.length == 2) )) {
-            query = omitirAcentos(query);
+            query = filterSrv.omitirAcentos(query);
             query = query.toLowerCase();
             return filterSrv.getCnaes(query).then(function (cnaes) {
                 return cnaes;
@@ -31,9 +25,11 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
 
     $scope.itemsClicked = function (callback) {
         $scope.clickedValueModel = callback;
+        filterSrv.setSelectedCnaes = $scope.model;
     };
     $scope.itemsRemoved = function (callback) {
         $scope.removedValueModel = callback;
+        filterSrv.setSelectedCnaes = $scope.model;
     };
 
 });

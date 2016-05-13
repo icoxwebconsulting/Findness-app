@@ -1,17 +1,20 @@
-app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal, map) {
+app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal, map, filterSrv) {
 
     $scope.selectedFilter = 'Toque para seleccionar';
 
-    $scope.data = {};
-    $scope.data.pickupAfter = 5;
-
     $scope.$on('$ionicView.enter', function (e) {
-        $ionicModal.fromTemplateUrl('filters-modal.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.modal = modal;
-        });
+        var selected = filterSrv.getSelectedFilter();
+        if (selected != undefined) {
+            if (selected == 'A') {
+                $scope.selectedFilter = 'Localización actual';
+            } else if (selected == 'B') {
+                $scope.selectedFilter = 'Radio';
+            } else if (selected == 'C') {
+                $scope.selectedFilter = 'Seleccionar punto';
+            } else if (selected == 'D') {
+                $scope.selectedFilter = 'Códigos CNAE: ' + filterSrv.getSelectedCnaes();
+            }
+        }
     });
 
     $ionicPlatform.ready(function () {
@@ -31,25 +34,25 @@ app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal,
             // });
             var marker;
 
-            map.addEventListener(map, 'click', function(e) {
+            map.addEventListener(map, 'click', function (e) {
                 console.log("click en el mapa")
-                if ( !marker ) {
-                    marker = new google.maps.Marker({ map: map });
+                if (!marker) {
+                    marker = new google.maps.Marker({map: map});
                 }
 
                 marker.setPosition(e.latLng);
             });
         }
     });
-    
+
     $scope.search = function () {
-        
+
     }
 
     $scope.chooseFilter = function () {
         $state.go("app.filter");
     }
-    
+
     $scope.closeModal = function () {
         $scope.modal.hide()
     }
