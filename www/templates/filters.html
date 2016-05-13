@@ -5,7 +5,7 @@
                 <ion-radio ng-model="choice" ng-value="'A'">Localización geográfica</ion-radio>
                 <ion-radio ng-model="choice" ng-value="'B'">Radial</ion-radio>
                 <ion-radio ng-model="choice" ng-value="'C'">Seleccionar punto</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'D'">Listado CNAE</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'D'">Listado de CNAE:</ion-radio>
             </ion-list>
             <div class="list" ng-show="choice=='A'">
                 <div class="item item-divider">
@@ -35,13 +35,16 @@
                            autocomplete="off"
                            ng-model="model"
                            item-value-key="id"
-                           item-view-value-key="name"
+                           item-view-value-key="id"
                            items-method-value-key="items"
                            items-method="getItems(query)"
                            placeholder="Buscar CNAE..."
                            items-clicked-method="itemsClicked(callback)"
                            items-removed-method="itemsRemoved(callback)"
-                           max-selected-items="3"/>
+                           select-items-label="Seleccione los CNAES correspondientes..."
+                           selected-items-label="Seleccionados:"
+                           template-url="templates/template-autocomplete.html"
+                           max-selected-items="10"/>
                 </label>
             </form>
         </content>
