@@ -21,9 +21,4 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
         $scope.menuVisible = !$scope.menuVisible;
     };
 
-    $scope.logout = function () {
-        user.logout().then(function () {
-            $state.go('login');
-        });
-    }
 });

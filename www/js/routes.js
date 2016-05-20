@@ -65,6 +65,56 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
+    
+        .state('app.profile',{
+            url: '/profile',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/profile.html',
+                    controller: 'ProfileCtrl'
+                }
+            }
+        })
+
+        .state('app.routes',{
+            url: '/routes',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/routes.html',
+                    controller: 'RoutesCtrl'
+                }
+            }
+        })
+
+        .state('app.companies',{
+            url: '/companies',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/companies.html',
+                    controller: 'CompaniesCtrl'
+                }
+            }
+        })
+
+        .state('app.account',{
+            url: '/account',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/account.html',
+                    controller: 'AccountCtrl'
+                }
+            }
+        })
+
+        .state('app.faq',{
+            url: '/faq',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/faq.html',
+                    controller: 'FaqCtrl'
+                }
+            }
+        })
 
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage.getItem('isLogged') == 1) {
