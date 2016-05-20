@@ -116,6 +116,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
+        .state('app.advice',{
+            url: '/faq',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/advice.html'//,
+                    //controller: 'FaqCtrl'
+                }
+            }
+        });
+
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage.getItem('isLogged') == 1) {
         $urlRouterProvider.otherwise('/app/map');

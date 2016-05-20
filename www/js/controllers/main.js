@@ -21,4 +21,9 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
         $scope.menuVisible = !$scope.menuVisible;
     };
 
+    $scope.stateChange = function (to) {
+        $state.go(to);
+        $scope.menuVisible = false;
+    };
+
 });

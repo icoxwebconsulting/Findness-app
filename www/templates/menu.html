@@ -18,25 +18,25 @@
         </ion-header-bar>
         <ion-content>
             <ion-list>
-                <ion-item menu-close ui-sref="app.profile">
+                <ion-item menu-close ng-click="stateChange('app.profile')">
                     Mi perfil
                 </ion-item>
-                <ion-item menu-close ui-sref="app.routes">
+                <ion-item menu-close ng-click="stateChange('app.routes')">
                     Mis rutas
                 </ion-item>
-                <ion-item menu-close ui-sref="app.companies">
+                <ion-item menu-close ng-click="stateChange('app.companies')">
                     Mis listados
                 </ion-item>
-                <ion-item menu-close ui-sref="app.account">
+                <ion-item menu-close ng-click="stateChange('app.account')">
                     Mi cuenta
                 </ion-item>
-                <ion-item menu-close ui-sref="app.payment">
+                <ion-item menu-close ng-click="stateChange('app.payment')">
                     Agregar saldo
                 </ion-item>
-                <ion-item menu-close ui-sref="app.faq">
+                <ion-item menu-close ng-click="stateChange('app.faq')">
                     FAQs
                 </ion-item>
-                <ion-item menu-close ui-sref="app.advice">
+                <ion-item menu-close ng-click="stateChange('app.advice')">
                     Aviso legal
                 </ion-item>
             </ion-list>
