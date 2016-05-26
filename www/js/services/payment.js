@@ -116,12 +116,20 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
         });
     }
 
+
+    function getTransactions(){
+        return transaction(localStorage.getItem('accessToken')).get().$promise.then(function (response) {
+            return response;
+        });
+    }
+
     return {
         processStripePayment: processStripePayment,
         requestPayPalAccessToken: requestPayPalAccessToken,
         requestStripeToken: requestStripeToken,
         processPayPalPayment: processPayPalPayment,
         executePayPalPayment: executePayPalPayment,
-        registerSuccessPayment: registerSuccessPayment
+        registerSuccessPayment: registerSuccessPayment,
+        getTransactions:getTransactions
     };
 });

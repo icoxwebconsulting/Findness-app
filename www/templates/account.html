@@ -10,38 +10,18 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" ng-if="view.transactions.length">
                 <div class="item item-text-wrap">
-                    <table>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Método de pago</th>
-                            <th>Nro.</th>
-                            <th>Estatus</th>
-                            <th>Monto</th>
-                        </tr>
-                        <tr>
-                            <td data-th="Fecha">10/01/2016</td>
-                            <td data-th="Método de pago">TC - Master</td>
-                            <td data-th="Nro.">8554856</td>
-                            <td data-th="Estatus">Procesado</td>
-                            <td data-th="Monto">€10</td>
-                        </tr>
-                        <tr>
-                            <td data-th="Fecha">15/01/2016</td>
-                            <td data-th="Método de pago">TC - Visa</td>
-                            <td data-th="Nro.">8955433</td>
-                            <td data-th="Estatus">Procesado</td>
-                            <td data-th="Monto">€5</td>
-                        </tr>
-                        <tr>
-                            <td data-th="Fecha">05/02/2016</td>
-                            <td data-th="Método de pago">Paypal</td>
-                            <td data-th="Nro.">9656224</td>
-                            <td data-th="Estatus">Procesado</td>
-                            <td data-th="Monto">€10</td>
-                        </tr>
-                    </table>
+                    <div class="row">
+                        <div class="col">Fecha</div>
+                        <div class="col">Nro.</div>
+                        <div class="col">Monto</div>
+                    </div>
+                    <div class="row" ng-repeat="transaction in view.transactions">
+                        <div class="col">10/01/2016</div>
+                        <div class="col">{{transaction.transaction_id}}</div>
+                        <div class="col">{{transaction.balance}}</div>
+                    </div>
                 </div>
             </div>
         </content>
