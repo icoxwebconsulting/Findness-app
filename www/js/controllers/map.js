@@ -1,4 +1,4 @@
-app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal, map, filterSrv) {
+app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal, map, filterSrv, searchSrv) {
 
     $scope.selectedFilter = 'Toque para seleccionar';
 
@@ -46,12 +46,12 @@ app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal,
     });
 
     $scope.search = function () {
-
-    }
+        //searchSrv
+    };
 
     $scope.chooseFilter = function () {
         $state.go("app.filter");
-    }
+    };
 
     $scope.closeModal = function () {
         $scope.modal.hide()

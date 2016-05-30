@@ -28,6 +28,9 @@ app.service('searchSrv', function ($q, sqliteDatastore, userDatastore, qualitas,
     }
 
     return {
-        saveTransaction: saveTransaction
+        search: search,
+        searchCities: searchCities,
+        searchPostalCodes: searchPostalCodes,
+        searchStates: searchStates
     }
 });

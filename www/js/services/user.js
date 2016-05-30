@@ -29,11 +29,26 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         //obtengo el salt
         var deferred = $q.defer();
 
-        return customer().requestSalt({
+        customer().requestSalt({
             customer: loginData.username
         }).$promise.then(function (response) {
             var salt = '$2a$10$' + response.salt;
             loginData.password = bcrypt.hashSync(loginData.password, salt);
+
+            // return customer().requestAccessToken({
+            //         username: loginData.username,
+            //         password: loginData.password
+            //     }, {}).$promise.then(function (response) {
+            //         console.log("respuesta de login")
+            //         console.log(response);
+            //         deferred.resolve(response);
+            //     }, function (response) {
+            //     console.log("en error del customer")
+            //     deferred.reject({
+            //         type: 1,
+            //         data: response.data
+            //     });
+            // })
 
             $http({
                 method: 'GET',
@@ -43,21 +58,40 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                     password: loginData.password
                 }
             }).then(function (response) {
-                pushNotification.init();
+                console.log("la respuesta", response);
                 if (response.data.access_token) {
-                    userDatastore.setIsLogged(1);
-                    userDatastore.setPassword(loginData.password);
-                    userDatastore.setUsername(loginData.username);
-                    userDatastore.setTokens(response.data.access_token, response.data.refresh_token);
-                    
+                    // pushNotification.init();
+                    // userDatastore.setIsLogged(1);
+                    // userDatastore.setPassword(loginData.password);
+                    // userDatastore.setUsername(loginData.username);
+                    // userDatastore.setTokens(response.data.access_token, response.data.refresh_token);
+
                     // return registerDevice().then(function () {
                     //     console.log("ok de register device")
                     // });
-                    deferred.resolve();
+                    deferred.resolve(response);
+                } else {
+                    //error en la respuesta
+                    deferred.reject({
+                        type: 3,
+                        data: response.data
+                    });
                 }
+            }, function (response) {
+                console.log("error $http", response);
+                deferred.reject({
+                    type: 1,
+                    data: response.data
+                });
             });
-        }).catch(function (e) {
-            deferred.reject(e);
+            
+        }, function (response) {
+            //error salt
+            console.log("error salt", response);
+            deferred.reject({
+                type: 1,
+                data: response.data
+            });
         });
 
         return deferred.promise;
