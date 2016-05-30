@@ -1,4 +1,4 @@
-app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, OAUTH_CONF, pushNotification, $http) {
+app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, OAUTH_CONF) {
 
     function register(registrationData) {
         var bcrypt = dcodeIO.bcrypt;
@@ -35,56 +35,31 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             var salt = '$2a$10$' + response.salt;
             loginData.password = bcrypt.hashSync(loginData.password, salt);
 
-            // return customer().requestAccessToken({
-            //         username: loginData.username,
-            //         password: loginData.password
-            //     }, {}).$promise.then(function (response) {
-            //         console.log("respuesta de login")
-            //         console.log(response);
-            //         deferred.resolve(response);
-            //     }, function (response) {
-            //     console.log("en error del customer")
-            //     deferred.reject({
-            //         type: 1,
-            //         data: response.data
-            //     });
-            // })
+            var authData = {
+                client_id: OAUTH_CONF.CLIENT_ID,
+                client_secret: OAUTH_CONF.CLIENT_SECRET,
+                grant_type: 'password',
+                redirect_uri: 'www.findness.com'
+            };
 
-            $http({
-                method: 'GET',
-                url: OAUTH_CONF.OAUTH_HOST + 'token?client_id=' + OAUTH_CONF.CLIENT_ID + '&client_secret=' + OAUTH_CONF.CLIENT_SECRET + '&grant_type=password&redirect_uri=www.findness.com',
-                headers: {
-                    username: loginData.username,
-                    password: loginData.password
-                }
-            }).then(function (response) {
-                console.log("la respuesta", response);
-                if (response.data.access_token) {
-                    // pushNotification.init();
-                    // userDatastore.setIsLogged(1);
-                    // userDatastore.setPassword(loginData.password);
-                    // userDatastore.setUsername(loginData.username);
-                    // userDatastore.setTokens(response.data.access_token, response.data.refresh_token);
-
-                    // return registerDevice().then(function () {
-                    //     console.log("ok de register device")
-                    // });
+            return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
+                .then(function (response) {
+                    userDatastore.setIsLogged(1);
+                    userDatastore.setPassword(loginData.password);
+                    userDatastore.setUsername(loginData.username);
+                    userDatastore.setTokens(response.access_token, response.refresh_token);
+                    // refresh access_token every minute
+                    setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
                     deferred.resolve(response);
-                } else {
-                    //error en la respuesta
+                })
+                .catch(function (response) {
+                    console.log(response);
                     deferred.reject({
-                        type: 3,
+                        type: 1,
                         data: response.data
                     });
-                }
-            }, function (response) {
-                console.log("error $http", response);
-                deferred.reject({
-                    type: 1,
-                    data: response.data
                 });
-            });
-            
+
         }, function (response) {
             //error salt
             console.log("error salt", response);
@@ -98,46 +73,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function logout() {
-        //desregistrar dispositivo
-        return customer().logout().$promise
-            .then(function () {
-                userDatastore.deleteUserData();
-            });
-    }
-
-    function registerDevice() {
-        var deviceToken = pushNotification.getRegistrationId();
-
-        function register(token) {
-            var data = {
-                token: token,
-                os: 'Android'
-            };
-            return device(userDatastore.getTokens().accessToken).save(data).$promise
-                .then(function (response) {
-                    deviceDatastore.setDeviceId(response.device);
-                    return true;
-                })
-                .catch(function () {
-                    deviceDatastore.setDeviceId(token);
-                    return true;
-                });
-        }
-
-        if (deviceToken) {
-            return register(deviceToken);
-        } else {
-            var deferred = $q.defer();
-
-            $rootScope.$on('pushRegistrationId', function (pushRegistrationId) {
-                register(pushRegistrationId)
-                    .then(function () {
-                        deferred.resolve(true);
-                    });
-            });
-
-            return deferred.promise;
-        }
+        userDatastore.deleteUserData();
     }
 
     function refreshAccessToken() {
