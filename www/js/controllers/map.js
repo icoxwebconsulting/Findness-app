@@ -1,24 +1,27 @@
-app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal, map, filterSrv, searchSrv) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicModal, map, filterSrv, searchSrv) {
 
-    $scope.selectedFilter = 'Toque para seleccionar';
+    $scope.nameFilter = '';
+    var selectedFilter;
 
     $scope.$on('$ionicView.enter', function (e) {
-        var selected = filterSrv.getSelectedFilter();
-        if (selected != undefined) {
-            if (selected == 'A') {
-                $scope.selectedFilter = 'Localización actual';
-            } else if (selected == 'B') {
-                $scope.selectedFilter = 'Radio';
-            } else if (selected == 'C') {
-                $scope.selectedFilter = 'Seleccionar punto';
-            } else if (selected == 'D') {
-                $scope.selectedFilter = 'Códigos CNAE: ' + filterSrv.getSelectedCnaes();
-            }
+        var selectedFilter = filterSrv.getSelectedFilter();
+        setFilter(selectedFilter);
+    });
+
+    function setFilter(selectedFilter) {
+        if (selectedFilter && selectedFilter.type) {
+            $scope.nameFilter = selectedFilter.name;
+            //selectedFilter.type
+            //1, Localización actual, 2 Radio, 3 Seleccionar punto, 4 CNAE
         }
+    }
+
+    $rootScope.$on('changeFilter', function (e, element) {
+        console.log("obteniendo el nuevo filtro", element)
+        setFilter(element.choice);
     });
 
     $ionicPlatform.ready(function () {
-        console.log("plataforma lista");
         var div = document.getElementById("map_canvas");
         if (div) {
             const SPAIN = new plugin.google.maps.LatLng(39.9997938, -3.1926017);
@@ -45,8 +48,22 @@ app.controller('MapCtrl', function ($scope, $state, $ionicPlatform, $ionicModal,
         }
     });
 
-    $scope.search = function () {
-        //searchSrv
+    $scope.searchQualitas = function () {
+        //obtengo el filtro
+        //llamo a servicio de busqueda con filtro
+        //proceso resultados
+        navigator.geolocation.getCurrentPosition(function (position) {
+            //position.coords.latitude
+            //position.coords.longitude
+            searchSrv.searchQualitas().then(function () {
+                
+            })
+            
+        }, function () {
+
+        });
+        
+        
     };
 
     $scope.chooseFilter = function () {

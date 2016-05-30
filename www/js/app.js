@@ -1,6 +1,6 @@
 var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete', 'credit-cards'])
 
-    .run(function ($ionicPlatform, $state, sqliteDatastore, userDatastore, PAYMENT_CONF) {
+    .run(function ($ionicPlatform, $state, sqliteDatastore, userDatastore, user, PAYMENT_CONF) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -28,11 +28,7 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
 
             if (userDatastore.getIsLogged()) {
                 userDatastore.setRefreshingAccessToken(0);
-                user.refreshAccessToken()
-                    .then(function () {
-                        Contacts.loadContacts();
-                        messageReceived.getAndProcess();
-                    });
+                user.refreshAccessToken();
                 //redirección para pago por paypal
                 if (localStorage.getItem("external_load") != null) {
                     $state.go("app.paypal");

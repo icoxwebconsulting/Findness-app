@@ -4,13 +4,13 @@
             <div class="list padding">
                 <a class="item item-icon-left" href="#" ng-click="chooseFilter()">
                     <i class="icon ion-clipboard"></i>
-                    Buscar por: {{selectedFilter}}
+                    Buscar por: {{nameFilter}}
                 </a>
                 <div class="item item-input-inset">
                     <label class="item-input-wrapper">
                         <input type="text" placeholder="Ingrese su búsqueda">
                     </label>
-                    <button class="button button-small">
+                    <button class="button button-small" ng-click="searchQualitas()">
                         Buscar
                     </button>
                 </div>

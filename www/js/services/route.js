@@ -1,4 +1,4 @@
-app.service('route', function ($q) {
+app.service('routeSrv', function ($q) {
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];

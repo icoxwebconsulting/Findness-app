@@ -1,12 +1,32 @@
-app.service('searchSrv', function ($q, sqliteDatastore, userDatastore, qualitas, DATETIME_FORMAT_CONF) {
+app.service('searchSrv', function ($q, sqliteDatastore, userDatastore, qualitas, map, DATETIME_FORMAT_CONF) {
 
     var sqlDateTimeFormat = DATETIME_FORMAT_CONF.dateTimeFormat;
+    var resultSearch;
 
-    function search() {
+    function searchQualitas() {
         var token = userDatastore.getTokens();
-        return qualitas.search(token.accessToken).then(function () {
 
-        })
+        var data = {
+            cnaes: JSON.stringify([01])
+        };
+
+        return qualitas(token.accessToken).search(data).$promise
+            .then(function (response) {
+                setResultSearch(response);
+                console.log(response);
+                map.processMakers(response.items);
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+    }
+
+    function setResultSearch(result) {
+        resultSearch = result;
+    }
+
+    function getResultSearch() {
+        return resultSearch;
     }
 
     function searchCities() {
@@ -28,9 +48,10 @@ app.service('searchSrv', function ($q, sqliteDatastore, userDatastore, qualitas,
     }
 
     return {
-        search: search,
+        searchQualitas: searchQualitas,
         searchCities: searchCities,
         searchPostalCodes: searchPostalCodes,
-        searchStates: searchStates
+        searchStates: searchStates,
+        getResultSearch: getResultSearch
     }
 });

@@ -1,9 +1,15 @@
-app.factory('filterSrv', function ($q, $http) {
+app.factory('filterSrv', function ($q, $http, $rootScope) {
 
     var cnaes;
     //
     var selectedCnaes;
-    var selectedFilter;
+    var selectedFilter = {
+        type: 2,
+        name: "Radio de 5km",
+        options: {
+            km: 5
+        }
+    };
 
     function readCnaesJson() {
         var deferred = $q.defer();
@@ -73,6 +79,9 @@ app.factory('filterSrv', function ($q, $http) {
 
     function setSelectedFilter(selection) {
         selectedFilter = selection;
+        $rootScope.$emit('changeFilter', {
+            choice: selectedFilter
+        });
     }
 
     return {
