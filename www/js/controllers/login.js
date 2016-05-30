@@ -27,7 +27,7 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
             }).then(function (response) {
                 $ionicLoading.hide();
                 console.log(response);
-                //$state.go('app.map');
+                $state.go('app.map');
             }, function (error) {
                 $ionicLoading.hide();
                 var msg = "El servidor no responde, intente más tarde.";
