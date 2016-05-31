@@ -35,16 +35,16 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             //         map.showDialog();
             //     }, false);
             // });
-            var marker;
+            //var marker;
 
-            map.addEventListener(map, 'click', function (e) {
-                console.log("click en el mapa")
-                if (!marker) {
-                    marker = new google.maps.Marker({map: map});
-                }
-
-                marker.setPosition(e.latLng);
-            });
+            // map.addEventListener(map, 'click', function (e) {
+            //     console.log("click en el mapa")
+            //     if (!marker) {
+            //         marker = new google.maps.Marker({map: map});
+            //     }
+            //
+            //     marker.setPosition(e.latLng);
+            // });
         }
     });
 

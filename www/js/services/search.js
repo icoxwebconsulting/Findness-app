@@ -7,13 +7,12 @@ app.service('searchSrv', function ($q, sqliteDatastore, userDatastore, qualitas,
         var token = userDatastore.getTokens();
 
         var data = {
-            cnaes: JSON.stringify([01])
+            //cnaes: JSON.stringify([01])
         };
 
         return qualitas(token.accessToken).search(data).$promise
             .then(function (response) {
                 setResultSearch(response);
-                console.log(response);
                 map.processMakers(response.items);
             })
             .catch(function (response) {

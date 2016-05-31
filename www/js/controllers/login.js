@@ -24,9 +24,10 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
             user.login({
                 username: $scope.data.email,
                 password: $scope.data.password
-            }).then(function (response) {
+            }).then(function () {
                 $ionicLoading.hide();
-                console.log(response);
+                $scope.data.email = '';
+                $scope.data.password = '';
                 $state.go('app.map');
             }, function (error) {
                 $ionicLoading.hide();
