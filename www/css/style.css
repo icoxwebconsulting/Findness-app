@@ -24,3 +24,7 @@
     height: 65px;
     padding: 0px;
 }
+
+.bar-header .logo{
+    width: 200px;
+}
