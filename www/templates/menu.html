@@ -1,11 +1,18 @@
 <ion-side-menus enable-menu-with-back-views="false">
     <ion-side-menu-content>
-        <ion-nav-bar class="bar-stable">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
+        <ion-nav-bar class="bar-light">
+            <ion-nav-title>
+                <div class="center">
+                    <img src="img/findness.png" class="logo">
+                </div>
+            </ion-nav-title>
 
             <ion-nav-buttons side="left">
                 <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-click="toggleMenu()">
+                </button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <button class="button button-icon button-clear ion-ios-search" ui-sref="app.filter">
                 </button>
             </ion-nav-buttons>
         </ion-nav-bar>
