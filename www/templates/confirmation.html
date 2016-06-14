@@ -1,0 +1,24 @@
+<ion-view>
+
+    <ion-header-bar align-title="center" class="bar-calm">
+        <h1 class="title">Confirmar cuenta</h1>
+    </ion-header-bar>
+
+    <ion-content has-bouncing="false">
+
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Número de confirmación</span>
+                <input type="number" placeholder="Ingrese el número que le llegó a su correo" ng-model="confirm.token">
+            </label>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <button ng-click="confirmation()" ng-disabled="!confirmation"
+                        class="button button-full button-positive">Confirmar
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

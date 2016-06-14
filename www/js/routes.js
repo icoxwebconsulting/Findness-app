@@ -13,10 +13,21 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'RegisterCtrl'
         })
 
+        .state('confirm', {
+            url: '/confirm',
+            templateUrl: 'templates/confirmation.html',
+            controller: 'RegisterCtrl'
+        })
+
         .state('login', {
             url: '/login',
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'
+        })
+
+        .state('terms', {
+            url: '/terms',
+            templateUrl: 'templates/terms.html'
         })
 
         .state('app', {
@@ -65,8 +76,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
-    
-        .state('app.profile',{
+
+        .state('app.profile', {
             url: '/profile',
             views: {
                 'menuContent': {
@@ -76,7 +87,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.routes',{
+        .state('app.routes', {
             url: '/routes',
             views: {
                 'menuContent': {
@@ -86,7 +97,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.companies',{
+        .state('app.companies', {
             url: '/companies',
             views: {
                 'menuContent': {
@@ -96,7 +107,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.account',{
+        .state('app.account', {
             url: '/account',
             views: {
                 'menuContent': {
@@ -106,7 +117,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.faq',{
+        .state('app.faq', {
             url: '/faq',
             views: {
                 'menuContent': {
@@ -116,8 +127,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.advice',{
-            url: '/faq',
+        .state('app.advice', {
+            url: '/advice',
             views: {
                 'menuContent': {
                     templateUrl: 'templates/advice.html'//,
@@ -128,7 +139,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage.getItem('isLogged') == 1) {
-        $urlRouterProvider.otherwise('/app/map');
+        if (window.localStorage.getItem('isConfirm') == 1) {
+            $urlRouterProvider.otherwise('/app/map');
+        } else {
+            $urlRouterProvider.otherwise('/confirm');
+        }
     } else {
         $urlRouterProvider.otherwise('/slides');
     }

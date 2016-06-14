@@ -8,6 +8,14 @@ app.factory('userDatastore', function () {
         return window.localStorage.getItem('isLogged') || 0;
     }
 
+    function setIsConfirm(status) {
+        window.localStorage.setItem('isConfirm', status);
+    }
+
+    function getIsConfirm() {
+        return window.localStorage.getItem('isConfirm') || 0;
+    }
+
     function setCustomerId(id) {
         window.localStorage.setItem('customerId', id);
     }
@@ -89,6 +97,8 @@ app.factory('userDatastore', function () {
     return {
         setIsLogged: setIsLogged,
         getIsLogged: getIsLogged,
+        setIsConfirm: setIsConfirm,
+        getIsConfirm: getIsConfirm,
         setCustomerId: setCustomerId,
         getCustomerId: getCustomerId,
         setUsername: setUsername,

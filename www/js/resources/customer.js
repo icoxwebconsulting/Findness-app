@@ -24,6 +24,11 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
             logout: {
                 method: 'DELETE',
                 url: SERVER_CONF.API_HOST + 'devices/' + deviceDatastore.getDeviceId() || 0
+            },
+            confirm: {
+                method: 'POST',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/confirm',
+                params: {customer: '@customer'}
             }
         });
     }

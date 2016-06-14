@@ -2,6 +2,8 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
 
     $scope.data = {};
     $scope.error = false;
+    $scope.confirm = {};
+    var errorMsg = "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde.";
 
     $scope.register = function () {
 
@@ -37,6 +39,11 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 title: "Las contraseñas no coinciden"
             });
         }
+        else if (!$scope.data.isChecked) {
+            $ionicPopup.alert({
+                title: "Para poder registrarse debe aceptar los términos y condiciones"
+            });
+        }
         else {
             $ionicLoading.show({
                 template: 'Creando Cuenta...'
@@ -48,22 +55,44 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 lastName: $scope.data.lastName,
                 password: $scope.data.password
             }).then(function (result) {
-                console.log("este es el result",result);
+                console.log("este es el result", result);
                 $ionicLoading.hide();
                 if (result) {
-                    $state.go('app.map');
+                    $state.go('confirm');
                 } else {
                     $ionicPopup.alert({
-                        title: "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde."
+                        title: errorMsg
                     });
                 }
             }, function (error) {
                 $ionicLoading.hide();
-
+                var msg = errorMsg;
+                if (error.data.code == 409) {
+                    msg = "El correo que intenta usar ya se encuentra registrado.";
+                }
                 $ionicPopup.alert({
-                    title: error.message
+                    title: msg
                 });
             });
         }
     };
+
+    $scope.confirmation = function () {
+        if (!$scope.confirm.token) {
+            $ionicPopup.alert({
+                title: "Debe ingresar el número de confirmación."
+            });
+        } else {
+            user.confirm(
+                $scope.confirm.token
+            ).then(function (result) {
+                console.log(result);
+                //$state.go('app.map');
+            }, function (error) {
+                $ionicPopup.alert({
+                    title: "Código erróneo, verifique e intente nuevamente."
+                });
+            });
+        }
+    }
 });

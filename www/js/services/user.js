@@ -11,13 +11,8 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             .then(function (response) {
                 console.log(response);
                 if (response.id) {
-                    userDatastore.setCustomerId(response.id);
-                    userDatastore.setPassword(registrationData.password);
-                    userDatastore.setUsername(response.username);
-                    userDatastore.setSalt(registrationData.salt);
-                    //return registerDevice();
-                    //realizar login
-                    login();
+                    userDatastore.setIsConfirm(0);
+                    login(response);
                 } else {
                     return false;
                 }
@@ -45,8 +40,10 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
                 .then(function (response) {
                     userDatastore.setIsLogged(1);
+                    userDatastore.setCustomerId(response.id);
                     userDatastore.setPassword(loginData.password);
                     userDatastore.setUsername(loginData.username);
+                    userDatastore.setSalt(registrationData.salt);
                     userDatastore.setTokens(response.access_token, response.refresh_token);
                     // refresh access_token every minute
                     setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
@@ -67,6 +64,27 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                 type: 1,
                 data: response.data
             });
+        });
+
+        return deferred.promise;
+    }
+
+    function confirm(token) {
+        var deferred = $q.defer();
+        var customerId = userDatastore.getCustomerId();
+        customer().confirm({
+            customer: customerId
+        }, {
+            token: token
+        }).$promise.then(function (response) {
+            if(response.confirmed){
+                userDatastore.setIsConfirm(1);
+                deferred.resolve();   
+            }else{
+                deferred.reject();    
+            }
+        }, function (response) {
+            deferred.reject();
         });
 
         return deferred.promise;
@@ -126,6 +144,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     return {
         refreshAccessToken: refreshAccessToken,
         register: register,
+        confirm: confirm,
         login: login,
         logout: logout
     };
