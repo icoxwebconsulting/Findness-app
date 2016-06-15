@@ -28,3 +28,7 @@
 .bar-header .logo{
     width: 200px;
 }
+
+.bar .title.title-left{
+    text-align: center;
+}
