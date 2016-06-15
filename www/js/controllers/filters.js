@@ -1,7 +1,7 @@
 app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
 
     $scope.data = {};
-    $scope.data.pickupAfter = 5;
+    $scope.data.pickupAfter = 3;
     $scope.model = "";
     $scope.clickedValueModel = "";
     $scope.removedValueModel = "";
