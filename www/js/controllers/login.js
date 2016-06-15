@@ -28,6 +28,7 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
                 $ionicLoading.hide();
                 $scope.data.email = '';
                 $scope.data.password = '';
+                //si está confirmado al mapa sino al confirm
                 $state.go('app.map');
             }, function (error) {
                 $ionicLoading.hide();

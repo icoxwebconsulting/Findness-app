@@ -1,11 +1,17 @@
 app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
-
+//TODO: renombrar a search?
     $scope.data = {};
     $scope.data.pickupAfter = 3;
     $scope.model = "";
     $scope.clickedValueModel = "";
     $scope.removedValueModel = "";
+    $scope.clickedStateModel = "";
+    $scope.removedStateModel = "";
+    $scope.stateModel = "";
     $scope.choice;
+    $scope.options = {
+        useLocation: true
+    };
 
 
     $scope.$on('$ionicView.leave', function (e) {
@@ -41,7 +47,6 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
                 options: {}
             };
         }
-        console.log("dejando la pagina", filter);
         filterSrv.setSelectedFilter(filter);
     });
 
@@ -56,6 +61,17 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
         return {items: []};
     };
 
+    $scope.getStates = function (query) {
+        if (query && (query.length > 2 || (query[0] == '0' && query.length == 2) )) {
+            query = filterSrv.omitirAcentos(query);
+            query = query.toLowerCase();
+            return filterSrv.getStates(query).then(function (cnaes) {
+                return cnaes;
+            });
+        }
+        return {items: []};
+    };
+
     $scope.itemsClicked = function (callback) {
         $scope.clickedValueModel = callback;
         filterSrv.setSelectedCnaes = $scope.model;
@@ -63,6 +79,15 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
     $scope.itemsRemoved = function (callback) {
         $scope.removedValueModel = callback;
         filterSrv.setSelectedCnaes = $scope.model;
+    };
+
+    $scope.statesClicked = function (callback) {
+        $scope.clickedValueModel = callback;
+        filterSrv.setSelectedCnaes = $scope.stateModel;
+    };
+    $scope.statesRemoved = function (callback) {
+        $scope.removedValueModel = callback;
+        filterSrv.setSelectedCnaes = $scope.stateModel;
     };
 
 });

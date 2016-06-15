@@ -9,7 +9,6 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
 
         return customer().save(registrationData).$promise
             .then(function (response) {
-                console.log(response);
                 if (response.id) {
                     userDatastore.setIsConfirm(0);
                     login(response);
@@ -39,11 +38,13 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
 
             return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
                 .then(function (response) {
+                    //TODO: el servicio de login debería devolver algún aviso si el usuario no se ha confirmado (y se ha logueado correctamente
+                    userDatastore.setIsConfirm(1);
                     userDatastore.setIsLogged(1);
                     userDatastore.setCustomerId(response.id);
                     userDatastore.setPassword(loginData.password);
                     userDatastore.setUsername(loginData.username);
-                    userDatastore.setSalt(registrationData.salt);
+                    userDatastore.setSalt(salt);
                     userDatastore.setTokens(response.access_token, response.refresh_token);
                     // refresh access_token every minute
                     setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);

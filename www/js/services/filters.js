@@ -1,6 +1,7 @@
-app.factory('filterSrv', function ($q, $http, $rootScope) {
+app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
 
     var cnaes;
+    var states;
     //
     var selectedCnaes;
     var selectedFilter = {
@@ -25,8 +26,8 @@ app.factory('filterSrv', function ($q, $http, $rootScope) {
         return deferred.promise;
     }
 
-    function filter(cnaes, query) {
-        return cnaes.items.filter(function (el) {
+    function filter(list, query) {
+        return list.items.filter(function (el) {
             return el.view.indexOf(query) > -1
         });
     }
@@ -37,6 +38,46 @@ app.factory('filterSrv', function ($q, $http, $rootScope) {
         if (!cnaes) {
             readCnaesJson().then(function (data) {
                 cnaes = data;
+                var filtered = filter(cnaes, query)
+                console.log("va a retornar", filtered.length, "de la búsqueda", query)
+                console.log(filtered);
+                deferred.resolve({
+                    items: filtered
+                });
+            })
+        } else {
+            var filtered = filter(cnaes, query)
+            console.log("va a retornar", filtered.length, "de la búsqueda", query)
+            console.log(filtered);
+            deferred.resolve({
+                items: filtered
+            });
+        }
+
+        return deferred.promise;
+    }
+
+    function queryStates() {
+        //var deferred = $q.defer();
+
+        return qualitas().searchStates().$promise
+            .then(function (response) {
+                console.log("1...-",response);
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+
+        //return deferred.promise;
+    }
+
+    function getStates(query) {
+        var deferred = $q.defer();
+
+        if (!states) {
+            queryStates().then(function (data) {
+                console.log("1...-",data)
+                //states = data;
                 var filtered = filter(cnaes, query)
                 console.log("va a retornar", filtered.length, "de la búsqueda", query)
                 console.log(filtered);
@@ -86,6 +127,7 @@ app.factory('filterSrv', function ($q, $http, $rootScope) {
 
     return {
         getCnaes: getCnaes,
+        getStates: getStates,
         getSelectedCnaes: getSelectedCnaes,
         setSelectedCnaes: setSelectedCnaes,
         omitirAcentos: omitirAcentos,

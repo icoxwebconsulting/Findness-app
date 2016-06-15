@@ -14,7 +14,7 @@ app.factory('qualitas', function ($resource, SERVER_CONF) {
             },
             searchStates: {
                 method: 'GET',
-                url: SERVER_CONF.API_HOST + 'qualitas/cities'
+                url: SERVER_CONF.API_HOST + 'qualitas/states'
             },
             searchCities: {
                 method: 'GET',
