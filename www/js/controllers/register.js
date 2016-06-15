@@ -95,4 +95,9 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             });
         }
     }
+
+    $scope.goToPage = function (page) {
+        console.log(page);
+        $state.go(page);
+    }
 });
