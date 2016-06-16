@@ -15,7 +15,7 @@
                        item-view-value-key="id"
                        items-method-value-key="items"
                        items-method="getItems(query)"
-                       placeholder="Click aquí para buscar..."
+                       placeholder="Click para buscar CNAE..."
                        items-clicked-method="itemsClicked(callback)"
                        items-removed-method="itemsRemoved(callback)"
                        select-items-label="Seleccione los CNAES correspondientes..."
@@ -40,28 +40,30 @@
 
             <div class="card" ng-hide="options.useLocation">
                 <div class="item item-text-wrap">
+                    <!-- BUSQUEDA DE PROVINCIAS -->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
-                           ng-model="model"
+                           ng-model="stateModel"
                            item-value-key="id"
-                           item-view-value-key="id"
+                           item-view-value-key="name"
                            items-method-value-key="items"
                            items-method="getStates(query)"
                            placeholder="Click para buscar Provincias..."
                            items-clicked-method="statesClicked(callback)"
                            items-removed-method="statesRemoved(callback)"
-                           select-items-label="Seleccione los CNAES correspondientes..."
+                           select-items-label="Seleccione las Provincias deseadas..."
                            selected-items-label="Seleccionados:"
-                           template-url="templates/template-autocomplete.html"
+                           template-url="templates/template-autocomplete-states.html"
                            max-selected-items="10"/>
                 </div>
 
                 <div class="item item-text-wrap">
+                    <!-- BUSQUEDA DE CIUDADES -->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
-                           ng-model="model"
+                           ng-model="cityModel"
                            item-value-key="id"
-                           item-view-value-key="id"
+                           item-view-value-key="name"
                            items-method-value-key="items"
                            items-method="getStates(query)"
                            placeholder="Click para buscar Ciudades..."
@@ -74,9 +76,10 @@
                 </div>
 
                 <div class="item item-text-wrap">
+                    <!-- BUSQUEDA DE ZIPCODE-->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
-                           ng-model="model"
+                           ng-model="zipcodeModel"
                            item-value-key="id"
                            item-view-value-key="id"
                            items-method-value-key="items"

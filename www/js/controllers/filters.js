@@ -8,6 +8,8 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
     $scope.clickedStateModel = "";
     $scope.removedStateModel = "";
     $scope.stateModel = "";
+    $scope.cityModel = "";
+    $scope.zipcodeModel = "";
     $scope.choice;
     $scope.options = {
         useLocation: true
@@ -65,8 +67,8 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
         if (query && (query.length > 2 || (query[0] == '0' && query.length == 2) )) {
             query = filterSrv.omitirAcentos(query);
             query = query.toLowerCase();
-            return filterSrv.getStates(query).then(function (cnaes) {
-                return cnaes;
+            return filterSrv.getStates(query).then(function (states) {
+                return states;
             });
         }
         return {items: []};
@@ -83,11 +85,11 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
 
     $scope.statesClicked = function (callback) {
         $scope.clickedValueModel = callback;
-        filterSrv.setSelectedCnaes = $scope.stateModel;
+        //filterSrv.setSelectedCnaes = $scope.stateModel;
     };
     $scope.statesRemoved = function (callback) {
         $scope.removedValueModel = callback;
-        filterSrv.setSelectedCnaes = $scope.stateModel;
+        //filterSrv.setSelectedCnaes = $scope.stateModel;
     };
 
 });

@@ -26,9 +26,9 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
         return deferred.promise;
     }
 
-    function filter(list, query) {
+    function filter(list, query, prop) {
         return list.items.filter(function (el) {
-            return el.view.indexOf(query) > -1
+            return el[prop].indexOf(query) > -1
         });
     }
 
@@ -38,7 +38,7 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
         if (!cnaes) {
             readCnaesJson().then(function (data) {
                 cnaes = data;
-                var filtered = filter(cnaes, query)
+                var filtered = filter(cnaes, query, 'view');
                 console.log("va a retornar", filtered.length, "de la búsqueda", query)
                 console.log(filtered);
                 deferred.resolve({
@@ -46,7 +46,7 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
                 });
             })
         } else {
-            var filtered = filter(cnaes, query)
+            var filtered = filter(cnaes, query , 'view');
             console.log("va a retornar", filtered.length, "de la búsqueda", query)
             console.log(filtered);
             deferred.resolve({
@@ -63,6 +63,7 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
         return qualitas().searchStates().$promise
             .then(function (response) {
                 console.log("1...-",response);
+                return response;
             })
             .catch(function (response) {
                 console.log(response);
@@ -76,9 +77,11 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
 
         if (!states) {
             queryStates().then(function (data) {
-                console.log("1...-",data)
-                //states = data;
-                var filtered = filter(cnaes, query)
+                console.log("2...-",data)
+                states = {
+                    items: data
+                };
+                var filtered = filter(states, query, "name");
                 console.log("va a retornar", filtered.length, "de la búsqueda", query)
                 console.log(filtered);
                 deferred.resolve({
@@ -86,7 +89,7 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
                 });
             })
         } else {
-            var filtered = filter(cnaes, query)
+            var filtered = filter(states, query, "name");
             console.log("va a retornar", filtered.length, "de la búsqueda", query)
             console.log(filtered);
             deferred.resolve({
