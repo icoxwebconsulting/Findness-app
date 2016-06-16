@@ -1,5 +1,5 @@
-app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
-//TODO: renombrar a search?
+app.controller('FiltersCtrl', function ($scope, $state, $filter, searchService) {
+
     $scope.data = {};
     $scope.data.pickupAfter = 3;
     $scope.model = "";
@@ -14,67 +14,34 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
     $scope.removedCityModel = "";
     $scope.clickedZipCodeModel = "";
     $scope.removedZipCodeModel = "";
-    $scope.choice;
     $scope.options = {
         useLocation: true
     };
 
 
     $scope.$on('$ionicView.leave', function (e) {
-        var filter = {
-            type: 2,
-            name: "Radio de 5km",
-            options: {
-                km: 5
-            }
-        };
-        if ($scope.choice == 'A') {
-            filter = {
-                type: 1,
-                name: "",
-                options: {}
-            };
-        } else if ($scope.choice == 'B') {
-            filter = {
-                type: 2,
-                name: "",
-                options: {}
-            };
-        } else if ($scope.choice == 'C') {
-            filter = {
-                type: 3,
-                name: "",
-                options: {}
-            };
-        } else if ($scope.choice == 'D') {
-            filter = {
-                type: 4,
-                name: "",
-                options: {}
-            };
-        }
-        filterSrv.setSelectedFilter(filter);
+        //searchService.setSelectedFilter(filter);
     });
 
     $scope.getItems = function (query, type) {
         if (query && (query.length > 2 || (query[0] == '0' && query.length == 2) )) {
-            query = filterSrv.omitirAcentos(query);
+            query = searchService.omitirAcentos(query);
             query = query.toLowerCase();
 
-            if (tpye == 'CNAE') {
-                return filterSrv.getCnaes(query).then(function (cnaes) {
+            if (type == 'CNAE') {
+                return searchService.getCnaes(query).then(function (cnaes) {
                     return cnaes;
                 });
             } else if (type == 'states') {
-                return filterSrv.getStates(query).then(function (states) {
+                return searchService.getStates(query).then(function (states) {
                     return states;
                 });
             } else if (type == 'cities') {
-                return filterSrv.getCities(query).then(function (cities) {
+                return searchService.getCities(query, $scope.clickedStateModel.selectedItems).then(function (cities) {
                     return cities;
                 });
             } else if (type == 'zipcodes') {
-                return filterSrv.getZipcodes(query).then(function (zipcodes) {
+                return searchService.getZipcodes(query).then(function (zipcodes) {
                     return zipcodes;
                 });
             }
@@ -84,33 +51,47 @@ app.controller('FiltersCtrl', function ($scope, $state, $filter, filterSrv) {
     };
 
     $scope.itemsClicked = function (callback, type) {
-        $scope.clickedValueModel = callback;
-        if (tpye == 'CNAE') {
-            filterSrv.setSelectedCnaes = $scope.model;
+        if (type == 'CNAE') {
+            //searchService.setSelectedCnaes = $scope.model;
+            $scope.clickedValueModel = callback;
         } else if (type == 'states') {
-            //filterSrv.setSelectedStates = $scope.stateModel;
+            //searchService.setSelectedStates = $scope.stateModel;
+            $scope.clickedStateModel = callback;
         } else if (type == 'cities') {
-            //filterSrv.setSelectedCnaes = $scope.stateModel;
+            //searchService.setSelectedCnaes = $scope.stateModel;
+            $scope.clickedCityModel = callback;
         } else if (type == 'zipcodes') {
-            //filterSrv.setSelectedCnaes = $scope.stateModel;
+            $scope.clickedZipCodeModel = callback;
+            //searchService.setSelectedCnaes = $scope.stateModel;
         }
     };
-    
+
     $scope.itemsRemoved = function (callback) {
-        $scope.removedValueModel = callback;
-        if (tpye == 'CNAE') {
-            filterSrv.setSelectedCnaes = $scope.model;
+        if (type == 'CNAE') {
+            $scope.removedValueModel = callback;
         } else if (type == 'states') {
-            //filterSrv.setSelectedStates = $scope.stateModel;
+            $scope.removedStateModel = callback;
         } else if (type == 'cities') {
-            //filterSrv.setSelectedCnaes = $scope.stateModel;
+            $scope.removedCityModel = callback;
         } else if (type == 'zipcodes') {
-            //filterSrv.setSelectedCnaes = $scope.stateModel;
+            $scope.removedZipCodeModel = callback;
         }
     };
 
     $scope.search = function () {
 
+
+        navigator.geolocation.getCurrentPosition(function (position) {
+            //position.coords.latitude
+            //position.coords.longitude
+            console.log(position);
+            // searchSrv.searchQualitas().then(function () {
+            //
+            // })
+
+        }, function () {
+
+        });
     }
 
 });

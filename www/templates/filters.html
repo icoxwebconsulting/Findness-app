@@ -57,7 +57,7 @@
                            max-selected-items="1"/>
                 </div>
 
-                <div class="item item-text-wrap">
+                <div class="item item-text-wrap" ng-show="stateModel != ''">
                     <!-- BUSQUEDA DE CIUDADES -->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
@@ -79,12 +79,11 @@
                     <!-- BUSQUEDA DE ZIPCODE-->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
-                           ng-model="zipcodeModel"
+                           ng-model="zipCodeModel"
                            item-value-key="id"
-                           item-view-value-key="id"
                            items-method-value-key="items"
                            items-method="getItems(query, 'zipcodes')"
-                           placeholder="Click para buscar ZIPCODES..."
+                           placeholder="Click para buscar Código postal..."
                            items-clicked-method="itemsClicked(callback, 'zipcodes')"
                            items-removed-method="itemsRemoved(callback, 'zipcodes')"
                            select-items-label="Seleccione los códigos postales correspondientes..."
@@ -94,8 +93,8 @@
                 </div>
             </div>
 
-            <ion-list>
-                <button class="button button-stable button-100" ng-click="search()">Buscar</button>
+            <ion-list class="padding">
+                <button class="button button-full button-positive" ng-click="search()">Buscar</button>
             </ion-list>
         </content>
     </ion-content>
