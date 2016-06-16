@@ -19,11 +19,13 @@ app.factory('qualitas', function ($resource, SERVER_CONF) {
             },
             searchCities: {
                 method: 'GET',
-                url: SERVER_CONF.API_HOST + 'qualitas/cities'
+                url: SERVER_CONF.API_HOST + 'qualitas/cities',
+                isArray: true
             },
             searchPostalCodes: {
                 method: 'GET',
-                url: SERVER_CONF.API_HOST + 'qualitas/postal-codes'
+                url: SERVER_CONF.API_HOST + 'qualitas/postal-codes',
+                isArray: true
             }
         });
     };

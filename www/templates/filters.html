@@ -14,10 +14,10 @@
                        item-value-key="id"
                        item-view-value-key="id"
                        items-method-value-key="items"
-                       items-method="getItems(query)"
+                       items-method="getItems(query, 'CNAE')"
                        placeholder="Click para buscar CNAE..."
-                       items-clicked-method="itemsClicked(callback)"
-                       items-removed-method="itemsRemoved(callback)"
+                       items-clicked-method="itemsClicked(callback, 'CNAE')"
+                       items-removed-method="itemsRemoved(callback, 'CNAE')"
                        select-items-label="Seleccione los CNAES correspondientes..."
                        selected-items-label="Seleccionados:"
                        template-url="templates/template-autocomplete.html"
@@ -47,14 +47,14 @@
                            item-value-key="id"
                            item-view-value-key="name"
                            items-method-value-key="items"
-                           items-method="getStates(query)"
+                           items-method="getItems(query, 'states')"
                            placeholder="Click para buscar Provincias..."
-                           items-clicked-method="statesClicked(callback)"
-                           items-removed-method="statesRemoved(callback)"
+                           items-clicked-method="itemsClicked(callback, 'states')"
+                           items-removed-method="itemsRemoved(callback, 'states')"
                            select-items-label="Seleccione las Provincias deseadas..."
                            selected-items-label="Seleccionados:"
                            template-url="templates/template-autocomplete-states.html"
-                           max-selected-items="10"/>
+                           max-selected-items="1"/>
                 </div>
 
                 <div class="item item-text-wrap">
@@ -65,14 +65,14 @@
                            item-value-key="id"
                            item-view-value-key="name"
                            items-method-value-key="items"
-                           items-method="getStates(query)"
+                           items-method="getItems(query, 'cities')"
                            placeholder="Click para buscar Ciudades..."
-                           items-clicked-method="statesClicked(callback)"
-                           items-removed-method="statesRemoved(callback)"
-                           select-items-label="Seleccione los CNAES correspondientes..."
+                           items-clicked-method="itemsClicked(callback, 'cities')"
+                           items-removed-method="itemsRemoved(callback, 'cities')"
+                           select-items-label="Seleccione las ciudades correspondientes..."
                            selected-items-label="Seleccionados:"
-                           template-url="templates/template-autocomplete.html"
-                           max-selected-items="10"/>
+                           template-url="templates/template-autocomplete-states.html"
+                           max-selected-items="5"/>
                 </div>
 
                 <div class="item item-text-wrap">
@@ -83,19 +83,19 @@
                            item-value-key="id"
                            item-view-value-key="id"
                            items-method-value-key="items"
-                           items-method="getStates(query)"
+                           items-method="getItems(query, 'zipcodes')"
                            placeholder="Click para buscar ZIPCODES..."
-                           items-clicked-method="statesClicked(callback)"
-                           items-removed-method="statesRemoved(callback)"
-                           select-items-label="Seleccione los CNAES correspondientes..."
+                           items-clicked-method="itemsClicked(callback, 'zipcodes')"
+                           items-removed-method="itemsRemoved(callback, 'zipcodes')"
+                           select-items-label="Seleccione los códigos postales correspondientes..."
                            selected-items-label="Seleccionados:"
-                           template-url="templates/template-autocomplete.html"
+                           template-url="templates/template-autocomplete-states.html"
                            max-selected-items="10"/>
                 </div>
             </div>
 
             <ion-list>
-                <button class="button button-stable button-100">Buscar</button>
+                <button class="button button-stable button-100" ng-click="search()">Buscar</button>
             </ion-list>
         </content>
     </ion-content>

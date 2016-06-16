@@ -2,6 +2,8 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
 
     var cnaes;
     var states;
+    var cities;
+    var zipcodes;
     //
     var selectedCnaes;
     var selectedFilter = {
@@ -46,7 +48,7 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
                 });
             })
         } else {
-            var filtered = filter(cnaes, query , 'view');
+            var filtered = filter(cnaes, query, 'view');
             console.log("va a retornar", filtered.length, "de la búsqueda", query)
             console.log(filtered);
             deferred.resolve({
@@ -58,18 +60,36 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
     }
 
     function queryStates() {
-        //var deferred = $q.defer();
-
         return qualitas().searchStates().$promise
             .then(function (response) {
-                console.log("1...-",response);
+                console.log("1...-", response);
                 return response;
             })
             .catch(function (response) {
                 console.log(response);
             });
+    }
 
-        //return deferred.promise;
+    function queryCities() {
+        return qualitas().searchCities().$promise
+            .then(function (response) {
+                console.log("1...-", response);
+                return response;
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+    }
+
+    function queryZipcodes() {
+        return qualitas().searchPostalCodes().$promise
+            .then(function (response) {
+                console.log("1...-", response);
+                return response;
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
     }
 
     function getStates(query) {
@@ -77,7 +97,7 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
 
         if (!states) {
             queryStates().then(function (data) {
-                console.log("2...-",data)
+                console.log("2...-", data)
                 states = {
                     items: data
                 };
@@ -90,6 +110,62 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
             })
         } else {
             var filtered = filter(states, query, "name");
+            console.log("va a retornar", filtered.length, "de la búsqueda", query)
+            console.log(filtered);
+            deferred.resolve({
+                items: filtered
+            });
+        }
+
+        return deferred.promise;
+    }
+
+    function getCities(query) {
+        var deferred = $q.defer();
+
+        if (!cities) {
+            queryCities().then(function (data) {
+                console.log("2...-", data)
+                cities = {
+                    items: data
+                };
+                var filtered = filter(cities, query, "name");
+                console.log("va a retornar", filtered.length, "de la búsqueda", query)
+                console.log(filtered);
+                deferred.resolve({
+                    items: filtered
+                });
+            })
+        } else {
+            var filtered = filter(cities, query, "name");
+            console.log("va a retornar", filtered.length, "de la búsqueda", query)
+            console.log(filtered);
+            deferred.resolve({
+                items: filtered
+            });
+        }
+
+        return deferred.promise;
+    }
+
+    function getZipcodes(query) {
+        var deferred = $q.defer();
+
+        if (!zipcodes) {
+            queryStates().then(function (data) {
+                console.log("2...-", data)
+                zipcodes = {
+                    items: data
+                };
+                var filtered = filter(zipcodes, query, "name");
+                console.log("va a retornar", filtered.length, "de la búsqueda", query)
+                console.log(filtered);
+                deferred.resolve({
+                    items: filtered
+                });
+            })
+        } else {
+            var filtered = filter(zipcodes, query, "name");
             console.log("va a retornar", filtered.length, "de la búsqueda", query)
             console.log(filtered);
             deferred.resolve({
@@ -131,6 +207,8 @@ app.factory('filterSrv', function ($q, $http, $rootScope, qualitas) {
     return {
         getCnaes: getCnaes,
         getStates: getStates,
+        getCities: getCities,
+        getZipcodes: getZipcodes,
         getSelectedCnaes: getSelectedCnaes,
         setSelectedCnaes: setSelectedCnaes,
         omitirAcentos: omitirAcentos,
