@@ -1,4 +1,4 @@
-app.factory('searchService', function ($q, $http, $rootScope, qualitas) {
+app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qualitas) {
 
     var cnaes;
     var states;
@@ -169,17 +169,24 @@ app.factory('searchService', function ($q, $http, $rootScope, qualitas) {
         return text;
     }
 
-    function searchQualitas() {
+    function storeQuery(query) {
+        window.localStorage.setItem('lastQuery', JSON.stringify(query));
+    }
+
+    function getLastQuery() {
+        return window.localStorage.getItem('lastQuery') || null;
+    }
+
+    function searchQualitas(query) {
         var token = userDatastore.getTokens();
 
-        var data = {
-            //cnaes: JSON.stringify([01])
-        };
+        storeQuery(query);
 
-        return qualitas(token.accessToken).search(data).$promise
+        return qualitas(token.accessToken).search(query).$promise
             .then(function (response) {
                 setResultSearch(response);
-                map.processMakers(response.items);
+                //map.processMakers(response.items);
+                return response;
             })
             .catch(function (response) {
                 console.log(response);
