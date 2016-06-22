@@ -109,7 +109,7 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
             cities: null,
             postalCodes: null,
             geoLocations: null,
-            nonViewedCompanies: false
+            nonViewedCompanies: 0
         };
         console.log($scope.selectedCNAE);
         if ($scope.selectedCNAE.length == 0) {
@@ -122,8 +122,11 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
         for (var i = 0; i < $scope.selectedCNAE.length; i++) {
             options.cnaes.push($scope.selectedCNAE[i].id);
         }
-
+        options.cnaes = JSON.stringify(options.cnaes);
         if ($scope.options.useLocation) {
+            delete options.states;
+            delete options.cities;
+            delete options.postalCodes;
             getPosition().then(function (position) {
                 options.geoLocations = {
                     latitude: position.coords.latitude,
@@ -141,6 +144,7 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
         } else {
             //recoger datos de ubicación
             if ($scope.selectedState.length == 0) {
+                delete options.states;
                 if ($scope.selectedZipCode.length == 0) {
                     $ionicPopup.alert({
                         title: "Si no usa su localización debe seleccionar una Provincia, ciudad o Código postal."
@@ -148,13 +152,18 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
                     return;
                 } else {
                     // (3)consulta con sólo el código postal
+                    delete options.states;
+                    delete options.cities;
                     options.postalCodes = [];
                     for (var i = 0; i < $scope.selectedZipCode.length; i++) {
                         options.postalCodes.push($scope.selectedZipCode[i].id);
                     }
+                    options.postalCodes = JSON.stringify(options.postalCodes);
                 }
             } else {
                 // (1)consulta con sólo la provincial
+                delete options.cities;
+                delete options.postalCodes;
                 options.states = [];
                 options.states.push($scope.selectedState[0].id);
                 if ($scope.selectedCity.length != 0) {
@@ -164,6 +173,7 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
                         state: $scope.selectedState[0].id,
                         cities: $scope.selectedCity[0].id
                     });
+                    options.cities = JSON.stringify(options.cities);
                 }
             }
             console.log(options);

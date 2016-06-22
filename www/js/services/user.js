@@ -72,14 +72,15 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
 
     function confirm(token) {
         var deferred = $q.defer();
-        var customerId = userDatastore.getCustomerId();
+        var username = userDatastore.getUsername();
         customer().confirm({
-            customer: customerId
+            username: username
         }, {
             token: token
         }).$promise.then(function (response) {
             if(response.confirmed){
                 userDatastore.setIsConfirm(1);
+                userDatastore.setCustomerId(response.id);
                 deferred.resolve();   
             }else{
                 deferred.reject();    

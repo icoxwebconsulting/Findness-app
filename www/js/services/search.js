@@ -21,11 +21,11 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
     }
 
     function filter(list, query, prop) {
-        if(prop != undefined){
+        if (prop != undefined) {
             return list.items.filter(function (el) {
                 return el[prop].indexOf(query) > -1
             });
-        }else{
+        } else {
             return list.items.filter(function (el) {
                 return el.indexOf(query) > -1
             });
