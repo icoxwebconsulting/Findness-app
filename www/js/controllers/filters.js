@@ -100,6 +100,34 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
         return deferred.promise;
     }
 
+    function processResults(results) {
+        /*
+         CASOS:
+         1- Si el total de resultados es 0 y el total de empresas por comprar es 0: Mostrar no hay resultados
+         2- Si el total de resultados es 0 y el total de empresas por comprar es diferente de 0: Ir al carrito
+         3- Si el total de resultados es diferente de 0 y el total de empresas por comprar es 0: Mostrar el mapa sin popup
+         4- Si el total de resultados es diferente de 0 y el total de empresas por comprar es diferente de 0: Mostrar el mapa con un popup al carrito
+         - Cuando se visualicen las búsquedas en el mapa  en la parte superior debe salir un selector para cambiar el modo entre mapa y listado
+         */
+        if (results.ElementosDevueltos == 0) {
+            if (results.TotalElementosNoConsultados == 0) {
+                //Caso 1
+                $ionicPopup.alert({
+                    title: "La búsqueda no obtuvo resultados."
+                });
+                return;
+            } else {
+                //Caso 2 ir al carrito
+            }
+        } else {
+            if (results.TotalElementosNoConsultados == 0) {
+                //caso 3 mostrar mapa sin popup
+            } else {
+                //caso 4 mostrar mapa con popup
+            }
+        }
+    }
+
     $scope.search = function () {
 
         var options = {
@@ -135,6 +163,7 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
                 };
                 searchService.searchQualitas(options).then(function (response) {
                     console.log("resultados con geoloc", response);
+                    processResults(response);
                 });
             }).catch(function () {
                 $ionicPopup.alert({
@@ -179,6 +208,7 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
             console.log(options);
             searchService.searchQualitas(options).then(function (response) {
                 console.log("resultados sin geoloc", response);
+                processResults(response);
             });
         }
     }
