@@ -135,6 +135,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                     //controller: 'FaqCtrl'
                 }
             }
+        })
+
+        .state('app.cart', {
+            url: '/cart',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/cart.html',
+                    controller: 'CartCtrl'
+                }
+            }
         });
 
     // if none of the above states are matched, use this as the fallback
