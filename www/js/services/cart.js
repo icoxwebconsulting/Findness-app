@@ -1,21 +1,34 @@
 app.service('cart', function () {
 
+    self.payable = 0;
+
+
     function getBalance() {
         return 100;
     }
 
     function getUnitPrice() {
-        return 1;
+        return 2;
     }
 
-    function getTotalCompany() {
+    function getTotalCompanies() {
         return 50;
+    }
+
+    function setPayable(amount){
+        self.payable = amount;
+    }
+
+    function getPayable(){
+        return self.payable;
     }
 
 
     return {
         getBalance: getBalance,
         getUnitPrice: getUnitPrice,
-        getTotalCompany:getTotalCompany
+        getTotalCompanies:getTotalCompanies,
+        setPayable:setPayable,
+        getPayable:getPayable
     };
 });

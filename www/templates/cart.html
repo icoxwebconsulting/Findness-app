@@ -1,47 +1,74 @@
-<ion-modal-view class="modal-settings">
+<ion-modal-view class="modal-cart">
     <ion-header-bar>
         <div class="buttons">
-            <button class="button button-clear ion-close" ng-click="closeSettings()"></button>
-        </div>
-        <div class="logo">
-            <img src="img/findness.png">
+            <button class="button button-clear ion-close" ng-click="closeCart()"></button>
         </div>
     </ion-header-bar>
     <ion-content>
-        <ion-list>
-            <ion-item class="item-divider"><span>Carrito de compras</span></ion-item>
-        </ion-list>
-        <div class="list input-list">
-            <ion-toggle ng-model="view.notificationActive" ng-change="changeNotification()">
-                <span ng-if="view.notificationActive">Activado</span>
-                <span ng-if="!view.notificationActive">Desactivado</span>
-            </ion-toggle>
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Total de empresas
+                </div>
+                <select ng-model="view.totalCompanies" ng-change="changeTotal()">
+                    <option ng-repeat="cnt in view.contCompanies"
+                            ng-selected="{{$first}}"
+                            value="{{cnt}}">
+                        {{cnt}}
+                    </option>
+                </select>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <div class="input-label" style="width: 50%">
+                    Precio por unidad
+                </div>
+                <div class="input-label" style="text-align: right">
+                    <span class="item-note">{{view.unitPrice}}$</span>
+                </div>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <div class="input-label" style="width: 50%">
+                    Mi saldo
+                </div>
+                <div class="input-label" style="text-align: right">
+                    <span class="item-note">{{view.balance}}$</span>
+                </div>
+            </label>
         </div>
         <ion-list class="input-list">
-            <ion-item class="item-divider item-title"><span>Contraseña</span></ion-item>
-            <label class="item item-input">
-                <span class="input-label">Actual contraseña</span>
-                <input type="password" placeholder="" ng-model="view.pass.current_password">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Nueva contraseña</span>
-                <input type="password" placeholder="" ng-model="view.pass.new_password">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Repetir contraseña</span>
-                <input type="password" placeholder="" ng-model="view.pass.confirm">
-            </label>
-            <small class="later" style="color: #ffffff; padding:5px">
-                <a>La contraseña debe tener al menos 8 caracteres</a>
-            </small>
-            <label class="item item-input">
-                <button class="button button-stable button-100" ng-disabled="!view.pass.current_password.length || !view.pass.new_password.length || !view.pass.confirm" ng-click="changePassword()">Actualizar</button>
-            </label>
-        </ion-list>
-        <ion-list>
-            <ion-item class="item-divider"><span>Cuenta</span></ion-item>
+            <ion-item class="item-divider item-title">
+                <span>Total sin comisi&oacute;n </span>
+                <span style="float: right; margin-right:25px">{{(view.totalCompanies*view.unitPrice)}}$</span>
+            </ion-item>
+            <ion-item class="item-divider item-title">
+                <span>Total a pagar</span>
+                <span style="float: right; margin-right:25px">{{view.total}}$</span>
+            </ion-item>
+            <ion-item class="item-divider item-title">
+                <span>Descuento de saldo</span>
+                <span style="float: right; margin-right:25px" ng-if="view.balance >= view.total">- {{view.total}}$</span>
+                <span style="float: right; margin-right:25px" ng-if="view.balance < view.total">- {{view.balance}}$</span>
+            </ion-item>
+            <ion-item class="item-divider item-title" ng-if="view.payable > 0" style="background-color:darkgrey">
+                <span>Por pagar</span>
+                <span style="float: right; margin-right:25px">{{view.payable}}$</span>
+            </ion-item>
+            <!--<a href="#" class="item item-icon-left" ng-if="view.payable > 0">-->
+                <!--<i class="icon ion-card"></i>-->
+                <!--Introduzca los datos de su tarjeta-->
+            <!--</a>-->
         </ion-list>
         <div class="list input-list">
-            <button class="button button-stable button-100" ng-click="logout()">Cerrar sesi&oacute;n</button>
+            <button class="button button-positive button-100" ng-click="checkout()" ng-if="view.payable > 0">
+                <i class="icon ion-card"></i>
+                Pagar diferencia
+            </button>
         </div>
+        <div class="list input-list">
+            <button class="button button-balanced button-100" ng-click="checkout()" ng-if="view.payable == 0">
+                <i class="icon ion-card"></i>
+                Realizar compra
+            </button>
+        </div>
+    </ion-content>
 </ion-modal-view>
