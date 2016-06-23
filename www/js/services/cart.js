@@ -5,7 +5,7 @@ app.service('cart', function () {
     self.unitPrice = 2;
 
     function getBalance() {
-        return window.localStorage.getItem('balance') || null;
+        return window.localStorage.getItem('balance') || 0;
     }
 
     function getUnitPrice() {

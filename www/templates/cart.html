@@ -44,7 +44,7 @@
                 <span>Total a pagar</span>
                 <span style="float: right; margin-right:25px">{{view.total}}$</span>
             </ion-item>
-            <ion-item class="item-divider item-title">
+            <ion-item class="item-divider item-title" ng-if="view.balance > 0">
                 <span>Descuento de saldo</span>
                 <span style="float: right; margin-right:25px" ng-if="view.balance >= view.total">- {{view.total}}$</span>
                 <span style="float: right; margin-right:25px" ng-if="view.balance < view.total">- {{view.balance}}$</span>
