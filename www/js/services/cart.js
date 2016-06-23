@@ -1,18 +1,27 @@
 app.service('cart', function () {
 
     self.payable = 0;
-
+    self.totalCompanies = 50;
+    self.unitPrice = 2;
 
     function getBalance() {
-        return 100;
+        return window.localStorage.getItem('balance') || null;
     }
 
     function getUnitPrice() {
-        return 2;
+        return self.unitPrice;
+    }
+
+    function setUnitPrice(price){
+        self.unitPrice =  price;
     }
 
     function getTotalCompanies() {
-        return 50;
+        return self.totalCompanies;
+    }
+
+    function setTotalCompanies(total){
+        self.totalCompanies = total;
     }
 
     function setPayable(amount){
@@ -27,7 +36,9 @@ app.service('cart', function () {
     return {
         getBalance: getBalance,
         getUnitPrice: getUnitPrice,
+        setUnitPrice:setUnitPrice,
         getTotalCompanies:getTotalCompanies,
+        setTotalCompanies:setTotalCompanies,
         setPayable:setPayable,
         getPayable:getPayable
     };
