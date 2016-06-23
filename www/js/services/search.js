@@ -201,6 +201,21 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         return resultSearch;
     }
 
+    function executeLastQuery(quantity) {
+        var options = JSON.parse(getLastQuery());
+        var token = userDatastore.getTokens();
+        options.nonViewedCompanies = quantity;
+
+        return qualitas(token.accessToken).search(query).$promise
+            .then(function (response) {
+                setResultSearch(response);
+                return response;
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+    }
+
     return {
         getCnaes: getCnaes,
         getStates: getStates,
@@ -208,6 +223,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         getZipcodes: getZipcodes,
         omitirAcentos: omitirAcentos,
         searchQualitas: searchQualitas,
-        getResultSearch: getResultSearch
+        getResultSearch: getResultSearch,
+        executeLastQuery: executeLastQuery
     };
 });

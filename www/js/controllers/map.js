@@ -16,6 +16,11 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }
     });
 
+    $rootScope.$on('processMakers', function (e, data) {
+        var result = searchService.getResultSearch();
+        map.processMakers(result.items);
+    });
+
     function showPopUp() {
         var myPopup = $ionicPopup.show({
             template: '<div>Usted tiene resultados por comprar</div>',
@@ -28,6 +33,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     type: 'button-positive',
                     onTap: function (e) {
                         //ir al carrito
+                        $state.go("app.cart");
                         return true;
                     }
                 },

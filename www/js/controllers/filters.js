@@ -1,4 +1,4 @@
-app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup) {
+app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, cart) {
 
     $scope.data = {};
     $scope.data.pickupAfter = 3;
@@ -28,7 +28,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     });
 
     $scope.getItems = function (query, type) {
-        if (query && (query.length > 2 || (query[0] == '0' && query.length == 2) )) {
+        if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
             query = searchService.omitirAcentos(query);
             query = query.toLowerCase();
 
@@ -118,6 +118,8 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 return;
             } else {
                 //Caso 2 ir al carrito
+                cart.setTotalCompanies(results.TotalElementosNoConsultados);
+                $state.go("app.cart");
             }
         } else {
             //caso 3 mostrar mapa sin popup

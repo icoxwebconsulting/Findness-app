@@ -1,4 +1,4 @@
-app.controller('CheckoutCtrl', function ($scope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, transactionStorage) {
+app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, transactionStorage, searchService) {
 
     $scope.init = function(){
         $scope.cardType = {};
@@ -78,7 +78,12 @@ app.controller('CheckoutCtrl', function ($scope, $state, paymentSrv, cart, $ioni
 
     function registerPayment(data) {
         return paymentSrv.registerSuccessPayment(data).then(function (response) {
-            console.log("respuesta servicio de registro", response)
+            console.log("respuesta servicio de registro", response);
+            //llamar al servicio de búsqueda con el último query
+            searchService.executeLastQuery(cart.getTotalCompanies()).then(function () {
+                $rootScope.$emit('processMakers');
+                $state.go("app.map");
+            });
         });
     }
 
