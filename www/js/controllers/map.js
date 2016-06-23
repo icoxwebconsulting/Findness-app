@@ -1,8 +1,46 @@
-app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicModal, map,  searchService) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicModal, $ionicPopup, map, searchService) {
+
+    $scope.showPopUp = false;
 
     $scope.$on('$ionicView.enter', function (e) {
-        
+        if ($scope.showPopUp) {
+            $scope.showPopUp = false;
+            showPopUp();
+        }
     });
+
+    $rootScope.$on('showResults', function (e, data) {
+        $scope.data = data;
+        if (data.showPopUp) {
+            $scope.showPopUp = true;
+        }
+    });
+
+    function showPopUp() {
+        var myPopup = $ionicPopup.show({
+            template: '<div>Usted tiene resultados por comprar</div>',
+            title: 'Findness',
+            subTitle: 'Resultados',
+            scope: $scope,
+            buttons: [
+                {
+                    text: 'Comprar',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        //ir al carrito
+                        return true;
+                    }
+                },
+                {
+                    text: 'Ver anteriores',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        return true;
+                    }
+                }
+            ]
+        });
+    }
 
     $ionicPlatform.ready(function () {
         var div = document.getElementById("map_canvas");

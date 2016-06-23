@@ -1,4 +1,4 @@
-app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchService, $ionicPopup) {
+app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup) {
 
     $scope.data = {};
     $scope.data.pickupAfter = 3;
@@ -120,11 +120,16 @@ app.controller('FiltersCtrl', function ($scope, $q, $state, $filter, searchServi
                 //Caso 2 ir al carrito
             }
         } else {
-            if (results.TotalElementosNoConsultados == 0) {
-                //caso 3 mostrar mapa sin popup
-            } else {
+            //caso 3 mostrar mapa sin popup
+            var popup = false;
+            if (results.TotalElementosNoConsultados != 0) {
                 //caso 4 mostrar mapa con popup
+                popup = true;
             }
+            $rootScope.$emit('showResults', {
+                showPopUp: popup
+            });
+            $state.go("app.map");
         }
     }
 
