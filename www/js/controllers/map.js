@@ -23,7 +23,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     function showPopUp() {
         var myPopup = $ionicPopup.show({
-            template: '<div>Usted tiene resultados por comprar</div>',
+            template: '<div>Existen {{data.toBuy}} resultados que puede adquirir.</div>',
             title: 'Findness',
             subTitle: 'Resultados',
             scope: $scope,

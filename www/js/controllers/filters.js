@@ -129,7 +129,8 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 popup = true;
             }
             $rootScope.$emit('showResults', {
-                showPopUp: popup
+                showPopUp: popup,
+                toBuy: results.TotalElementosNoConsultados
             });
             $state.go("app.map");
         }
