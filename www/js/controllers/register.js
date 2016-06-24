@@ -2,7 +2,6 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
 
     $scope.data = {};
     $scope.error = false;
-    $scope.confirm = {};
     var errorMsg = "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde.";
 
     $scope.register = function () {
@@ -76,25 +75,6 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             });
         }
     };
-
-    $scope.confirmation = function () {
-        if (!$scope.confirm.token) {
-            $ionicPopup.alert({
-                title: "Debe ingresar el número de confirmación."
-            });
-        } else {
-            user.confirm(
-                $scope.confirm.token
-            ).then(function (result) {
-                console.log(result);
-                //$state.go('app.map');
-            }, function (error) {
-                $ionicPopup.alert({
-                    title: "Código erróneo, verifique e intente nuevamente."
-                });
-            });
-        }
-    }
 
     $scope.goToPage = function (page) {
         console.log(page);

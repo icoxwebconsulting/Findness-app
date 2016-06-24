@@ -11,7 +11,9 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             .then(function (response) {
                 if (response.id) {
                     userDatastore.setIsConfirm(0);
-                    login(response);
+                    userDatastore.setUsername(registrationData.username);
+                    userDatastore.setPassword(registrationData.password);
+                    return response;
                 } else {
                     return false;
                 }
@@ -78,12 +80,12 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         }, {
             token: token
         }).$promise.then(function (response) {
-            if(response.confirmed){
+            if (response.confirmed) {
                 userDatastore.setIsConfirm(1);
                 userDatastore.setCustomerId(response.id);
-                deferred.resolve();   
-            }else{
-                deferred.reject();    
+                deferred.resolve();
+            } else {
+                deferred.reject();
             }
         }, function (response) {
             deferred.reject();
@@ -143,10 +145,32 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             });
     }
 
+    function resendConfirm() {
+        var deferred = $q.defer();
+        var username = userDatastore.getUsername();
+        customer().resendConfirm({
+            customer: username
+        }).$promise.then(function (response) {
+            console.log(response);
+            // if(response.confirmed){
+            //     userDatastore.setIsConfirm(1);
+            //     userDatastore.setCustomerId(response.id);
+            deferred.resolve();
+            // }else{
+            //     deferred.reject();
+            // }
+        }, function (response) {
+            deferred.reject();
+        });
+
+        return deferred.promise;
+    }
+
     return {
         refreshAccessToken: refreshAccessToken,
         register: register,
         confirm: confirm,
+        resendConfirm: resendConfirm,
         login: login,
         logout: logout
     };

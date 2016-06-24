@@ -29,6 +29,10 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
                 method: 'POST',
                 url: SERVER_CONF.API_HOST + 'customers/:customer/confirm',
                 params: {customer: '@customer'}
+            },
+            resendConfirm: {
+                method: 'POST',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/resend-confirmation-email'
             }
         });
     }

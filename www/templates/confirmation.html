@@ -6,6 +6,12 @@
 
     <ion-content has-bouncing="false">
 
+        <div class="card">
+            <div class="item item-text-wrap">
+                Se va a confirmar la cuenta: {{username}}
+            </div>
+        </div>
+
         <div class="list">
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Número de confirmación</span>
@@ -18,6 +24,12 @@
                 <button ng-click="confirmation()" ng-disabled="!confirmation"
                         class="button button-full button-positive">Confirmar
                 </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item item-text-wrap">
+                <a ng-click="resend()">Reenviar código de confirmación</a>
             </div>
         </div>
     </ion-content>

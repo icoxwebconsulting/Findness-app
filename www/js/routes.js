@@ -16,7 +16,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('confirm', {
             url: '/confirm',
             templateUrl: 'templates/confirmation.html',
-            controller: 'RegisterCtrl'
+            controller: 'ConfirmCtrl'
         })
 
         .state('login', {
@@ -158,12 +158,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage.getItem('isLogged') == 1) {
-        if (window.localStorage.getItem('isConfirm') == 1) {
-            $urlRouterProvider.otherwise('/app/map');
-        } else {
-            $urlRouterProvider.otherwise('/confirm');
-        }
+        $urlRouterProvider.otherwise('/app/map');
     } else {
-        $urlRouterProvider.otherwise('/slides');
+        if (window.localStorage.getItem('isConfirm') == 0) {
+            $urlRouterProvider.otherwise('/confirm');
+        }else{
+            $urlRouterProvider.otherwise('/slides');
+        }
     }
 });
