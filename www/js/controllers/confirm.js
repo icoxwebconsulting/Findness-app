@@ -1,4 +1,4 @@
-app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, userDatastore) {
+app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, userDatastore, $ionicHistory) {
 
     $scope.username;
     $scope.confirm = {};
