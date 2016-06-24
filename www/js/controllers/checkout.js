@@ -8,8 +8,6 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
         $scope.firstName;
         $scope.lastName;
         $scope.buttonDisabled = false;
-
-        console.info('cart.getPayable() ', cart.getPayable());
     };
 
     $scope.init();
