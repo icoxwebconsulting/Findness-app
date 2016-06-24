@@ -20,15 +20,15 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             });
     }
 
-    function requestSalt(username, password) {
+    function requestSalt(loginData) {
         var deferred = $q.defer();
         var bcrypt = dcodeIO.bcrypt;
 
         customer().requestSalt({
-            customer: username
+            customer: loginData.username
         }).$promise.then(function (response) {
             var salt = '$2a$10$' + response.salt;
-            password = bcrypt.hashSync(password, salt);
+            var password = bcrypt.hashSync(loginData.password, salt);
             deferred.resolve(password);
         }, function (response) {
             //error salt

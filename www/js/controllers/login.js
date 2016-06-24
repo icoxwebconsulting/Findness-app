@@ -50,6 +50,12 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
                         template: msg
                     });
                 });
+            }).catch(function () {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Error',
+                    template: "Ha ocurrido un error al consultar por el usuario: " + $scope.data.email
+                });
             });
         }
     };
