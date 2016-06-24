@@ -20,46 +20,16 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             });
     }
 
-    function login(loginData) {
-        var bcrypt = dcodeIO.bcrypt;
-        //obtengo el salt
+    function requestSalt(username, password) {
         var deferred = $q.defer();
+        var bcrypt = dcodeIO.bcrypt;
 
         customer().requestSalt({
-            customer: loginData.username
+            customer: username
         }).$promise.then(function (response) {
             var salt = '$2a$10$' + response.salt;
-            loginData.password = bcrypt.hashSync(loginData.password, salt);
-
-            var authData = {
-                client_id: OAUTH_CONF.CLIENT_ID,
-                client_secret: OAUTH_CONF.CLIENT_SECRET,
-                grant_type: 'password',
-                redirect_uri: 'www.findness.com'
-            };
-
-            return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
-                .then(function (response) {
-                    //TODO: el servicio de login debería devolver algún aviso si el usuario no se ha confirmado (y se ha logueado correctamente
-                    userDatastore.setIsConfirm(1);
-                    userDatastore.setIsLogged(1);
-                    userDatastore.setCustomerId(response.id);
-                    userDatastore.setPassword(loginData.password);
-                    userDatastore.setUsername(loginData.username);
-                    userDatastore.setSalt(salt);
-                    userDatastore.setTokens(response.access_token, response.refresh_token);
-                    // refresh access_token every minute
-                    setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
-                    deferred.resolve(response);
-                })
-                .catch(function (response) {
-                    console.log(response);
-                    deferred.reject({
-                        type: 1,
-                        data: response.data
-                    });
-                });
-
+            password = bcrypt.hashSync(password, salt);
+            deferred.resolve(password);
         }, function (response) {
             //error salt
             console.log("error salt", response);
@@ -72,11 +42,43 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         return deferred.promise;
     }
 
+    function login(loginData) {
+
+        var authData = {
+            client_id: OAUTH_CONF.CLIENT_ID,
+            client_secret: OAUTH_CONF.CLIENT_SECRET,
+            grant_type: 'password',
+            redirect_uri: 'www.findness.com'
+        };
+
+        return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
+            .then(function (response) {
+                //TODO: el servicio de login debería devolver algún aviso si el usuario no se ha confirmado (y se ha logueado correctamente
+                userDatastore.setIsConfirm(1);
+                userDatastore.setIsLogged(1);
+                userDatastore.setCustomerId(response.id);
+                userDatastore.setPassword(loginData.password);
+                userDatastore.setUsername(loginData.username);
+                userDatastore.setTokens(response.access_token, response.refresh_token);
+                // refresh access_token every minute
+                setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
+                //deferred.resolve(response);
+                return response;
+            })
+            .catch(function (response) {
+                console.log(response);
+                return {
+                    type: 1,
+                    data: response.data
+                };
+            });
+    }
+
     function confirm(token) {
         var deferred = $q.defer();
         var username = userDatastore.getUsername();
         customer().confirm({
-            username: username
+            customer: username
         }, {
             token: token
         }).$promise.then(function (response) {
@@ -152,13 +154,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             customer: username
         }).$promise.then(function (response) {
             console.log(response);
-            // if(response.confirmed){
-            //     userDatastore.setIsConfirm(1);
-            //     userDatastore.setCustomerId(response.id);
             deferred.resolve();
-            // }else{
-            //     deferred.reject();
-            // }
         }, function (response) {
             deferred.reject();
         });
@@ -171,6 +167,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         register: register,
         confirm: confirm,
         resendConfirm: resendConfirm,
+        requestSalt: requestSalt,
         login: login,
         logout: logout
     };

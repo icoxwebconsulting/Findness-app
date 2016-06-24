@@ -21,7 +21,7 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
                     username: $scope.username,
                     password: userDatastore.getPassword()
                 }).then(function () {
-                   $state.go('app.map'); 
+                   $state.go('app.filter');
                 });
             }, function (error) {
                 $ionicPopup.alert({
