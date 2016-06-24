@@ -48,10 +48,7 @@
                 <span>Por pagar</span>
                 <span style="float: right; margin-right:25px">{{view.payable}}€</span>
             </ion-item>
-            <!--<a href="#" class="item item-icon-left" ng-if="view.payable > 0">-->
-                <!--<i class="icon ion-card"></i>-->
-                <!--Introduzca los datos de su tarjeta-->
-            <!--</a>-->
+
         </ion-list>
         <div class="list input-list">
             <button class="button button-positive button-100" ng-click="checkout()" ng-if="view.payable > 0">
@@ -60,7 +57,7 @@
             </button>
         </div>
         <div class="list input-list">
-            <button class="button button-balanced button-100" ng-click="checkout()" ng-if="view.payable == 0">
+            <button class="button button-balanced button-100" ng-click="confirmCheckout()" ng-if="view.payable == 0">
                 <i class="icon ion-card"></i>
                 Realizar compra
             </button>

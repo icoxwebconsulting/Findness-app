@@ -62,12 +62,15 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         } else if (type == 'states') {
             //searchService.setSelectedStates = $scope.stateModel;
             $scope.clickedStateModel = callback;
+            $scope.selectedState = $scope.clickedStateModel.selectedItems;
         } else if (type == 'cities') {
             //searchService.setSelectedCnaes = $scope.stateModel;
             $scope.clickedCityModel = callback;
+            $scope.selectedCity = $scope.clickedCityModel.selectedItems;
         } else if (type == 'zipcodes') {
             $scope.clickedZipCodeModel = callback;
             //searchService.setSelectedCnaes = $scope.stateModel;
+            $scope.selectedZipCode = $scope.clickedZipCodeModel.selectedItems;
         }
     };
 
@@ -167,7 +170,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 options.geoLocations = {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                    radio: $scope.data.pickupAfter
+                    radio: ($scope.data.pickupAfter * 1000)
                 };
                 searchService.searchQualitas(options).then(function (response) {
                     console.log("resultados con geoloc", response);
@@ -199,18 +202,19 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 }
             } else {
                 // (1)consulta con sólo la provincial
-                delete options.cities;
                 delete options.postalCodes;
                 options.states = [];
-                options.states.push($scope.selectedState[0].id);
+                options.states.push($scope.selectedState.id);
                 if ($scope.selectedCity.length != 0) {
                     // (2)consulta con la provincial y la ciudad
                     options.cities = [];
                     options.cities.push({
-                        state: $scope.selectedState[0].id,
-                        cities: $scope.selectedCity[0].id
+                        state: $scope.selectedState.id,
+                        cities: $scope.selectedCity.id
                     });
                     options.cities = JSON.stringify(options.cities);
+                } else {
+                    delete options.cities;
                 }
             }
             console.log(options);

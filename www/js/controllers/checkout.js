@@ -1,4 +1,4 @@
-app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, transactionStorage, searchService) {
+app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, searchService) {
 
     $scope.init = function(){
         $scope.cardType = {};
@@ -49,13 +49,6 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
 
             return paymentSrv.processStripePayment(data).then(function (response) {
                 showConfirmation();
-                transactionStorage.saveTransaction({
-                    id_registered: response.id,
-                    operator: 3,
-                    reference: response.source.id,
-                    status: (response.status == "succeeded") ? 1 : 2,
-                    amount: response.amount / 100
-                });
                 return registerPayment({
                     balance: parseFloat(_cardInformation.amount),
                     operator: 3,
@@ -78,8 +71,11 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
         return paymentSrv.registerSuccessPayment(data).then(function (response) {
             console.log("respuesta servicio de registro", response);
             //llamar al servicio de búsqueda con el último query
-            searchService.executeLastQuery(cart.getTotalCompanies()).then(function () {
-                $rootScope.$emit('processMakers');
+            searchService.executeLastQuery(cart.getTotalCompanies()).then(function (lastQuery) {
+                paymentSrv.requestBalance();
+                $rootScope.$emit('processMarkers', {
+                    lastQuery: lastQuery
+                });
                 $state.go("app.map");
             });
         });
@@ -148,13 +144,6 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
                     $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
-                    transactionStorage.saveTransaction({
-                        id_registered: response.id,
-                        operator: 2,
-                        reference: response.payer.payer_info.payer_id,
-                        status: (response.state == "approved") ? 1 : 2,
-                        amount: response.transactions.amount.total
-                    });
                     return registerPayment({
                         balance: parseFloat(_cardInformation.amount),
                         operator: 2,

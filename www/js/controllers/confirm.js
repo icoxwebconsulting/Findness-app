@@ -21,7 +21,13 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
                     username: $scope.username,
                     password: userDatastore.getPassword()
                 }).then(function () {
-                   $state.go('app.filter');
+                    $ionicHistory.nextViewOptions({
+                        disableAnimate: false,
+                        disableBack: true,
+                        historyRoot: true
+                    });
+                    window.localStorage.setItem('firstTime',1);
+                   $state.go('app.map');
                 });
             }, function (error) {
                 $ionicPopup.alert({

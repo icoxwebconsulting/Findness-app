@@ -37,8 +37,25 @@ app.service('map', function () {
         }
     }
 
+    function moveCamera(lat, long, zoom) {
+        map.moveCamera({
+            'target': new plugin.google.maps.LatLng(lat, long),
+            'zoom': zoom,
+            'tilt': 0
+        }, function () {
+            //
+            console.log("CAMARA SE HA DESPLAZADO");
+        });
+    }
+
+    function setClickable(bool) {
+        map.setClickable(bool);
+    }
+
     return {
         init: init,
-        processMakers: processMakers
+        processMakers: processMakers,
+        moveCamera: moveCamera,
+        setClickable: setClickable
     };
 });

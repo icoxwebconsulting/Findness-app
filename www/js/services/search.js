@@ -41,7 +41,6 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
                 cnaes = data;
                 var filtered = filter(cnaes, query, 'view');
                 console.log("va a retornar", filtered.length, "de la búsqueda", query)
-                console.log(filtered);
                 deferred.resolve({
                     items: filtered
                 });
@@ -49,7 +48,6 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         } else {
             var filtered = filter(cnaes, query, 'view');
             console.log("va a retornar", filtered.length, "de la búsqueda", query)
-            console.log(filtered);
             deferred.resolve({
                 items: filtered
             });
@@ -143,7 +141,6 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
                 };
                 var filtered = filter(zipcodes, query);
                 console.log("va a retornar", filtered.length, "de la búsqueda", query)
-                console.log(filtered);
                 deferred.resolve({
                     items: filtered
                 });
@@ -151,7 +148,6 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         } else {
             var filtered = filter(zipcodes, query);
             console.log("va a retornar", filtered.length, "de la búsqueda", query)
-            console.log(filtered);
             deferred.resolve({
                 items: filtered
             });
@@ -189,7 +185,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
                 return response;
             })
             .catch(function (response) {
-                console.log(response);
+                console.log(null);
             });
     }
 
@@ -206,10 +202,11 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         var token = userDatastore.getTokens();
         options.nonViewedCompanies = quantity;
 
-        return qualitas(token.accessToken).search(query).$promise
+        return qualitas(token.accessToken).search(options).$promise
             .then(function (response) {
                 setResultSearch(response);
-                return response;
+                //retorna el query no los resultados
+                return options;
             })
             .catch(function (response) {
                 console.log(response);
@@ -224,6 +221,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         omitirAcentos: omitirAcentos,
         searchQualitas: searchQualitas,
         getResultSearch: getResultSearch,
+        getLastQuery: getLastQuery,
         executeLastQuery: executeLastQuery
     };
 });

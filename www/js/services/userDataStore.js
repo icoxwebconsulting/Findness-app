@@ -77,13 +77,7 @@ app.factory('userDatastore', function () {
     }
 
     function deleteUserData() {
-        window.localStorage.removeItem('isLogged');
-        window.localStorage.removeItem('customerId');
-        window.localStorage.removeItem('password');
-        window.localStorage.removeItem('username');
-        window.localStorage.removeItem('accessToken');
-        window.localStorage.removeItem('refreshToken');
-        window.localStorage.removeItem('device_id');
+        window.localStorage.clear();
     }
 
     function setSalt(salt, username) {
@@ -92,6 +86,14 @@ app.factory('userDatastore', function () {
 
     function getSalt() {
         return window.localStorage.getItem('salt') || false;
+    }
+    
+    function setBalance(balance) {
+        window.localStorage.setItem('balance', balance);
+    }
+    
+    function getBalance() {
+        return window.localStorage.getItem('balance') || 0;
     }
 
     return {
@@ -114,6 +116,8 @@ app.factory('userDatastore', function () {
         getProfile: getProfile,
         deleteUserData: deleteUserData,
         setSalt: setSalt,
-        getSalt: getSalt
+        getSalt: getSalt,
+        setBalance: setBalance,
+        getBalance: getBalance
     };
 });

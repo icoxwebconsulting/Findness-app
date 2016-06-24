@@ -1,4 +1,4 @@
-app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, OAUTH_CONF) {
+app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, paymentSrv, OAUTH_CONF) {
 
     function register(registrationData) {
         var bcrypt = dcodeIO.bcrypt;
@@ -43,7 +43,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function login(loginData) {
-
+        var deferred = $q.defer();
         var authData = {
             client_id: OAUTH_CONF.CLIENT_ID,
             client_secret: OAUTH_CONF.CLIENT_SECRET,
@@ -51,7 +51,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             redirect_uri: 'www.findness.com'
         };
 
-        return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
+        customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
             .then(function (response) {
                 //TODO: el servicio de login debería devolver algún aviso si el usuario no se ha confirmado (y se ha logueado correctamente
                 userDatastore.setIsConfirm(1);
@@ -60,18 +60,20 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                 userDatastore.setPassword(loginData.password);
                 userDatastore.setUsername(loginData.username);
                 userDatastore.setTokens(response.access_token, response.refresh_token);
-                // refresh access_token every minute
-                setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
-                //deferred.resolve(response);
-                return response;
+                //
+                paymentSrv.requestBalance();
+                refreshAccessToken();
+                deferred.resolve(response);
             })
             .catch(function (response) {
                 console.log(response);
-                return {
+                deferred.reject({
                     type: 1,
                     data: response.data
-                };
+                });
             });
+        
+        return deferred.promise;
     }
 
     function confirm(token) {
@@ -104,7 +106,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         var deferred = $q.defer();
 
         // refresh access_token every minute
-        setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
+        refreshToken = setInterval(refreshAccessToken, OAUTH_CONF.REFRESH_INTERVAL);
 
         if (userDatastore.isRefreshingAccessToken() == 0 && userDatastore.getIsLogged()) {
             userDatastore.setRefreshingAccessToken(1);

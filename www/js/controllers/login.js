@@ -32,9 +32,9 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
                     $ionicLoading.hide();
                     $scope.data.email = '';
                     $scope.data.password = '';
-                    //si está confirmado al mapa sino al confirm
+                    //TODO: si está confirmado al mapa sino al confirm
                     $state.go('app.map');
-                }, function (error) {
+                }).catch(function (error) {
                     $ionicLoading.hide();
                     var msg = "El servidor no responde, intente más tarde.";
                     if (error.type == 1 && error.data != null) {

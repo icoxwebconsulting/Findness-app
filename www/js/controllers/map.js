@@ -3,6 +3,11 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     $scope.showPopUp = false;
 
     $scope.$on('$ionicView.enter', function (e) {
+        if(window.localStorage.getItem('firstTime')){
+            window.localStorage.removeItem('firstTime');
+            $state.go('app.filter');
+            return;
+        }
         if ($scope.showPopUp) {
             $scope.showPopUp = false;
             showPopUp();
@@ -16,12 +21,25 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }
     });
 
-    $rootScope.$on('processMakers', function (e, data) {
-        var result = searchService.getResultSearch();
-        map.processMakers(result.items);
+    $rootScope.$on('processMarkers', function (e, query) {
+        proccessMarkers(query);
     });
 
+    function proccessMarkers(query) {
+        var result = searchService.getResultSearch();
+        map.processMakers(result.items);
+        if(query){
+            map.moveCamera(query.geoLocations.latitude, query.geoLocations.longitude, 15);
+        }
+    }
+
     function showPopUp() {
+        var query = searchService.getLastQuery();
+        if(query){
+            query = JSON.parse(query);
+        }
+        proccessMarkers(query);
+        map.setClickable(false);
         var myPopup = $ionicPopup.show({
             template: '<div>Existen {{data.toBuy}} resultados que puede adquirir.</div>',
             title: 'Findness',
@@ -33,7 +51,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     type: 'button-positive',
                     onTap: function (e) {
                         //ir al carrito
+                        map.setClickable(true);
                         $state.go("app.cart");
+                        console.log("HIZO CLIC 1")
                         return true;
                     }
                 },
@@ -41,6 +61,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     text: 'Ver anteriores',
                     type: 'button-positive',
                     onTap: function (e) {
+                        console.log("HIZO CLIC 2")
+                        map.setClickable(true);
+                        myPopup.close();
                         return true;
                     }
                 }
