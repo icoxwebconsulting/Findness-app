@@ -1,17 +1,19 @@
 <ion-view class="cart">
     <ion-content>
         <div class="list">
-            <label class="item item-input item-select">
+            <label class="item item-input">
                 <div class="input-label">
                     Total de empresas
                 </div>
-                <select ng-model="view.totalCompanies" ng-change="changeTotal()">
-                    <option ng-repeat="cnt in view.contCompanies"
-                            ng-selected="{{$first}}"
-                            value="{{cnt}}">
-                        {{cnt}}
-                    </option>
-                </select>
+                <!--<select ng-model="view.totalCompanies" ng-change="changeTotal()">-->
+                    <!--<option ng-repeat="cnt in view.contCompanies"-->
+                            <!--ng-selected="{{$first}}"-->
+                            <!--value="{{cnt}}">-->
+                        <!--{{cnt}}-->
+                    <!--</option>-->
+                <!--</select>-->
+                <input type="number" style="float: right; margin-right:35px;text-align:right"
+                        min="0" ng-model="view.totalCompanies"  ng-change="changeTotal()">
             </label>
             <label class="item item-input item-stacked-label">
                 <div class="input-label" style="width: 50%">
@@ -51,13 +53,13 @@
 
         </ion-list>
         <div class="list input-list">
-            <button class="button button-positive button-100" ng-click="checkout()" ng-if="view.payable > 0">
+            <button class="button button-positive button-100" ng-click="checkout()" ng-if="view.payable > 0 && view.total > 0 ">
                 <i class="icon ion-card"></i>
                 Pagar diferencia
             </button>
         </div>
         <div class="list input-list">
-            <button class="button button-balanced button-100" ng-click="confirmCheckout()" ng-if="view.payable == 0">
+            <button class="button button-balanced button-100" ng-click="confirmCheckout()" ng-if="view.payable == 0 && view.total > 0">
                 <i class="icon ion-card"></i>
                 Realizar compra
             </button>

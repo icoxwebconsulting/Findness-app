@@ -1,10 +1,26 @@
-app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService) {
+app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup) {
 
     $scope.closeCart = function () {
     };
 
     $scope.changeTotal = function () {
-        $scope.view.total = ($scope.view.totalCompanies * $scope.view.unitPrice) + 5;
+
+        if($scope.view.totalCompanies > 0)
+        {
+
+            if($scope.view.totalCompanies > $scope.maxCompanies )
+            {
+                $scope.view.totalCompanies = $scope.maxCompanies;
+                $ionicPopup.alert({
+                    title: 'Limite de empresas',
+                    template: 'La cantidad de empresas a comprar supera al maximo encontradas'
+                });
+            }
+            $scope.view.total = ($scope.view.totalCompanies * $scope.view.unitPrice) + 5;
+
+        }
+        else
+            $scope.view.total = 0;
 
         if ($scope.view.balance >= $scope.view.total) {
             $scope.view.payable = 0;
@@ -16,6 +32,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     $scope.init = function () {
         $scope.view = {};
         $scope.view.contCompanies = [];
+        $scope.maxCompanies = cart.getTotalCompanies();
 
         var min = 1;
         for (var totalCompany = cart.getTotalCompanies(); min <= totalCompany; totalCompany--) {
