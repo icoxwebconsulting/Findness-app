@@ -52,10 +52,15 @@ app.service('map', function () {
         map.setClickable(bool);
     }
 
+    function clear() {
+        map.clear();
+    }
+
     return {
         init: init,
         processMakers: processMakers,
         moveCamera: moveCamera,
-        setClickable: setClickable
+        setClickable: setClickable,
+        clear: clear
     };
 });

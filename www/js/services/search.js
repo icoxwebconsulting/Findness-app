@@ -40,14 +40,12 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
             readCnaesJson().then(function (data) {
                 cnaes = data;
                 var filtered = filter(cnaes, query, 'view');
-                console.log("va a retornar", filtered.length, "de la búsqueda", query)
                 deferred.resolve({
                     items: filtered
                 });
             })
         } else {
             var filtered = filter(cnaes, query, 'view');
-            console.log("va a retornar", filtered.length, "de la búsqueda", query)
             deferred.resolve({
                 items: filtered
             });
@@ -59,7 +57,6 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
     function queryStates() {
         return qualitas().searchStates().$promise
             .then(function (response) {
-                console.log("1...-", response);
                 return response;
             })
             .catch(function (response) {
@@ -89,10 +86,9 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
 
     function getStates(query) {
         var deferred = $q.defer();
-
+        query = query.toUpperCase();
         if (!states) {
             queryStates().then(function (data) {
-                console.log("2...-", data)
                 states = {
                     items: data
                 };
@@ -112,11 +108,11 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
     }
 
     function getCities(query, selectState) {
-        console.log(selectState);
         var deferred = $q.defer();
         var data = {
             state: selectState.id
         };
+        query = query.toUpperCase();
         queryCities(data).then(function (data) {
             cities = {
                 items: data
@@ -135,19 +131,16 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
 
         if (!zipcodes) {
             queryZipcodes().then(function (data) {
-                console.log("2...-", data)
                 zipcodes = {
                     items: data
                 };
                 var filtered = filter(zipcodes, query);
-                console.log("va a retornar", filtered.length, "de la búsqueda", query)
                 deferred.resolve({
                     items: filtered
                 });
             })
         } else {
             var filtered = filter(zipcodes, query);
-            console.log("va a retornar", filtered.length, "de la búsqueda", query)
             deferred.resolve({
                 items: filtered
             });
@@ -181,7 +174,6 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         return qualitas(token.accessToken).search(query).$promise
             .then(function (response) {
                 setResultSearch(response);
-                //map.processMakers(response.items);
                 return response;
             })
             .catch(function (response) {

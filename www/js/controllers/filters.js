@@ -1,4 +1,4 @@
-app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, cart) {
+app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart) {
 
     $scope.data = {};
     $scope.data.pickupAfter = 3;
@@ -92,8 +92,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
 
     function getPosition() {
         var deferred = $q.defer();
+        $ionicLoading.show({
+            template: '<p>Obteniendo geolocalización...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
         navigator.geolocation.getCurrentPosition(function (position) {
             //position.coords.latitude, position.coords.longitude
+            $ionicLoading.hide();
             console.log(position);
             deferred.resolve(position);
         }, function (e) {
@@ -112,6 +116,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
          4- Si el total de resultados es diferente de 0 y el total de empresas por comprar es diferente de 0: Mostrar el mapa con un popup al carrito
          - Cuando se visualicen las búsquedas en el mapa  en la parte superior debe salir un selector para cambiar el modo entre mapa y listado
          */
+        // if(!results){
+        //
+        //     return;
+        // }
+
+
         if (results.ElementosDevueltos == 0) {
             if (results.TotalElementosNoConsultados == 0) {
                 //Caso 1
@@ -172,7 +182,11 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     longitude: position.coords.longitude,
                     radio: ($scope.data.pickupAfter * 1000)
                 };
+                $ionicLoading.show({
+                    template: '<p>Realizando búsqueda...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+                });
                 searchService.searchQualitas(options).then(function (response) {
+                    $ionicLoading.hide();
                     console.log("resultados con geoloc", response);
                     processResults(response);
                 });
@@ -212,15 +226,22 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                         state: $scope.selectedState.id,
                         cities: $scope.selectedCity.id
                     });
+                    options.states = JSON.stringify(options.states);
                     options.cities = JSON.stringify(options.cities);
                 } else {
                     delete options.cities;
                 }
             }
             console.log(options);
+            $ionicLoading.show({
+                template: '<p>Realizando búsqueda...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+            });
             searchService.searchQualitas(options).then(function (response) {
+                $ionicLoading.hide();
                 console.log("resultados sin geoloc", response);
                 processResults(response);
+            }).catch(function (e) {
+                console.log("Catch de la busqueda", e);
             });
         }
     }

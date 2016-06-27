@@ -3,11 +3,11 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     $scope.showPopUp = false;
 
     $scope.$on('$ionicView.enter', function (e) {
-        if(window.localStorage.getItem('firstTime')){
-            window.localStorage.removeItem('firstTime');
-            $state.go('app.filter');
-            return;
-        }
+        // if (window.localStorage.getItem('firstTime')) {
+        //     window.localStorage.removeItem('firstTime');
+        //     $state.go('app.filter');
+        //     return;
+        // }
         if ($scope.showPopUp) {
             $scope.showPopUp = false;
             showPopUp();
@@ -18,26 +18,36 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         $scope.data = data;
         if (data.showPopUp) {
             $scope.showPopUp = true;
+        }else{
+            proccessMarkers(data.lastQuery);
         }
     });
 
     $rootScope.$on('processMarkers', function (e, query) {
-        proccessMarkers(query);
+        proccessMarkers(query.lastQuery);
     });
 
     function proccessMarkers(query) {
         var result = searchService.getResultSearch();
         map.processMakers(result.items);
-        if(query){
-            map.moveCamera(query.geoLocations.latitude, query.geoLocations.longitude, 15);
+        if (query) {
+            if (query.geoLocations != null) {
+                lat = result.items[0].latitude;
+                lon = result.items[0].longitude;
+            } else {
+                var lat = query.geoLocations.latitude;
+                var lon = query.geoLocations.longitude;
+            }
+            map.moveCamera(lat, lon, 15);
         }
     }
 
     function showPopUp() {
         var query = searchService.getLastQuery();
-        if(query){
+        if (query) {
             query = JSON.parse(query);
         }
+        map.clear();
         proccessMarkers(query);
         map.setClickable(false);
         var myPopup = $ionicPopup.show({
@@ -53,7 +63,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                         //ir al carrito
                         map.setClickable(true);
                         $state.go("app.cart");
-                        console.log("HIZO CLIC 1")
                         return true;
                     }
                 },
@@ -61,7 +70,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     text: 'Ver anteriores',
                     type: 'button-positive',
                     onTap: function (e) {
-                        console.log("HIZO CLIC 2")
                         map.setClickable(true);
                         myPopup.close();
                         return true;

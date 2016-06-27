@@ -6,8 +6,8 @@ app.constant("SERVER_CONF", {
 
 app.constant("OAUTH_CONF", {
 
-    CLIENT_ID: "56f024877f41a_62m2o1kwzawwwcko4ooscc0g48ooocoswkco8c0cs0gg8wckog",
-    CLIENT_SECRET: "3hu7mfv1gg6co8s0k88480wggwg8wgosss888cscs8c0osk8wk",
+    CLIENT_ID: "57711d94a9c45_15yn4psgwyaooo40g88ks0oocw4k8ws4cgko4okssc48o8cwcw",
+    CLIENT_SECRET: "3y7w4rrl9lc0cg44g08csc8s0gkk8owoog8c8g8gko8goko0wk",
 
     REFRESH_INTERVAL: 600000
 });
