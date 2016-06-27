@@ -31,9 +31,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         var result = searchService.getResultSearch();
         map.processMakers(result.items);
         if (query) {
-            if (query.geoLocations != null) {
-                lat = result.items[0].latitude;
-                lon = result.items[0].longitude;
+            if (query.geoLocations == null) {
+                for (var first in result.items) break;
+                lat = result.items[first].latitude;
+                lon = result.items[first].longitude;
             } else {
                 var lat = query.geoLocations.latitude;
                 var lon = query.geoLocations.longitude;
