@@ -25,6 +25,10 @@
     padding: 0px;
 }
 
+.bar-positive{
+    background-color: #035CBB !important;
+}
+
 .bar-header .logo{
     width: 200px;
 }
@@ -35,4 +39,11 @@
 
 .button-100{
     width: 100%;
+}
+
+.subtitle{
+    background-color: #E6E7E7 !important;
+    position: static!important;
+    height: 40px!important;
+    text-align: left;
 }
