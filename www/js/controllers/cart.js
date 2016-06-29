@@ -12,15 +12,16 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
             {
                 $scope.view.totalCompanies = $scope.maxCompanies;
                 $ionicPopup.alert({
-                    title: 'Limite de empresas',
-                    template: 'La cantidad de empresas a comprar supera al maximo encontradas'
+                    title: 'Límite de empresas',
+                    template: 'La cantidad supera el máximo de empresas encontradas.'
                 });
-            }
-            $scope.view.total = ($scope.view.totalCompanies * $scope.view.unitPrice) + 5;
+            }else
+                $scope.view.total = ($scope.view.totalCompanies * $scope.view.unitPrice) + 5;
 
         }
         else
             $scope.view.total = 0;
+
 
         if ($scope.view.balance >= $scope.view.total) {
             $scope.view.payable = 0;

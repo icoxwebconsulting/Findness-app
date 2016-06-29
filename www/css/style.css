@@ -1,4 +1,41 @@
-/* Empty. Add your own CSS if you like */
+@font-face {
+    font-family: 'Roboto-Regular';
+    src: url("../lib/ionic/fonts/Roboto-Regular.eot");
+    src: url("../lib/ionic/fonts/Roboto-Regular.eot")
+    format("embedded-opentype"),
+    url("../lib/ionic/fonts/Roboto-Regular.woff") format("woff"),
+    url("../lib/ionic/fonts/Roboto-Regular.ttf") format("truetype"),
+    url("../lib/ionic/fonts/Roboto-Regular.svg") format("svg");
+}
+
+::-webkit-input-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 18px !important;
+    color: #04041B !important;
+    opacity: 1 !important;
+}
+
+:-moz-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 18px !important;
+    color: #04041B !important;
+    opacity: 1 !important;
+}
+
+::-moz-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 18px !important;
+    color: #04041B !important;
+    opacity: 1 !important;
+}
+
+:-ms-input-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 18px !important;
+    color: #04041B !important;
+    opacity: 1 !important;
+}
+
 .hidden {
     display: none;
 }
@@ -30,7 +67,8 @@
 }
 
 .bar-header .logo{
-    width: 200px;
+    width: 100%;
+    padding: 5px;
 }
 
 .bar .title.title-left{
@@ -46,4 +84,27 @@
     position: static!important;
     height: 40px!important;
     text-align: left;
+}
+
+.subtitle .left{
+    margin-left: 5px;
+}
+
+
+.item-select select{
+    width: 60% !important;
+}
+
+.item-title, .input-label, .item-input, .subtitle span{
+    font-family:  Roboto-Regular!important;
+    font-size: 14px;
+}
+
+.input-label, .item-input{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.list-cart{
+    margin: 10px;
 }

@@ -1,7 +1,7 @@
 app.service('cart', function () {
 
     self.payable = 0;
-    self.totalCompanies = 0;
+    self.totalCompanies = 10;
     self.unitPrice = 2;
 
     function getBalance() {

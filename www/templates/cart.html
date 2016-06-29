@@ -1,18 +1,25 @@
 <ion-view class="cart">
     <ion-content>
-        <div class="list">
+        <div class="row subtitle filter" scroll="false">
+            <div class="col col-100">
+                <div class="left">
+                    <span>Carrito de compra</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+
+            </div>
+        </div>
+        <div class="list list-cart">
             <label class="item item-input">
                 <div class="input-label">
                     Total de empresas
                 </div>
-                <!--<select ng-model="view.totalCompanies" ng-change="changeTotal()">-->
-                    <!--<option ng-repeat="cnt in view.contCompanies"-->
-                            <!--ng-selected="{{$first}}"-->
-                            <!--value="{{cnt}}">-->
-                        <!--{{cnt}}-->
-                    <!--</option>-->
-                <!--</select>-->
-                <input type="number" style="float: right; margin-right:35px;text-align:right"
+                <input type="number" style="float: right; margin-right:10px;text-align:right"
                         min="0" ng-model="view.totalCompanies"  ng-change="changeTotal()">
             </label>
             <label class="item item-input item-stacked-label">
@@ -31,8 +38,6 @@
                     <span class="item-note">{{view.balance}}€</span>
                 </div>
             </label>
-        </div>
-        <ion-list class="input-list">
             <ion-item class="item-divider item-title">
                 <span>Total sin comisi&oacute;n </span>
                 <span style="float: right; margin-right:25px">{{(view.totalCompanies*view.unitPrice)}}€</span>
@@ -50,15 +55,14 @@
                 <span>Por pagar</span>
                 <span style="float: right; margin-right:25px">{{view.payable}}€</span>
             </ion-item>
-
-        </ion-list>
-        <div class="list input-list">
+        </div>
+        <div class="list input-list" style="padding:10px">
             <button class="button button-positive button-100" ng-click="checkout()" ng-if="view.payable > 0 && view.total > 0 ">
                 <i class="icon ion-card"></i>
                 Pagar diferencia
             </button>
         </div>
-        <div class="list input-list">
+        <div class="list input-list" style="padding:10px">
             <button class="button button-balanced button-100" ng-click="confirmCheckout()" ng-if="view.payable == 0 && view.total > 0">
                 <i class="icon ion-card"></i>
                 Realizar compra
