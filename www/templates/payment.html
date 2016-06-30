@@ -1,10 +1,21 @@
-<ion-view view-title="Pagos">
+<ion-view>
     <ion-content>
+        <div class="row subtitle filter" scroll="false">
+            <div class="col col-100">
+                <div class="left">
+                    <span>Métodos de pago</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+
+            </div>
+        </div>
         <content has-header="true" padding="true">
             <div class="list">
-                <div class="item item-divider">
-                    Métodos de pago
-                </div>
                 <div ng-show="paymentType==0">
                     <div class="item padding">
                         <button class="button button-block button-positive" ng-click="setPaymentType(1)">
