@@ -72,7 +72,7 @@
 
 .bar-header .logo{
     width: 100%;
-    padding: 5px;
+    padding: 5px 15px;
 }
 
 .bar .title.title-left{
@@ -101,11 +101,11 @@
 
 .item-title, .input-label, .item-input, .item-input input,  .subtitle span, .item-text-wrap, .item,  .item span, a{
     font-family:  Roboto-Regular!important;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .input-label, .item-input{
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -115,4 +115,15 @@
 
 .ion-autocomplete{
     width: 100%;
+}
+
+/*.register{*/
+    /*background-image: url("../img/bg/1.jpg");*/
+/*}*/
+
+.register{
+    background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(10,10,32,0.33) 20%, rgba(10,10,32,0.35) 21%, rgba(10,10,32,0.7) 43%) !important;
+    background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(10,10,32,0.33) 20%,rgba(10,10,32,0.35) 21%,rgba(10,10,32,0.7) 43%) !important;
+    background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(10,10,32,0.33) 20%,rgba(10,10,32,0.35) 21%,rgba(10,10,32,0.7) 43%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#b30a0a20',GradientType=0 ) !important;
 }
