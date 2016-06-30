@@ -130,12 +130,12 @@
     margin-bottom: 0;
 }
 
-.register, .register a, .register input, .register .input-label, .register .item-input, .register .ion-close{
+.register, .register a, .register input, .register .input-label, .register .item-input, .register .ion-close, .register .ion-arrow-left-c{
     color: #ffffff;
 }
 
 .register input, .register .item-checkbox, .register .item-text-wrap, .register .card, .register .bar-transparent{
-    background: rgba(10,10,32,0.0) 43%) !important;
+    background: rgba(10,10,32,0.0) !important;
 }
 
 .register ::-webkit-input-placeholder{
@@ -175,7 +175,7 @@
 }
 
 .login input, .login .item-checkbox, .login .item-text-wrap, .login .card, .login .bar-transparent, .login .item-input{
-    background: rgba(10,10,32,0.0) 43%) !important;
+    background: rgba(10,10,32,0.0) !important;
 }
 
 .login ::-webkit-input-placeholder{
