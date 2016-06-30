@@ -1,4 +1,4 @@
-app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesService, searchService, $ionicPopup, cart) {
+app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesService, searchService, $ionicPopup, cart, $ionicLoading) {
 
     $scope.items;
 
@@ -50,9 +50,10 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesSer
     }
 
     $scope.callSearch = function (search) {
-        //TODO:ejecución de la búsqueda para visualizar en el mapa
         console.log(search);
-
+        $ionicLoading.show({
+            template: '<p>Realizando búsqueda seleccionada</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
         var options = {
             page: 1,
             cnaes: JSON.stringify(search.filters.cnaes)
@@ -75,10 +76,11 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesSer
 
         console.log(options);
         searchService.searchQualitas(options).then(function (response) {
-            //$ionicLoading.hide();
+            $ionicLoading.hide();
             console.log("resultados searches", response);
             processResults(response);
         }).catch(function (e) {
+            $ionicLoading.hide();
             console.log("Catch de la busqueda", e);
         });
     }
