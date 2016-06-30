@@ -4,9 +4,8 @@ app.controller('SearchesCtrl', function ($scope, searchesService) {
 
     $scope.$on('$ionicView.enter', function (e) {
         searchesService.getSearches().then(function (result) {
-            console.log("los result", result);
             $scope.items = result.searches;
-        })
+        });
     });
 
     $scope.callSearch = function (search) {
