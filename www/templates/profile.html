@@ -1,15 +1,29 @@
-<ion-view view-title="Mi Perfil">
+<ion-view>
     <ion-content>
+        <div class="row subtitle filter" scroll="false">
+            <div class="col col-100">
+                <div class="left">
+                    <span>Mi perfil</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+
+            </div>
+        </div>
         <content padding="true">
             <div class="card">
                 <div class="item item-text-wrap">
-                    <button class="button button-positive" ng-click="logout()">
-                        Cerrar sesión
+                    <button class="button button-positive button-100">
+                        Cambiar contraseña
                     </button>
                 </div>
                 <div class="item item-text-wrap">
-                    <button class="button button-positive">
-                        Cambiar contraseña
+                    <button class="button bar-stable button-100" ng-click="logout()">
+                        Cerrar sesión
                     </button>
                 </div>
             </div>
