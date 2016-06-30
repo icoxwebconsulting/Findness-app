@@ -72,7 +72,7 @@
 
 .bar-header .logo{
     width: 100%;
-    padding: 5px;
+    padding: 5px 15px;
 }
 
 .bar .title.title-left{
@@ -101,11 +101,11 @@
 
 .item-title, .input-label, .item-input, .item-input input,  .subtitle span, .item-text-wrap, .item,  .item span, a{
     font-family:  Roboto-Regular!important;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .input-label, .item-input{
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -116,3 +116,4 @@
 .ion-autocomplete{
     width: 100%;
 }
+
