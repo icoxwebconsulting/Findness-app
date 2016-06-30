@@ -1,0 +1,20 @@
+<ion-view view-title="Mis búsquedas">
+    <ion-content>
+        <content has-header="true" padding="true">
+            <div class="card">
+                <div class="item item-text-wrap">
+                    Mis búsquedas
+                </div>
+            </div>
+
+            <ion-list>
+                <ion-item ng-repeat="item in items">
+                    {{item.name}}
+                    <button class="button button-positive" ng-click="callSearch(item)">
+                        <i class="icon ion-ios-telephone"></i>
+                    </button>
+                </ion-item>
+            </ion-list>
+        </content>
+    </ion-content>
+</ion-view>

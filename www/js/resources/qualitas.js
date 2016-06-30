@@ -11,7 +11,7 @@ app.factory('qualitas', function ($resource, SERVER_CONF) {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
-            },
+            }, 
             searchStates: {
                 method: 'GET',
                 url: SERVER_CONF.API_HOST + 'qualitas/states',

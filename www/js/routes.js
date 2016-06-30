@@ -107,6 +107,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
+        .state('app.searches', {
+            url: '/searches',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/searches.html',
+                    controller: 'SearchesCtrl'
+                }
+            }
+        })
+
         .state('app.account', {
             url: '/account',
             views: {
