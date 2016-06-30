@@ -160,7 +160,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             geoLocations: null,
             nonViewedCompanies: 0
         };
-        console.log($scope.selectedCNAE);
+
         if ($scope.selectedCNAE.length == 0) {
             $ionicPopup.alert({
                 title: "Debe seleccionar por lo menos un CNAE para realizar la búsqueda."
