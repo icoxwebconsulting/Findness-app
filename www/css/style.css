@@ -1,4 +1,4 @@
-@font-face {
+@font-face{
     font-family: 'Roboto-Regular';
     src: url("../lib/ionic/fonts/Roboto-Regular.eot");
     src: url("../lib/ionic/fonts/Roboto-Regular.eot")
@@ -117,3 +117,82 @@
     width: 100%;
 }
 
+.register{
+    background-image: url("../img/bg/1.jpg");
+}
+
+.register .title{
+    text-align: left;
+    font-size:20px;
+}
+
+.register .list{
+    margin-bottom: 0;
+}
+
+.register, .register a, .register input, .register .input-label, .register .item-input, .register .ion-close{
+    color: #ffffff;
+}
+
+.register input, .register .item-checkbox, .register .item-text-wrap, .register .card, .register .bar-transparent{
+    background: rgba(10,10,32,0.0) 43%) !important;
+}
+
+.register ::-webkit-input-placeholder{
+    color: #ffffff !important;
+
+}
+
+.register :-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.register ::-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.register :-ms-input-placeholder{
+    color: #ffffff !important;
+}
+
+.login{
+    background-image: url("../img/bg/2.jpg");
+}
+
+.login .title{
+    text-align: left;
+    font-size:20px;
+}
+
+.login .list{
+    margin-bottom: 0;
+}
+
+.login, .login a, .login input, .login .input-label, .login .item-input, .login .ion-close{
+    color: #ffffff;
+}
+
+.login input, .login .item-checkbox, .login .item-text-wrap, .login .card, .login .bar-transparent, .login .item-input{
+    background: rgba(10,10,32,0.0) 43%) !important;
+}
+
+.login ::-webkit-input-placeholder{
+    color: #ffffff !important;
+
+}
+
+.login :-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.login ::-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.login :-ms-input-placeholder{
+    color: #ffffff !important;
+}
