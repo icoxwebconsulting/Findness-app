@@ -8,6 +8,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         //     $state.go('app.filter');
         //     return;
         // }
+        map.resize();
         if ($scope.showPopUp) {
             $scope.showPopUp = false;
             showPopUp();
@@ -50,7 +51,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }
         map.clear();
         proccessMarkers(query);
-        map.setClickable(false);
         var myPopup = $ionicPopup.show({
             template: '<div>Existen {{data.toBuy}} resultados que puede adquirir.</div>',
             title: 'Findness',
@@ -62,7 +62,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     type: 'button-positive',
                     onTap: function (e) {
                         //ir al carrito
-                        map.setClickable(true);
                         $state.go("app.cart");
                         return true;
                     }
@@ -71,7 +70,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     text: 'Ver anteriores',
                     type: 'button-positive',
                     onTap: function (e) {
-                        map.setClickable(true);
                         myPopup.close();
                         return true;
                     }
@@ -86,24 +84,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             const SPAIN = new plugin.google.maps.LatLng(39.9997938, -3.1926017);
 
             map.init(div, SPAIN, 6);
-
-            // Wait until the map is ready status.
-            // map.addEventListener(plugin.google.maps.event.MAP_READY, function(){
-            //     var button = document.getElementById("button");
-            //     button.addEventListener("click", function () {
-            //         map.showDialog();
-            //     }, false);
-            // });
-            //var marker;
-
-            // map.addEventListener(map, 'click', function (e) {
-            //     console.log("click en el mapa")
-            //     if (!marker) {
-            //         marker = new google.maps.Marker({map: map});
-            //     }
-            //
-            //     marker.setPosition(e.latLng);
-            // });
         }
     });
 

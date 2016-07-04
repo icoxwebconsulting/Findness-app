@@ -1,76 +1,70 @@
 app.service('map', function () {
 
-    var map;
+    //var map;
+    var markers = [];
 
     function init(div, location, zoom) {
-        // map = plugin.google.maps.Map.getMap(div, {
-        //     'camera': {
-        //         'latLng': location,
-        //         'zoom': zoom
-        //     }
-        // });
         map = new google.maps.Map(div, {
             center: location,
             zoom: zoom
         });
     }
 
-    function addMaker(position, title, socialObject) {
-        // map.addMarker({
-        //     'position': position,
-        //     'title': title,
-        //     'snippet': socialObject,
-        //     'markerClick': function (marker) {
-        //         //console.log("hice clic en la marca", position);
-        //         //TODO: agregar función para armar ruta
-        //         marker.showInfoWindow();
-        //     },
-        //     'infoClick': function (marker) {
-        //         console.log("click en infoWindow")
-        //     }
-        // });
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
 
-        new google.maps.Marker({
+    function clearMarkers() {
+        setMapOnAll(null);
+    }
+
+    function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+    }
+
+    function addMaker(position, title, socialObject) {
+
+        var marker = new google.maps.Marker({
             position: position,
             map: map,
             title: title
         });
+
+        markers.push(marker);
     }
 
     function processMakers(items) {
         for (var item in items) {
             addMaker(
-                new plugin.google.maps.LatLng(items[item].latitude, items[item].longitude),
-                items[item].social_reason,
-                items[item].social_object
+                new google.maps.LatLng(items[item].latitude, items[item].longitude),
+                items[item].socialReason,
+                items[item].socialObject
             )
         }
     }
 
     function moveCamera(lat, long, zoom) {
-        map.moveCamera({
-            'target': new plugin.google.maps.LatLng(lat, long),
-            'zoom': zoom,
-            'tilt': 0
-        }, function () {
-            //
-            console.log("CAMARA SE HA DESPLAZADO");
-        });
-    }
-
-    function setClickable(bool) {
-        map.setClickable(bool);
+        map.setCenter(new google.maps.LatLng(lat, long));
+        map.setZoom(zoom);
     }
 
     function clear() {
         map.clear();
+        deleteMarkers();
+    }
+
+    function resize() {
+        google.maps.event.trigger(map,'resize')
     }
 
     return {
         init: init,
         processMakers: processMakers,
         moveCamera: moveCamera,
-        setClickable: setClickable,
-        clear: clear
+        clear: clear,
+        resize: resize
     };
 });
