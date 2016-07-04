@@ -52,7 +52,6 @@ app.service('map', function () {
     }
 
     function clear() {
-        map.clear();
         deleteMarkers();
     }
 

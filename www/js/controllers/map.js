@@ -8,7 +8,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         //     $state.go('app.filter');
         //     return;
         // }
-        map.resize();
         if ($scope.showPopUp) {
             $scope.showPopUp = false;
             showPopUp();
@@ -29,6 +28,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     });
 
     function proccessMarkers(query) {
+        map.resize();
         var result = searchService.getResultSearch();
         map.processMakers(result.items);
         if (query) {
