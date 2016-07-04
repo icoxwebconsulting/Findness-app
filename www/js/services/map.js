@@ -3,27 +3,37 @@ app.service('map', function () {
     var map;
 
     function init(div, location, zoom) {
-        map = plugin.google.maps.Map.getMap(div, {
-            'camera': {
-                'latLng': location,
-                'zoom': zoom
-            }
+        // map = plugin.google.maps.Map.getMap(div, {
+        //     'camera': {
+        //         'latLng': location,
+        //         'zoom': zoom
+        //     }
+        // });
+        map = new google.maps.Map(div, {
+            center: location,
+            zoom: zoom
         });
     }
 
     function addMaker(position, title, socialObject) {
-        map.addMarker({
-            'position': position,
-            'title': title,
-            'snippet': socialObject,
-            'markerClick': function (marker) {
-                //console.log("hice clic en la marca", position);
-                //TODO: agregar función para armar ruta
-                marker.showInfoWindow();
-            },
-            'infoClick': function (marker) {
-                console.log("click en infoWindow")
-            }
+        // map.addMarker({
+        //     'position': position,
+        //     'title': title,
+        //     'snippet': socialObject,
+        //     'markerClick': function (marker) {
+        //         //console.log("hice clic en la marca", position);
+        //         //TODO: agregar función para armar ruta
+        //         marker.showInfoWindow();
+        //     },
+        //     'infoClick': function (marker) {
+        //         console.log("click en infoWindow")
+        //     }
+        // });
+
+        new google.maps.Marker({
+            position: position,
+            map: map,
+            title: title
         });
     }
 
