@@ -116,10 +116,13 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
          4- Si el total de resultados es diferente de 0 y el total de empresas por comprar es diferente de 0: Mostrar el mapa con un popup al carrito
          - Cuando se visualicen las búsquedas en el mapa  en la parte superior debe salir un selector para cambiar el modo entre mapa y listado
          */
-        // if(!results){
-        //
-        //     return;
-        // }
+        if(!results){
+            $ionicPopup.alert({
+                title: "Hubo un problema interno.",
+                template: 'Si el problema se repite favor contactar al administrador.'
+            });
+            return;
+        }
 
 
         if (results.ElementosDevueltos == 0) {
@@ -219,6 +222,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 delete options.postalCodes;
                 options.states = [];
                 options.states.push($scope.selectedState.id);
+                options.states = JSON.stringify(options.states);
                 if ($scope.selectedCity.length != 0) {
                     // (2)consulta con la provincial y la ciudad
                     options.cities = [];
@@ -226,7 +230,6 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                         state: $scope.selectedState.id,
                         cities: $scope.selectedCity.id
                     });
-                    options.states = JSON.stringify(options.states);
                     options.cities = JSON.stringify(options.cities);
                 } else {
                     delete options.cities;
