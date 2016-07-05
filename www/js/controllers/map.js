@@ -81,7 +81,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     $ionicPlatform.ready(function () {
         var div = document.getElementById("map_canvas");
         if (div) {
-            const SPAIN = new plugin.google.maps.LatLng(39.9997938, -3.1926017);
+            const SPAIN = new google.maps.LatLng(39.9997938, -3.1926017);
 
             map.init(div, SPAIN, 6);
         }
