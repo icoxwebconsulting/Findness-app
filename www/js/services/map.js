@@ -44,6 +44,7 @@ app.service('map', function () {
                 items[item].socialObject
             )
         }
+        //var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'images/m'});
     }
 
     function moveCamera(lat, long, zoom) {

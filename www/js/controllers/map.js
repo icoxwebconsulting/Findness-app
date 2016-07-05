@@ -40,7 +40,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                 var lat = query.geoLocations.latitude;
                 var lon = query.geoLocations.longitude;
             }
-            map.moveCamera(lat, lon, 15);
+            map.moveCamera(lat, lon, 7);
         }
     }
 
