@@ -33,13 +33,6 @@
     "cordova-plugin-geolocation",
     "cordova-plugin-compat",
     "cordova-plugin-inappbrowser",
-    {
-      "variables": {
-        "URL_SCHEME": "findness"
-      },
-      "locator": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
-      "id": "plugin.google.maps"
-    },
     "cordova-sqlite-storage"
   ],
   "cordovaPlatforms": [
