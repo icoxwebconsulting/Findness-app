@@ -82,7 +82,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         var div = document.getElementById("map_canvas");
         if (div) {
             const SPAIN = new google.maps.LatLng(39.9997938, -3.1926017);
-
             map.init(div, SPAIN, 6);
         }
     });
@@ -93,5 +92,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     $scope.closeModal = function () {
         $scope.modal.hide()
-    }
+    };
+
 });
