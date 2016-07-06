@@ -29,4 +29,14 @@ app.constant("PAYMENT_CONF", {
 
 app.constant("DATETIME_FORMAT_CONF", {
     dateTimeFormat : "YYYY-MM-DD HH:mm:ss"
-})
+});
+
+app.constant("COMPANY_STYLE", {
+    COLOR:{
+        BLUE:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        PINK:'http://maps.google.com/mapfiles/ms/icons/pink-dot.png',
+        YELLOW:'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+        RED: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        GREEN: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+    }
+});
