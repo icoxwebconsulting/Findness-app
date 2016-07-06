@@ -1,9 +1,13 @@
-app.controller('ConfirmPasswordCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, userDatastore) {
+app.controller('ConfirmPasswordCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, userDatastore, $ionicHistory) {
     $scope.confirm = {};
 
     $scope.$on('$ionicView.enter', function (e) {
         $scope.username = userDatastore.getUsername();
     });
+
+    $scope.goBack = function () {
+        $state.go($ionicHistory.backView().stateName)
+    };
 
     $scope.confirmPassword = function () {
         if (!$scope.confirm.token) {
