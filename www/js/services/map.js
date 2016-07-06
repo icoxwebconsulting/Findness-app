@@ -1,4 +1,4 @@
-app.service('map', function ($ionicModal, $rootScope) {
+app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
 
     //var map;
     var markers = [];
@@ -26,16 +26,21 @@ app.service('map', function ($ionicModal, $rootScope) {
     }
 
 
-    function infoWindowOpen(marker,title, socialObject){
+    function infoWindowOpen(marker,title, socialObject, companyId, style){
 
         var modalScope = $rootScope.$new();
         modalScope.marker = marker;
         modalScope.title = title;
         modalScope.socialObject = socialObject;
+        modalScope.companyId = companyId;
+        modalScope.style = style;
 
-        modalScope.changeStyle = function(marker,colorUrl){
-            console.info('change style: ', marker);
-            marker.setIcon(colorUrl);
+        modalScope.changeStyle = function(marker,color,companyId){
+            modalScope.style = color;
+            marker.setIcon(COMPANY_STYLE.COLOR[color]);
+            company(localStorage.getItem('accessToken')).companyStyle({'company': companyId} ,{'style': color}).$promise.then(function (response) {
+                console.log(response);
+            });
         };
 
         $ionicModal.fromTemplateUrl('templates/company-info.html', {
@@ -47,17 +52,17 @@ app.service('map', function ($ionicModal, $rootScope) {
 
     }
 
-    function addMaker(position, title, socialObject, style) {
+    function addMaker(position, title, socialObject, companyId, style) {
 
         var marker = new google.maps.Marker({
             position: position,
             map: map,
             title: title,
-            icon: style
+            icon: COMPANY_STYLE.COLOR[style]
         });
 
         marker.addListener('click', function() {
-            infoWindowOpen(marker,title, socialObject);
+            infoWindowOpen(marker,title, socialObject, companyId, style);
         });
 
         markers.push(marker);
@@ -69,12 +74,13 @@ app.service('map', function ($ionicModal, $rootScope) {
             if (typeof items[item].style != 'undefined')
                 var style = items[item].style;
             else
-                var style = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+                var style = 'RED';
 
             addMaker(
                 new google.maps.LatLng(items[item].latitude, items[item].longitude),
                 items[item].socialReason,
                 items[item].socialObject,
+                items[item].id,
                 style
             )
         }

@@ -1,33 +1,33 @@
 <ion-modal-view class="modal-company-info">
-    <ion-header-bar>
+    <ion-header-bar class="bar-energized">
         <h1 class="title">{{title | uppercase | limitTo:25}} <span ng-if="title.length > 25">...</span></h1>
     </ion-header-bar>
     <ion-content scroll="true">
         <p class="social-object">
             {{socialObject | lowercase}}
         </p>
+    </ion-content>
+    <ion-footer-bar>
         <div class="row">
-            <div class="col">
-                <span>Color:</span>
+            <div class="col-50">
+                <span style="font-weight: 500;font-size: 12px;">Color del marcador:</span>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-20">
-                <img src="img/color/blue.png" ng-click="changeStyle(marker,'http://maps.google.com/mapfiles/ms/icons/blue-dot.png')">
+            <div class="col-10">
+                <img src="img/color/blue.png" ng-click="changeStyle(marker,'BLUE',companyId)" ng-class="{'active': style  == 'BLUE'}">
             </div>
-            <div class="col-20">
-                <img src="img/color/pink.png" ng-click="changeStyle(marker,'http://maps.google.com/mapfiles/ms/icons/pink-dot.png')">
+            <div class="col-10">
+                <img src="img/color/pink.png" ng-click="changeStyle(marker,'PINK',companyId)" ng-class="{'active': style  == 'PINK'}">
             </div>
-            <div class="col-20">
-                <img src="img/color/yellow.png" ng-click="changeStyle(marker,'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png')">
+            <div class="col-10">
+                <img src="img/color/yellow.png" ng-click="changeStyle(marker,'YELLOW',companyId)" ng-class="{'active': style  == 'YELLOW'}">
             </div>
-            <div class="col-20">
-                <img src="img/color/red.png" ng-click="changeStyle(marker,'http://maps.google.com/mapfiles/ms/icons/red-dot.png')">
+            <div class="col-10">
+                <img src="img/color/red.png" ng-click="changeStyle(marker,'RED',companyId)" ng-class="{'active': style  == 'RED'}">
             </div>
-            <div class="col-20">
-                <img src="img/color/green.png" ng-click="changeStyle(marker,'http://maps.google.com/mapfiles/ms/icons/green-dot.png')">
+            <div class="col-10">
+                <img src="img/color/green.png" ng-click="changeStyle(marker,'GREEN',companyId)" ng-class="{'active': style  == 'GREEN'}">
             </div>
             </a>
         </div>
-    </ion-content>
+    </ion-footer-bar>
 </ion-modal-view>
