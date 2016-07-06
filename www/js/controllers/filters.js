@@ -1,4 +1,4 @@
-app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart) {
+app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map) {
 
     $scope.data = {};
     $scope.data.pickupAfter = 3;
@@ -25,6 +25,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
 
     $scope.$on('$ionicView.leave', function (e) {
         //searchService.setSelectedFilter(filter);
+        map.resize();
     });
 
     $scope.getItems = function (query, type) {
