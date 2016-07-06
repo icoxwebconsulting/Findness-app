@@ -13,6 +13,18 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'RegisterCtrl'
         })
 
+        .state('recover-password', {
+            url: '/recover-password',
+            templateUrl: 'templates/recover-password.html',
+            controller: 'RecoverPasswordCtrl'
+        })
+
+        .state('confirmPassword', {
+            url: '/confirmPassword',
+            templateUrl: 'templates/confirm-password.html',
+            controller: 'ConfirmPasswordCtrl'
+        })
+
         .state('confirm', {
             url: '/confirm',
             templateUrl: 'templates/confirmation.html',

@@ -72,7 +72,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                     data: response.data
                 });
             });
-        
+
         return deferred.promise;
     }
 
@@ -164,9 +164,38 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         return deferred.promise;
     }
 
+    function requestPassword(email) {
+        return customer().requestPassword({"customer": email}).$promise
+            .then(function (response) {
+                if (response.status) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+    }
+
+    function confirmPassword(email, code, password) {
+        var bcrypt = dcodeIO.bcrypt;
+        var salt = bcrypt.genSaltSync(10);
+        password = bcrypt.hashSync(password, salt);
+        salt = salt.slice(7);
+
+        return customer().confirmPassword({"customer": email}, {
+            "code": code,
+            "password": password,
+            "salt": salt
+        }).$promise
+            .then(function (response) {
+                return response.status;
+            });
+    }
+
     return {
         refreshAccessToken: refreshAccessToken,
         register: register,
+        requestPassword: requestPassword,
+        confirmPassword: confirmPassword,
         confirm: confirm,
         resendConfirm: resendConfirm,
         requestSalt: requestSalt,

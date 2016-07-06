@@ -33,6 +33,16 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
             resendConfirm: {
                 method: 'POST',
                 url: SERVER_CONF.API_HOST + 'customers/:customer/resend-confirmation-email'
+            },
+            requestPassword: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/reset/password',
+                params: {customer: '@customer'}
+            },
+            confirmPassword: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/new/password',
+                params: {customer: '@customer'}
             }
         });
     }
