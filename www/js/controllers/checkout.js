@@ -1,4 +1,4 @@
-app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, searchService, map) {
+app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, searchService) {
 
     $scope.init = function(){
         $scope.cardType = {};
@@ -76,7 +76,6 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
                 $rootScope.$emit('processMarkers', {
                     lastQuery: lastQuery
                 });
-                map.resize();
                 $state.go("app.map");
             });
         });

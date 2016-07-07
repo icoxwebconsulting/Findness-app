@@ -97,7 +97,12 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
     }
 
     function resize() {
+        console.log("ejecutando resize");
         google.maps.event.trigger(map,'resize')
+    }
+    
+    function getMap(){
+        return map;
     }
 
     return {
@@ -105,6 +110,7 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
         processMakers: processMakers,
         moveCamera: moveCamera,
         clear: clear,
-        resize: resize
+        resize: resize,
+        getMap: getMap
     };
 });

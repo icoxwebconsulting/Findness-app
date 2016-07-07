@@ -8,6 +8,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         //     $state.go('app.filter');
         //     return;
         // }
+        if(map.getMap()){
+            map.resize();
+        }
         if ($scope.showPopUp) {
             $scope.showPopUp = false;
             showPopUp();
