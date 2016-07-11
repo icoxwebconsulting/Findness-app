@@ -166,23 +166,56 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         return window.localStorage.getItem('lastQuery') || null;
     }
 
-    function searchQualitas(query) {
-        var token = userDatastore.getTokens();
-
-        storeQuery(query);
-
-        return qualitas(token.accessToken).search(query).$promise
+    function callSearch(accessToken, query) {
+        return qualitas(accessToken).search(query).$promise
             .then(function (response) {
-                setResultSearch(response);
                 return response;
             })
             .catch(function (response) {
-                console.log(null);
+                console.log("error en la consulta", query);
             });
     }
 
+    function searchQualitas(query) {
+        var token = userDatastore.getTokens();
+        var deferred = $q.defer();
+        var llevo = 0;
+        var total = 0;
+
+        function exec() {
+            callSearch(token.accessToken, query).then(function (response) {
+                if (query.page == 1) {
+                    total = response.TotalElementos - response.TotalElementosNoConsultados;
+                    llevo = response.ElementosDevueltos;
+                } else {
+                    llevo += response.ElementosDevueltos;
+                }
+                console.log("query nro", query.page, llevo, '<', total);
+                query.page += 1;
+                setResultSearch(response);
+                if (llevo < total) {
+                    exec();
+                } else {
+                    //fin del query
+                    console.log("fin de la cadena", getResultSearch());
+                    deferred.resolve(getResultSearch());
+                }
+            });
+        }
+
+        exec();
+
+        return deferred.promise;
+    }
+
     function setResultSearch(result) {
-        resultSearch = result;
+        if (result.Pagina == 1) {
+            resultSearch = result;
+        } else {
+            var previous = resultSearch.items;
+            resultSearch = result;
+            resultSearch.items = angular.extend(resultSearch.items, previous);
+        }
     }
 
     function getResultSearch() {
