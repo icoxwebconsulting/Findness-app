@@ -69,6 +69,9 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
     }
 
     function processMakers(items) {
+        //borro las anteriores
+        deleteMarkers();
+
         for (var item in items) {
 
             if (typeof items[item].style != 'undefined')
