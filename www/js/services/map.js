@@ -91,7 +91,9 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
                 style
             )
         }
-        markerCluster = new MarkerClusterer(map, markers, {imagePath: 'lib/js-marker-clusterer/images/m'});
+        markerCluster = new MarkerClusterer(map, markers, {
+            maxZoom: 10,
+            imagePath: 'lib/js-marker-clusterer/images/m'});
     }
 
     function moveCamera(lat, long, zoom) {
