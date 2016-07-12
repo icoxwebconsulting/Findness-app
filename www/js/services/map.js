@@ -2,6 +2,7 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
 
     //var map;
     var markers = [];
+    var markerCluster;
 
     function init(div, location, zoom) {
         map = new google.maps.Map(div, {
@@ -26,7 +27,7 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
     }
 
 
-    function infoWindowOpen(marker,title, socialObject, companyId, style){
+    function infoWindowOpen(marker, title, socialObject, companyId, style) {
 
         var modalScope = $rootScope.$new();
         modalScope.marker = marker;
@@ -35,10 +36,10 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
         modalScope.companyId = companyId;
         modalScope.style = style;
 
-        modalScope.changeStyle = function(marker,color,companyId){
+        modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
             marker.setIcon(COMPANY_STYLE.COLOR[color]);
-            company(localStorage.getItem('accessToken')).companyStyle({'company': companyId} ,{'style': color}).$promise.then(function (response) {
+            company(localStorage.getItem('accessToken')).companyStyle({'company': companyId}, {'style': color}).$promise.then(function (response) {
                 console.log(response);
             });
         };
@@ -46,7 +47,7 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
         $ionicModal.fromTemplateUrl('templates/company-info.html', {
             scope: modalScope,
             animation: 'slide-in-up'
-        }).then(function(modal) {
+        }).then(function (modal) {
             modal.show();
         });
 
@@ -61,8 +62,8 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
             icon: COMPANY_STYLE.COLOR[style]
         });
 
-        marker.addListener('click', function() {
-            infoWindowOpen(marker,title, socialObject, companyId, style);
+        marker.addListener('click', function () {
+            infoWindowOpen(marker, title, socialObject, companyId, style);
         });
 
         markers.push(marker);
@@ -71,6 +72,9 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
     function processMakers(items) {
         //borro las anteriores
         deleteMarkers();
+        if (markerCluster) {
+            markerCluster.clearMarkers();
+        }
 
         for (var item in items) {
 
@@ -87,7 +91,7 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
                 style
             )
         }
-        var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'lib/js-marker-clusterer/images/m'});
+        markerCluster = new MarkerClusterer(map, markers, {imagePath: 'lib/js-marker-clusterer/images/m'});
     }
 
     function moveCamera(lat, long, zoom) {
@@ -101,10 +105,10 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
 
     function resize() {
         console.log("ejecutando resize");
-        google.maps.event.trigger(map,'resize')
+        google.maps.event.trigger(map, 'resize')
     }
-    
-    function getMap(){
+
+    function getMap() {
         return map;
     }
 
