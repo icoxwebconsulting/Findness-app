@@ -1,5 +1,5 @@
-<ion-slides options="options" slider="data.slider">
-    <ion-slide-page class="slide-1">
+<ion-slides options="options" slider="data.slider" does-continue="true">
+    <ion-slide-page class="slide-1" >
         <div class="content">
             <div class="row">
                 <div class="col logo">
@@ -18,13 +18,46 @@
                 </div>
             </div>
         </div>
+        <div class="box">
+            <div class="row row-bottom bottom-div">
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-positive" ng-click="goToPage('register')">
+                        Crear cuenta
+                    </button>
+                </div>
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-positive" ng-click="goToPage('login')">
+                        Accede
+                    </button>
+                </div>
+            </div>
+        </div>
     </ion-slide-page>
     <ion-slide-page class="slide-2">
         <div class="content">
             <div class="row">
+                <div class="col logo">
+                    <img src="img/findness.png">
+                </div>
+            </div>
+            <div class="row">
                 <div class="col">
                     <p class="description">Esta aplicación permite encontrar empresas mediante filtros de busqueda.
                         Debe logearse con su usuario para comenzar a disfrutar de Findness.</p>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="row row-bottom bottom-div">
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-positive" ng-click="goToPage('register')">
+                        Crear cuenta
+                    </button>
+                </div>
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-positive" ng-click="goToPage('login')">
+                        Accede
+                    </button>
                 </div>
             </div>
         </div>
@@ -41,7 +74,7 @@
             <div class="row row-bottom bottom-div">
                 <div class="col" style="align-items: center">
                     <button class="button button-block button-positive" ng-click="goToPage('register')">
-                        Registro
+                        Crear cuenta
                     </button>
                 </div>
                 <div class="col" style="align-items: center">

@@ -108,13 +108,13 @@
 .item-title, .input-label, .item-input, .item-input input,  .subtitle span, .item-text-wrap, .item,  .item span, a{
     font-family:  Roboto-Regular!important;
     font-size: 13px;
-    text-shadow: 2px 2px 4px #A1A1A1;
+    /*text-shadow: 2px 2px 4px #A1A1A1;*/
 }
 
 .input-label, .item-input{
     font-size: 13px;
     font-weight: 600;
-    text-shadow: 2px 2px 4px #A1A1A1;
+    /*text-shadow: 2px 2px 4px #A1A1A1;*/
 }
 
 .list-cart{
@@ -237,7 +237,7 @@
     background-image: url("../img/bg/slide-1.jpg");
 }
 
-.slide-1 .content{
+.slide-1 .content, .slide-2 .content, .slide-3 .content{
     margin-top: 40%;
     padding: 10px;
 }
@@ -245,7 +245,7 @@
 .slide-1 h2, .slide-1 p, .slide-2 p{
     color: #ffffff;
     font-family:  Roboto-Regular!important;
-    text-shadow: 2px 2px 4px #A1A1A1;
+    /*text-shadow: 2px 2px 4px #A1A1A1;*/
 }
 
 .slide-1 .title{
@@ -276,10 +276,10 @@
     line-height: 1.8;
 }
 
-.slide-2 .content{
-    margin-top: 80%;
-    padding: 10px;
-}
+/*.slide-2 .content{*/
+    /*margin-top: 80%;*/
+    /*padding: 10px;*/
+/*}*/
 
 
 .slide-2 .description{
@@ -291,10 +291,10 @@
     background-image: url("../img/bg/slide-3.jpg");
 }
 
-.slide-3 .content{
-    margin-top: 15%;
-    padding: 10px;
-}
+/*.slide-3 .content{*/
+    /*margin-top: 15%;*/
+    /*padding: 10px;*/
+/*}*/
 
 .swiper-pagination-bullet{
     background: #ffffff !important;
