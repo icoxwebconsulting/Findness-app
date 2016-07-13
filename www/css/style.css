@@ -294,3 +294,8 @@
 .swiper-pagination-bullet{
     background: #ffffff !important;
 }
+
+/*tab en mapa*/
+.tabs-mapa>.tabs, .tabs.tabs-mapa {
+    top: 0px;!important;
+}

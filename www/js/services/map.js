@@ -7,7 +7,8 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
     function init(div, location, zoom) {
         map = new google.maps.Map(div, {
             center: location,
-            zoom: zoom
+            zoom: zoom,
+            disableDefaultUI: true
         });
     }
 

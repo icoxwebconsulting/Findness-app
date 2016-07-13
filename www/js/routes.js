@@ -59,6 +59,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
+        .state('app.list', {
+            url: '/list',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/list.html',
+                    controller: 'ListCtrl'
+                }
+            }
+        })
+
         .state('app.filter', {
             url: '/filter',
             views: {
