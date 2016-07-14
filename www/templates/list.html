@@ -1,5 +1,5 @@
 <ion-view>
-    <ion-content>
+    <ion-header-bar align-title="left" class="bar-positive bar-subheader" style="height: 49px !important;">
         <div class="tabs-striped tabs-top tabs-mapa tabs-background-positive tabs-color-light">
             <div class="tabs">
                 <a class="tab-item active" href="#">
@@ -10,14 +10,14 @@
                 </a>
             </div>
         </div>
-        <div style="padding-top: 50px"></div>
-        <div class="list">
+    </ion-header-bar>
 
+    <ion-content class="has-subheader">
+        <div class="list">
             <a class="item item-icon-left" href="#" ng-repeat="(key, val) in list" ng-click="showDetail(key)">
                 <i class="icon ion-ios-bookmarks"></i>
                 {{val.socialReason}}
             </a>
-
         </div>
     </ion-content>
 </ion-view>
