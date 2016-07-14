@@ -6,6 +6,11 @@
         <p class="social-object">
             {{socialObject | lowercase}}
         </p>
+        <div ng-show="routeMode">
+            <button class="button button-small button-assertive" ng-click="addToRoute()">
+                Agregar a ruta
+            </button>
+        </div>
     </ion-content>
     <ion-footer-bar>
         <div class="row">

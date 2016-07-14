@@ -1,15 +1,17 @@
-app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
+app.service('map', function ($ionicModal, $rootScope, company, routeService, COMPANY_STYLE) {
 
     //var map;
     var markers = [];
     var markerCluster;
 
     function init(div, location, zoom) {
+        directionsDisplay = new google.maps.DirectionsRenderer();
         map = new google.maps.Map(div, {
             center: location,
             zoom: zoom,
             disableDefaultUI: true
         });
+        directionsDisplay.setMap(map);
     }
 
     function setMapOnAll(map) {
@@ -28,7 +30,7 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
     }
 
 
-    function infoWindowOpen(marker, title, socialObject, companyId, style) {
+    function infoWindowOpen(marker, title, socialObject, companyId, style, position) {
 
         var modalScope = $rootScope.$new();
         modalScope.marker = marker;
@@ -36,6 +38,13 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
         modalScope.socialObject = socialObject;
         modalScope.companyId = companyId;
         modalScope.style = style;
+        modalScope.routeMode = routeService.getRouteMode();
+        modalScope.addToRoute = function () {
+            routeService.addPoint({
+                id: companyId,
+                position: position
+            })
+        };
 
         modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
@@ -64,7 +73,7 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
         });
 
         marker.addListener('click', function () {
-            infoWindowOpen(marker, title, socialObject, companyId, style);
+            infoWindowOpen(marker, title, socialObject, companyId, style, position);
         });
 
         markers.push(marker);
@@ -115,12 +124,17 @@ app.service('map', function ($ionicModal, $rootScope, company, COMPANY_STYLE) {
         return map;
     }
 
+    function drawDirections(result) {
+        directionsDisplay.setDirections(result);
+    }
+
     return {
         init: init,
         processMakers: processMakers,
         moveCamera: moveCamera,
         clear: clear,
         resize: resize,
-        getMap: getMap
+        getMap: getMap,
+        drawDirections: drawDirections
     };
 });

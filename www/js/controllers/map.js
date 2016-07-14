@@ -1,6 +1,9 @@
-app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicModal, $ionicPopup, map, searchService) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, map, searchService, routeService) {
 
     $scope.showPopUp = false;
+    $scope.showRoute = false;
+    $scope.routeMode = false;
+    $scope.formRoute = {};
 
     $scope.$on('$ionicView.enter', function (e) {
         // if (window.localStorage.getItem('firstTime')) {
@@ -45,6 +48,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             }
             map.moveCamera(lat, lon, 7);
         }
+        $scope.showRoute = true;
     }
 
     function showPopUp() {
@@ -96,5 +100,42 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     $scope.closeModal = function () {
         $scope.modal.hide()
     };
+    
+    $scope.createRoute = function () {
+        var routePopup = $ionicPopup.show({
+            templateUrl: 'templates/createRoute-popup.html',
+            title: 'Findness',
+            subTitle: 'Crear ruta',
+            scope: $scope,
+            buttons: [
+                {
+                    text: 'Aceptar',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        if($scope.formRoute.hasOwnProperty("name") && $scope.formRoute.name.trim() != ""){
+                            $scope.routeMode = true;
+                            routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.transport);
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                },
+                {
+                    text: 'Cancelar',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        routePopup.close();
+                        return true;
+                    }
+                }
+            ]
+        });
+    };
+
+    $scope.finishRoute = function () {
+        $scope.routeMode = false;
+        routeService.finishRoute();
+    }
 
 });

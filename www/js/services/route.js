@@ -1,7 +1,14 @@
-app.service('routeSrv', function ($q) {
+app.service('routeService', function ($q, routes) {
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];
+    var routeMode = false;
+    var route = {
+        name: null,
+        transport: null,
+        lastPoint: null,
+        points: {}
+    };
 
     function requestRoute(start, end, travelMode) {
 
@@ -16,12 +23,14 @@ app.service('routeSrv', function ($q) {
         directionsService.route(request, function (response, status) {
 
             if (status == google.maps.DirectionsStatus.OK) {
-                var route = new Array();
-                var gRoute = response.routes[0]['overview_path'];
-                for (var s = 0; s < gRoute.length; s++) {
-                    route.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
-                }
-                deferred.resolve(route);
+                // var route = new Array();
+                // var gRoute = response.routes[0]['overview_path'];
+                // for (var s = 0; s < gRoute.length; s++) {
+                //     route.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
+                // }
+                // deferred.resolve(route);
+                map.drawDirections(response);
+                deferred.resolve();
             } else {
                 deferred.reject(status);
             }
@@ -48,8 +57,50 @@ app.service('routeSrv', function ($q) {
         return deferred.promise;
     }
 
+    function getRouteMode() {
+        return routeMode;
+    }
+
+    // function setRouteMode(status) {
+    //     routeMode = status;
+    // }
+
+    function initRoute(name, transport) {
+        console.log(name, transport);
+        return;
+        routeMode = true;
+        var route = {
+            name: name,
+            transport: transport,
+            points: []
+        };
+    }
+
+    function addPoint(point) {
+        if (routeMode) {
+            route.points[point.id] = (point);
+            route.lastPoint = point;
+            if (Object.keys(route.points).length > 1) {
+                //drawRoute()
+                requestRoute(route.lastPoint.position, point.position, route.transport);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function finishRoute() {
+        routeMode = false;
+    }
+
     return {
         requestRoute: requestRoute,
-        drawRoute: drawRoute
+        drawRoute: drawRoute,
+        getRouteMode: getRouteMode,
+        //setRouteMode: setRouteMode,
+        initRoute: initRoute,
+        addPoint: addPoint,
+        finishRoute: finishRoute
     };
 });
