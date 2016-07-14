@@ -1,18 +1,16 @@
 <ion-view>
     <ion-content>
-        <div style="width:100%;height:100%" id="map_canvas" data-tap-disabled="true">
-            <div class="tabs-striped tabs-top tabs-background-positive tabs-color-light" ng-if="false">
-                <div class="tabs">
-                    <a class="tab-item" href="#">
-                        <!--<i class="icon ion-star"></i>-->
-                        Mapa
-                    </a>
-                    <a class="tab-item" href="#">
-                        <!--<i class="icon ion-gear-a"></i>-->
-                        Listado
-                    </a>
-                </div>
+        <div class="tabs-striped tabs-top tabs-mapa tabs-background-positive tabs-color-light">
+            <div class="tabs">
+                <a class="tab-item" href="#app/list">
+                    Lista
+                </a>
+                <a class="tab-item active" href="#">
+                    Mapa
+                </a>
             </div>
+        </div>
+        <div style="width:100%;height:100%" id="map_canvas" data-tap-disabled="true">
         </div>
     </ion-content>
 </ion-view>
