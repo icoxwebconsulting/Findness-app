@@ -193,6 +193,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     $ionicLoading.hide();
                     console.log("resultados con geoloc", response);
                     processResults(response);
+                }).catch(function (e) {
+                    $ionicLoading.hide();
+                    $ionicPopup.alert({
+                        title: 'Ocurrió un error en la búsqueda',
+                        template: e
+                    });
                 });
             }).catch(function () {
                 $ionicPopup.alert({
@@ -244,7 +250,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 console.log("resultados sin geoloc", response);
                 processResults(response);
             }).catch(function (e) {
+                $ionicLoading.hide();
                 console.log("Catch de la busqueda", e);
+                $ionicPopup.alert({
+                    title: 'Ocurrió un error en la búsqueda',
+                    template: e
+                });
             });
         }
     }

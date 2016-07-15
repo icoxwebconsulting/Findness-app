@@ -4,7 +4,7 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService) 
 
     $scope.$on('$ionicView.enter', function (e) {
         var list = searchService.getResultSearch();
-        if (list.hasOwnProperty(items)) {
+        if (typeof  list == "object" && list.hasOwnProperty(items)) {
             $scope.list = list.items;
         }
     });

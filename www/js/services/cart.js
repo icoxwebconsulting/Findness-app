@@ -2,7 +2,7 @@ app.service('cart', function () {
 
     self.payable = 0;
     self.totalCompanies = 10;
-    self.unitPrice = 2;
+    self.unitPrice = 0.10;
 
     function getBalance() {
         return window.localStorage.getItem('balance') || 0;
@@ -12,23 +12,23 @@ app.service('cart', function () {
         return self.unitPrice;
     }
 
-    function setUnitPrice(price){
-        self.unitPrice =  price;
+    function setUnitPrice(price) {
+        self.unitPrice = price;
     }
 
     function getTotalCompanies() {
         return self.totalCompanies;
     }
 
-    function setTotalCompanies(total){
+    function setTotalCompanies(total) {
         self.totalCompanies = total;
     }
 
-    function setPayable(amount){
+    function setPayable(amount) {
         self.payable = amount;
     }
 
-    function getPayable(){
+    function getPayable() {
         return self.payable;
     }
 
@@ -36,10 +36,10 @@ app.service('cart', function () {
     return {
         getBalance: getBalance,
         getUnitPrice: getUnitPrice,
-        setUnitPrice:setUnitPrice,
-        getTotalCompanies:getTotalCompanies,
-        setTotalCompanies:setTotalCompanies,
-        setPayable:setPayable,
-        getPayable:getPayable
+        setUnitPrice: setUnitPrice,
+        getTotalCompanies: getTotalCompanies,
+        setTotalCompanies: setTotalCompanies,
+        setPayable: setPayable,
+        getPayable: getPayable
     };
 });

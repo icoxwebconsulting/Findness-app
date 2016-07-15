@@ -1,4 +1,4 @@
-app.service('routeService', function ($q, routes) {
+app.service('routeService', function ($q, $rootScope, routes) {
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];
@@ -23,13 +23,13 @@ app.service('routeService', function ($q, routes) {
         directionsService.route(request, function (response, status) {
 
             if (status == google.maps.DirectionsStatus.OK) {
-                // var route = new Array();
-                // var gRoute = response.routes[0]['overview_path'];
-                // for (var s = 0; s < gRoute.length; s++) {
-                //     route.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
-                // }
+                var theRoute = new Array();
+                var gRoute = response.routes[0]['overview_path'];
+                for (var s = 0; s < gRoute.length; s++) {
+                    theRoute.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
+                }
                 // deferred.resolve(route);
-                map.drawDirections(response);
+                $rootScope.$emit('drawDirections', theRoute);
                 deferred.resolve();
             } else {
                 deferred.reject(status);
@@ -67,13 +67,9 @@ app.service('routeService', function ($q, routes) {
 
     function initRoute(name, transport) {
         console.log(name, transport);
-        return;
         routeMode = true;
-        var route = {
-            name: name,
-            transport: transport,
-            points: []
-        };
+        route.name = name;
+        route.transport = transport;
     }
 
     function addPoint(point) {

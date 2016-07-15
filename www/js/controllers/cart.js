@@ -5,17 +5,15 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
 
     $scope.changeTotal = function () {
 
-        if($scope.view.totalCompanies > 0)
-        {
+        if ($scope.view.totalCompanies > 0) {
 
-            if($scope.view.totalCompanies > $scope.maxCompanies )
-            {
+            if ($scope.view.totalCompanies > $scope.maxCompanies) {
                 $scope.view.totalCompanies = $scope.maxCompanies;
                 $ionicPopup.alert({
                     title: 'Límite de empresas',
                     template: 'La cantidad supera el máximo de empresas encontradas.'
                 });
-            }else
+            } else
                 $scope.view.total = ($scope.view.totalCompanies * $scope.view.unitPrice) + 5;
 
         }

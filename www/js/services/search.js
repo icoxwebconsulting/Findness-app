@@ -170,10 +170,10 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         return qualitas(accessToken).search(query).$promise
             .then(function (response) {
                 return response;
+            },
+            function (e) {//error handler
+                throw e;
             })
-            .catch(function (response) {
-                console.log("error en la consulta", query);
-            });
     }
 
     function searchQualitas(query) {
@@ -200,6 +200,9 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
                     console.log("fin de la cadena", getResultSearch());
                     deferred.resolve(getResultSearch());
                 }
+            }).catch(function (e) {
+                console.log("error",e);
+                deferred.reject(e);
             });
         }
 

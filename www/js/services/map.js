@@ -29,7 +29,6 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
         markers = [];
     }
 
-
     function infoWindowOpen(marker, title, socialObject, companyId, style, position) {
 
         var modalScope = $rootScope.$new();
@@ -103,7 +102,8 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
         }
         markerCluster = new MarkerClusterer(map, markers, {
             maxZoom: 10,
-            imagePath: 'lib/js-marker-clusterer/images/m'});
+            imagePath: 'lib/js-marker-clusterer/images/m'
+        });
     }
 
     function moveCamera(lat, long, zoom) {
@@ -123,6 +123,19 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
     function getMap() {
         return map;
     }
+
+    $rootScope.$on('drawDirections', function (e, response) {
+        //drawDirections(response);
+        var flightPath = new google.maps.Polyline({
+            path: response,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        flightPath.setMap(map);
+    });
 
     function drawDirections(result) {
         directionsDisplay.setDirections(result);
