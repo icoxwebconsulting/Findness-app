@@ -22,11 +22,11 @@
                 <input type="email" placeholder="Escriba su email" ng-model="data.email">
             </label>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Contraseña</span>
+                <span class="input-label">Contraseña *</span>
                 <input type="password" placeholder="Elija una contraseña" ng-model="data.password">
             </label>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Confirmar contraseña</span>
+                <span class="input-label">Confirmar contraseña *</span>
                 <input type="password" placeholder="Repita su contraseña" ng-model="data.confirmPassword">
             </label>
             <label>
@@ -42,8 +42,8 @@
 
         <div class="row">
             <div class="col">
-                <button ng-click="register()" ng-disabled="!data.email || !data.password || !data.name"
-                        class="button button-full button-positive">Registrarse
+                <button ng-click="register()" class="button button-full button-positive">
+                    Registrarse
                 </button>
             </div>
         </div>
