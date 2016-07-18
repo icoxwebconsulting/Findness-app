@@ -39,7 +39,9 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
         modalScope.companyId = companyId;
         modalScope.style = style;
         modalScope.routeMode = routeService.getRouteMode();
+        modalScope.routeName = routeService.getRouteName();
         modalScope.isAddedd = routeService.existPoint(companyId);
+
         modalScope.addToRoute = function () {
             if (routeService.addPoint({
                     id: companyId,
@@ -48,6 +50,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
                 modalScope.isAddedd = true;
             }
         };
+
         modalScope.removePoint = function (id) {
             if (routeService.removePoint(id)) {
                 modalScope.isAddedd = false;

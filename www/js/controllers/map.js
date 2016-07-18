@@ -144,8 +144,13 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.finishRoute = function () {
-        $scope.routeMode = false;
-        routeService.finishRoute();
+        routeService.finishRoute().then(function () {
+            $scope.routeMode = false;
+        }).catch(function () {
+            $ionicPopup.alert({
+                title: "Ocurrió un error al guardar la ruta, intente nuevamente."
+            });
+        });
     }
 
 });

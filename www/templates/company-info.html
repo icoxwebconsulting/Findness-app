@@ -6,17 +6,10 @@
         <p class="social-object">
             {{socialObject | lowercase}}
         </p>
-        <div ng-show="routeMode">
-            <button class="button button-small button-assertive" ng-click="addToRoute()" ng-show="!isAddedd">
-                Agregar a ruta
-            </button>
-            <button class="button button-small button-assertive" ng-click="removePoint(companyId)" ng-show="isAddedd">
-                Quitar de ruta
-            </button>
-        </div>
+
     </ion-content>
     <ion-footer-bar>
-        <div class="row">
+        <div class="row" ng-hide="routeMode">
             <div class="col-50">
                 <span style="font-weight: 500;font-size: 12px;">Color del marcador:</span>
             </div>
@@ -36,6 +29,20 @@
                 <img src="img/color/green.png" ng-click="changeStyle(marker,'GREEN',companyId)" ng-class="{'active': style  == 'GREEN'}">
             </div>
             </a>
+        </div>
+
+        <div class="row" ng-show="routeMode">
+            <div class="col-50">
+                <span style="font-weight: 500;font-size: 12px;">Ruta: {{routeName}}</span>
+            </div>
+            <div class="col-50">
+                <button class="button button-small button-assertive" ng-click="addToRoute()" ng-show="!isAddedd">
+                    Agregar a ruta
+                </button>
+                <button class="button button-small button-assertive" ng-click="removePoint(companyId)" ng-show="isAddedd">
+                    Quitar de ruta
+                </button>
+            </div>
         </div>
     </ion-footer-bar>
 </ion-modal-view>

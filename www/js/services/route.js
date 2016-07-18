@@ -1,4 +1,4 @@
-app.service('routeService', function ($q, $rootScope, routes) {
+app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];
@@ -59,6 +59,10 @@ app.service('routeService', function ($q, $rootScope, routes) {
         return routeMode;
     }
 
+    function getRouteName() {
+        return route.name;
+    }
+
     // function setRouteMode(status) {
     //     routeMode = status;
     // }
@@ -104,13 +108,26 @@ app.service('routeService', function ($q, $rootScope, routes) {
     }
 
     function finishRoute() {
-        routeMode = false;
+        var token = userDatastore.getTokens();
+        var data = route;
+        delete data.lastPoint;
+        data.points = JSON.stringify(data.points);
+
+        return routes(token.accessToken).saveRoute(data).$promise
+            .then(function (response) {
+                console.log(response);
+                routeMode = false;
+                return response;
+            }, function (e) { //error
+                throw e;
+            });
     }
 
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
         getRouteMode: getRouteMode,
+        getRouteName: getRouteName,
         //setRouteMode: setRouteMode,
         initRoute: initRoute,
         addPoint: addPoint,
