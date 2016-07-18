@@ -33,10 +33,10 @@ app.constant("DATETIME_FORMAT_CONF", {
 
 app.constant("COMPANY_STYLE", {
     COLOR:{
-        BLUE:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-        PINK:'http://maps.google.com/mapfiles/ms/icons/pink-dot.png',
-        YELLOW:'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-        RED: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-        GREEN: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        BLUE:'http://icox.com/img_findness/blue-dot.png',
+        PINK:'http://icox.com/img_findness/pink-dot.png',
+        YELLOW:'http://icox.com/img_findness/yellow-dot.png',
+        RED: 'http://icox.com/img_findness/red-dot.png',
+        GREEN: 'http://icox.com/img_findness/green-dot.png'
     }
 });

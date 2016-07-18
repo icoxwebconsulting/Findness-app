@@ -36,12 +36,21 @@
     opacity: 0.6 !important;
 }
 
+.button-positive, .bar-positive{
+    background: #0185CF !important;
+}
+
+.button-stable{
+    background: #636363 !important;
+    color: #ffffff !important;
+}
+
 .logo-center{
     width: 100%;
 }
 
 .login-logo{
-    padding: 40px;
+    padding: 50px;
 }
 
 .recover-text{
@@ -78,11 +87,11 @@
 }
 
 .bar-positive{
-    background-color: #035CBB !important;
+    background-color: #0185CF !important;
 }
 
 .tabs-striped.tabs-background-positive .tabs {
-    background-color: #035CBB !important;
+    background-color: #0185CF !important;
     background-image: none;
 }
 
@@ -150,6 +159,7 @@
 
 .register{
     background-image: url("../img/bg/1.jpg");
+    background-size: cover;
 }
 
 .register .title{
@@ -190,6 +200,7 @@
 
 .login{
     background-image: url("../img/bg/2.jpg");
+    background-size: cover;
 }
 
 .login .title{
@@ -264,6 +275,7 @@
 
 .slide-1{
     background-image: url("../img/bg/slide-1.jpg");
+    background-size: cover;
 }
 
 .slide-1 .content, .slide-2 .content, .slide-3 .content{
@@ -271,59 +283,49 @@
     padding: 10px;
 }
 
-.slide-1 h2, .slide-1 p, .slide-2 p{
+.slide-1 h2, .slide-2 h2, .slide-3 h2{
     color: #ffffff;
     font-family:  Roboto-Regular!important;
-    /*text-shadow: 2px 2px 4px #A1A1A1;*/
+    /*font-size: 15px;*/
+    /*line-height: 1.8;*/
 }
 
-.slide-1 .title{
+.slide-1 p, .slide-2 p, .slide-3 p{
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.slide-1 .title, .slide-2 .title,.slide-3 .title{
     text-align: center;
     margin-top: 20px;
 }
 
-.slide-1 .description{
+.slide-1 .description, .slide-2 .description,.slide-3 .description{
     text-align: justify;
     padding: 0px 20px;
+    color: #ffffff;
 }
 
-.slide-1 .logo, .slide-3 .logo{
-    background-color: #ffffff;
+.slide-1 .logo, .slide-2 .logo .slide-3 .logo{
+    /*background-color: #ffffff;*/
 }
 
-.slide-1 .logo img, .slide-3 .logo img{
+.slide-1 .logo img, .slide-2 .logo img, .slide-3 .logo img{
     padding: 10px 30px;
 }
 
 
 .slide-2{
     background-image: url("../img/bg/slide-2.jpg");
+    background-size: cover;
 }
 
-.slide-2 p{
-    font-size: 15px;
-    line-height: 1.8;
-}
-
-/*.slide-2 .content{*/
-    /*margin-top: 80%;*/
-    /*padding: 10px;*/
-/*}*/
-
-
-.slide-2 .description{
-    text-align: center;
-    padding: 0px 20px;
-}
 
 .slide-3{
     background-image: url("../img/bg/slide-3.jpg");
+    background-size: cover;
 }
 
-/*.slide-3 .content{*/
-    /*margin-top: 15%;*/
-    /*padding: 10px;*/
-/*}*/
 
 .swiper-pagination-bullet{
     background: #ffffff !important;
