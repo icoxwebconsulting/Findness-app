@@ -2,7 +2,7 @@
     <ion-side-menu-content drag-content="false">
         <ion-nav-bar class="bar-light">
             <ion-nav-title>
-                <div class="center">
+                <div class="left">
                     <img src="img/findness.png" class="logo">
                 </div>
             </ion-nav-title>
@@ -11,16 +11,15 @@
                 <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
                 </button>
             </ion-nav-buttons>
-            <ion-nav-buttons side="right">
-                <button class="button button-icon button-clear ion-ios-search" ui-sref="app.filter">
-                </button>
+            <ion-nav-buttons side="right" >
+                <img src="img/search.png" class="search-btn" ui-sref="app.filter">
             </ion-nav-buttons>
         </ion-nav-bar>
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
 
     <ion-side-menu side="left"  id="mainMenu">
-        <ion-header-bar class="bar-stable">
+        <ion-header-bar class="bar-light">
             <h1 class="title">Menú</h1>
         </ion-header-bar>
         <ion-content>

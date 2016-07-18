@@ -12,10 +12,9 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             $ionicPopup.alert({
                 title: "Ingrese su nombre"
             });
-        }
-        if (!$scope.data.lastName) {
+        }else if (!$scope.data.lastName) {
             $ionicPopup.alert({
-                title: "Ingrese su Apellido"
+                title: "Ingrese su apellido"
             });
         }
         else if (!$scope.data.email) {
@@ -25,12 +24,12 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
         }
         else if (!$scope.data.password) {
             $ionicPopup.alert({
-                title: "Ingrese su Contraseña"
+                title: "Ingrese su contraseña"
             });
         }
         else if (!$scope.data.confirmPassword) {
             $ionicPopup.alert({
-                title: "Confirme su Contraseña"
+                title: "confirme su Contraseña"
             });
         }
         else if ($scope.data.password !== $scope.data.confirmPassword) {
@@ -54,7 +53,6 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 lastName: $scope.data.lastName,
                 password: $scope.data.password
             }).then(function (result) {
-                console.log("este es el result", result);
                 $ionicLoading.hide();
                 if (result) {
                     $state.go('confirm');

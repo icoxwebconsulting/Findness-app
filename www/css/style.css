@@ -40,6 +40,16 @@
     width: 100%;
 }
 
+.login-logo{
+    padding: 40px;
+}
+
+.recover-text{
+    font-family:  Roboto-Regular!important;
+    text-align: center;
+    margin: 30px;
+}
+
 .hidden {
     display: none;
 }
@@ -49,8 +59,9 @@
     bottom: 30px;
 }
 
-.center {
-    margin-left: auto;
+.left {
+    float: left;
+    margin-left: 0px;
     margin-right: auto;
     display: block;
 }
@@ -76,13 +87,25 @@
 }
 
 .bar-header .logo{
-    width: 100%;
-    padding: 5px 15px;
+    width: auto;
+    height: 33px;
+    padding: 5px 25px;
+    margin-top: 5px;
+}
+
+.search-btn{
+    width: 20px;
+    height: 20px;
+    margin-top: 8px;
 }
 
 .bar .title.title-left{
     text-align: left;
     padding: 0px 10px;
+}
+
+.title-left{
+    left: 0px !important;
 }
 
 .button-100{
@@ -231,6 +254,12 @@
 
 .modal-company-info .row .col-20{
     height: 56px;
+}
+
+.slides-header img{
+    width: 25px;
+    padding: 1px;
+    margin-top: 2px;
 }
 
 .slide-1{
