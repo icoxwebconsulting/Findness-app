@@ -3,6 +3,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
     //var map;
     var markers = [];
     var markerCluster;
+    var paths = [];
 
     function init(div, location, zoom) {
         directionsDisplay = new google.maps.DirectionsRenderer();
@@ -38,11 +39,19 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
         modalScope.companyId = companyId;
         modalScope.style = style;
         modalScope.routeMode = routeService.getRouteMode();
+        modalScope.isAddedd = routeService.existPoint(companyId);
         modalScope.addToRoute = function () {
-            routeService.addPoint({
-                id: companyId,
-                position: position
-            })
+            if (routeService.addPoint({
+                    id: companyId,
+                    position: position
+                })) {
+                modalScope.isAddedd = true;
+            }
+        };
+        modalScope.removePoint = function (id) {
+            if (routeService.removePoint(id)) {
+                modalScope.isAddedd = false;
+            }
         };
 
         modalScope.changeStyle = function (marker, color, companyId) {
@@ -126,15 +135,16 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
 
     $rootScope.$on('drawDirections', function (e, response) {
         //drawDirections(response);
-        var flightPath = new google.maps.Polyline({
+        console.log(response);
+        var routePath = new google.maps.Polyline({
             path: response,
             geodesic: true,
             strokeColor: '#FF0000',
             strokeOpacity: 1.0,
-            strokeWeight: 2
+            strokeWeight: 3
         });
-
-        flightPath.setMap(map);
+        paths.push(routePath);
+        routePath.setMap(map);
     });
 
     function drawDirections(result) {

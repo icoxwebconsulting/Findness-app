@@ -7,8 +7,11 @@
             {{socialObject | lowercase}}
         </p>
         <div ng-show="routeMode">
-            <button class="button button-small button-assertive" ng-click="addToRoute()">
+            <button class="button button-small button-assertive" ng-click="addToRoute()" ng-show="!isAddedd">
                 Agregar a ruta
+            </button>
+            <button class="button button-small button-assertive" ng-click="removePoint(companyId)" ng-show="isAddedd">
+                Quitar de ruta
             </button>
         </div>
     </ion-content>

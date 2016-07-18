@@ -28,9 +28,8 @@ app.service('routeService', function ($q, $rootScope, routes) {
                 for (var s = 0; s < gRoute.length; s++) {
                     theRoute.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
                 }
-                // deferred.resolve(route);
-                $rootScope.$emit('drawDirections', theRoute);
-                deferred.resolve();
+                console.log("resuelto polyline", theRoute);
+                deferred.resolve(theRoute);
             } else {
                 deferred.reject(status);
             }
@@ -72,14 +71,33 @@ app.service('routeService', function ($q, $rootScope, routes) {
         route.transport = transport;
     }
 
+    function existPoint(id) {
+        return (typeof route.points[id] != "undefined");
+    }
+
     function addPoint(point) {
         if (routeMode) {
-            route.points[point.id] = (point);
-            route.lastPoint = point;
-            if (Object.keys(route.points).length > 1) {
-                //drawRoute()
-                requestRoute(route.lastPoint.position, point.position, route.transport);
+            if (typeof route.points[point.id] == "undefined") {
+                route.points[point.id] = (point);
+                if (Object.keys(route.points).length > 1) {
+                    //drawRoute()
+                    requestRoute(route.lastPoint.position, point.position, route.transport).then(function (theRoute) {
+                        $rootScope.$emit('drawDirections', theRoute);
+                        route.lastPoint = point;
+                    });
+                } else {
+                    route.lastPoint = point;
+                }
             }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function removePoint(id) {
+        if (typeof route.points[id] != "undefined") {
+            delete route.points[point.id];
             return true;
         } else {
             return false;
@@ -97,6 +115,8 @@ app.service('routeService', function ($q, $rootScope, routes) {
         //setRouteMode: setRouteMode,
         initRoute: initRoute,
         addPoint: addPoint,
-        finishRoute: finishRoute
+        removePoint: removePoint,
+        finishRoute: finishRoute,
+        existPoint: existPoint
     };
 });

@@ -82,6 +82,9 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesSer
         }).catch(function (e) {
             $ionicLoading.hide();
             console.log("Catch de la busqueda", e);
+            $ionicPopup.alert({
+                title: "Ocurrió un error al realizar la búsqueda, intente más tarde."
+            });
         });
     }
 
