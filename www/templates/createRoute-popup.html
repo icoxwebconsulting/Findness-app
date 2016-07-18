@@ -1,15 +1,18 @@
 <div class="list">
     <label class="item item-input">
-        <input type="text" placeholder="Nombre de la ruta" ng-model="formRoute.name">
+        <input type="text" placeholder="Nombre de la ruta" ng-model="formRoute.name" ng-class="{'has-error': formRoute.error}">
     </label>
+    <div class="error-container" ng-show="formRoute.error">
+        <i class="ion-information-circled"></i>
+        ¡Este campo es requerido!
+    </div>
     <label class="item item-input item-select">
         <div class="input-label">
             Transporte
         </div>
-        <select ng-model="formRoute.transport">
-            <option value="WALKING" selected>A pie</option>
-            <option value="DRIVING">En automóvil</option>
-            <option value="TRANSIT">En transporte público</option>
-        </select>
+
+        <select name="transportSelect" id="transportSelect"
+                ng-options="option.name for option in formRoute.availableOptions track by option.id"
+                ng-model="formRoute.selectedOption"></select>
     </label>
 </div>

@@ -74,7 +74,6 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesSer
             }
         }
 
-        console.log(options);
         searchService.searchQualitas(options).then(function (response) {
             $ionicLoading.hide();
             console.log("resultados searches", response);

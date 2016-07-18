@@ -3,7 +3,15 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     $scope.showPopUp = false;
     $scope.showRoute = false;
     $scope.routeMode = false;
-    $scope.formRoute = {};
+    $scope.formRoute = {
+        error: false,
+        availableOptions: [
+            {id: 'WALKING', name: 'A pie'},
+            {id: 'DRIVING', name: 'En automóvil'},
+            {id: 'TRANSIT', name: 'Transporte público'}
+        ],
+        selectedOption: {id: 'DRIVING', name: 'En automóvil'}
+    };
 
     $scope.$on('$ionicView.enter', function (e) {
         // if (window.localStorage.getItem('firstTime')) {
@@ -11,7 +19,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         //     $state.go('app.filter');
         //     return;
         // }
-        if(map.getMap()){
+        if (map.getMap()) {
             map.resize();
         }
         if ($scope.showPopUp) {
@@ -24,7 +32,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         $scope.data = data;
         if (data.showPopUp) {
             $scope.showPopUp = true;
-        }else{
+        } else {
             proccessMarkers(data.lastQuery);
         }
     });
@@ -100,8 +108,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     $scope.closeModal = function () {
         $scope.modal.hide()
     };
-    
+
     $scope.createRoute = function () {
+        delete $scope.formRoute.name;
         var routePopup = $ionicPopup.show({
             templateUrl: 'templates/createRoute-popup.html',
             title: 'Findness',
@@ -112,12 +121,13 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     text: 'Aceptar',
                     type: 'button-positive',
                     onTap: function (e) {
-                        if($scope.formRoute.hasOwnProperty("name") && $scope.formRoute.name.trim() != ""){
+                        if ($scope.formRoute.hasOwnProperty("name") && $scope.formRoute.name.trim() != "") {
                             $scope.routeMode = true;
-                            routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.transport);
-                            return true;
-                        }else{
-                            return false;
+                            $scope.formRoute.error = false;
+                            routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.selectedOption.id);
+                        } else {
+                            $scope.formRoute.error = true;
+                            e.preventDefault();
                         }
                     }
                 },

@@ -135,7 +135,6 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
 
     $rootScope.$on('drawDirections', function (e, response) {
         //drawDirections(response);
-        console.log(response);
         var routePath = new google.maps.Polyline({
             path: response,
             geodesic: true,

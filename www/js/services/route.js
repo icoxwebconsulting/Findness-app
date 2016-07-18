@@ -28,7 +28,6 @@ app.service('routeService', function ($q, $rootScope, routes) {
                 for (var s = 0; s < gRoute.length; s++) {
                     theRoute.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
                 }
-                console.log("resuelto polyline", theRoute);
                 deferred.resolve(theRoute);
             } else {
                 deferred.reject(status);
