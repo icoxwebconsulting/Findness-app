@@ -20,9 +20,19 @@
 
     <ion-side-menu side="left"  id="mainMenu">
         <ion-header-bar class="bar-light">
-            <h1 class="title">Menú</h1>
+            <div class="header-menu">
+                <div class="legend">
+                    <div class="left">
+                        <p ng-if="username.length <= 21">Hola, {{username| limitTo:21}}</p>
+                        <p>Hola, {{username| limitTo:18}} <span ng-if="username.length > 21">...</span></p>
+                    </div>
+                    <div class="right">
+                        <img src="img/cart.png" ui-sref="app.profile" menu-close>
+                    </div>
+                </div>
+            </div>
         </ion-header-bar>
-        <ion-content>
+        <ion-content class="categories">
             <ion-list>
                 <ion-item menu-close ng-click="stateChange('app.map')">
                     Ver mapa
@@ -39,9 +49,9 @@
                 <ion-item menu-close ng-click="stateChange('app.searches')">
                     Mis búsquedas
                 </ion-item>
-                <ion-item menu-close ng-click="stateChange('app.account')">
-                    Mi cuenta
-                </ion-item>
+                <!--<ion-item menu-close ng-click="stateChange('app.account')">-->
+                    <!--Mi cuenta-->
+                <!--</ion-item>-->
                 <ion-item menu-close ng-click="stateChange('app.payment')">
                     Agregar saldo
                 </ion-item>
