@@ -1,4 +1,4 @@
-app.service('map', function ($ionicModal, $rootScope, company, routeService, COMPANY_STYLE) {
+app.service('map', function ($ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE) {
 
     //var map;
     var markers = [];
@@ -152,13 +152,20 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
             siguiente.polyline.setMap(null);
             var startId = paths[data.nextId].startId;
             var endId = paths[data.nextId].endId;
-            routeService.requestRoute(startId, endId).then(function (theRoute) {
-                drawDirections({
-                    startId: startId,
-                    endId: endId,
-                    path: theRoute
+            var results = searchService.getResultSearch();
+            var pathStart = results.items[startId];
+            var pathEnd = results.items[endId];
+            if (pathStart && pathEnd) {
+                pathStart = new google.maps.LatLng(pathStart.latitude, pathStart.longitude);
+                pathEnd = new google.maps.LatLng(pathEnd.latitude, pathEnd.longitude);
+                routeService.requestRoute(pathStart, pathEnd).then(function (theRoute) {
+                    drawDirections({
+                        startId: startId,
+                        endId: endId,
+                        path: theRoute
+                    })
                 })
-            })
+            }
         }
         data.polyline.setMap(null);
         delete paths[response.deleteId];
