@@ -183,6 +183,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         var total = 0;
 
         function exec() {
+            storeQuery(query);
             callSearch(token.accessToken, query).then(function (response) {
                 if (query.page == 1) {
                     total = response.TotalElementos - response.TotalElementosNoConsultados;

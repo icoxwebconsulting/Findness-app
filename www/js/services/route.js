@@ -10,12 +10,12 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         points: {}
     };
 
-    function requestRoute(start, end, travelMode) {
+    function requestRoute(start, end) {
 
         var request = {
             origin: start,
             destination: end,
-            travelMode: travelMode
+            travelMode: route.transport
         };
 
         var deferred = $q.defer();
@@ -84,8 +84,12 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                 route.points[point.id] = (point);
                 if (Object.keys(route.points).length > 1) {
                     //drawRoute()
-                    requestRoute(route.lastPoint.position, point.position, route.transport).then(function (theRoute) {
-                        $rootScope.$emit('drawDirections', theRoute);
+                    requestRoute(route.lastPoint.position, point.position).then(function (theRoute) {
+                        $rootScope.$emit('drawDirections', {
+                            startId: route.lastPoint.id,
+                            endId: point.id,
+                            path: theRoute
+                        });
                         route.lastPoint = point;
                     });
                 } else {
@@ -100,7 +104,10 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     function removePoint(id) {
         if (typeof route.points[id] != "undefined") {
-            delete route.points[point.id];
+            $rootScope.$emit('deletePath', {
+                deleteId: id
+            });
+            delete route.points[id];
             return true;
         } else {
             return false;

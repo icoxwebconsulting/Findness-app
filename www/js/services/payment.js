@@ -113,6 +113,7 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
     function registerSuccessPayment(data) {
         return transaction(localStorage.getItem('accessToken')).save(data).$promise.then(function (response) {
             console.log(response);
+            return response;
         });
     }
 

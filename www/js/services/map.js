@@ -3,7 +3,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
     //var map;
     var markers = [];
     var markerCluster;
-    var paths = [];
+    var paths = {};//la clave del objeto es el punto de llegada, el único que no debe estar aqui es el primero
 
     function init(div, location, zoom) {
         directionsDisplay = new google.maps.DirectionsRenderer();
@@ -137,20 +137,55 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, COM
     }
 
     $rootScope.$on('drawDirections', function (e, response) {
-        //drawDirections(response);
+        drawDirections(response)
+    });
+
+    $rootScope.$on('deletePath', function (e, response) {
+        console.log(paths)
+        var data = paths[response.deleteId];
+        var anterior = paths[data.startId];
+        anterior.endId = data.endId;
+        paths[data.startId] = anterior;
+        if (data.nextId) {
+            paths[data.nextId].startId = data.startId;
+            var siguiente = paths[data.nextId];
+            siguiente.polyline.setMap(null);
+            var startId = paths[data.nextId].startId;
+            var endId = paths[data.nextId].endId;
+            routeService.requestRoute(startId, endId).then(function (theRoute) {
+                drawDirections({
+                    startId: startId,
+                    endId: endId,
+                    path: theRoute
+                })
+            })
+        }
+        data.polyline.setMap(null);
+        delete paths[response.deleteId];
+
+    });
+
+    function drawDirections(response) {
+        //directionsDisplay.setDirections(result);
         var routePath = new google.maps.Polyline({
-            path: response,
+            path: response.path,
             geodesic: true,
             strokeColor: '#FF0000',
             strokeOpacity: 1.0,
             strokeWeight: 3
         });
-        paths.push(routePath);
+        paths[response.endId] = {
+            startId: response.startId,
+            endId: response.endId,
+            nextId: null,
+            polyline: routePath
+        };
+        var element = paths[response.startId];
+        if (element) {
+            element.nextId = response.endId;
+            paths[response.startId] = element;
+        }
         routePath.setMap(map);
-    });
-
-    function drawDirections(result) {
-        directionsDisplay.setDirections(result);
     }
 
     return {
