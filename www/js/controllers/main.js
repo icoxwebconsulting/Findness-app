@@ -2,6 +2,8 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
 
     userDatastore.setRefreshingAccessToken(0);
 
+    $scope.username = userDatastore.getUsername();
+
     user.refreshAccessToken()
         .then(function () {
 
