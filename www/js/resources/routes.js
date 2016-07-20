@@ -7,6 +7,7 @@ app.factory('routes', function ($resource, SERVER_CONF) {
         return $resource(SERVER_CONF.API_HOST + 'map-routes', null, {
             getRoutes: {
                 method: 'GET',
+                isArray: true,
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
