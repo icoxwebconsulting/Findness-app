@@ -130,6 +130,19 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             });
     }
 
+    function getRoutes() {
+        var token = userDatastore.getTokens();
+
+        return routes(token.accessToken).getRoutes().$promise
+            .then(function (response) {
+                console.log(response);
+                return response;
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+    }
+
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
@@ -140,6 +153,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         addPoint: addPoint,
         removePoint: removePoint,
         finishRoute: finishRoute,
-        existPoint: existPoint
+        existPoint: existPoint,
+        getRoutes: getRoutes
     };
 });

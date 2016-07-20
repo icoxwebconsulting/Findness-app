@@ -7,6 +7,20 @@
                     Listado CNAE: Puede seleccionar varios CNAES, los CNAE de 2 dígitos incluyen sus subcategorías.
                 </div>
             </div>
+            <div class="row subtitle filter" scroll="false" ng-show="model != ''">
+                <div class="col col-100">
+                    <div class="left">
+                        <span>CNAES Seleccionados:</span>
+                    </div>
+                    <div class="center">
+                        <br>
+                    </div>
+                    <div class="right">
+                        <br>
+                    </div>
+
+                </div>
+            </div>
             <label class="item item-input">
                 <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                        autocomplete="off"
@@ -39,7 +53,21 @@
             </div>
 
             <div class="card" ng-hide="options.useLocation">
-                <div class="item item-text-wrap">
+                <div class="row subtitle filter" scroll="false" ng-show="stateModel != ''">
+                    <div class="col col-100">
+                        <div class="left">
+                            <span>Provincia seleccionada:</span>
+                        </div>
+                        <div class="center">
+                            <br>
+                        </div>
+                        <div class="right">
+                            <br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="item item-text-wrap" ng-hide="zipCodeModel != ''">
                     <!-- BUSQUEDA DE PROVINCIAS -->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                            autocomplete="off"
@@ -57,6 +85,20 @@
                            max-selected-items="1"/>
                 </div>
 
+                <div class="row subtitle filter" scroll="false" ng-show="cityModel != '' && stateModel != ''">
+                    <div class="col col-100">
+                        <div class="left">
+                            <span>Ciudad seleccionada:</span>
+                        </div>
+                        <div class="center">
+                            <br>
+                        </div>
+                        <div class="right">
+                            <br>
+                        </div>
+
+                    </div>
+                </div>
                 <div class="item item-text-wrap" ng-show="stateModel != ''">
                     <!-- BUSQUEDA DE CIUDADES -->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
@@ -75,6 +117,20 @@
                            max-selected-items="1"/>
                 </div>
 
+                <div class="row subtitle filter" scroll="false" ng-show="zipCodeModel != ''">
+                    <div class="col col-100">
+                        <div class="left">
+                            <span>Código postal seleccionado:</span>
+                        </div>
+                        <div class="center">
+                            <br>
+                        </div>
+                        <div class="right">
+                            <br>
+                        </div>
+
+                    </div>
+                </div>
                 <div class="item item-text-wrap" ng-hide="stateModel != ''">
                     <!-- BUSQUEDA DE ZIPCODE-->
                     <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
@@ -89,7 +145,7 @@
                            select-items-label="Seleccione los códigos postales correspondientes..."
                            selected-items-label="Seleccionados:"
                            template-url="templates/template-autocomplete-states.html"
-                           max-selected-items="10"/>
+                           max-selected-items="1"/>
                 </div>
             </div>
 

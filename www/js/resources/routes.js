@@ -5,16 +5,14 @@ app.factory('routes', function ($resource, SERVER_CONF) {
         // }
 
         return $resource(SERVER_CONF.API_HOST + 'map-routes', null, {
-            search: {
+            getRoutes: {
                 method: 'GET',
-                url: SERVER_CONF.API_HOST + 'map-routes',
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
             },
             saveRoute: {
                 method: 'POST',
-                url: SERVER_CONF.API_HOST + 'map-routes',
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

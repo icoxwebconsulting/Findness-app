@@ -218,10 +218,13 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     // (3)consulta con sólo el código postal
                     delete options.states;
                     delete options.cities;
+                    delete options.geoLocations;
                     options.postalCodes = [];
-                    for (var i = 0; i < $scope.selectedZipCode.length; i++) {
-                        options.postalCodes.push($scope.selectedZipCode[i].id);
-                    }
+                    // for (var i = 0; i < $scope.selectedZipCode.length; i++) {
+                    //     options.postalCodes.push($scope.selectedZipCode[i]);
+                    // }
+                    // options.postalCodes = JSON.stringify(options.postalCodes);
+                    options.postalCodes.push($scope.selectedZipCode);
                     options.postalCodes = JSON.stringify(options.postalCodes);
                 }
             } else {

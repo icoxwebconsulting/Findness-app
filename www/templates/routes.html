@@ -14,5 +14,15 @@
 
             </div>
         </div>
+        <content has-header="true" padding="true">
+            <ion-list>
+                <ion-item ng-repeat="item in items" class="item-button-right">
+                    {{item.name}} - {{type[item.transport]}}
+                    <button class="button button-positive" ng-click="callRoute(item)">
+                        <i class="icon ion-eye"></i>
+                    </button>
+                </ion-item>
+            </ion-list>
+        </content>
     </ion-content>
 </ion-view>

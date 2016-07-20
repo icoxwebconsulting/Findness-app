@@ -141,7 +141,6 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
     });
 
     $rootScope.$on('deletePath', function (e, response) {
-        console.log(paths)
         var data = paths[response.deleteId];
         var anterior = paths[data.startId];
         anterior.endId = data.endId;
