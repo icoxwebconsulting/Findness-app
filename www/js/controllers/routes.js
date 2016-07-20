@@ -1,4 +1,4 @@
-app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeService) {
+app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeService, map) {
 
     $scope.items;
     $scope.type = {
@@ -13,9 +13,14 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeServi
         });
     });
 
-    $scope.callRoute = function () {
+    $scope.callRoute = function (item) {
         $ionicLoading.show({
             template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });
+
+        routeService.setRoutes(item).then(function () {
+            //TODO: pintar markers y tramos
+            $state.go("app.map");
+        })
     }
 });

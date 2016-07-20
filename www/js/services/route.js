@@ -4,6 +4,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
     var polylines = [];
     var routeMode = false;
     var route = {
+        id: null, //mostrado al guardar la ruta
         name: null,
         transport: null,
         lastPoint: null,
@@ -143,6 +144,29 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             });
     }
 
+    function setRoutes(item) {
+        var deferred = $q.defer();
+
+        try {
+            route = {
+                id: item.id,
+                name: item.name,
+                transport: item.transport,
+                lastPoint: test[Object.keys(item.points)[Object.keys.length - 1]].id,
+                points: item.points
+            };
+            //TODO: revisar que el objeto esté adecuadamente construido
+            // for(var point in item.points){
+            //
+            // }
+            deferred.resolve(polyline);
+        } catch (e) {
+            deferred.reject(polyline);
+        }
+
+        return deferred.promise;
+    }
+
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
@@ -154,6 +178,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         removePoint: removePoint,
         finishRoute: finishRoute,
         existPoint: existPoint,
-        getRoutes: getRoutes
+        getRoutes: getRoutes,
+        setRoutes: setRoutes
     };
 });
