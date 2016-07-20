@@ -2,7 +2,8 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];
-    var routeMode = false;
+    var routeMode = false; //modo de crear ruta
+    var viewRoute = false; //modo de visualizar ruta
     var route = {
         id: null, //mostrado al guardar la ruta
         name: null,
@@ -80,11 +81,10 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
     }
 
     function addPoint(point) {
-        if (routeMode) {
+        if (routeMode || viewRoute) {
             if (typeof route.points[point.id] == "undefined") {
                 route.points[point.id] = (point);
                 if (Object.keys(route.points).length > 1) {
-                    //drawRoute()
                     requestRoute(route.lastPoint.position, point.position).then(function (theRoute) {
                         $rootScope.$emit('drawDirections', {
                             startId: route.lastPoint.id,
@@ -119,12 +119,15 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         var token = userDatastore.getTokens();
         var data = route;
         delete data.lastPoint;
+        delete data.id;
         data.points = JSON.stringify(data.points);
 
         return routes(token.accessToken).saveRoute(data).$promise
             .then(function (response) {
                 console.log(response);
                 routeMode = false;
+                viewRoute = true; //como estoy mostrando la ruta, paso al modo de edición
+                route.id = response.id;
                 return response;
             }, function (e) { //error
                 throw e;
@@ -146,22 +149,22 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     function setRoutes(item) {
         var deferred = $q.defer();
-
         try {
+            viewRoute = true; //establezco que estoy en modo de visualización de una ruta
             route = {
                 id: item.id,
                 name: item.name,
                 transport: item.transport,
-                lastPoint: test[Object.keys(item.points)[Object.keys.length - 1]].id,
-                points: item.points
+                lastPoint: null,
+                points: {}
             };
             //TODO: revisar que el objeto esté adecuadamente construido
-            // for(var point in item.points){
-            //
-            // }
-            deferred.resolve(polyline);
+            for (var i in item.points) {
+                addPoint(item.points[i]);
+            }
+            deferred.resolve();
         } catch (e) {
-            deferred.reject(polyline);
+            deferred.reject();
         }
 
         return deferred.promise;
@@ -172,7 +175,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         drawRoute: drawRoute,
         getRouteMode: getRouteMode,
         getRouteName: getRouteName,
-        //setRouteMode: setRouteMode,
         initRoute: initRoute,
         addPoint: addPoint,
         removePoint: removePoint,

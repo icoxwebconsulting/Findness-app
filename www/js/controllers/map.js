@@ -1,4 +1,4 @@
-app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, map, searchService, routeService) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, map, searchService, routeService) {
 
     $scope.showPopUp = false;
     $scope.showRoute = false;
@@ -144,9 +144,14 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.finishRoute = function () {
+        $ionicLoading.show({
+            template: '<p>Guardando la ruta...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
         routeService.finishRoute().then(function () {
             $scope.routeMode = false;
+            $ionicLoading.hide();
         }).catch(function () {
+            $ionicLoading.hide();
             $ionicPopup.alert({
                 title: "Ocurrió un error al guardar la ruta, intente nuevamente."
             });

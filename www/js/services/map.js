@@ -103,9 +103,14 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
                 var style = items[item].style;
             else
                 var style = 'RED';
-
+            var position;
+            if (typeof items[item].position != "undefined") {
+                position = new google.maps.LatLng(items[item].position.lat, items[item].position.lng);
+            } else {
+                position = new google.maps.LatLng(items[item].latitude, items[item].longitude);
+            }
             addMaker(
-                new google.maps.LatLng(items[item].latitude, items[item].longitude),
+                position,
                 items[item].socialReason,
                 items[item].socialObject,
                 items[item].id,

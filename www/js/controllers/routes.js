@@ -18,8 +18,17 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeServi
             template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });
 
+        //TODO: agrego data dummy para los datos de la empresa mientras el API está lista
+        for (var j in item.points) {
+            item.points[j].socialReason = "Dummy";
+            item.points[j].socialObject = "Data Dummy";
+        }
+        //TODO: por eliminar
+
         routeService.setRoutes(item).then(function () {
             //TODO: pintar markers y tramos
+        map.processMakers(item.points);
+            $ionicLoading.hide();
             $state.go("app.map");
         })
     }
