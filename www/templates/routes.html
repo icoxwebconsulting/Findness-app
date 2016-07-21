@@ -1,28 +1,23 @@
 <ion-view>
-    <ion-content>
-        <div class="row subtitle filter" scroll="false">
-            <div class="col col-100">
-                <div class="left">
-                    <span>Mis rutas</span>
-                </div>
-                <div class="center">
-                    <br>
-                </div>
-                <div class="right">
-                    <br>
-                </div>
-
-            </div>
+    <ion-header-bar class="bar-subheader">
+        <h2 class="title">Mis rutas</h2>
+        <div class="buttons">
+            <button class="button button-positive" ng-click="shouldShowDelete = ! shouldShowDelete">
+                <i class="icon ion-trash-a"></i>
+            </button>
         </div>
-        <content has-header="true" padding="true">
-            <ion-list>
-                <ion-item ng-repeat="item in items" class="item-button-right">
-                    {{item.name}} - {{type[item.transport]}}
-                    <button class="button button-positive" ng-click="callRoute(item)">
-                        <i class="icon ion-eye"></i>
-                    </button>
-                </ion-item>
-            </ion-list>
-        </content>
+    </ion-header-bar>
+    <ion-content class="has-subheader">
+        <ion-list show-delete="shouldShowDelete">
+            <ion-item ng-repeat="item in items">
+                <h2 ng-click="callRoute(item)">{{item.name}} - {{type[item.transport]}}</h2>
+                <ion-delete-button class="ion-minus-circled"
+                                   ng-click="deleteRoute($index, item)">
+                </ion-delete-button>
+                <!--<button class="button button-positive" ng-click="callRoute(item)">-->
+                    <!--<i class="icon ion-eye"></i>-->
+                <!--</button>-->
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

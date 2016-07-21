@@ -1,4 +1,4 @@
-app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeService, map) {
+app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, routeService, map) {
 
     $scope.items;
     $scope.type = {
@@ -6,6 +6,7 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeServi
         'DRIVING': 'En automóvil',
         'TRANSIT': 'Transporte público'
     };
+    $scope.shouldShowDelete = false;
 
     $scope.$on('$ionicView.enter', function (e) {
         routeService.getRoutes().then(function (result) {
@@ -31,5 +32,31 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeServi
             $ionicLoading.hide();
             $state.go("app.map");
         })
+    };
+
+    $scope.deleteRoute = function (index, item) {
+        $ionicPopup.show({
+            template: '<p>Seguro que desea borrar la ruta: ' + item.name + '</p>',
+            title: 'Findness',
+            subTitle: 'Confirmación',
+            scope: $scope,
+            buttons: [
+                {
+                    text: '<b>Aceptar</b>',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        routeService.deleteRoute(item.id).then(function () {
+                            $scope.items.splice(index, 1)
+                        }).catch(function () {
+                            $ionicPopup.alert({
+                                title: 'Findness',
+                                template: 'Ocurrió un problema al borrar la ruta, intente más tarde.'
+                            });
+                        });
+                    }
+                },
+                { text: 'Cancelar' }
+            ]
+        });
     }
 });

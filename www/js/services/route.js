@@ -159,7 +159,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                     throw e;
                 });
         } else {
-            throw "noEdit";
+            var deferred = $q.defer();
+            deferred.reject("noEdit");
+            return deferred.promise;
         }
     }
 
@@ -201,6 +203,18 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         return deferred.promise;
     }
 
+    function deleteRoute(id) {
+        var token = userDatastore.getTokens();
+
+        return routes(token.accessToken).deleteRoute(null, {mapRoute: id}).$promise
+            .then(function (response) {
+                console.log(response);
+                return response;
+            }, function (e) { //error
+                throw e;
+            });
+    }
+
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
@@ -213,6 +227,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         finishEditRoute: finishEditRoute,
         existPoint: existPoint,
         getRoutes: getRoutes,
-        setRoutes: setRoutes
+        setRoutes: setRoutes,
+        deleteRoute: deleteRoute
     };
 });
