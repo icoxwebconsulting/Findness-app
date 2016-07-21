@@ -27,7 +27,7 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, routeServi
 
         routeService.setRoutes(item).then(function () {
             //TODO: pintar markers y tramos
-        map.processMakers(item.points);
+            map.processMakers(item.points);
             $ionicLoading.hide();
             $state.go("app.map");
         })

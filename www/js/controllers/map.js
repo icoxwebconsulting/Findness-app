@@ -3,6 +3,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     $scope.showPopUp = false;
     $scope.showRoute = false;
     $scope.routeMode = false;
+    $scope.viewRoute = false; //modo de visualizar ruta
     $scope.formRoute = {
         error: false,
         availableOptions: [
@@ -39,6 +40,11 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     $rootScope.$on('processMarkers', function (e, query) {
         proccessMarkers(query.lastQuery);
+    });
+
+    $rootScope.$on('viewRouteMode', function (e, query) {
+        $scope.showRoute = true;
+        $scope.viewRoute = true;
     });
 
     function proccessMarkers(query) {
@@ -154,6 +160,25 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             $ionicLoading.hide();
             $ionicPopup.alert({
                 title: "Ocurrió un error al guardar la ruta, intente nuevamente."
+            });
+        });
+    };
+
+    $scope.finishEditRoute = function () {
+        $ionicLoading.show({
+            template: '<p>Guardando la ruta...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
+        routeService.finishEditRoute().then(function () {
+            $scope.routeMode = false;
+            $ionicLoading.hide();
+        }).catch(function (e) {
+            $ionicLoading.hide();
+            var title = "Ocurrió un error al guardar la ruta, intente nuevamente.";
+            if (e == "noEdit") {
+                title = "No hay cambios en la ruta para guardar."
+            }
+            $ionicPopup.alert({
+                title: title
             });
         });
     }

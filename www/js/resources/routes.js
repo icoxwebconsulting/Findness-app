@@ -17,6 +17,14 @@ app.factory('routes', function ($resource, SERVER_CONF) {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
+            },
+            editRoute: {
+                method: 'PUT',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                },
+                url: SERVER_CONF.API_HOST + 'map-routes/:mapRoute',
+                params: {mapRoute: '@mapRoute'}
             }
         });
     };

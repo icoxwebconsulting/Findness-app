@@ -12,12 +12,16 @@
         </div>
 
         <div id="mapButtons" style="position: absolute; bottom: 15px; right: 5px; z-index: 99;" ng-show="showRoute">
-            <button class="button button-small button-assertive" ng-click="createRoute()" ng-hide="routeMode">
+            <button class="button button-small button-assertive" ng-click="createRoute()" ng-hide="routeMode || viewRoute">
                 Crear ruta
             </button>
 
             <button class="button button-small button-assertive" ng-click="finishRoute()" ng-show="routeMode">
                 Modo crear ruta: Finalizar
+            </button>
+
+            <button class="button button-small button-assertive" ng-click="finishEditRoute()" ng-show="viewRoute">
+                Modo editar ruta: Finalizar
             </button>
         </div>
 
