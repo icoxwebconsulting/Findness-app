@@ -256,8 +256,8 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 $ionicLoading.hide();
                 console.log("Catch de la busqueda", e);
                 $ionicPopup.alert({
-                    title: 'Ocurrió un error en la búsqueda',
-                    template: e.statusText
+                    title: "Findness",
+                    template: 'Ocurrió un error en la búsqueda, intente más tarde. ' + e.statusText
                 });
             });
         }

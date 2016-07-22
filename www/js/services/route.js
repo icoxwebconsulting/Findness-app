@@ -208,13 +208,14 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
     function deleteRoute(id) {
         var token = userDatastore.getTokens();
 
-        return routes(token.accessToken).deleteRoute(null, {mapRoute: id}).$promise
-            .then(function (response) {
-                console.log(response);
-                return response;
-            }, function (e) { //error
-                throw e;
-            });
+        return routes(token.accessToken).deleteRoute(null, {
+            mapRoute: id
+        }).$promise.then(function (response) {
+            console.log(response);
+            return response;
+        }, function (e) { //error
+            throw e;
+        });
     }
 
     function getModes() {
@@ -227,6 +228,19 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
     function setModes(rMode, vRoute) {
         routeMode = rMode;
         viewRoute = vRoute;
+    }
+
+    function getRouteDetail(item) {
+        var token = userDatastore.getTokens();
+
+        return routes(token.accessToken).getRouteDetail(null, {
+            mapRoute: item.id
+        }).$promise.then(function (response) {
+            console.log(response);
+            return response;
+        }, function (e) { //error
+            throw e;
+        });
     }
 
     return {
@@ -244,6 +258,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         setRoutes: setRoutes,
         deleteRoute: deleteRoute,
         getModes: getModes,
-        setModes: setModes
+        setModes: setModes,
+        getRouteDetail: getRouteDetail
     };
 });

@@ -12,6 +12,14 @@ app.factory('routes', function ($resource, SERVER_CONF) {
                     Authorization: 'Bearer ' + token
                 }
             },
+            getRouteDetail: {
+                method: 'GET',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                },
+                url: SERVER_CONF.API_HOST + 'map-routes/:mapRoute',
+                params: {mapRoute: '@mapRoute'}
+            },
             saveRoute: {
                 method: 'POST',
                 headers: {
