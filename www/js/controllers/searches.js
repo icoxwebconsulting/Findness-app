@@ -1,4 +1,4 @@
-app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesService, searchService, $ionicPopup, cart, $ionicLoading) {
+app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesService, searchService, routeService, $ionicPopup, cart, $ionicLoading) {
 
     $scope.items;
 
@@ -41,6 +41,7 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesSer
                 //caso 4 mostrar mapa con popup
                 popup = true;
             }
+            routeService.setModes(true, false);
             $rootScope.$emit('showResults', {
                 showPopUp: popup,
                 toBuy: results.TotalElementosNoConsultados

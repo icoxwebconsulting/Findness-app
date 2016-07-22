@@ -1,8 +1,8 @@
 app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, map, searchService, routeService) {
 
     $scope.showPopUp = false;
-    $scope.showRoute = false;
-    $scope.routeMode = false;
+    $scope.showRoute = false; //controla la visualización de todos los botones
+    $scope.routeMode = false; //modo de crear ruta
     $scope.viewRoute = false; //modo de visualizar ruta
     $scope.formRoute = {
         error: false,
@@ -27,6 +27,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             $scope.showPopUp = false;
             showPopUp();
         }
+        var modes = routeService.getModes();
+        console.log(modes);
+        $scope.routeMode = modes.routeMode;
+        $scope.viewRoute = modes.viewRoute;
     });
 
     $rootScope.$on('showResults', function (e, data) {
@@ -40,11 +44,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     $rootScope.$on('processMarkers', function (e, query) {
         proccessMarkers(query.lastQuery);
-    });
-
-    $rootScope.$on('viewRouteMode', function (e, query) {
-        $scope.showRoute = true;
-        $scope.viewRoute = true;
     });
 
     function proccessMarkers(query) {

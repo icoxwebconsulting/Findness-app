@@ -182,7 +182,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         var deferred = $q.defer();
         try {
             viewRoute = true; //establezco que estoy en modo de visualización de una ruta
-            routeMode = true;
+            routeMode = false;
             route = {
                 id: item.id,
                 name: item.name,
@@ -194,7 +194,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             for (var i in item.points) {
                 addPoint(item.points[i]);
             }
-            $rootScope.$emit("viewRouteMode", {});
             deferred.resolve();
         } catch (e) {
             deferred.reject();
@@ -215,6 +214,18 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             });
     }
 
+    function getModes() {
+        return {
+            routeMode: routeMode,
+            viewRoute: viewRoute
+        }
+    }
+
+    function setModes(rMode, vRoute) {
+        routeMode = rMode;
+        viewRoute = vRoute;
+    }
+
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
@@ -228,6 +239,8 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         existPoint: existPoint,
         getRoutes: getRoutes,
         setRoutes: setRoutes,
-        deleteRoute: deleteRoute
+        deleteRoute: deleteRoute,
+        getModes: getModes,
+        setModes: setModes
     };
 });

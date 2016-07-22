@@ -16,11 +16,11 @@
         </div>
         <content has-header="true" padding="true">
             <ion-list>
-                <ion-item ng-repeat="item in items" class="item-button-right">
-                    {{item.name}}
-                    <button class="button button-positive" ng-click="callSearch(item)">
-                        <i class="icon ion-eye"></i>
-                    </button>
+                <ion-item ng-repeat="item in items" class="item-button-right" ng-click="callSearch(item)">
+                    <h3>{{item.name}}</h3>
+                    <!--<button class="button button-positive" ng-click="callSearch(item)">-->
+                        <!--<i class="icon ion-eye"></i>-->
+                    <!--</button>-->
                 </ion-item>
             </ion-list>
         </content>
