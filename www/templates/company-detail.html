@@ -1,0 +1,70 @@
+<ion-modal-view class="modal-company-detail">
+    <ion-header-bar>
+        <div class="header-company-detail">
+            <i class="ion-arrow-left-c" ng-click="closeDetail()"></i>
+            <div class="title title-center">
+                <p>{{title | uppercase}}</p>
+            </div>
+            <div class="category">
+                <p>{{socialObject | capitalize}}</p>
+            </div>
+        </div>
+    </ion-header-bar>
+    <ion-content scroll="true">
+        <div class="row subtitle">
+            <div class="col col-100">
+                <div class="left">
+                    <span>DETALLE DE EMPRESA</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Cliente</span>
+                </div>
+                <div class="down">
+                    <p>{{title}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Tel&eacute;fono</span>
+                </div>
+                <div class="down">
+                    <p>{{title}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Direcci&oacute;n</span>
+                </div>
+                <div class="down">
+                    <p>{{address}}</p> <br> <p>{{phoneNumber}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Ubicaci&oacute;n</span>
+                </div>
+                <div class="down">
+                    <div class="map-detail">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

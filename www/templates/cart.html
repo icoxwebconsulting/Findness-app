@@ -27,7 +27,7 @@
                     Precio por unidad
                 </div>
                 <div class="input-label" style="text-align: right">
-                    <span class="item-note">{{view.unitPrice}}€</span>
+                    <span class="item-note">{{view.unitPrice| number:2}}€</span>
                 </div>
             </label>
             <label class="item item-input item-stacked-label">
@@ -35,25 +35,25 @@
                     Mi saldo
                 </div>
                 <div class="input-label" style="text-align: right">
-                    <span class="item-note">{{view.balance}}€</span>
+                    <span class="item-note">{{view.balance| number:2}}€</span>
                 </div>
             </label>
             <ion-item class="item-divider item-title">
                 <span>Total sin comisi&oacute;n </span>
-                <span style="float: right; margin-right:25px">{{(view.totalCompanies*view.unitPrice)}}€</span>
+                <span style="float: right; margin-right:25px">{{(view.totalCompanies*view.unitPrice| number:2)}}€</span>
             </ion-item>
             <ion-item class="item-divider item-title">
                 <span>Total a pagar</span>
-                <span style="float: right; margin-right:25px">{{view.total}}€</span>
+                <span style="float: right; margin-right:25px">{{view.total| number:2}}€</span>
             </ion-item>
             <ion-item class="item-divider item-title" ng-if="view.balance > 0">
                 <span>Descuento de saldo</span>
-                <span style="float: right; margin-right:25px" ng-if="view.balance >= view.total">- {{view.total}}€</span>
-                <span style="float: right; margin-right:25px" ng-if="view.balance < view.total">- {{view.balance}}€</span>
+                <span style="float: right; margin-right:25px" ng-if="view.balance >= view.total">- {{view.total | number:2}}€</span>
+                <span style="float: right; margin-right:25px" ng-if="view.balance < view.total">- {{view.balance | number:2}}€</span>
             </ion-item>
             <ion-item class="item-divider item-title" ng-if="view.payable > 0" style="background-color:darkgrey">
                 <span>Por pagar</span>
-                <span style="float: right; margin-right:25px">{{view.payable}}€</span>
+                <span style="float: right; margin-right:25px">{{view.payable| number:2}}€</span>
             </ion-item>
         </div>
         <div class="list input-list" style="padding:10px">

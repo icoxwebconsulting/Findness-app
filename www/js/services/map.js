@@ -30,7 +30,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         markers = [];
     }
 
-    function infoWindowOpen(marker, title, socialObject, companyId, style, position) {
+    function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position) {
 
         var modalScope = $rootScope.$new();
         modalScope.marker = marker;
@@ -41,6 +41,8 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         modalScope.routeMode = routeService.getRouteMode();
         modalScope.routeName = routeService.getRouteName();
         modalScope.isAddedd = routeService.existPoint(companyId);
+        modalScope.address = address;
+        modalScope.phoneNumber = phoneNumber;
 
         modalScope.addToRoute = function () {
             if (routeService.addPoint({
@@ -56,6 +58,22 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
                 modalScope.isAddedd = false;
             }
         };
+
+        modalScope.closeDetail = function () {
+            modalScope.modal.hide();
+        };
+
+        modalScope.openDetail = function () {
+            $ionicModal.fromTemplateUrl('templates/company-detail.html', {
+                scope: modalScope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                modalScope.modal = modal;
+                modalScope.modal.show();
+            });
+        };
+
+
 
         modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
@@ -74,7 +92,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
 
     }
 
-    function addMaker(position, title, socialObject, companyId, style) {
+    function addMaker(position, title, socialObject, companyId, address, phoneNumber, style) {
 
         var marker = new google.maps.Marker({
             position: position,
@@ -84,7 +102,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         });
 
         marker.addListener('click', function () {
-            infoWindowOpen(marker, title, socialObject, companyId, style, position);
+            infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position);
         });
 
         markers.push(marker);
@@ -114,6 +132,8 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
                 items[item].socialReason,
                 items[item].socialObject,
                 items[item].id,
+                items[item].address,
+                items[item].phoneNumber,
                 style
             )
         }
