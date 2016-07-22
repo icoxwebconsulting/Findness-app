@@ -124,7 +124,11 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         delete data.lastPoint;
         delete data.id;
         delete data.isEdit;
-        data.points = JSON.stringify(data.points);
+        var arr = [];
+        for(var p in data.points){
+            arr.push(p);
+        }
+        data.points = JSON.stringify(arr);
 
         return routes(token.accessToken).saveRoute(data).$promise
             .then(function (response) {
@@ -147,7 +151,11 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             delete data.lastPoint;
             delete data.id;
             delete data.isEdit;
-            data.points = JSON.stringify(data.points);
+            var arr = [];
+            for(var p in data.points){
+                arr.push(p);
+            }
+            data.points = JSON.stringify(arr);
 
             return routes(token.accessToken).editRoute({mapRoute: route.id}, data).$promise
                 .then(function (response) {
