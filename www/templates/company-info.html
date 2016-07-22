@@ -4,7 +4,15 @@
     </ion-header-bar>
     <ion-content scroll="true">
         <p class="social-object">
-            {{socialObject | lowercase}}
+            {{socialObject | capitalize}}<span ng-if="socialObject.length > 1">.</span>
+        </p>
+        <hr ng-if="socialObject.length > 1">
+        <p class="address">
+            <b ng-if="address.length > 1 || phoneNumber.length > 1">Direcci&oacute;n: </b>
+            {{address | capitalize}} <span ng-if="address.length > 1">.</span> <br> {{phoneNumber}} <br>
+            <div style="text-align: center">
+                <button class="button button-small button-positive" ng-click="openDetail()">Ver detalles</button>
+            </div>
         </p>
 
     </ion-content>

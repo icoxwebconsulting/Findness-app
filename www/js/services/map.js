@@ -1,4 +1,4 @@
-app.service('map', function ($ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE) {
+app.service('map', function ($ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
 
     //var map;
     var markers = [];
@@ -38,7 +38,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         markers = [];
     }
 
-    function infoWindowOpen(marker, title, socialObject, companyId, style, position) {
+    function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position) {
 
         var modalScope = $rootScope.$new();
         modalScope.marker = marker;
@@ -54,6 +54,8 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         }
         modalScope.routeName = routeService.getRouteName();
         modalScope.isAddedd = routeService.existPoint(companyId);
+        modalScope.address = address;
+        modalScope.phoneNumber = phoneNumber;
 
         modalScope.addToRoute = function () {
             if (routeService.addPoint({
@@ -69,6 +71,76 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
                 modalScope.isAddedd = false;
             }
         };
+
+        modalScope.closeDetail = function () {
+            modalScope.modal.hide();
+        };
+
+
+
+        modalScope.initializeMap = function() {
+            console.info('initializeMap...');
+
+            setTimeout(function(){
+                console.info('2 segundos despues...');
+
+                var div = document.getElementById("map_canvas_detail");
+                modalScope.mapDetail = new google.maps.Map(div, {
+                    center: position,
+                    zoom: 13,
+                    disableDefaultUI: true
+                });
+
+                new google.maps.Marker({
+                    position: position,
+                    map: modalScope.mapDetail,
+                    title: title,
+                    icon: COMPANY_STYLE.COLOR[modalScope.style]
+                });
+            }, 2000);
+        };
+
+        modalScope.showMyLocation = function() {
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var myPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                new google.maps.Marker({
+                    position: myPosition,
+                    map: modalScope.mapDetail,
+                    icon: 'img/map/my-location-icon.png',
+                    optimized: false,
+                    zIndex: 5
+                });
+                modalScope.mapDetail.setZoom(16);
+                modalScope.mapDetail.setCenter(myPosition);
+            }, function (e) {
+                $ionicPopup.show({
+                    template: '<p style="color:#000;">Para poder usar tu ubicación debes tener datos o activado tu gps.</p>',
+                    title: 'Active su GPS',
+                    buttons: [
+                        {
+                            text: '<b>Aceptar</b>',
+                            type: 'button-positive'
+                        }
+                    ]
+                });
+            });
+
+
+        };
+
+
+        modalScope.openDetail = function () {
+            $ionicModal.fromTemplateUrl('templates/company-detail.html', {
+                scope: modalScope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                modalScope.modal = modal;
+                modalScope.modal.show();
+            });
+        };
+
+
 
         modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
@@ -87,7 +159,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
 
     }
 
-    function addMaker(position, title, socialObject, companyId, style) {
+    function addMaker(position, title, socialObject, companyId, address, phoneNumber, style) {
 
         var marker = new google.maps.Marker({
             position: position,
@@ -97,7 +169,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         });
 
         marker.addListener('click', function () {
-            infoWindowOpen(marker, title, socialObject, companyId, style, position);
+            infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position);
         });
 
         markers.push(marker);
@@ -127,6 +199,8 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
                 items[item].socialReason,
                 items[item].socialObject,
                 items[item].id,
+                items[item].address,
+                items[item].phoneNumber,
                 style
             )
         }
