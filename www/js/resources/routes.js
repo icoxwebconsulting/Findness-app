@@ -14,6 +14,7 @@ app.factory('routes', function ($resource, SERVER_CONF) {
             },
             getRouteDetail: {
                 method: 'GET',
+                isArray: true,
                 headers: {
                     Authorization: 'Bearer ' + token
                 },
