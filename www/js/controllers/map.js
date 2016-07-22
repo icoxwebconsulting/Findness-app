@@ -29,6 +29,11 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }
         var modes = routeService.getModes();
         console.log(modes);
+        if (modes.routeMode || modes.viewRoute) {
+            $scope.showRoute = true;
+        } else {
+            $scope.showRoute = false;
+        }
         $scope.routeMode = modes.routeMode;
         $scope.viewRoute = modes.viewRoute;
     });

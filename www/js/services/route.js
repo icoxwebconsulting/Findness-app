@@ -83,9 +83,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     function addPoint(point) {
         if (routeMode || viewRoute) {
-            if (typeof route.points[point.id] == "undefined") {
+            if (typeof route.points[point.id] == "undefined") { //compruebo que no exista previamente
                 route.points[point.id] = (point);
-                if (Object.keys(route.points).length > 1) {
+                if (Object.keys(route.points).length > 1) { //si hay otro elemento puedo dibujar la ruta
                     requestRoute(route.lastPoint.position, point.position).then(function (theRoute) {
                         $rootScope.$emit('drawDirections', {
                             startId: route.lastPoint.id,
@@ -111,6 +111,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                 deleteId: id
             });
             delete route.points[id];
+            route.isEdit = true;
             return true;
         } else {
             return false;
@@ -185,6 +186,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             routeMode = false;
             route = {
                 id: item.id,
+                isEdit: false,
                 name: item.name,
                 transport: item.transport,
                 lastPoint: null,
@@ -194,6 +196,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             for (var i in item.points) {
                 addPoint(item.points[i]);
             }
+            route.isEdit = false; //esto porque addPoint coloca la ruta como editada
             deferred.resolve();
         } catch (e) {
             deferred.reject();

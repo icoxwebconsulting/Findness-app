@@ -251,6 +251,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         searchQualitas: searchQualitas,
         getResultSearch: getResultSearch,
         getLastQuery: getLastQuery,
-        executeLastQuery: executeLastQuery
+        executeLastQuery: executeLastQuery,
+        setResultSearch: setResultSearch
     };
 });

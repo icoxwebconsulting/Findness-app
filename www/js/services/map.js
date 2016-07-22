@@ -3,6 +3,14 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
     //var map;
     var markers = [];
     var markerCluster;
+    /* cada elemento en paths posee:
+     {
+         startId: response.startId,
+         endId: response.endId,
+         nextId: null,
+         polyline: routePath
+     }
+     * */
     var paths = {};//la clave del objeto es el punto de llegada, el único que no debe estar aqui es el primero
 
     function init(div, location, zoom) {
@@ -38,7 +46,12 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         modalScope.socialObject = socialObject;
         modalScope.companyId = companyId;
         modalScope.style = style;
-        modalScope.routeMode = routeService.getRouteMode();
+        var modes = routeService.getModes();
+        if (modes.routeMode || modes.viewRoute) {
+            modalScope.routeMode = true
+        } else {
+            modalScope.routeMode = false;
+        }
         modalScope.routeName = routeService.getRouteName();
         modalScope.isAddedd = routeService.existPoint(companyId);
 
@@ -156,7 +169,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
             siguiente.polyline.setMap(null);
             var startId = paths[data.nextId].startId;
             var endId = paths[data.nextId].endId;
-            var results = searchService.getResultSearch();
+            var results = searchService.getResultSearch();//nota: se está seteando resultSearch así no se haya hecho búsqueda (caso visualizar ruta)
             var pathStart = results.items[startId];
             var pathEnd = results.items[endId];
             if (pathStart && pathEnd) {

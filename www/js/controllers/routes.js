@@ -1,4 +1,4 @@
-app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, routeService, map) {
+app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, routeService, searchService, map) {
 
     $scope.items;
     $scope.type = {
@@ -27,7 +27,15 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
         //TODO: por eliminar
 
         routeService.setRoutes(item).then(function () {
-            //TODO: pintar markers y tramos
+            //seteo los resultados en el servicio de search necesarios para n
+            searchService.setResultSearch({
+                ElementosDevueltos: item.points.lenght, //contiene el número de elementos que retorna la consulta para dicha pagina
+                Pagina:1,
+                TotalElementosNoConsultados:0,		//es la cantidad de elementos que no has pagado
+                TotalElementos:item.points.lenght,	//nro de todos los elementos pagados y sin pagar
+                ElementosDevueltosNoConsultados:0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
+                items: item.points
+            });
             map.processMakers(item.points);
             $ionicLoading.hide();
             $state.go("app.map");
