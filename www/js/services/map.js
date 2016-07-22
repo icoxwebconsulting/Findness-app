@@ -1,4 +1,4 @@
-app.service('map', function ($ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE) {
+app.service('map', function ($ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
 
     //var map;
     var markers = [];
@@ -62,6 +62,60 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         modalScope.closeDetail = function () {
             modalScope.modal.hide();
         };
+
+
+
+        modalScope.initializeMap = function() {
+            console.info('initializeMap...');
+
+            setTimeout(function(){
+                console.info('2 segundos despues...');
+
+                var div = document.getElementById("map_canvas_detail");
+                modalScope.mapDetail = new google.maps.Map(div, {
+                    center: position,
+                    zoom: 13,
+                    disableDefaultUI: true
+                });
+
+                new google.maps.Marker({
+                    position: position,
+                    map: modalScope.mapDetail,
+                    title: title,
+                    icon: COMPANY_STYLE.COLOR[modalScope.style]
+                });
+            }, 2000);
+        };
+
+        modalScope.showMyLocation = function() {
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var myPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                new google.maps.Marker({
+                    position: myPosition,
+                    map: modalScope.mapDetail,
+                    icon: 'img/map/my-location-icon.png',
+                    optimized: false,
+                    zIndex: 5
+                });
+                modalScope.mapDetail.setZoom(16);
+                modalScope.mapDetail.setCenter(myPosition);
+            }, function (e) {
+                $ionicPopup.show({
+                    template: '<p style="color:#000;">Para poder usar tu ubicación debes tener datos o activado tu gps.</p>',
+                    title: 'Active su GPS',
+                    buttons: [
+                        {
+                            text: '<b>Aceptar</b>',
+                            type: 'button-positive'
+                        }
+                    ]
+                });
+            });
+
+
+        };
+
 
         modalScope.openDetail = function () {
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {

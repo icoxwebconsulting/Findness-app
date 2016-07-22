@@ -428,6 +428,12 @@
     padding: 0 !important;
 }
 
+.modal-company-detail .back-icon{
+    margin: 10px;
+    font-size: 33px;
+    color: #E6E7E7;
+}
+
 .modal-company-detail .header-company-detail{
     background-image: url('../img/bg/company.jpg');
     background-size: cover;
@@ -451,7 +457,7 @@
 }
 
 .modal-company-detail .scroll-content{
-    margin-top: 200px !important;
+    margin-top: 205px !important;
     z-index: 12 !important;
 }
 
@@ -469,4 +475,24 @@
 
 .modal-company-detail .row-info .down{
     color: #0185CF;
+}
+
+.modal-company-detail .row-map{
+    height: 300px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.modal-company-detail .my-location{
+    position: relative;
+    z-index: 15;
+    display: block;
+    float: right;
+    left: 88%;
+    top: 10px;
+    width: 40px;
+}
+
+.modal-company-detail .my-location img{
+    width: 40px;
 }

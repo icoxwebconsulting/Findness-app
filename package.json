@@ -30,10 +30,10 @@
       "locator": "cordova-plugin-googlemaps",
       "id": "cordova-plugin-googlemaps"
     },
-    "cordova-plugin-geolocation",
     "cordova-plugin-compat",
     "cordova-plugin-inappbrowser",
-    "cordova-sqlite-storage"
+    "cordova-sqlite-storage",
+    "cordova-plugin-geolocation"
   ],
   "cordovaPlatforms": [
     "android"
