@@ -29,7 +29,8 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }
         var modes = routeService.getModes();
         console.log(modes);
-        if (modes.routeMode || modes.viewRoute) {
+        console.log(searchService.withResults());
+        if (searchService.withResults()) {
             $scope.showRoute = true;
         } else {
             $scope.showRoute = false;
@@ -64,9 +65,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                 var lat = query.geoLocations.latitude;
                 var lon = query.geoLocations.longitude;
             }
-            map.moveCamera(lat, lon, 7);
+            map.moveCamera(lat, lon, 9);
         }
         $scope.showRoute = true;
+        $scope.routeMode = false;
     }
 
     function showPopUp() {

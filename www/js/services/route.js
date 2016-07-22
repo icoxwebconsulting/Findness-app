@@ -125,7 +125,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         delete data.id;
         delete data.isEdit;
         var arr = [];
-        for(var p in data.points){
+        for (var p in data.points) {
             arr.push(p);
         }
         data.points = JSON.stringify(arr);
@@ -152,21 +152,22 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             delete data.id;
             delete data.isEdit;
             var arr = [];
-            for(var p in data.points){
+            for (var p in data.points) {
                 arr.push(p);
             }
             data.points = JSON.stringify(arr);
 
-            return routes(token.accessToken).editRoute({mapRoute: route.id}, data).$promise
-                .then(function (response) {
-                    console.log(response);
-                    routeMode = false;
-                    viewRoute = true; //como estoy mostrando la ruta, paso al modo de edición
-                    route.isEdit = false;
-                    return response;
-                }, function (e) { //error
-                    throw e;
-                });
+            return routes(token.accessToken).editRoute({
+                mapRoute: route.id
+            }, data).$promise.then(function (response) {
+                console.log(response);
+                routeMode = false;
+                viewRoute = true; //como estoy mostrando la ruta, paso al modo de edición
+                route.isEdit = false;
+                return response;
+            }, function (e) { //error
+                throw e;
+            });
         } else {
             var deferred = $q.defer();
             deferred.reject("noEdit");
@@ -202,7 +203,10 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             };
             //TODO: revisar que el objeto esté adecuadamente construido
             for (var i in item.points) {
-                addPoint(item.points[i]);
+                addPoint({
+                    id: item.points[i].id,
+                    position: new google.maps.LatLng(item.points[i].latitude, item.points[i].longitude)
+                });
             }
             route.isEdit = false; //esto porque addPoint coloca la ruta como editada
             deferred.resolve();
@@ -245,6 +249,8 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             mapRoute: item.id
         }).$promise.then(function (response) {
             console.log(response);
+            routeMode = false;
+            viewRoute = true; //modo de visualizar ruta
             return response;
         }, function (e) { //error
             throw e;

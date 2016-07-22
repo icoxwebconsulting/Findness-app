@@ -169,11 +169,11 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
     function callSearch(accessToken, query) {
         return qualitas(accessToken).search(query).$promise
             .then(function (response) {
-                return response;
-            },
-            function (e) {//error handler
-                throw e;
-            })
+                    return response;
+                },
+                function (e) {//error handler
+                    throw e;
+                })
     }
 
     function searchQualitas(query) {
@@ -202,7 +202,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
                     deferred.resolve(getResultSearch());
                 }
             }).catch(function (e) {
-                console.log("error",e);
+                console.log("error", e);
                 deferred.reject(e);
             });
         }
@@ -242,6 +242,10 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
             });
     }
 
+    function withResults() {
+        return (typeof resultSearch == 'object' && (typeof resultSearch.items == 'object' && Object.keys(resultSearch.items).length > 0))
+    }
+
     return {
         getCnaes: getCnaes,
         getStates: getStates,
@@ -252,6 +256,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         getResultSearch: getResultSearch,
         getLastQuery: getLastQuery,
         executeLastQuery: executeLastQuery,
-        setResultSearch: setResultSearch
+        setResultSearch: setResultSearch,
+        withResults: withResults
     };
 });

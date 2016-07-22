@@ -20,21 +20,37 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
         });
 
         routeService.getRouteDetail(item).then(function (detail) {
+            //TODO: posible código a ser borrado
+            var formatted = {};
+            for (var i = 0; i < detail.points.length; i++) {
+                formatted[detail.points[i].id] = {
+                    "id": detail.points[i].id,
+                    "socialReason": detail.points[i].social_reason,
+                    "socialObject": detail.points[i].social_object,
+                    "latitude": detail.points[i].latitude,
+                    "longitude": detail.points[i].longitude,
+                    "cif": detail.points[i].cif,
+                    "address": detail.points[i].address,
+                    "phoneNumber": detail.points[i].phone_number
+                }
+            }
+            var lat = detail.points[0].latitude;
+            var lng = detail.points[0].longitude;
+            detail.points = formatted;
             routeService.setRoutes(detail).then(function () {
                 //seteo los resultados en el servicio de search necesarios para n
                 var length = Object.keys(detail).length;
                 searchService.setResultSearch({
-                    ElementosDevueltos: lenght, //contiene el número de elementos que retorna la consulta para dicha pagina
+                    ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina
                     Pagina: 1,
                     TotalElementosNoConsultados: 0,		//es la cantidad de elementos que no has pagado
-                    TotalElementos: lenght,	//nro de todos los elementos pagados y sin pagar
+                    TotalElementos: length,	//nro de todos los elementos pagados y sin pagar
                     ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
                     items: detail.points
                 });
                 map.processMakers(detail.points);
                 //TODO: se debe eliminar moveCamera e integrarlo al método de processMarkers del servicio
-                for (var first in detail.points) break;
-                map.moveCamera(first.position.lat, first.position.lng, 7);
+                map.moveCamera(lat, lng, 9);
                 $ionicLoading.hide();
                 $state.go("app.map");
             })

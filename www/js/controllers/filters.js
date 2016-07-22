@@ -1,4 +1,4 @@
-app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map) {
+app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map, routeService) {
 
     $scope.data = {};
     $scope.data.pickupAfter = 3;
@@ -145,6 +145,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 //caso 4 mostrar mapa con popup
                 popup = true;
             }
+            routeService.setModes(false, false);
             $rootScope.$emit('showResults', {
                 showPopUp: popup,
                 toBuy: results.TotalElementosNoConsultados

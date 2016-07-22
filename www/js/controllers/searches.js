@@ -41,7 +41,7 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesSer
                 //caso 4 mostrar mapa con popup
                 popup = true;
             }
-            routeService.setModes(true, false);
+            routeService.setModes(false, false);
             $rootScope.$emit('showResults', {
                 showPopUp: popup,
                 toBuy: results.TotalElementosNoConsultados
