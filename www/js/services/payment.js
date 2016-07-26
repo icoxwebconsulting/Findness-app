@@ -125,9 +125,10 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
     }
 
     function requestBalance() {
-        transaction(localStorage.getItem('accessToken')).getBalance().$promise.then(function (response) {
+        return transaction(localStorage.getItem('accessToken')).getBalance().$promise.then(function (response) {
             userDatastore.setBalance(response.balance);
             console.log("seteado el saldo en ", response);
+            return response.balance;
         });
     }
 

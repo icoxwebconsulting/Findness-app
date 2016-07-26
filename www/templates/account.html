@@ -17,6 +17,9 @@
         <content has-header="true" padding="true">
             <div class="list">
                 <div class="item padding">
+                    Su saldo es {{balance| number:2}} €
+                </div>
+                <div class="item padding">
                     <button class="button button-block button-positive" ui-sref="app.payment">
                         Añadir créditos
                     </button>
@@ -27,13 +30,13 @@
                 <div class="item item-text-wrap">
                     <div class="row">
                         <div class="col">Fecha</div>
-                        <div class="col">Nro.</div>
+                        <!--<div class="col">Nro.</div>-->
                         <div class="col">Monto</div>
                     </div>
-                    <div class="row" ng-repeat="transaction in view.transactions">
+                    <div class="row" ng-repeat="transaction in view.transactions" ng-click="showDetail(transaction)">
                         <div class="col">10/01/2016</div>
-                        <div class="col">{{transaction.transaction_id}}</div>
-                        <div class="col">{{transaction.balance}}</div>
+                        <!--<div class="col">{{transaction.transaction_id}}</div>-->
+                        <div class="col">{{transaction.balance}} €</div>
                     </div>
                 </div>
             </div>
