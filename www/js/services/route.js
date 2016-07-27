@@ -29,7 +29,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                 var theRoute = new Array();
                 var gRoute = response.routes[0]['overview_path'];
                 for (var s = 0; s < gRoute.length; s++) {
-                    theRoute.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
+                    theRoute.push(new google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
                 }
                 deferred.resolve(theRoute);
             } else {
