@@ -233,13 +233,17 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
 
         return qualitas(token.accessToken).search(options).$promise
             .then(function (response) {
-                setResultSearch(response);
-                //retorna el query no los resultados
-                return options;
-            })
-            .catch(function (response) {
-                console.log(response);
-            });
+                    if (response.hasOwnProperty("error")) {
+                        throw response.error;
+                    } else {
+                        //retorna el query no los resultados
+                        setResultSearch(response);
+                        return options;
+                    }
+                },
+                function (e) {//error handler
+                    throw e;
+                })
     }
 
     function withResults() {

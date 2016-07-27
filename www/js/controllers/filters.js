@@ -25,7 +25,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
 
     $scope.$on('$ionicView.leave', function (e) {
         //searchService.setSelectedFilter(filter);
-        map.resize();
+        // map.resize();
     });
 
     $scope.getItems = function (query, type) {
@@ -146,11 +146,13 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 popup = true;
             }
             routeService.setModes(false, false);
-            $rootScope.$emit('showResults', {
-                showPopUp: popup,
-                toBuy: results.TotalElementosNoConsultados
-            });
             $state.go("app.map");
+            setTimeout(function () {
+                $rootScope.$emit('showResults', {
+                    showPopUp: popup,
+                    toBuy: results.TotalElementosNoConsultados
+                });
+            },1500)
         }
     }
 

@@ -211,6 +211,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
     }
 
     function moveCamera(lat, long, zoom) {
+        console.log("moviendo la camara", lat, long, zoom, typeof lat, typeof long, typeof zoom);
         map.setCenter(new google.maps.LatLng(lat, long));
         map.setZoom(zoom);
     }
@@ -221,7 +222,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
 
     function resize() {
         console.log("ejecutando resize");
-        google.maps.event.trigger(map, 'resize')
+        google.maps.event.trigger(map, 'resize');
     }
 
     function getMap() {

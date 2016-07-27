@@ -40,6 +40,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     });
 
     $rootScope.$on('showResults', function (e, data) {
+        console.log("pasada por showResults");
         $scope.data = data;
         if (data.showPopUp) {
             $scope.showPopUp = true;
@@ -53,20 +54,19 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     });
 
     function proccessMarkers(query) {
+        console.log("pasada por processMarkers");
         map.resize();
         var result = searchService.getResultSearch();
         map.processMakers(result.items);
-        if (query) {
-            if (query.geoLocations == null) {
-                for (var first in result.items) break;
-                lat = result.items[first].latitude;
-                lon = result.items[first].longitude;
-            } else {
-                var lat = query.geoLocations.latitude;
-                var lon = query.geoLocations.longitude;
-            }
-            map.moveCamera(lat, lon, 9);
+        if (!query || query.geoLocations == null) {
+            for (var first in result.items) break;
+            lat = result.items[first].latitude;
+            lon = result.items[first].longitude;
+        } else {
+            var lat = query.geoLocations.latitude;
+            var lon = query.geoLocations.longitude;
         }
+        map.moveCamera(lat, lon, 9);
         $scope.showRoute = true;
         $scope.routeMode = false;
     }
