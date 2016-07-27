@@ -1,4 +1,4 @@
-app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, transactionStorage) {
+app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup) {
 
     $scope.cardType = {};
     $scope.card = {};
@@ -49,13 +49,6 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
             return paymentSrv.processStripePayment(data).then(function (response) {
                 showConfirmation();
-                transactionStorage.saveTransaction({
-                    id_registered: response.id,
-                    operator: 3,
-                    reference: response.source.id,
-                    status: (response.status == "succeeded") ? 1 : 2,
-                    amount: response.amount / 100
-                });
                 return registerPayment({
                     balance: parseFloat(_cardInformation.amount),
                     operator: 3,
@@ -143,13 +136,6 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
-                    transactionStorage.saveTransaction({
-                        id_registered: response.id,
-                        operator: 2,
-                        reference: response.payer.payer_info.payer_id,
-                        status: (response.state == "approved") ? 1 : 2,
-                        amount: response.transactions.amount.total
-                    });
                     return registerPayment({
                         balance: parseFloat(_cardInformation.amount),
                         operator: 2,
