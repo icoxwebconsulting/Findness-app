@@ -176,15 +176,20 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         });
         routeService.finishEditRoute().then(function () {
             $scope.routeMode = false;
+            $ionicPopup.alert({
+                title : "Findness",
+                template: "Se han guardado los cambios en la ruta correctamente."
+            });
             $ionicLoading.hide();
         }).catch(function (e) {
             $ionicLoading.hide();
-            var title = "Ocurrió un error al guardar la ruta, intente nuevamente.";
+            var text = "Ocurrió un error al guardar la ruta, intente nuevamente.";
             if (e == "noEdit") {
-                title = "No hay cambios en la ruta para guardar."
+                text = "No hay cambios en la ruta para guardar."
             }
             $ionicPopup.alert({
-                title: title
+                title: "Findness",
+                template: text
             });
         });
     }
