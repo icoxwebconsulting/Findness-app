@@ -77,11 +77,10 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         };
 
 
-
-        modalScope.initializeMap = function() {
+        modalScope.initializeMap = function () {
             console.info('initializeMap...');
 
-            setTimeout(function(){
+            setTimeout(function () {
                 console.info('2 segundos despues...');
 
                 var div = document.getElementById("map_canvas_detail");
@@ -100,7 +99,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
             }, 2000);
         };
 
-        modalScope.showMyLocation = function() {
+        modalScope.showMyLocation = function () {
 
             navigator.geolocation.getCurrentPosition(function (position) {
                 var myPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -141,7 +140,6 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         };
 
 
-
         modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
             marker.setIcon(COMPANY_STYLE.COLOR[color]);
@@ -175,9 +173,22 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         markers.push(marker);
     }
 
+    function deleteRouteLines() {
+        try {
+            for (var idx in paths) {
+                paths[idx].polyline.setMap(null);
+            }
+            paths = {};
+        } catch (e) {
+            console.log("error en borrar path del mapa", e);
+        }
+    }
+
     function processMakers(items) {
         //borro las anteriores
         deleteMarkers();
+        //borro las rutas
+        deleteRouteLines();
         if (markerCluster) {
             markerCluster.clearMarkers();
         }

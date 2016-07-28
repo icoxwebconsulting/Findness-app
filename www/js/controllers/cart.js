@@ -34,7 +34,13 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
                     template: 'La cantidad supera el máximo de empresas encontradas.'
                 });
             } else {
-                $scope.view.total = ($scope.view.totalCompanies * $scope.view.unitPrice) + 5;
+                var subtotal = $scope.view.totalCompanies * $scope.view.unitPrice;
+                if(subtotal < 5){
+                    subtotal += 0.25;
+                }
+                //IVA 21%
+                subtotal *= 1.21;
+                $scope.view.total = subtotal;
             }
         } else {
             $scope.view.total = 0;

@@ -121,17 +121,16 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     function finishRoute() {
         var token = userDatastore.getTokens();
-        var data = route;
-        delete data.lastPoint;
-        delete data.id;
-        delete data.isEdit;
         var arr = [];
         for (var p in data.points) {
             arr.push(p);
         }
-        data.points = JSON.stringify(arr);
 
-        return routes(token.accessToken).saveRoute(data).$promise
+        return routes(token.accessToken).saveRoute({
+            name: route.name,
+            transport: route.transport,
+            points: JSON.stringify(arr)
+        }).$promise
             .then(function (response) {
                 console.log(response);
                 routeMode = false;

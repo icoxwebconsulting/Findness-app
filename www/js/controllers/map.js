@@ -161,6 +161,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         });
         routeService.finishRoute().then(function () {
             $scope.routeMode = false;
+            $scope.viewRoute = true;
             $ionicLoading.hide();
         }).catch(function () {
             $ionicLoading.hide();
