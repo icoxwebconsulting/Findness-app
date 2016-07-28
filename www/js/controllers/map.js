@@ -1,5 +1,7 @@
 app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, map, searchService, routeService) {
 
+    $scope.$emit('menu:drag', false);
+
     $scope.showPopUp = false;
     $scope.showRoute = false; //controla la visualización de todos los botones
     $scope.routeMode = false; //modo de crear ruta

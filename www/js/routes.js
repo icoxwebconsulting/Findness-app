@@ -1,4 +1,4 @@
-app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider
 
         .state('slides', {
@@ -188,6 +188,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         });
 
+    $ionicConfigProvider.views.maxCache(0);
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage.getItem('isLogged') == 1) {
         $urlRouterProvider.otherwise('/app/map');
