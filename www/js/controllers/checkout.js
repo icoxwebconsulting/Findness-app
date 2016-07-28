@@ -1,6 +1,7 @@
 app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, searchService) {
 
     $scope.init = function(){
+        $scope.$emit('menu:drag', true);
         $scope.cardType = {};
         $scope.card = {};
         $scope.card.amount = cart.getPayable();

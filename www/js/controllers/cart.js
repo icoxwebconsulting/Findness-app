@@ -8,6 +8,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     });
 
     $scope.init = function () {
+        $scope.$emit('menu:drag', true);
         $scope.view = {};
         $scope.view.contCompanies = [];
         $scope.maxCompanies = cart.getTotalCompanies();

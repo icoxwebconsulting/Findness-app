@@ -1,5 +1,6 @@
 app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideMenuDelegate, userDatastore, user) {
 
+    $scope.dragStatus = true;
     userDatastore.setRefreshingAccessToken(0);
 
     $scope.username = userDatastore.getUsername();
@@ -18,5 +19,10 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
     $scope.stateChange = function (to) {
         $state.go(to);
     };
+
+    $scope.$on('menu:drag', function(event, args) {
+        console.info('args',args);
+        $scope.dragStatus = args;
+    });
 
 });
