@@ -1,5 +1,7 @@
 app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService) {
 
+    $scope.$emit('menu:drag', false);
+ 
     $scope.list;
 
     $scope.$on('$ionicView.enter', function (e) {
