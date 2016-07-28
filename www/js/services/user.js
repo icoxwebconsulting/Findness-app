@@ -165,6 +165,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function requestPassword(email) {
+        userDatastore.setUsernameRecover(email);
         return customer().requestPassword({"customer": email}).$promise
             .then(function (response) {
                 if (response.status) {

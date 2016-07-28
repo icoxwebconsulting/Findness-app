@@ -2,7 +2,7 @@ app.controller('ConfirmPasswordCtrl', function ($scope, $state, $ionicLoading, $
     $scope.confirm = {};
 
     $scope.$on('$ionicView.enter', function (e) {
-        $scope.username = userDatastore.getUsername();
+        $scope.username = userDatastore.getUsernameRecover();
     });
 
     $scope.goBack = function () {
