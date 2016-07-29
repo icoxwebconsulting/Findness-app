@@ -170,6 +170,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         })
 
         .state('app.cart', {
+            cache: false,
             url: '/cart',
             views: {
                 'menuContent': {
@@ -179,6 +180,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             }
         })
         .state('app.checkout', {
+            cache: false,
             url: '/checkout',
             views: {
                 'menuContent': {
@@ -187,8 +189,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 }
             }
         });
-
-    $ionicConfigProvider.views.maxCache(0);
 
     // if none of the above states are matched, use this as the fallback
     if (window.localStorage.getItem('isLogged') == 1) {

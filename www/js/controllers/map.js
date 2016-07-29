@@ -1,6 +1,5 @@
 app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, map, searchService, routeService) {
 
-    $scope.$emit('menu:drag', false);
 
     $scope.showRoute = false; //controla la visualización de todos los botones
     $scope.routeMode = false; //modo de crear ruta
@@ -16,6 +15,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.$on('$ionicView.enter', function (e) {
+        $scope.$emit('menu:drag', false);
         // if (window.localStorage.getItem('firstTime')) {
         //     window.localStorage.removeItem('firstTime');
         //     $state.go('app.filter');
