@@ -37,6 +37,8 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
             var lat = detail.points[0].latitude;
             var lng = detail.points[0].longitude;
             detail.points = formatted;
+            //borro las rutas
+            map.deleteRouteLines();
             routeService.setRoutes(detail).then(function () {
                 //seteo los resultados en el servicio de search necesarios para n
                 var length = Object.keys(detail).length;

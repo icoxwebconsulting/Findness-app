@@ -77,6 +77,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             query = JSON.parse(query);
         }
         map.clear();
+        map.setShowPopup(false);
         //proccessMarkers(query);
         var myPopup = $ionicPopup.show({
             template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',

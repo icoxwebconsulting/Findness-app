@@ -107,9 +107,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     function removePoint(id) {
         if (typeof route.points[id] != "undefined") {
-            $rootScope.$emit('deletePath', {
-                deleteId: id
-            });
             delete route.points[id];
             route.isEdit = true;
             console.log(route);

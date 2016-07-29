@@ -1,4 +1,4 @@
-app.service('map', function ($ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
+app.service('map', function ($q, $ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
 
     //var map;
     var markers = [];
@@ -68,9 +68,9 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         };
 
         modalScope.removePoint = function (id) {
-            if (routeService.removePoint(id)) {
+            deletePath(id).then(function () {
                 modalScope.isAddedd = false;
-            }
+            });
         };
 
         modalScope.closeDetail = function () {
@@ -188,8 +188,6 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
     function processMakers(items) {
         //borro las anteriores
         deleteMarkers();
-        //borro las rutas
-        deleteRouteLines();
         if (markerCluster) {
             markerCluster.clearMarkers();
         }
@@ -245,8 +243,10 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         drawDirections(response)
     });
 
-    $rootScope.$on('deletePath', function (e, response) {
-        var data = paths[response.deleteId];
+    function deletePath(id) {
+        var deferred = $q.defer();
+
+        var data = paths[id];
         var anterior = paths[data.startId];
         anterior.endId = data.endId;
         paths[data.startId] = anterior;
@@ -267,14 +267,20 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
                         startId: startId,
                         endId: endId,
                         path: theRoute
-                    })
+                    });
+                    routeService.removePoint(id);
+                    data.polyline.setMap(null);
+                    delete paths[id];
+                    deferred.resolve();
                 })
+            } else {
+                data.polyline.setMap(null);
+                delete paths[response.deleteId];
             }
         }
-        data.polyline.setMap(null);
-        delete paths[response.deleteId];
 
-    });
+        return deferred.promise;
+    };
 
     function drawDirections(response) {
         //directionsDisplay.setDirections(result);
@@ -316,6 +322,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         getMap: getMap,
         drawDirections: drawDirections,
         setShowPopup: setShowPopup,
-        getShowPopup: getShowPopup
+        getShowPopup: getShowPopup,
+        deleteRouteLines: deleteRouteLines
     };
 });
