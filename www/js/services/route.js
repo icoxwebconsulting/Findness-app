@@ -122,7 +122,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
     function finishRoute() {
         var token = userDatastore.getTokens();
         var arr = [];
-        for (var p in data.points) {
+        for (var p in route.points) {
             arr.push(p);
         }
 

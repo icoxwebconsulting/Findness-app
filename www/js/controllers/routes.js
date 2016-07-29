@@ -48,11 +48,12 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
                     ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
                     items: detail.points
                 });
-                map.processMakers(detail.points);
-                //TODO: se debe eliminar moveCamera e integrarlo al método de processMarkers del servicio
-                map.moveCamera(lat, lng, 9);
                 $ionicLoading.hide();
+                map.processMakers(detail.points);
                 $state.go("app.map");
+                setTimeout(function () {
+                    map.moveCamera(lat, lng, 9);
+                },1500);
             })
         }).catch(function () {
             $ionicLoading.hide();

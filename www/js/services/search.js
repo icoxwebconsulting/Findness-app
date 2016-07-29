@@ -249,6 +249,10 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
     function withResults() {
         return (typeof resultSearch == 'object' && (typeof resultSearch.items == 'object' && Object.keys(resultSearch.items).length > 0))
     }
+    
+    function getNonConsultedElements() {
+        return resultSearch.TotalElementosNoConsultados;
+    }
 
     return {
         getCnaes: getCnaes,
@@ -261,6 +265,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         getLastQuery: getLastQuery,
         executeLastQuery: executeLastQuery,
         setResultSearch: setResultSearch,
-        withResults: withResults
+        withResults: withResults,
+        getNonConsultedElements: getNonConsultedElements
     };
 });

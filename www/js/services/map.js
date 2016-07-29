@@ -5,13 +5,14 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
     var markerCluster;
     /* cada elemento en paths posee:
      {
-         startId: response.startId,
-         endId: response.endId,
-         nextId: null,
-         polyline: routePath
+     startId: response.startId,
+     endId: response.endId,
+     nextId: null,
+     polyline: routePath
      }
      * */
     var paths = {};//la clave del objeto es el punto de llegada, el único que no debe estar aqui es el primero
+    var showPopup = false; //indica si se debe mostrar el popup en el mapa al tener resultados
 
     function init(div, location, zoom) {
         directionsDisplay = new google.maps.DirectionsRenderer();
@@ -298,6 +299,14 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         routePath.setMap(map);
     }
 
+    function setShowPopup(opt) {
+        showPopup = opt;
+    }
+
+    function getShowPopup() {
+        return showPopup;
+    }
+
     return {
         init: init,
         processMakers: processMakers,
@@ -305,6 +314,8 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         clear: clear,
         resize: resize,
         getMap: getMap,
-        drawDirections: drawDirections
+        drawDirections: drawDirections,
+        setShowPopup: setShowPopup,
+        getShowPopup: getShowPopup
     };
 });

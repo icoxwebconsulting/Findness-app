@@ -76,11 +76,11 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
             searchService.executeLastQuery(cart.getTotalCompanies()).then(function (lastQuery) {
                 $state.go("app.map");
                 paymentSrv.requestBalance();
-                setTimeout(function () {
-                    $rootScope.$emit('processMarkers', {
-                        lastQuery: lastQuery
-                    });
-                },1500);
+                // setTimeout(function () {
+                //     $rootScope.$emit('processMarkers', {
+                //         lastQuery: lastQuery
+                //     });
+                // },1500);
             });
         });
     }

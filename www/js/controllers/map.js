@@ -2,7 +2,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     $scope.$emit('menu:drag', false);
 
-    $scope.showPopUp = false;
     $scope.showRoute = false; //controla la visualización de todos los botones
     $scope.routeMode = false; //modo de crear ruta
     $scope.viewRoute = false; //modo de visualizar ruta
@@ -25,30 +24,27 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         if (map.getMap()) {
             map.resize();
         }
-        if ($scope.showPopUp) {
-            $scope.showPopUp = false;
+        if (map.getShowPopup()) {
             showPopUp();
         }
         var modes = routeService.getModes();
-        console.log(modes);
-        console.log(searchService.withResults());
-        if (searchService.withResults()) {
-            $scope.showRoute = true;
-        } else {
-            $scope.showRoute = false;
-        }
         $scope.routeMode = modes.routeMode;
         $scope.viewRoute = modes.viewRoute;
-    });
-
-    $rootScope.$on('showResults', function (e, data) {
-        console.log("pasada por showResults");
-        $scope.data = data;
-        if (data.showPopUp) {
-            $scope.showPopUp = true;
+        $scope.showRoute = searchService.withResults();
+        //El controlador se encarga de mostrar los resultados si existen cada vez que se entra
+        if ($scope.showRoute) {
+            var query = searchService.getLastQuery();
+            if (query) {
+                query = JSON.parse(query);
+            }
+            proccessMarkers(query);
         } else {
-            proccessMarkers(data.lastQuery);
+            //centra el mapa en españa
+            if (map.getMap()) {
+                map.moveCamera(39.9997938, -3.1926017, 6);
+            }
         }
+        console.log(modes, searchService.withResults());
     });
 
     $rootScope.$on('processMarkers', function (e, query) {
@@ -68,7 +64,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             var lat = query.geoLocations.latitude;
             var lon = query.geoLocations.longitude;
         }
-        map.moveCamera(lat, lon, 9);
+        setTimeout(function () {
+            map.moveCamera(lat, lon, 9);
+        }, 1500);
         $scope.showRoute = true;
         $scope.routeMode = false;
     }
@@ -79,9 +77,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             query = JSON.parse(query);
         }
         map.clear();
-        proccessMarkers(query);
+        //proccessMarkers(query);
         var myPopup = $ionicPopup.show({
-            template: '<div>Existen {{data.toBuy}} resultados que puede adquirir.</div>',
+            template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
             title: 'Findness',
             subTitle: 'Resultados',
             scope: $scope,
@@ -180,7 +178,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         routeService.finishEditRoute().then(function () {
             $scope.routeMode = false;
             $ionicPopup.alert({
-                title : "Findness",
+                title: "Findness",
                 template: "Se han guardado los cambios en la ruta correctamente."
             });
             $ionicLoading.hide();
@@ -197,8 +195,8 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         });
     }
 
-}).filter('capitalize', function() {
-    return function(input) {
+}).filter('capitalize', function () {
+    return function (input) {
         return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
     }
 });

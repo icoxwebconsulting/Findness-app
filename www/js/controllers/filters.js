@@ -139,20 +139,15 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 $state.go("app.cart");
             }
         } else {
-            //caso 3 mostrar mapa sin popup
-            var popup = false;
-            if (results.TotalElementosNoConsultados != 0) {
+            if (results.TotalElementosNoConsultados == 0) {
+                //caso 3 mostrar mapa sin popup
+                map.setShowPopup(false);
+            } else {
                 //caso 4 mostrar mapa con popup
-                popup = true;
+                map.setShowPopup(true);
             }
             routeService.setModes(false, false);
             $state.go("app.map");
-            setTimeout(function () {
-                $rootScope.$emit('showResults', {
-                    showPopUp: popup,
-                    toBuy: results.TotalElementosNoConsultados
-                });
-            },1500)
         }
     }
 
