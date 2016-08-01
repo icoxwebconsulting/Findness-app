@@ -20,23 +20,10 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
         });
 
         routeService.getRouteDetail(item).then(function (detail) {
-            //TODO: posible código a ser borrado
-            var formatted = {};
-            for (var i = 0; i < detail.points.length; i++) {
-                formatted[detail.points[i].id] = {
-                    "id": detail.points[i].id,
-                    "socialReason": detail.points[i].social_reason,
-                    "socialObject": detail.points[i].social_object,
-                    "latitude": detail.points[i].latitude,
-                    "longitude": detail.points[i].longitude,
-                    "cif": detail.points[i].cif,
-                    "address": detail.points[i].address,
-                    "phoneNumber": detail.points[i].phone_number
-                }
-            }
-            var lat = detail.points[0].latitude;
-            var lng = detail.points[0].longitude;
-            detail.points = formatted;
+            var kyz = Object.keys(detail.points);
+            var lat = detail.points[kyz[0]].latitude;
+            var lng = detail.points[kyz[0]].longitude;
+
             //borro las rutas
             map.deleteRouteLines();
             routeService.setRoutes(detail).then(function () {
@@ -55,7 +42,7 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
                 $state.go("app.map");
                 setTimeout(function () {
                     map.moveCamera(lat, lng, 9);
-                },1500);
+                }, 1500);
             })
         }).catch(function () {
             $ionicLoading.hide();
