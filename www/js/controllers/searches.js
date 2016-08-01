@@ -122,7 +122,15 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
 
     $scope.changeName = function () {
         console.log($scope.changeNameSearch);
-        $scope.modal.hide();
-        $ionicListDelegate.closeOptionButtons();
+
+        searchesService.update($scope.changeNameSearch.id, $scope.changeNameSearch.name)
+            .then(function () {
+                $scope.modal.hide();
+                $ionicListDelegate.closeOptionButtons();
+            })
+            .catch(function () {
+                $scope.modal.hide();
+                $ionicListDelegate.closeOptionButtons();
+            });
     };
 });
