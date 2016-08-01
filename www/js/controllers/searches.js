@@ -4,12 +4,16 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
 
     $scope.items;
 
-    $scope.$on('$ionicView.enter', function (e) {
+    function getSearches() {
         searchesService.getSearches().then(function (result) {
             $scope.items = result.searches;
         }).catch(function () {
             console.log("Error");
         });
+    }
+
+    $scope.$on('$ionicView.enter', function (e) {
+        getSearches();
     });
 
     function processResults(results) {
@@ -89,8 +93,16 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
         });
     };
 
-    $scope.delete = function (search) {
-
+    $scope.delete = function (search, index) {
+        searchesService.remove(search.id)
+            .then(function (response) {
+                if (response.deleted) {
+                    $scope.items.splice(index, 1);
+                }
+            })
+            .catch(function () {
+                $ionicListDelegate.closeOptionButtons();
+            });
     };
 
     $scope.changeNameSearch = null;
@@ -121,14 +133,19 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
     };
 
     $scope.changeName = function () {
-        console.log($scope.changeNameSearch);
-
+        $ionicLoading.show();
         searchesService.update($scope.changeNameSearch.id, $scope.changeNameSearch.name)
-            .then(function () {
+            .then(function (response) {
+                if (!response.updated) {
+                    $scope.items = null;
+                    getSearches();
+                }
+                $ionicLoading.hide();
                 $scope.modal.hide();
                 $ionicListDelegate.closeOptionButtons();
             })
             .catch(function () {
+                $ionicLoading.hide();
                 $scope.modal.hide();
                 $ionicListDelegate.closeOptionButtons();
             });

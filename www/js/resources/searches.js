@@ -16,6 +16,12 @@ app.factory('searches', function ($resource, SERVER_CONF) {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
+            },
+            delete: {
+                method: 'DELETE',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             }
         });
     };
