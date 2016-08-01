@@ -120,6 +120,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         })
 
         .state('app.companies', {
+            cache: false,
             url: '/companies',
             views: {
                 'menuContent': {
