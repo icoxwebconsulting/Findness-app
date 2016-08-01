@@ -1,4 +1,4 @@
-app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider
 
         .state('slides', {
@@ -170,6 +170,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
 
         .state('app.cart', {
+            cache: false,
             url: '/cart',
             views: {
                 'menuContent': {
@@ -179,6 +180,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
         .state('app.checkout', {
+            cache: false,
             url: '/checkout',
             views: {
                 'menuContent': {

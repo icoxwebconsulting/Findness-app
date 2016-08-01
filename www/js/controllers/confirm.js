@@ -4,6 +4,7 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
     $scope.confirm = {};
 
     $scope.$on('$ionicView.enter', function (e) {
+        $scope.$emit('menu:drag', true);
         $scope.username = userDatastore.getUsername();
     });
 

@@ -1,17 +1,18 @@
-app.service('map', function ($ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
+app.service('map', function ($q, $ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
 
     //var map;
     var markers = [];
     var markerCluster;
     /* cada elemento en paths posee:
      {
-         startId: response.startId,
-         endId: response.endId,
-         nextId: null,
-         polyline: routePath
+     startId: response.startId,
+     endId: response.endId,
+     nextId: null,
+     polyline: routePath
      }
      * */
     var paths = {};//la clave del objeto es el punto de llegada, el único que no debe estar aqui es el primero
+    var showPopup = false; //indica si se debe mostrar el popup en el mapa al tener resultados
 
     function init(div, location, zoom) {
         directionsDisplay = new google.maps.DirectionsRenderer();
@@ -67,9 +68,9 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         };
 
         modalScope.removePoint = function (id) {
-            if (routeService.removePoint(id)) {
+            deletePath(id).then(function () {
                 modalScope.isAddedd = false;
-            }
+            });
         };
 
         modalScope.closeDetail = function () {
@@ -77,11 +78,10 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         };
 
 
-
-        modalScope.initializeMap = function() {
+        modalScope.initializeMap = function () {
             console.info('initializeMap...');
 
-            setTimeout(function(){
+            setTimeout(function () {
                 console.info('2 segundos despues...');
 
                 var div = document.getElementById("map_canvas_detail");
@@ -100,7 +100,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
             }, 2000);
         };
 
-        modalScope.showMyLocation = function() {
+        modalScope.showMyLocation = function () {
 
             navigator.geolocation.getCurrentPosition(function (position) {
                 var myPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -141,7 +141,6 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         };
 
 
-
         modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
             marker.setIcon(COMPANY_STYLE.COLOR[color]);
@@ -173,6 +172,17 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         });
 
         markers.push(marker);
+    }
+
+    function deleteRouteLines() {
+        try {
+            for (var idx in paths) {
+                paths[idx].polyline.setMap(null);
+            }
+            paths = {};
+        } catch (e) {
+            console.log("error en borrar path del mapa", e);
+        }
     }
 
     function processMakers(items) {
@@ -211,6 +221,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
     }
 
     function moveCamera(lat, long, zoom) {
+        console.log("moviendo la camara", lat, long, zoom, typeof lat, typeof long, typeof zoom);
         map.setCenter(new google.maps.LatLng(lat, long));
         map.setZoom(zoom);
     }
@@ -221,7 +232,7 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
 
     function resize() {
         console.log("ejecutando resize");
-        google.maps.event.trigger(map, 'resize')
+        google.maps.event.trigger(map, 'resize');
     }
 
     function getMap() {
@@ -232,8 +243,10 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         drawDirections(response)
     });
 
-    $rootScope.$on('deletePath', function (e, response) {
-        var data = paths[response.deleteId];
+    function deletePath(id) {
+        var deferred = $q.defer();
+
+        var data = paths[id];
         var anterior = paths[data.startId];
         anterior.endId = data.endId;
         paths[data.startId] = anterior;
@@ -254,14 +267,20 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
                         startId: startId,
                         endId: endId,
                         path: theRoute
-                    })
+                    });
+                    routeService.removePoint(id);
+                    data.polyline.setMap(null);
+                    delete paths[id];
+                    deferred.resolve();
                 })
+            } else {
+                data.polyline.setMap(null);
+                delete paths[response.deleteId];
             }
         }
-        data.polyline.setMap(null);
-        delete paths[response.deleteId];
 
-    });
+        return deferred.promise;
+    };
 
     function drawDirections(response) {
         //directionsDisplay.setDirections(result);
@@ -286,6 +305,14 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         routePath.setMap(map);
     }
 
+    function setShowPopup(opt) {
+        showPopup = opt;
+    }
+
+    function getShowPopup() {
+        return showPopup;
+    }
+
     return {
         init: init,
         processMakers: processMakers,
@@ -293,6 +320,9 @@ app.service('map', function ($ionicModal, $rootScope, company, routeService, sea
         clear: clear,
         resize: resize,
         getMap: getMap,
-        drawDirections: drawDirections
+        drawDirections: drawDirections,
+        setShowPopup: setShowPopup,
+        getShowPopup: getShowPopup,
+        deleteRouteLines: deleteRouteLines
     };
 });

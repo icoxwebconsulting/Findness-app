@@ -233,17 +233,25 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
 
         return qualitas(token.accessToken).search(options).$promise
             .then(function (response) {
-                setResultSearch(response);
-                //retorna el query no los resultados
-                return options;
-            })
-            .catch(function (response) {
-                console.log(response);
-            });
+                    if (response.hasOwnProperty("error")) {
+                        throw response.error;
+                    } else {
+                        //retorna el query no los resultados
+                        setResultSearch(response);
+                        return options;
+                    }
+                },
+                function (e) {//error handler
+                    throw e;
+                })
     }
 
     function withResults() {
         return (typeof resultSearch == 'object' && (typeof resultSearch.items == 'object' && Object.keys(resultSearch.items).length > 0))
+    }
+    
+    function getNonConsultedElements() {
+        return resultSearch.TotalElementosNoConsultados;
     }
 
     return {
@@ -257,6 +265,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         getLastQuery: getLastQuery,
         executeLastQuery: executeLastQuery,
         setResultSearch: setResultSearch,
-        withResults: withResults
+        withResults: withResults,
+        getNonConsultedElements: getNonConsultedElements
     };
 });

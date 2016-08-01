@@ -29,7 +29,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                 var theRoute = new Array();
                 var gRoute = response.routes[0]['overview_path'];
                 for (var s = 0; s < gRoute.length; s++) {
-                    theRoute.push(new plugin.google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
+                    theRoute.push(new google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
                 }
                 deferred.resolve(theRoute);
             } else {
@@ -107,11 +107,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     function removePoint(id) {
         if (typeof route.points[id] != "undefined") {
-            $rootScope.$emit('deletePath', {
-                deleteId: id
-            });
             delete route.points[id];
             route.isEdit = true;
+            console.log(route);
             return true;
         } else {
             return false;
@@ -120,17 +118,16 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
     function finishRoute() {
         var token = userDatastore.getTokens();
-        var data = route;
-        delete data.lastPoint;
-        delete data.id;
-        delete data.isEdit;
         var arr = [];
-        for (var p in data.points) {
+        for (var p in route.points) {
             arr.push(p);
         }
-        data.points = JSON.stringify(arr);
 
-        return routes(token.accessToken).saveRoute(data).$promise
+        return routes(token.accessToken).saveRoute({
+            name: route.name,
+            transport: route.transport,
+            points: JSON.stringify(arr)
+        }).$promise
             .then(function (response) {
                 console.log(response);
                 routeMode = false;
@@ -147,19 +144,18 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
 
         if (route.isEdit) {
             var token = userDatastore.getTokens();
-            var data = route;
-            delete data.lastPoint;
-            delete data.id;
-            delete data.isEdit;
             var arr = [];
-            for (var p in data.points) {
+            for (var p in route.points) {
                 arr.push(p);
             }
-            data.points = JSON.stringify(arr);
 
             return routes(token.accessToken).editRoute({
                 mapRoute: route.id
-            }, data).$promise.then(function (response) {
+            }, {
+                name: route.name,
+                transport: route.transport,
+                points: JSON.stringify(arr)
+            }).$promise.then(function (response) {
                 console.log(response);
                 routeMode = false;
                 viewRoute = true; //como estoy mostrando la ruta, paso al modo de edición

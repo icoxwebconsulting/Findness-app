@@ -25,7 +25,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
 
     $scope.$on('$ionicView.leave', function (e) {
         //searchService.setSelectedFilter(filter);
-        map.resize();
+        // map.resize();
     });
 
     $scope.getItems = function (query, type) {
@@ -139,17 +139,14 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 $state.go("app.cart");
             }
         } else {
-            //caso 3 mostrar mapa sin popup
-            var popup = false;
-            if (results.TotalElementosNoConsultados != 0) {
+            if (results.TotalElementosNoConsultados == 0) {
+                //caso 3 mostrar mapa sin popup
+                map.setShowPopup(false);
+            } else {
                 //caso 4 mostrar mapa con popup
-                popup = true;
+                map.setShowPopup(true);
             }
             routeService.setModes(false, false);
-            $rootScope.$emit('showResults', {
-                showPopUp: popup,
-                toBuy: results.TotalElementosNoConsultados
-            });
             $state.go("app.map");
         }
     }

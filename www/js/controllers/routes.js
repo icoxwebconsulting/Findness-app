@@ -37,6 +37,8 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
             var lat = detail.points[0].latitude;
             var lng = detail.points[0].longitude;
             detail.points = formatted;
+            //borro las rutas
+            map.deleteRouteLines();
             routeService.setRoutes(detail).then(function () {
                 //seteo los resultados en el servicio de search necesarios para n
                 var length = Object.keys(detail).length;
@@ -48,11 +50,12 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
                     ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
                     items: detail.points
                 });
-                map.processMakers(detail.points);
-                //TODO: se debe eliminar moveCamera e integrarlo al método de processMarkers del servicio
-                map.moveCamera(lat, lng, 9);
                 $ionicLoading.hide();
+                map.processMakers(detail.points);
                 $state.go("app.map");
+                setTimeout(function () {
+                    map.moveCamera(lat, lng, 9);
+                },1500);
             })
         }).catch(function () {
             $ionicLoading.hide();

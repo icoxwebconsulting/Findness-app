@@ -96,6 +96,14 @@ app.factory('userDatastore', function () {
         return window.localStorage.getItem('balance') || 0;
     }
 
+    function setUsernameRecover(email) {
+        window.localStorage.setItem('username_recover', email);
+    }
+
+    function getUsernameRecover() {
+        return window.localStorage.getItem('username_recover');
+    }
+
     return {
         setIsLogged: setIsLogged,
         getIsLogged: getIsLogged,
@@ -118,6 +126,8 @@ app.factory('userDatastore', function () {
         setSalt: setSalt,
         getSalt: getSalt,
         setBalance: setBalance,
-        getBalance: getBalance
+        getBalance: getBalance,
+        setUsernameRecover: setUsernameRecover,
+        getUsernameRecover: getUsernameRecover
     };
 });

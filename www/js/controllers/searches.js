@@ -1,5 +1,5 @@
 app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal, searchesService,
-                                         searchService, routeService, $ionicPopup, cart, $ionicLoading,
+                                         searchService, routeService, $ionicPopup, cart, map, $ionicLoading,
                                          $ionicListDelegate) {
 
     $scope.items;
@@ -7,6 +7,8 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
     $scope.$on('$ionicView.enter', function (e) {
         searchesService.getSearches().then(function (result) {
             $scope.items = result.searches;
+        }).catch(function () {
+            console.log("Error");
         });
     });
 
@@ -37,17 +39,14 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                 $state.go("app.cart");
             }
         } else {
-            //caso 3 mostrar mapa sin popup
-            var popup = false;
-            if (results.TotalElementosNoConsultados != 0) {
+            if (results.TotalElementosNoConsultados == 0) {
+                //caso 3 mostrar mapa sin popup
+                map.setShowPopup(false);
+            } else {
                 //caso 4 mostrar mapa con popup
-                popup = true;
+                map.setShowPopup(true);
             }
             routeService.setModes(false, false);
-            $rootScope.$emit('showResults', {
-                showPopUp: popup,
-                toBuy: results.TotalElementosNoConsultados
-            });
             $state.go("app.map");
         }
     }
