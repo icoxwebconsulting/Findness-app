@@ -1,12 +1,12 @@
 app.constant("SERVER_CONF", {
 
-    HOST: "http://findness.icox.mobi/app_dev.php/",
-    API_HOST: "http://findness.icox.mobi/app_dev.php/api/v1/"
+    HOST: "http://findness.icox.mobi/",
+    API_HOST: "http://findness.icox.mobi/api/v1/"
 });
 
 app.constant("OAUTH_CONF", {
 
-    OAUTH_HOST: "http://findness.icox.mobi/app_dev.php/oauth/v2/",
+    OAUTH_HOST: "http://findness.icox.mobi/oauth/v2/",
 
     CLIENT_ID: "578e7e8f7aa12_4uxoquy48b6sooocgws0wgg4wgcs8ooks8cwsw0ks84so0c0g8",
     CLIENT_SECRET: "1cyx26089gys0k4gskcgg8c8gskcw44gog4co04sckkoog4s0w",
