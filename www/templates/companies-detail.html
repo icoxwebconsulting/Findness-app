@@ -3,21 +3,21 @@
         <div class="row subtitle filter" scroll="false">
             <div class="col col-100">
                 <div class="left">
-                    <span>Mis listados</span>
+                    <span>{{listName}}</span>
                 </div>
                 <div class="center">
                     <br>
                 </div>
                 <div class="right">
-                    <br>
+                    <i class="ion-share" ng-click="openShare('{{listId}}')"></i>
                 </div>
 
             </div>
         </div>
-        <div class="list">
-            <a class="item item-icon-left" href="#" ng-repeat="list in lists" ng-click="showDetail('{{list.id}}', '{{list.name}}')">
+        <div class="list" scroll="true">
+            <a class="item item-icon-left" href="#" ng-repeat="list in companies">
                 <i class="icon ion-ios-bookmarks"></i>
-                {{list.name}}
+                {{list.social_reason}}
             </a>
         </div>
     </ion-content>

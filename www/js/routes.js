@@ -129,6 +129,16 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 }
             }
         })
+        .state('app.companies-detail', {
+            cache: false,
+            url: 'companies/:id/:name',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/companies-detail.html',
+                    controller: 'CompaniesCtrl'
+                }
+            }
+        })
 
         .state('app.searches', {
             url: '/searches',
