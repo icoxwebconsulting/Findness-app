@@ -1,13 +1,19 @@
-app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesService, searchService, routeService, $ionicPopup, cart, map, $ionicLoading) {
+app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal, searchesService,
+                                         searchService, routeService, $ionicPopup, cart, map, $ionicLoading,
+                                         $ionicListDelegate) {
 
     $scope.items;
 
-    $scope.$on('$ionicView.enter', function (e) {
+    function getSearches() {
         searchesService.getSearches().then(function (result) {
             $scope.items = result.searches;
         }).catch(function () {
             console.log("Error");
         });
+    }
+
+    $scope.$on('$ionicView.enter', function (e) {
+        getSearches();
     });
 
     function processResults(results) {
@@ -85,6 +91,63 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, searchesSer
                 title: "Ocurrió un error al realizar la búsqueda, intente más tarde."
             });
         });
-    }
+    };
 
+    $scope.delete = function (search, index) {
+        searchesService.remove(search.id)
+            .then(function (response) {
+                if (response.deleted) {
+                    $scope.items.splice(index, 1);
+                }
+            })
+            .catch(function () {
+                $ionicListDelegate.closeOptionButtons();
+            });
+    };
+
+    $scope.changeNameSearch = null;
+    $scope.showChangeName = function (search) {
+        $ionicModal.fromTemplateUrl('templates/searches-change-name.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $scope.changeNameSearch = search;
+            $scope.modal = modal;
+            $scope.modal.show();
+        });
+
+        // Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function () {
+            $scope.modal.remove();
+        });
+
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function () {
+            $scope.changeNameSearch = null;
+        });
+
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function () {
+            $scope.changeNameSearch = null;
+        });
+    };
+
+    $scope.changeName = function () {
+        $ionicLoading.show();
+        searchesService.update($scope.changeNameSearch.id, $scope.changeNameSearch.name)
+            .then(function (response) {
+                if (!response.updated) {
+                    $scope.items = null;
+                    getSearches();
+                }
+                $ionicLoading.hide();
+                $scope.modal.hide();
+                $ionicListDelegate.closeOptionButtons();
+            })
+            .catch(function () {
+                $ionicLoading.hide();
+                $scope.modal.hide();
+                $ionicListDelegate.closeOptionButtons();
+            });
+    };
 });
