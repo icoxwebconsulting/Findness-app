@@ -240,7 +240,17 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
     }
 
     $rootScope.$on('drawDirections', function (e, response) {
-        drawDirections(response)
+        drawDirections({
+                startId: response.startId,
+                endId: response.endId,
+                path: response.path
+            }, {
+                start: response.start,
+                end: response.end
+            },
+            response.distance,
+            response.duration
+        )
     });
 
     function deletePath(id) {
@@ -262,12 +272,18 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             if (pathStart && pathEnd) {
                 pathStart = new google.maps.LatLng(pathStart.latitude, pathStart.longitude);
                 pathEnd = new google.maps.LatLng(pathEnd.latitude, pathEnd.longitude);
-                routeService.requestRoute(pathStart, pathEnd).then(function (theRoute) {
+                routeService.requestRoute(pathStart, pathEnd).then(function (data) {
                     drawDirections({
-                        startId: startId,
-                        endId: endId,
-                        path: theRoute
-                    });
+                            startId: startId,
+                            endId: endId,
+                            path: data.route
+                        }, {
+                            start: pathStart,
+                            end: pathEnd
+                        },
+                        data.distance,
+                        data.duration
+                    );
                     routeService.removePoint(id);
                     data.polyline.setMap(null);
                     delete paths[id];
@@ -282,7 +298,35 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         return deferred.promise;
     };
 
-    function drawDirections(response) {
+    function polylinePopup(thePath, distance, duration, startId, endId) {
+        // google.maps.event.addListener(routePath.polyline, 'click', function (a) {
+        // });
+        try {
+            var search = searchService.getResultSearch().items;
+            var template ="<p>De <b>" + search[startId]["socialReason"] + "</b> <br>Hasta <b>" + search[endId]["socialReason"] + "</b></p>";
+            template += "<p>Recorrerá <b>" + distance + "</b> en un tiempo de <b>" + duration + "</b>.</p><p>Puede visualizar la ruta en su aplicación de Mapas.</p>";
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Findness',
+                template: template,
+                buttons: [
+                    {
+                        text: '<b>Navegar</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            launchnavigator.navigate(thePath.end.lat() + ',' + thePath.end.lng(), {
+                                start: thePath.start.lat() + ',' + thePath.start.lng()
+                            });
+                        }
+                    },
+                    {text: 'Cerrar'}
+                ]
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    function drawDirections(response, thePath, distance, duration) {
         //directionsDisplay.setDirections(result);
         var routePath = new google.maps.Polyline({
             path: response.path,
@@ -291,6 +335,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             strokeOpacity: 1.0,
             strokeWeight: 3
         });
+
         paths[response.endId] = {
             startId: response.startId,
             endId: response.endId,
@@ -303,6 +348,14 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             paths[response.startId] = element;
         }
         routePath.setMap(map);
+
+        //agrego listener
+        paths[response.endId].polyline.addListener('click', function () {
+            //console.log(this, distance, duration)
+            polylinePopup(thePath, distance, duration, response.startId, response.endId);
+        });
+        //
+        console.log(paths);
     }
 
     function setShowPopup(opt) {

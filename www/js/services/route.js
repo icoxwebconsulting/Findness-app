@@ -31,7 +31,11 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                 for (var s = 0; s < gRoute.length; s++) {
                     theRoute.push(new google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
                 }
-                deferred.resolve(theRoute);
+                deferred.resolve({
+                    route: theRoute,
+                    distance: response.routes[0]['legs'][0]['distance']['text'],
+                    duration: response.routes[0]['legs'][0]['duration']['text']
+                });
             } else {
                 deferred.reject(status);
             }
@@ -86,11 +90,15 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
             if (typeof route.points[point.id] == "undefined") { //compruebo que no exista previamente
                 route.points[point.id] = (point);
                 if (Object.keys(route.points).length > 1) { //si hay otro elemento puedo dibujar la ruta
-                    requestRoute(route.lastPoint.position, point.position).then(function (theRoute) {
+                    requestRoute(route.lastPoint.position, point.position).then(function (data) {
                         $rootScope.$emit('drawDirections', {
                             startId: route.lastPoint.id,
                             endId: point.id,
-                            path: theRoute
+                            path: data.route,
+                            start: route.lastPoint.position,
+                            end: point.position,
+                            distance: data.distance,
+                            duration: data.duration
                         });
                         route.lastPoint = point;
                     });
@@ -197,7 +205,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                 lastPoint: null,
                 points: {}
             };
-            //TODO: revisar que el objeto esté adecuadamente construido
+
             for (var i in item.points) {
                 addPoint({
                     id: item.points[i].id,
