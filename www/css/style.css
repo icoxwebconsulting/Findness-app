@@ -448,8 +448,14 @@
 }
 
 .header-menu .legend .right{
-    width: 30%;
-    display: inline-block;
+    width: 35%;
+    display: block;
+    color: #fff;
+    position: absolute;
+    margin-top: -90px;
+    margin-left: 65%;
+    font-size: 12px;
+    float: right;
 }
 
 .header-menu .legend .right img{

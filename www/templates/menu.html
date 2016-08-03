@@ -27,6 +27,7 @@
                         <p>{{username| limitTo:1}} <span ng-if="username.length > 24">...</span></p>
                     </div>
                     <div class="right">
+                        <span>{{view.balance | number:2}}€</span>
                         <img src="img/cart.png" ui-sref="app.profile" menu-close>
                     </div>
                 </div>
