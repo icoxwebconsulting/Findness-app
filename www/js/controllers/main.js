@@ -25,6 +25,7 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
     });
 
     $scope.init = function () {
+        $scope.customer = user.getProfile();
         $scope.view.balance = cart.getBalance();
     };
 

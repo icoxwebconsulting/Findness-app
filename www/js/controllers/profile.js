@@ -8,9 +8,10 @@ app.controller('ProfileCtrl', function ($scope, $state, user, $ionicHistory, $io
         $state.go('login');
     };
 
-    $scope.customer = null;
+    $scope.$on('$ionicView.enter', function (e) {
+        $scope.customer = user.getProfile();
+    });
 
-    $scope.customer = user.getProfile();
 
     $scope.updateProfile = function () {
         console.log($scope.customer);
