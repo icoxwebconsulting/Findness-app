@@ -64,15 +64,15 @@ app.factory('userDatastore', function () {
         return window.localStorage.getItem('refreshingAccessToken');
     }
 
-    function setProfile(displayName, avatarURL) {
-        window.localStorage.setItem('displayName', displayName);
-        window.localStorage.setItem('avatarURL', avatarURL);
+    function setProfile(firstName, lastName) {
+        window.localStorage.setItem('firstName', firstName);
+        window.localStorage.setItem('lastName', lastName);
     }
 
     function getProfile() {
         return {
-            displayName: window.localStorage.getItem('displayName'),
-            avatarURL: window.localStorage.getItem('avatarURL')
+            firstName: window.localStorage.getItem('firstName'),
+            lastName: window.localStorage.getItem('lastName')
         }
     }
 
