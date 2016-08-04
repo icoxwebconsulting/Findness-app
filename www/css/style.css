@@ -141,6 +141,23 @@
 }
 
 
+.subtitle .left{
+    width: 50% !important;
+    display: inline-block;
+}
+
+.subtitle .right, .subtitle .center{
+    width: 20% !important;
+    display: inline-block;
+}
+
+.subtitle .right{
+    font-size: 30px;
+    margin-top: -6px;
+    float: right;
+}
+
+
 .item-select select{
     width: 60% !important;
 }
@@ -245,6 +262,15 @@
 
 .login :-ms-input-placeholder{
     color: #ffffff !important;
+}
+
+.modal-company-share{
+    width: 80%!important;
+    min-height: 20%;
+    margin: 40% 10%!important;
+    max-height: 20%;
+    height: 90%;
+    border: 2px solid #636363;
 }
 
 .modal-company-info{
@@ -405,11 +431,11 @@
 }
 
 .header-menu .legend{
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .header-menu .legend .left{
-    width: 70%;
+    width: 50%;
     display: inline-block;
     color: #ffffff;
     font-weight: bold;
@@ -417,13 +443,21 @@
 }
 
 .header-menu .legend .left p{
-    margin-top: 5px;
+    margin-top: 0px;
     margin-left: 10px;
+    margin-bottom: 0;
+    text-align: center;
 }
 
 .header-menu .legend .right{
-    width: 30%;
-    display: inline-block;
+    width: 35%;
+    display: block;
+    color: #fff;
+    position: absolute;
+    margin-top: -75px;
+    margin-left: 65%;
+    font-size: 12px;
+    float: right;
 }
 
 .header-menu .legend .right img{

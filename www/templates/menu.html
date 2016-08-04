@@ -23,10 +23,13 @@
             <div class="header-menu">
                 <div class="legend">
                     <div class="left">
-                        <p ng-if="username.length <= 21">{{username| limitTo:24}}</p>
-                        <p>{{username| limitTo:1}} <span ng-if="username.length > 24">...</span></p>
+                        <p ng-if="customer.firstName.length <= 21">{{customer.firstName}}</p>
+                        <p ng-if="customer.firstName.length >= 24">{{customer.firstName| limitTo:22}} <span ng-if="customer.firstName.length >= 24">...</span></p>
+                        <p ng-if="username.length <= 21">{{username}}</p>
+                        <p ng-if="username.length >= 24">{{username| limitTo:22}} <span ng-if="username.length >= 24">...</span></p>
                     </div>
                     <div class="right">
+                        <span>{{view.balance | number:2}}€</span>
                         <img src="img/cart.png" ui-sref="app.profile" menu-close>
                     </div>
                 </div>

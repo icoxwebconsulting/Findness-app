@@ -1,4 +1,4 @@
-app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideMenuDelegate, userDatastore, user) {
+app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideMenuDelegate, userDatastore, user, cart) {
 
     $scope.dragStatus = true;
     userDatastore.setRefreshingAccessToken(0);
@@ -21,8 +21,17 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
     };
 
     $scope.$on('menu:drag', function(event, args) {
-        console.info('args',args);
         $scope.dragStatus = args;
+    });
+
+    $scope.init = function () {
+        $scope.customer = user.getProfile();
+        $scope.view.balance = cart.getBalance();
+    };
+
+    $scope.$on('$ionicView.enter', function (e) {
+        $scope.view = {};
+        $scope.init();
     });
 
 });

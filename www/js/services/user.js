@@ -63,7 +63,16 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                 //
                 paymentSrv.requestBalance();
                 refreshAccessToken();
-                deferred.resolve(response);
+
+                var authResponse = response;
+
+                customer(null, null, userDatastore.getTokens().accessToken)
+                    .getProfile().$promise
+                    .then(function (response) {
+                        userDatastore.setProfile(response.first_name, response.last_name);
+                        userDatastore.setCustomerId(response.id);
+                        deferred.resolve(authResponse);
+                    });
             })
             .catch(function (response) {
                 console.log(response);
@@ -192,6 +201,18 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             });
     }
 
+    function getProfile() {
+        return userDatastore.getProfile();
+    }
+
+    function updateProfile(firstName, lastName) {
+        return customer(null, null, userDatastore.getTokens().accessToken)
+            .updateProfile({
+                firstName: firstName,
+                lastName: lastName
+            }).$promise;
+    }
+
     return {
         refreshAccessToken: refreshAccessToken,
         register: register,
@@ -200,6 +221,8 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         confirm: confirm,
         resendConfirm: resendConfirm,
         requestSalt: requestSalt,
+        getProfile: getProfile,
+        updateProfile: updateProfile,
         login: login,
         logout: logout
     };
