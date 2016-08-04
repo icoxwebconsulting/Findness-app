@@ -38,7 +38,6 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
                     items: detail.points
                 });
                 $ionicLoading.hide();
-                map.processMakers(detail.points);
                 $state.go("app.map");
                 setTimeout(function () {
                     map.moveCamera(lat, lng, 9);

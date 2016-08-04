@@ -55,7 +55,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         console.log("pasada por processMarkers");
         map.resize();
         var result = searchService.getResultSearch();
-        map.processMakers(result.items);
+        map.processMakers(result.items, $scope.viewRoute);//2d parameter to use numeric icons
         if (!query || query.geoLocations == null) {
             for (var first in result.items) break;
             lat = result.items[first].latitude;
@@ -137,6 +137,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                         if ($scope.formRoute.hasOwnProperty("name") && $scope.formRoute.name.trim() != "") {
                             $scope.routeMode = true;
                             $scope.formRoute.error = false;
+                            map.deleteRouteLines();
                             routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.selectedOption.id);
                         } else {
                             $scope.formRoute.error = true;

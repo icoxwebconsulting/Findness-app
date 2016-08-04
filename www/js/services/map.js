@@ -59,12 +59,14 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         modalScope.phoneNumber = phoneNumber;
 
         modalScope.addToRoute = function () {
-            if (routeService.addPoint({
-                    id: companyId,
-                    position: position
-                })) {
+            routeService.addPoint({
+                id: companyId,
+                position: position,
+                marker: modalScope.marker
+            }).then(function (nro) {
                 modalScope.isAddedd = true;
-            }
+                modalScope.marker.setIcon(COMPANY_STYLE.NUM + nro + '.png');
+            });
         };
 
         modalScope.removePoint = function (id) {
@@ -158,13 +160,19 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
     }
 
-    function addMaker(position, title, socialObject, companyId, address, phoneNumber, style) {
+    function addMaker(position, title, socialObject, companyId, address, phoneNumber, style, isNumeric) {
+
+        if (isNumeric) {
+            var icon = COMPANY_STYLE.NUM + style + '.png';
+        } else {
+            var icon = COMPANY_STYLE.COLOR[style];
+        }
 
         var marker = new google.maps.Marker({
             position: position,
             map: map,
             title: title,
-            icon: COMPANY_STYLE.COLOR[style]
+            icon: icon
         });
 
         marker.addListener('click', function () {
@@ -185,19 +193,25 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         }
     }
 
-    function processMakers(items) {
+    function processMakers(items, isNumeric) {
         //borro las anteriores
         deleteMarkers();
         if (markerCluster) {
             markerCluster.clearMarkers();
         }
-
+        var nro = 1;
         for (var item in items) {
 
-            if (typeof items[item].style != 'undefined')
+            if (typeof items[item].style != 'undefined') {
                 var style = items[item].style;
-            else
+            } else {
                 var style = 'RED';
+            }
+
+            if (isNumeric) {
+                style = nro;
+            }
+
             var position;
             if (typeof items[item].position != "undefined") {
                 position = new google.maps.LatLng(items[item].position.lat, items[item].position.lng);
@@ -211,8 +225,10 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
                 items[item].id,
                 items[item].address,
                 items[item].phoneNumber,
-                style
-            )
+                style,
+                isNumeric
+            );
+            nro += 1;
         }
         markerCluster = new MarkerClusterer(map, markers, {
             maxZoom: 10,
@@ -303,7 +319,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         // });
         try {
             var search = searchService.getResultSearch().items;
-            var template ="<p>De <b>" + search[startId]["socialReason"] + "</b> <br>Hasta <b>" + search[endId]["socialReason"] + "</b></p>";
+            var template = "<p>De <b>" + search[startId]["socialReason"] + "</b> <br>Hasta <b>" + search[endId]["socialReason"] + "</b></p>";
             template += "<p>Recorrerá <b>" + distance + "</b> en un tiempo de <b>" + duration + "</b>.</p><p>Puede visualizar la ruta en su aplicación de Mapas.</p>";
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Findness',

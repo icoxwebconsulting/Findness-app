@@ -1,4 +1,4 @@
-app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
+app.service('routeService', function ($q, $rootScope, routes, userDatastore, COMPANY_STYLE) {
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];
@@ -12,6 +12,19 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         lastPoint: null,
         points: {}
     };
+
+    function reDrawMarkers() {
+        try {
+            var nro = 1;
+            for (var p in route.points) {
+                route.points[p]['marker'].setIcon(COMPANY_STYLE.NUM + nro + '.png');
+                nro += 1;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
 
     function requestRoute(start, end) {
 
@@ -77,8 +90,16 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
     function initRoute(name, transport) {
         console.log(name, transport);
         routeMode = true;
-        route.name = name;
-        route.transport = transport;
+        route = {
+            id: null,
+            isEdit: false,
+            name: name,
+            transport: transport,
+            lastPoint: null,
+            points: {}
+        };
+        //reset de variables
+        polylines = [];
     }
 
     function existPoint(id) {
@@ -86,6 +107,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
     }
 
     function addPoint(point) {
+        var deferred = $q.defer();
         if (routeMode || viewRoute) {
             if (typeof route.points[point.id] == "undefined") { //compruebo que no exista previamente
                 route.points[point.id] = (point);
@@ -104,13 +126,23 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
                     });
                 } else {
                     route.lastPoint = point;
+                    $rootScope.$emit('drawDirections', {
+                        startId: route.lastPoint.id,
+                        endId: point.id,
+                        path: null,
+                        start: route.lastPoint.position,
+                        end: point.position,
+                        distance: null,
+                        duration: null
+                    });
                 }
                 route.isEdit = true;
             }
-            return true;
+            deferred.resolve(Object.keys(route.points).length);
         } else {
-            return false;
+            deferred.reject();
         }
+        return deferred.promise;
     }
 
     function removePoint(id) {
@@ -277,6 +309,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore) {
         deleteRoute: deleteRoute,
         getModes: getModes,
         setModes: setModes,
-        getRouteDetail: getRouteDetail
+        getRouteDetail: getRouteDetail,
+        reDrawMarkers: reDrawMarkers
     };
 });

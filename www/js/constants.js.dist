@@ -40,5 +40,6 @@ app.constant("COMPANY_STYLE", {
         YELLOW:'http://icox.com/img_findness/yellow-dot.png',
         RED: 'http://icox.com/img_findness/red-dot.png',
         GREEN: 'http://icox.com/img_findness/green-dot.png'
-    }
+    },
+    NUM: 'http://icox.com/img_findness/numeradas/'
 });
