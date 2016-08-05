@@ -36,8 +36,12 @@
     opacity: 0.6 !important;
 }
 
-.button-positive, .bar-positive{
+.button-positive, .bar-positive, .toggle.toggle-calm input:checked+.track{
     background: #0185CF !important;
+}
+
+.toggle-calm {
+    color: #0185CF !important;
 }
 
 .button-stable{
@@ -127,6 +131,20 @@
     height: 40px!important;
     text-align: left;
 }
+
+.filters .subtitle{
+    background-color: #0185CF !important;
+    color: #ffffff;
+}
+
+.filters .item-cnae, .filters .item-location{
+    background-color: #E6E7E7 !important;
+}
+
+.filters .cnae-text{
+    color: #0185CF !important;
+}
+
 
 .subtitle-subheader {
     background-color: #E6E7E7;
