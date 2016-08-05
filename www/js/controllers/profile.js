@@ -10,15 +10,25 @@ app.controller('ProfileCtrl', function ($scope, $state, user, $ionicHistory, $io
 
     $scope.$on('$ionicView.enter', function (e) {
         $scope.customer = user.getProfile();
+        $scope.data = {
+            password: null
+        };
     });
 
-
     $scope.updateProfile = function () {
-        console.log($scope.customer);
         $ionicLoading.show();
         user.updateProfile($scope.customer.firstName, $scope.customer.lastName)
             .then(function () {
                 $ionicLoading.hide();
             });
-    }
+    };
+
+    $scope.changePassword = function () {
+        $ionicLoading.show();
+        user.changePassword($scope.data.password)
+            .then(function () {
+                $scope.data.password = null;
+                $ionicLoading.hide();
+            });
+    };
 });

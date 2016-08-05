@@ -213,6 +213,19 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             }).$promise;
     }
 
+    function changePassword(password) {
+        var bcrypt = dcodeIO.bcrypt;
+        var salt = bcrypt.genSaltSync(10);
+        password = bcrypt.hashSync(password, salt);
+        salt = salt.slice(7);
+
+        return customer(null, null, userDatastore.getTokens().accessToken)
+            .changePassword({
+                password: password,
+                salt: salt
+            }).$promise;
+    }
+
     return {
         refreshAccessToken: refreshAccessToken,
         register: register,
@@ -223,6 +236,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         requestSalt: requestSalt,
         getProfile: getProfile,
         updateProfile: updateProfile,
+        changePassword: changePassword,
         login: login,
         logout: logout
     };
