@@ -271,44 +271,49 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
     function deletePath(id) {
         var deferred = $q.defer();
-
-        var data = paths[id];
-        var anterior = paths[data.startId];
-        anterior.endId = data.endId;
-        paths[data.startId] = anterior;
-        if (data.nextId) {
-            paths[data.nextId].startId = data.startId;
-            var siguiente = paths[data.nextId];
+        console.log(paths)
+        console.log(markers)
+        var rmPath = paths[id];
+        if (rmPath) {
+            paths[rmPath.startId]["endId"] = rmPath.endId;//toma el anterior y le actualiza el próximo punto
+        }
+        if (rmPath && rmPath.nextId) {
+            paths[rmPath.nextId].startId = rmPath.startId;
+            var siguiente = paths[rmPath.nextId];
             siguiente.polyline.setMap(null);
-            var startId = paths[data.nextId].startId;
-            var endId = paths[data.nextId].endId;
+            var startId = paths[rmPath.nextId].startId;
+            var endId = paths[rmPath.nextId].endId;
             var results = searchService.getResultSearch();//nota: se está seteando resultSearch así no se haya hecho búsqueda (caso visualizar ruta)
             var pathStart = results.items[startId];
             var pathEnd = results.items[endId];
             if (pathStart && pathEnd) {
                 pathStart = new google.maps.LatLng(pathStart.latitude, pathStart.longitude);
                 pathEnd = new google.maps.LatLng(pathEnd.latitude, pathEnd.longitude);
-                routeService.requestRoute(pathStart, pathEnd).then(function (data) {
+                routeService.requestRoute(pathStart, pathEnd).then(function (routeData) {
                     drawDirections({
                             startId: startId,
                             endId: endId,
-                            path: data.route
+                            path: routeData.route
                         }, {
                             start: pathStart,
                             end: pathEnd
                         },
-                        data.distance,
-                        data.duration
+                        routeData.distance,
+                        routeData.duration
                     );
-                    routeService.removePoint(id);
-                    data.polyline.setMap(null);
+                    rmPath.polyline.setMap(null);
                     delete paths[id];
                     deferred.resolve();
                 })
             } else {
-                data.polyline.setMap(null);
-                delete paths[response.deleteId];
+                rmPath.polyline.setMap(null);
+                delete paths[id];
             }
+            routeService.removePoint(id);
+            //routeService.reDrawMarkers();
+        } else {
+            deferred.resolve();
+            routeService.removePoint(id);
         }
 
         return deferred.promise;
@@ -370,8 +375,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             //console.log(this, distance, duration)
             polylinePopup(thePath, distance, duration, response.startId, response.endId);
         });
-        //
-        console.log(paths);
     }
 
     function setShowPopup(opt) {

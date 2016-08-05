@@ -23,7 +23,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         } catch (e) {
             console.log(e);
         }
-
     }
 
     function requestRoute(start, end) {
@@ -283,11 +282,14 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
 
         return routes(token.accessToken).getRouteDetail(null, {
             mapRoute: item.id
-        }).$promise.then(function (response) {
-            console.log(response);
+        }).$promise.then(function (detail) {
+            console.log(detail);
             routeMode = false;
             viewRoute = true; //modo de visualizar ruta
-            return response;
+
+            return setRoutes(detail).then(function () {
+                return detail;
+            })
         }, function (e) { //error
             throw e;
         });

@@ -1,4 +1,4 @@
-app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, routeService, searchService, map) {
+app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading, $ionicPopup, routeService, searchService, map) {
 
     $scope.items;
     $scope.type = {
@@ -26,23 +26,21 @@ app.controller('RoutesCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
 
             //borro las rutas
             map.deleteRouteLines();
-            routeService.setRoutes(detail).then(function () {
-                //seteo los resultados en el servicio de search necesarios para n
-                var length = Object.keys(detail).length;
-                searchService.setResultSearch({
-                    ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina
-                    Pagina: 1,
-                    TotalElementosNoConsultados: 0,		//es la cantidad de elementos que no has pagado
-                    TotalElementos: length,	//nro de todos los elementos pagados y sin pagar
-                    ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
-                    items: detail.points
-                });
-                $ionicLoading.hide();
-                $state.go("app.map");
-                setTimeout(function () {
-                    map.moveCamera(lat, lng, 9);
-                }, 1500);
-            })
+            var length = Object.keys(detail).length;
+            searchService.setResultSearch({
+                ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina
+                Pagina: 1,
+                TotalElementosNoConsultados: 0,		//es la cantidad de elementos que no has pagado
+                TotalElementos: length,	//nro de todos los elementos pagados y sin pagar
+                ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
+                items: detail.points
+            });
+
+            $ionicLoading.hide();
+            $rootScope.$on('processMarkers');
+            setTimeout(function () {
+                map.moveCamera(lat, lng, 9);
+            }, 1500);
         }).catch(function () {
             $ionicLoading.hide();
             $ionicPopup.alert({
