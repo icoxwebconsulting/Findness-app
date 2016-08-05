@@ -177,43 +177,13 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         $ionicLoading.show({
             template: '<p>Guardando la ruta...</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });
-        routeService.finishEditRoute().then(function (route) {
+        routeService.finishEditRoute().then(function () {
             $scope.routeMode = false;
-
-            $ionicLoading.show({
-                template: '<p>Repintando la ruta...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+            $ionicPopup.alert({
+                title: "Findness",
+                template: "Se han guardado los cambios en la ruta correctamente."
             });
-            //volver a pintar la ruta con motivo de los cambios en el path
-            routeService.getRouteDetail(route).then(function (detail) {
-                var kyz = Object.keys(detail.points);
-                var lat = detail.points[kyz[0]].latitude;
-                var lng = detail.points[kyz[0]].longitude;
-
-                //borro las rutas
-                map.deleteRouteLines();
-                var length = Object.keys(detail).length;
-                searchService.setResultSearch({
-                    ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina
-                    Pagina: 1,
-                    TotalElementosNoConsultados: 0,		//es la cantidad de elementos que no has pagado
-                    TotalElementos: length,	//nro de todos los elementos pagados y sin pagar
-                    ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
-                    items: detail.points
-                });
-
-                $ionicLoading.hide();
-                $state.go("app.map");
-                setTimeout(function () {
-                    map.moveCamera(lat, lng, 9);
-                }, 1500);
-            });
-
-
-            // $ionicPopup.alert({
-            //     title: "Findness",
-            //     template: "Se han guardado los cambios en la ruta correctamente."
-            // });
-            // $ionicLoading.hide();
+            $ionicLoading.hide();
         }).catch(function (e) {
             $ionicLoading.hide();
             var text = "Ocurrió un error al guardar la ruta, intente nuevamente.";
