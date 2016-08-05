@@ -72,6 +72,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         modalScope.removePoint = function (id) {
             deletePath(id).then(function () {
                 modalScope.isAddedd = false;
+                modalScope.marker.setIcon(COMPANY_STYLE.COLOR['RED']);
             });
         };
 
@@ -310,7 +311,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
                 delete paths[id];
             }
             routeService.removePoint(id);
-            //routeService.reDrawMarkers();
+            routeService.reDrawMarkers();
         } else {
             deferred.resolve();
             routeService.removePoint(id);

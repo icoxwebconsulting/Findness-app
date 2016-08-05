@@ -121,20 +121,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                             distance: data.distance,
                             duration: data.duration
                         });
-                        route.lastPoint = point;
-                    });
-                } else {
-                    route.lastPoint = point;
-                    $rootScope.$emit('drawDirections', {
-                        startId: route.lastPoint.id,
-                        endId: point.id,
-                        path: null,
-                        start: route.lastPoint.position,
-                        end: point.position,
-                        distance: null,
-                        duration: null
                     });
                 }
+                route.lastPoint = point;
                 route.isEdit = true;
             }
             deferred.resolve(Object.keys(route.points).length);
