@@ -57,6 +57,13 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
+            },
+            changePassword: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/change/password',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             }
         });
     }
