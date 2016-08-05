@@ -5,7 +5,9 @@
             <input type="search" class="ion-autocomplete-search" ng-model="viewModel.searchQuery" ng-model-options="viewModel.ngModelOptions" placeholder="{{viewModel.placeholder}}"/>
             </label>
         <div class="ion-autocomplete-loading-icon" ng-if="viewModel.showLoadingIcon && viewModel.loadingIcon"><ion-spinner icon="{{viewModel.loadingIcon}}"></ion-spinner></div>
-        <button class="ion-autocomplete-cancel button button-clear" ng-click="viewModel.cancelClick()">Listo</button>
+        <button class="ion-autocomplete-cancel button "
+                ng-class="viewModel.selectedItems.length > 0 ? 'button-positive' : 'button-clear'"
+                ng-click="viewModel.cancelClick()">Listo</button>
         </div>
     <ion-content class="has-header">
         <ion-item class="item-divider">{{viewModel.selectedItemsLabel}}</ion-item>

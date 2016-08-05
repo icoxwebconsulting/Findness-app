@@ -1,5 +1,11 @@
 app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map, routeService) {
 
+    $scope.init = function(){
+        $scope.options = {
+            useLocation: false
+        };
+    };
+
     $scope.data = {};
     $scope.data.pickupAfter = 3;
     $scope.model = "";
@@ -14,18 +20,14 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.removedCityModel = "";
     $scope.clickedZipCodeModel = "";
     $scope.removedZipCodeModel = "";
-    $scope.options = {
-        useLocation: true
-    };
     $scope.selectedCNAE = [];
     $scope.selectedState = [];
     $scope.selectedCity = [];
     $scope.selectedZipCode = [];
 
 
-    $scope.$on('$ionicView.leave', function (e) {
-        //searchService.setSelectedFilter(filter);
-        // map.resize();
+    $scope.$on('$ionicView.enter', function (e) {
+        $scope.init();
     });
 
     $scope.getItems = function (query, type) {
