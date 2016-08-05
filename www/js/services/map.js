@@ -376,6 +376,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             //console.log(this, distance, duration)
             polylinePopup(thePath, distance, duration, response.startId, response.endId);
         });
+        console.log("PATHS despues de agregar", paths);
     }
 
     function setShowPopup(opt) {

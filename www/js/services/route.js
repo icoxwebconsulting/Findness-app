@@ -121,12 +121,15 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                             distance: data.distance,
                             duration: data.duration
                         });
+                        route.lastPoint = point;
+                        deferred.resolve(Object.keys(route.points).length);
                     });
                 }
-                route.lastPoint = point;
                 route.isEdit = true;
+            } else {
+                route.lastPoint = point;
+                deferred.resolve(Object.keys(route.points).length);
             }
-            deferred.resolve(Object.keys(route.points).length);
         } else {
             deferred.reject();
         }
