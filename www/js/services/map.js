@@ -268,11 +268,13 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
         if (paths[id]["previous"] == null) {
             //es el primero
-            //borro la polyline del mapa
-            paths[id].polyline.setMap(null);
+
             // el siguiente en previous debe tener null
             var next = paths[id]["next"];
             paths[next]["previous"] = null;
+            //borro la polyline del mapa
+            paths[next].polyline.setMap(null);
+            paths[next].polyline = null;
             //ahora borro el nodo
             delete paths[id];
             if (routeService.removePoint(id)) {
