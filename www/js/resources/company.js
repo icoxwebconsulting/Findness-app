@@ -12,6 +12,14 @@ app.factory('company', function ($resource, SERVER_CONF) {
                 },
                 url: SERVER_CONF.API_HOST + 'companies/:company/style',
                 params: {company: '@company'}
+            },
+            getCompany: {
+                method: 'GET',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                },
+                url: SERVER_CONF.API_HOST + 'companies/:company',
+                params: {company: '@company'}
             }
         });
     };

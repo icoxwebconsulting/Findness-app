@@ -17,7 +17,30 @@
         <content padding="true">
             <div class="card">
                 <div class="item item-text-wrap">
-                    <button class="button button-positive button-100">
+                    <label class="item item-input">
+                        <span class="input-label">Nombre</span>
+                        <input type="text" ng-model="customer.firstName">
+                    </label>
+                </div>
+                <div class="item item-text-wrap">
+                    <label class="item item-input">
+                        <span class="input-label">Apellido</span>
+                        <input type="text" ng-model="customer.lastName">
+                    </label>
+                </div>
+                <div class="item item-text-wrap">
+                    <button class="button button-positive button-100" ng-click="updateProfile()">
+                        Actualizar Perfil
+                    </button>
+                </div>
+                <div class="item item-text-wrap">
+                    <label class="item item-input">
+                        <span class="input-label">Contraseña</span>
+                        <input type="password" ng-model="data.password">
+                    </label>
+                </div>
+                <div class="item item-text-wrap">
+                    <button class="button button-positive button-100" ng-click="changePassword()">
                         Cambiar contraseña
                     </button>
                 </div>

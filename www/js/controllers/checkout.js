@@ -1,6 +1,7 @@
 app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, searchService) {
 
     $scope.init = function(){
+        $scope.$emit('menu:drag', true);
         $scope.cardType = {};
         $scope.card = {};
         $scope.card.amount = cart.getPayable();
@@ -61,6 +62,7 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
         }).catch(function (error) {
             //TODO: handle error
             console.log(error);
+            showAlert(error.type);
         }).finally(function () {
             $scope.buttonDisabled = false;
             $ionicLoading.hide();
@@ -72,11 +74,13 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
             console.log("respuesta servicio de registro", response);
             //llamar al servicio de búsqueda con el último query
             searchService.executeLastQuery(cart.getTotalCompanies()).then(function (lastQuery) {
-                paymentSrv.requestBalance();
-                $rootScope.$emit('processMarkers', {
-                    lastQuery: lastQuery
-                });
                 $state.go("app.map");
+                paymentSrv.requestBalance();
+                // setTimeout(function () {
+                //     $rootScope.$emit('processMarkers', {
+                //         lastQuery: lastQuery
+                //     });
+                // },1500);
             });
         });
     }

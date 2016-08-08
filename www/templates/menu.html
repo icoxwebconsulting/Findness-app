@@ -1,5 +1,5 @@
 <ion-side-menus enable-menu-with-back-views="true">
-    <ion-side-menu-content drag-content="false">
+    <ion-side-menu-content drag-content="dragStatus">
         <ion-nav-bar class="bar-light">
             <ion-nav-title>
                 <div class="left">
@@ -23,10 +23,13 @@
             <div class="header-menu">
                 <div class="legend">
                     <div class="left">
-                        <p ng-if="username.length <= 21">Hola, {{username| limitTo:21}}</p>
-                        <p>Hola, {{username| limitTo:18}} <span ng-if="username.length > 21">...</span></p>
+                        <p ng-if="customer.firstName.length <= 21">{{customer.firstName}}</p>
+                        <p ng-if="customer.firstName.length >= 24">{{customer.firstName| limitTo:22}} <span ng-if="customer.firstName.length >= 24">...</span></p>
+                        <p ng-if="username.length <= 21">{{username}}</p>
+                        <p ng-if="username.length >= 24">{{username| limitTo:22}} <span ng-if="username.length >= 24">...</span></p>
                     </div>
                     <div class="right">
+                        <span>{{view.balance | number:2}}€</span>
                         <img src="img/cart.png" ui-sref="app.profile" menu-close>
                     </div>
                 </div>
@@ -34,11 +37,11 @@
         </ion-header-bar>
         <ion-content class="categories">
             <ion-list>
-                <ion-item menu-close ng-click="stateChange('app.map')">
-                    Ver mapa
-                </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.profile')">
                     Mi perfil
+                </ion-item>
+                <ion-item menu-close ng-click="stateChange('app.map')">
+                    Ver mapa
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.companies')">
                     Mis listados

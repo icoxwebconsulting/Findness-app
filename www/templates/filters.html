@@ -1,13 +1,22 @@
-<ion-view>
+<ion-view class="filters">
     <ion-content>
+        <div class="row subtitle filter" scroll="false">
+            <div class="col col-100">
+                <div class="left">
+                    <span>CNAE</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+
+            </div>
+        </div>
         <content has-header="true" padding="true">
 
-            <div class="card">
-                <div class="item item-text-wrap">
-                    Listado CNAE: Puede seleccionar varios CNAES, los CNAE de 2 dígitos incluyen sus subcategorías.
-                </div>
-            </div>
-            <div class="row subtitle filter" scroll="false" ng-show="model != ''">
+            <div class="row subtitle filter" scroll="false" ng-show="model != ''" style="border-top: solid 1px">
                 <div class="col col-100">
                     <div class="left">
                         <span>CNAES Seleccionados:</span>
@@ -21,7 +30,7 @@
 
                 </div>
             </div>
-            <label class="item item-input">
+            <label class="item item-input item-cnae">
                 <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
                        autocomplete="off"
                        ng-model="model"
@@ -38,17 +47,9 @@
                        max-selected-items="10"/>
             </label>
 
-            <label><ion-toggle ng-model="options.useLocation" toggle-class="toggle-calm">Usar mi localización</ion-toggle></label>
-
-            <div class="card" ng-show="options.useLocation">
-                <div class="item item-text-wrap">
-                    Cubrir un radio de {{data.pickupAfter}} km
-                </div>
-                <div class="item range range-positive">
-                    <i class="icon ion-ios-minus-outline"></i>
-                    <input type="range" name="volume" min="1" max="5" value="{{data.pickupAfter}}"
-                           ng-model="data.pickupAfter">
-                    <i class="icon ion-ios-plus-outline"></i>
+            <div class="card">
+                <div class="item item-text-wrap cnae-text">
+                    <b>Listado CNAE:</b> Puede seleccionar varios CNAES, los CNAE de 2 dígitos incluyen sus subcategorías.
                 </div>
             </div>
 
@@ -148,6 +149,21 @@
                            max-selected-items="1"/>
                 </div>
             </div>
+
+            <label><ion-toggle ng-model="options.useLocation" toggle-class="toggle-calm" class="item-location">Usar mi localización</ion-toggle></label>
+
+            <div class="card" ng-show="options.useLocation">
+                <div class="item item-text-wrap">
+                    Cubrir un radio de {{data.pickupAfter}} km
+                </div>
+                <div class="item range range-positive">
+                    <i class="icon ion-ios-minus-outline"></i>
+                    <input type="range" name="volume" min="1" max="5" value="{{data.pickupAfter}}"
+                           ng-model="data.pickupAfter">
+                    <i class="icon ion-ios-plus-outline"></i>
+                </div>
+            </div>
+
 
             <div class="padding">
                 <button class="button button-full button-positive" ng-click="search()">Buscar</button>

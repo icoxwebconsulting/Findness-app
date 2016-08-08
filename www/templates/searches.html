@@ -18,9 +18,8 @@
             <ion-list>
                 <ion-item ng-repeat="item in items" class="item-button-right" ng-click="callSearch(item)">
                     <h3>{{item.name}}</h3>
-                    <!--<button class="button button-positive" ng-click="callSearch(item)">-->
-                        <!--<i class="icon ion-eye"></i>-->
-                    <!--</button>-->
+                    <ion-option-button class="button-energized icon ion-edit" ng-click="showChangeName(item)"></ion-option-button>
+                    <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(item, $index)"></ion-option-button>
                 </ion-item>
             </ion-list>
         </content>

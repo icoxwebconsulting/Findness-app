@@ -1,0 +1,20 @@
+<ion-modal-view class="modal-company-share" scroll="false">
+    <ion-header-bar class="bar-positive">
+        <h1 class="title">{{listName | uppercase | limitTo:25}} <span ng-if="title.length > 25">...</span></h1>
+    </ion-header-bar>
+    <ion-content scroll="false">
+        <div class="list">
+
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input type="text" placeholder="Correo electrónico" ng-model="obj.username">
+                </label>
+                <button class="button button-small" ng-click="share(obj)">
+                    Compartir
+                </button>
+            </div>
+
+        </div>
+
+    </ion-content>
+</ion-modal-view>

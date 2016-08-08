@@ -3,32 +3,12 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     $scope.closeCart = function () {
     };
 
-    $scope.changeTotal = function () {
-
-        if ($scope.view.totalCompanies > 0) {
-
-            if ($scope.view.totalCompanies > $scope.maxCompanies) {
-                $scope.view.totalCompanies = $scope.maxCompanies;
-                $ionicPopup.alert({
-                    title: 'Límite de empresas',
-                    template: 'La cantidad supera el máximo de empresas encontradas.'
-                });
-            } else
-                $scope.view.total = ($scope.view.totalCompanies * $scope.view.unitPrice) + 5;
-
-        }
-        else
-            $scope.view.total = 0;
-
-
-        if ($scope.view.balance >= $scope.view.total) {
-            $scope.view.payable = 0;
-        } else {
-            $scope.view.payable = $scope.view.total - $scope.view.balance;
-        }
-    };
+    $scope.$on('$ionicView.enter', function (e) {
+        $scope.init();
+    });
 
     $scope.init = function () {
+        $scope.$emit('menu:drag', true);
         $scope.view = {};
         $scope.view.contCompanies = [];
         $scope.maxCompanies = cart.getTotalCompanies();
@@ -45,6 +25,36 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
 
     };
 
+    $scope.changeTotal = function () {
+
+        if ($scope.view.totalCompanies > 0) {
+            if ($scope.view.totalCompanies > $scope.maxCompanies) {
+                $scope.view.totalCompanies = $scope.maxCompanies;
+                $ionicPopup.alert({
+                    title: 'Límite de empresas',
+                    template: 'La cantidad supera el máximo de empresas encontradas.'
+                });
+            } else {
+                var subtotal = $scope.view.totalCompanies * $scope.view.unitPrice;
+                if(subtotal < 5){
+                    subtotal += 0.25;
+                }
+                //IVA 21%
+                subtotal *= 1.21;
+                $scope.view.total = subtotal;
+            }
+        } else {
+            $scope.view.total = 0;
+        }
+
+        if ($scope.view.balance >= $scope.view.total) {
+            $scope.view.payable = 0;
+        } else {
+            $scope.view.payable = $scope.view.total - $scope.view.balance;
+            $scope.view.payable = parseFloat($scope.view.payable.toFixed(2));
+        }
+    };
+
     $scope.checkout = function () {
         console.info('$scope.view.payable', $scope.view.payable);
         cart.setPayable($scope.view.payable);
@@ -54,15 +64,14 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     $scope.confirmCheckout = function () {
         //llamar al servicio de búsqueda con el último query
         searchService.executeLastQuery($scope.view.totalCompanies).then(function (lastQuery) {
-            paymentSrv.requestBalance();
-            $rootScope.$emit('processMarkers', {
-                lastQuery: lastQuery
-            });
             $state.go("app.map");
+            paymentSrv.requestBalance();
+            // setTimeout(function () {
+            //     $rootScope.$emit('processMarkers', {
+            //         lastQuery: lastQuery
+            //     });
+            // },1500);
         });
     };
-
-    $scope.init();
-
 
 });

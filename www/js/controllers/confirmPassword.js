@@ -2,7 +2,8 @@ app.controller('ConfirmPasswordCtrl', function ($scope, $state, $ionicLoading, $
     $scope.confirm = {};
 
     $scope.$on('$ionicView.enter', function (e) {
-        $scope.username = userDatastore.getUsername();
+        $scope.$emit('menu:drag', true);
+        $scope.username = userDatastore.getUsernameRecover();
     });
 
     $scope.goBack = function () {
@@ -32,10 +33,15 @@ app.controller('ConfirmPasswordCtrl', function ($scope, $state, $ionicLoading, $
                 $scope.confirm.token,
                 $scope.confirm.password
             ).then(function (result) {
+                $ionicPopup.alert({
+                    title: "Findness",
+                    template: "Se ha cambiado su contraseña satisfactoriamente, por favor inicie sesión con la nueva contraseña."
+                });
                 $state.go('login');
             }, function (error) {
                 $ionicPopup.alert({
-                    title: "Código erróneo, verifique e intente nuevamente."
+                    title: "Findness",
+                    template: "Código erróneo, verifique e intente nuevamente."
                 });
             });
         }

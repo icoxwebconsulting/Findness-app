@@ -63,7 +63,16 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                 //
                 paymentSrv.requestBalance();
                 refreshAccessToken();
-                deferred.resolve(response);
+
+                var authResponse = response;
+
+                customer(null, null, userDatastore.getTokens().accessToken)
+                    .getProfile().$promise
+                    .then(function (response) {
+                        userDatastore.setProfile(response.first_name, response.last_name);
+                        userDatastore.setCustomerId(response.id);
+                        deferred.resolve(authResponse);
+                    });
             })
             .catch(function (response) {
                 console.log(response);
@@ -165,6 +174,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function requestPassword(email) {
+        userDatastore.setUsernameRecover(email);
         return customer().requestPassword({"customer": email}).$promise
             .then(function (response) {
                 if (response.status) {
@@ -191,6 +201,31 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             });
     }
 
+    function getProfile() {
+        return userDatastore.getProfile();
+    }
+
+    function updateProfile(firstName, lastName) {
+        return customer(null, null, userDatastore.getTokens().accessToken)
+            .updateProfile({
+                firstName: firstName,
+                lastName: lastName
+            }).$promise;
+    }
+
+    function changePassword(password) {
+        var bcrypt = dcodeIO.bcrypt;
+        var salt = bcrypt.genSaltSync(10);
+        password = bcrypt.hashSync(password, salt);
+        salt = salt.slice(7);
+
+        return customer(null, null, userDatastore.getTokens().accessToken)
+            .changePassword({
+                password: password,
+                salt: salt
+            }).$promise;
+    }
+
     return {
         refreshAccessToken: refreshAccessToken,
         register: register,
@@ -199,6 +234,9 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
         confirm: confirm,
         resendConfirm: resendConfirm,
         requestSalt: requestSalt,
+        getProfile: getProfile,
+        updateProfile: updateProfile,
+        changePassword: changePassword,
         login: login,
         logout: logout
     };

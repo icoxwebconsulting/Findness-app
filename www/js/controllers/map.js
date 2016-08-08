@@ -1,6 +1,6 @@
 app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, map, searchService, routeService) {
 
-    $scope.showPopUp = false;
+
     $scope.showRoute = false; //controla la visualización de todos los botones
     $scope.routeMode = false; //modo de crear ruta
     $scope.viewRoute = false; //modo de visualizar ruta
@@ -15,6 +15,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.$on('$ionicView.enter', function (e) {
+        $scope.$emit('menu:drag', false);
         // if (window.localStorage.getItem('firstTime')) {
         //     window.localStorage.removeItem('firstTime');
         //     $state.go('app.filter');
@@ -23,29 +24,27 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         if (map.getMap()) {
             map.resize();
         }
-        if ($scope.showPopUp) {
-            $scope.showPopUp = false;
+        if (map.getShowPopup()) {
             showPopUp();
         }
         var modes = routeService.getModes();
-        console.log(modes);
-        console.log(searchService.withResults());
-        if (searchService.withResults()) {
-            $scope.showRoute = true;
-        } else {
-            $scope.showRoute = false;
-        }
         $scope.routeMode = modes.routeMode;
         $scope.viewRoute = modes.viewRoute;
-    });
-
-    $rootScope.$on('showResults', function (e, data) {
-        $scope.data = data;
-        if (data.showPopUp) {
-            $scope.showPopUp = true;
+        $scope.showRoute = searchService.withResults();
+        //El controlador se encarga de mostrar los resultados si existen cada vez que se entra
+        if ($scope.showRoute) {
+            var query = searchService.getLastQuery();
+            if (query) {
+                query = JSON.parse(query);
+            }
+            proccessMarkers(query);
         } else {
-            proccessMarkers(data.lastQuery);
+            //centra el mapa en españa
+            if (map.getMap()) {
+                map.moveCamera(39.9997938, -3.1926017, 6);
+            }
         }
+        console.log(modes, searchService.withResults());
     });
 
     $rootScope.$on('processMarkers', function (e, query) {
@@ -53,20 +52,21 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     });
 
     function proccessMarkers(query) {
+        console.log("pasada por processMarkers");
         map.resize();
         var result = searchService.getResultSearch();
-        map.processMakers(result.items);
-        if (query) {
-            if (query.geoLocations == null) {
-                for (var first in result.items) break;
-                lat = result.items[first].latitude;
-                lon = result.items[first].longitude;
-            } else {
-                var lat = query.geoLocations.latitude;
-                var lon = query.geoLocations.longitude;
-            }
-            map.moveCamera(lat, lon, 9);
+        map.processMakers(result.items, $scope.viewRoute);//2d parameter to use numeric icons
+        if (!query || query.geoLocations == null) {
+            for (var first in result.items) break;
+            lat = result.items[first].latitude;
+            lon = result.items[first].longitude;
+        } else {
+            var lat = query.geoLocations.latitude;
+            var lon = query.geoLocations.longitude;
         }
+        setTimeout(function () {
+            map.moveCamera(lat, lon, 9);
+        }, 1500);
         $scope.showRoute = true;
         $scope.routeMode = false;
     }
@@ -77,9 +77,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             query = JSON.parse(query);
         }
         map.clear();
-        proccessMarkers(query);
+        map.setShowPopup(false);
+        //proccessMarkers(query);
         var myPopup = $ionicPopup.show({
-            template: '<div>Existen {{data.toBuy}} resultados que puede adquirir.</div>',
+            template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
             title: 'Findness',
             subTitle: 'Resultados',
             scope: $scope,
@@ -136,6 +137,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                         if ($scope.formRoute.hasOwnProperty("name") && $scope.formRoute.name.trim() != "") {
                             $scope.routeMode = true;
                             $scope.formRoute.error = false;
+                            map.deleteRouteLines();
                             routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.selectedOption.id);
                         } else {
                             $scope.formRoute.error = true;
@@ -161,6 +163,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         });
         routeService.finishRoute().then(function () {
             $scope.routeMode = false;
+            $scope.viewRoute = true;
             $ionicLoading.hide();
         }).catch(function () {
             $ionicLoading.hide();
@@ -176,21 +179,26 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         });
         routeService.finishEditRoute().then(function () {
             $scope.routeMode = false;
+            $ionicPopup.alert({
+                title: "Findness",
+                template: "Se han guardado los cambios en la ruta correctamente."
+            });
             $ionicLoading.hide();
         }).catch(function (e) {
             $ionicLoading.hide();
-            var title = "Ocurrió un error al guardar la ruta, intente nuevamente.";
+            var text = "Ocurrió un error al guardar la ruta, intente nuevamente.";
             if (e == "noEdit") {
-                title = "No hay cambios en la ruta para guardar."
+                text = "No hay cambios en la ruta para guardar."
             }
             $ionicPopup.alert({
-                title: title
+                title: "Findness",
+                template: text
             });
         });
     }
 
-}).filter('capitalize', function() {
-    return function(input) {
+}).filter('capitalize', function () {
+    return function (input) {
         return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
     }
 });

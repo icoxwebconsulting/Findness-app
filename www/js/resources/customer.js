@@ -43,6 +43,27 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
                 method: 'PUT',
                 url: SERVER_CONF.API_HOST + 'customers/:customer/new/password',
                 params: {customer: '@customer'}
+            },
+            getProfile: {
+                method: 'GET',
+                url: SERVER_CONF.API_HOST + 'customers/profile',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            },
+            updateProfile: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/update-profile',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            },
+            changePassword: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/change/password',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             }
         });
     }

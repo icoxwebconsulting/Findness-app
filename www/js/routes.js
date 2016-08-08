@@ -1,4 +1,4 @@
-app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider
 
         .state('slides', {
@@ -120,10 +120,21 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
 
         .state('app.companies', {
+            cache: false,
             url: '/companies',
             views: {
                 'menuContent': {
                     templateUrl: 'templates/companies.html',
+                    controller: 'CompaniesCtrl'
+                }
+            }
+        })
+        .state('app.companies-detail', {
+            cache: false,
+            url: 'companies/:id/:name',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/companies-detail.html',
                     controller: 'CompaniesCtrl'
                 }
             }
@@ -170,6 +181,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
 
         .state('app.cart', {
+            cache: false,
             url: '/cart',
             views: {
                 'menuContent': {
@@ -179,6 +191,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
         .state('app.checkout', {
+            cache: false,
             url: '/checkout',
             views: {
                 'menuContent': {
