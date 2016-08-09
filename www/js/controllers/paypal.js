@@ -1,4 +1,73 @@
-app.controller('PaypalCtrl', function ($scope, $state, paymentSrv) {
+app.controller('PaypalCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, paymentSrv) {
+
+    $scope.viewExecute = false;
+
+    $scope.$on('$ionicView.enter', function (e) {
+        if (localStorage.getItem("external_load") != null) {
+            $scope.viewExecute = true;
+            $scope.execute_url = JSON.parse(localStorage.getItem("execute_url"));
+            $scope.external_load = localStorage.getItem("external_load");
+            $scope.access_token = localStorage.getItem("paypal_access_token");
+
+            $scope.paymentId = getParameterByName('paymentId', $scope.external_load);
+            $scope.data = {
+                payer_id: getParameterByName('PayerID', $scope.external_load)
+            };
+        } else {
+            $scope.viewExecute = false;
+        }
+    });
+
+    function showLoading() {
+        $ionicLoading.show({
+            template: '<p>Procesando pago...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
+    }
+
+    function showConfirmation() {
+        $ionicLoading.show({
+            template: '<p>Registrando pago...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
+    }
+
+    $scope.executePaypal = function () {
+        showLoading();
+        paymentSrv.executePayPalPayment($scope.data, $scope.access_token, paymentId).then(function (response) {
+            console.log(response);
+            localStorage.removeItem("execute_url");
+            localStorage.removeItem("external_load");
+            //registrando el pago
+            showConfirmation();
+            var data = {
+                balance: parseFloat(5),//TODO:
+                operator: 2,
+                transactionId: response.id,
+                cardId: response.payer.payer_info.payer_id
+            };
+
+            paymentSrv.registerSuccessPayment(data).then(function (response) {
+                console.log("respuesta servicio de registro", response);
+                $ionicPopup.alert({
+                    title: 'Findness - Pago',
+                    template: 'Su pago se ha registrado satisfactoriamente.'
+                }).then(function () {
+                    $state.go("app.account");
+                });
+            }).catch(function () {
+                //TODO: handle error
+            });
+        });
+    };
+
+    $scope.cancelPayment = function () {
+        localStorage.removeItem("execute_url");
+        localStorage.removeItem("external_load");
+        $state.go("app.account");
+    };
+
+    $scope.goToAccount = function () {
+        $state.go("app.account");
+    };
 
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -10,24 +79,4 @@ app.controller('PaypalCtrl', function ($scope, $state, paymentSrv) {
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
-    $scope.$on('$ionicView.enter', function (e) {
-        if (localStorage.getItem("external_load") != null) {
-            var execute_url = JSON.parse(localStorage.getItem("execute_url"));
-            var external_load = localStorage.getItem("external_load");
-            var access_token = localStorage.getItem("paypal_access_token");
-
-            var paymentId = getParameterByName('paymentId', external_load);
-            var data = {
-                payer_id: getParameterByName('PayerID', external_load)
-            };
-
-            paymentSrv.executePayPalPayment(data, access_token, paymentId).then(function (response) {
-                console.log(response);
-                localStorage.removeItem("execute_url");
-                localStorage.removeItem("external_load");
-            }).catch(function () {
-                //TODO: handle error
-            });
-        }
-    });
 });
