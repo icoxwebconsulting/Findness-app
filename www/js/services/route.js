@@ -110,25 +110,46 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         if (routeMode || viewRoute) {
             if (typeof route.points[point.id] == "undefined") { //compruebo que no exista previamente
                 route.points[point.id] = (point);
-                if (Object.keys(route.points).length > 1) { //si hay otro elemento puedo dibujar la ruta
+                if (Object.keys(route.points).length > 1) { //si hay otro elemento puedo solicitar la ruta
                     requestRoute(route.lastPoint.position, point.position).then(function (data) {
-                        $rootScope.$emit('drawDirections', {
-                            startId: route.lastPoint.id,
-                            endId: point.id,
+                        $rootScope.$emit('addToRoutePath', {
+                            //cambiar esta mierda por listas doblemente enlazadas
+                            node: point.id,
+                            next: null,
+                            previous: route.lastPoint.id,
                             path: data.route,
-                            start: route.lastPoint.position,
-                            end: point.position,
-                            distance: data.distance,
-                            duration: data.duration
+                            data: {
+                                start: route.lastPoint.position,
+                                end: point.position,
+                                distance: data.distance,
+                                duration: data.duration
+                            }
                         });
                         route.lastPoint = point;
+                        route.isEdit = true;
                         deferred.resolve(Object.keys(route.points).length);
                     });
+                } else {
+                    //si no hay otro igual debo agregarlo al arreglo
+                    $rootScope.$emit('addToRoutePath', {
+                        //cambiar esta mierda por listas doblemente enlazadas
+                        node: point.id,
+                        next: null,
+                        previous: null,
+                        path: null,
+                        data: {
+                            start: null,
+                            end: null,
+                            distance: null,
+                            duration: null
+                        }
+                    });
+                    route.lastPoint = point;
+                    route.isEdit = true;
+                    deferred.resolve(Object.keys(route.points).length);
                 }
-                route.isEdit = true;
             } else {
-                route.lastPoint = point;
-                deferred.resolve(Object.keys(route.points).length);
+                deferred.reject();
             }
         } else {
             deferred.reject();

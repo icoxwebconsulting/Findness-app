@@ -184,14 +184,19 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
     }
 
     function deleteRouteLines() {
+        var deferred = $q.defer();
         try {
             for (var idx in paths) {
                 paths[idx].polyline.setMap(null);
             }
             paths = {};
+            deferred.resolve();
         } catch (e) {
             console.log("error en borrar path del mapa", e);
+            deferred.reject();
         }
+
+        return deferred.promise;
     }
 
     function processMakers(items, isNumeric) {
@@ -256,77 +261,77 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         return map;
     }
 
-    $rootScope.$on('drawDirections', function (e, response) {
-        drawDirections({
-                startId: response.startId,
-                endId: response.endId,
-                path: response.path
-            }, {
-                start: response.start,
-                end: response.end
-            },
-            response.distance,
-            response.duration
-        )
-    });
-
     function deletePath(id) {
         var deferred = $q.defer();
         console.log(paths)
         console.log(markers)
-        var rmPath = paths[id];
-        if (rmPath) {
-            paths[rmPath.startId]["endId"] = rmPath.endId;//toma el anterior y le actualiza el próximo punto
-        }
-        if (rmPath && rmPath.nextId) {
-            paths[rmPath.nextId].startId = rmPath.startId;
-            var siguiente = paths[rmPath.nextId];
-            siguiente.polyline.setMap(null);
-            var startId = paths[rmPath.nextId].startId;
-            var endId = paths[rmPath.nextId].endId;
-            var results = searchService.getResultSearch();//nota: se está seteando resultSearch así no se haya hecho búsqueda (caso visualizar ruta)
-            var pathStart = results.items[startId];
-            var pathEnd = results.items[endId];
-            if (pathStart && pathEnd) {
+
+        if (paths[id]["previous"] == null) {
+            //es el primero
+
+            // el siguiente en previous debe tener null
+            var next = paths[id]["next"];
+            paths[next]["previous"] = null;
+            //borro la polyline del mapa
+            paths[next].polyline.setMap(null);
+            paths[next].polyline = null;
+            //ahora borro el nodo
+            delete paths[id];
+            if (routeService.removePoint(id)) {
+                routeService.reDrawMarkers();
+            }
+            deferred.resolve();
+        } else {
+            //es uno intermedio
+            //actualizo el enlace next del anterior hacia el nodo siguiente
+            var previous = paths[id]["previous"];
+            paths[previous]["next"] = paths[id]["next"];
+            //actualizo el enlace de previous del anterior hacia el nodo anterior
+            var next = paths[id]["next"];
+            paths[id].polyline.setMap(null);
+            delete paths[id];
+
+            if (next == null) {
+                //si es null es el último
+                routeService.reDrawMarkers();
+                routeService.removePoint(id);
+                deferred.resolve();
+            } else {
+                paths[next]["previous"] = previous;
+                //nota: se está seteando resultSearch así no se haya hecho búsqueda (caso visualizar ruta)
+                var results = searchService.getResultSearch();
+                var pathStart = results.items[next];
+                var pathEnd = results.items[previous];
                 pathStart = new google.maps.LatLng(pathStart.latitude, pathStart.longitude);
                 pathEnd = new google.maps.LatLng(pathEnd.latitude, pathEnd.longitude);
                 routeService.requestRoute(pathStart, pathEnd).then(function (routeData) {
-                    drawDirections({
-                            startId: startId,
-                            endId: endId,
-                            path: routeData.route
-                        }, {
+                    drawDirections(
+                        next,
+                        previous,
+                        routeData.route, {
                             start: pathStart,
-                            end: pathEnd
-                        },
-                        routeData.distance,
-                        routeData.duration
-                    );
-                    rmPath.polyline.setMap(null);
-                    delete paths[id];
+                            end: pathEnd,
+                            distance: routeData.distance,
+                            duration: routeData.duration
+                        });
+
+                    if(routeService.removePoint(id)){
+                        routeService.reDrawMarkers();
+                    }
                     deferred.resolve();
                 })
-            } else {
-                rmPath.polyline.setMap(null);
-                delete paths[id];
             }
-            routeService.removePoint(id);
-            routeService.reDrawMarkers();
-        } else {
-            deferred.resolve();
-            routeService.removePoint(id);
         }
-
         return deferred.promise;
-    };
+    }
 
-    function polylinePopup(thePath, distance, duration, startId, endId) {
+    function polylinePopup(data, startId, endId) {
         // google.maps.event.addListener(routePath.polyline, 'click', function (a) {
         // });
         try {
             var search = searchService.getResultSearch().items;
             var template = "<p>De <b>" + search[startId]["socialReason"] + "</b> <br>Hasta <b>" + search[endId]["socialReason"] + "</b></p>";
-            template += "<p>Recorrerá <b>" + distance + "</b> en un tiempo de <b>" + duration + "</b>.</p><p>Puede visualizar la ruta en su aplicación de Mapas.</p>";
+            template += "<p>Recorrerá <b>" + data.distance + "</b> en un tiempo de <b>" + data.duration + "</b>.</p><p>Puede visualizar la ruta en su aplicación de Mapas.</p>";
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Findness',
                 template: template,
@@ -335,8 +340,8 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
                         text: '<b>Navegar</b>',
                         type: 'button-positive',
                         onTap: function (e) {
-                            launchnavigator.navigate(thePath.end.lat() + ',' + thePath.end.lng(), {
-                                start: thePath.start.lat() + ',' + thePath.start.lng()
+                            launchnavigator.navigate(data.end.lat() + ',' + data.end.lng(), {
+                                start: data.start.lat() + ',' + data.start.lng()
                             });
                         }
                     },
@@ -348,35 +353,45 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         }
     }
 
-    function drawDirections(response, thePath, distance, duration) {
+    $rootScope.$on('addToRoutePath', function (e, response) {
+        //startId: elemento anterior, endId: elemento actual
+        paths[response.node] = {
+            next: response.next,
+            previous: response.previous,
+            polyline: null
+        };
+
+        if (response.previous) {
+            paths[response.previous]["next"] = response.node;
+            //si el anterior existe
+            drawDirections(response.node, response.previous, response.path, response.data)
+        }
+        console.log("PATHS despues de agregar", paths);
+    });
+
+    function drawDirections(node, previous, path, data) {
         //directionsDisplay.setDirections(result);
         var routePath = new google.maps.Polyline({
-            path: response.path,
+            path: path,
             geodesic: true,
             strokeColor: '#FF0000',
             strokeOpacity: 1.0,
             strokeWeight: 3
         });
 
-        paths[response.endId] = {
-            startId: response.startId,
-            endId: response.endId,
-            nextId: null,
-            polyline: routePath
-        };
-        var element = paths[response.startId];
-        if (element) {
-            element.nextId = response.endId;
-            paths[response.startId] = element;
-        }
+        //startId: elemento anterior, endId: elemento actual
         routePath.setMap(map);
+        if(paths[node]['polyline']){
+            paths[node]['polyline'].setMap(null);
+        }
+        paths[node]['polyline'] = routePath;
 
-        //agrego listener
-        paths[response.endId].polyline.addListener('click', function () {
+
+        //agrego listener al elemento actual
+        paths[node].polyline.addListener('click', function () {
             //console.log(this, distance, duration)
-            polylinePopup(thePath, distance, duration, response.startId, response.endId);
+            polylinePopup(data, previous, node);
         });
-        console.log("PATHS despues de agregar", paths);
     }
 
     function setShowPopup(opt) {

@@ -137,8 +137,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                         if ($scope.formRoute.hasOwnProperty("name") && $scope.formRoute.name.trim() != "") {
                             $scope.routeMode = true;
                             $scope.formRoute.error = false;
-                            map.deleteRouteLines();
-                            routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.selectedOption.id);
+                            map.deleteRouteLines().then(function () {
+                                routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.selectedOption.id);
+                            });
                         } else {
                             $scope.formRoute.error = true;
                             e.preventDefault();
