@@ -27,7 +27,14 @@
     "cordova-plugin-inappbrowser",
     "cordova-sqlite-storage",
     "cordova-plugin-geolocation",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator"
+    "uk.co.workingedge.phonegap.plugin.launchnavigator",
+    {
+      "variables": {
+        "URL_SCHEME": "findness"
+      },
+      "locator": "cordova-plugin-customurlscheme",
+      "id": "cordova-plugin-customurlscheme"
+    }
   ],
   "cordovaPlatforms": [
     "android"

@@ -19,6 +19,9 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
 
         $ionicPlatform.on('resume', function () {
             //$rootScope.$broadcast('onResume');
+            if (localStorage.getItem("external_load") != null) {
+                $state.go("app.paypal");
+            }
         });
 
         function init() {
