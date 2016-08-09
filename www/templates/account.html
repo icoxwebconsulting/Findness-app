@@ -34,7 +34,7 @@
                         <div class="col">Saldo</div>
                     </div>
                     <div class="row" ng-repeat="transaction in view.transactions" ng-click="showDetail(transaction)">
-                        <div class="col">10/01/2016</div>
+                        <div class="col">{{transaction.created| date:'dd/MM/yyyy'}}</div>
                         <!--<div class="col">{{transaction.transaction_id}}</div>-->
                         <div class="col">{{transaction.balance}} €</div>
                     </div>

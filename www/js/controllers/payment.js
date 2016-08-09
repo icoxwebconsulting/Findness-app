@@ -1,15 +1,8 @@
 app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup) {
 
-    $scope.cardType = {};
     $scope.card = {};
+    $scope.total;
     $scope.paymentType = 0;
-    $scope.firstName;
-    $scope.lastName;
-    $scope.products = [
-        {amount: 1.0, title: " 1$ combo"},
-        {amount: 5.0, title: " 5$ combo"},
-        {amount: 10.0, title: " 10$ combo"}
-    ];
     $scope.buttonDisabled = false;
 
     $scope.setPaymentType = function (value) {
@@ -42,7 +35,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
                 "amount": parseFloat(_cardInformation.amount) * 100,
-                "currency": "usd",
+                "currency": "eur",
                 "source": response.id,
                 "description": "Cargo Findness"
             };
@@ -70,16 +63,24 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     function registerPayment(data) {
         return paymentSrv.registerSuccessPayment(data).then(function (response) {
             console.log("respuesta servicio de registro", response)
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'Su pago se ha registrado satisfactoriamente.'
+            }).then(function () {
+                $state.go("app.account");
+            });
         });
     }
 
     $scope.makePayPalPayment = function (_cardInformation, paypal) {
         $scope.buttonDisabled = true;
         console.log(_cardInformation);
-        if (!paypal && ($scope.firstName == "" || $scope.lastName == "")) {
+        if (!paypal && ($scope.card.firstName == "" || $scope.card.lastName == "")) {
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'Debe colocar su nombre y apellido.'
+            });
             return;
-            // $scope.firstName == "test";
-            // $scope.lastName == " test";
         }
 
         showLoading();
@@ -99,8 +100,8 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                         "expire_month": _cardInformation.exp_month,
                         "expire_year": _cardInformation.exp_year,
                         "cvv2": _cardInformation.cvc,
-                        "first_name": $scope.firstName,
-                        "last_name": $scope.lastName
+                        "first_name": _cardInformation.firstName,
+                        "last_name": _cardInformation.lastName
                     }
                 }
             ];
@@ -117,9 +118,9 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                 {
                     "amount": {
                         "total": _cardInformation.amount + ".00",
-                        "currency": "USD"
+                        "currency": "EUR"
                     },
-                    "description": "This is the payment transaction description."
+                    "description": "Fidness add credit"
                 }
             ]
         };
@@ -155,8 +156,50 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         });
     };
 
-    $scope.makeCreditCardPayment = function (_cardInformation) {
-        console.log($scope.paymentType);
+    $scope.makeCreditCardPayment = function (_cardInformation, paymentForm) {
+        //validar formulario
+        if (!_cardInformation.amount) {
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'Debe escribir un monto para la recarga.'
+            });
+            return;
+        }
+
+        if (paymentForm.$invalid) {
+            if (paymentForm.ccNumber.$invalid) {
+                $ionicPopup.alert({
+                    title: 'Findness - Pago',
+                    template: 'El número de tarjeta no es válido.'
+                });
+                return;
+            }
+            if (paymentForm.ccCvc.$invalid) {
+                $ionicPopup.alert({
+                    title: 'Findness - Pago',
+                    template: 'El código de confirmación no es válido.'
+                });
+                return;
+            }
+        }
+
+        _cardInformation.cardType = paymentForm.ccNumber.$ccType;
+
+        var fecha = new Date(_cardInformation.exp_date);
+        _cardInformation.exp_month = fecha.getMonth();
+        _cardInformation.exp_year = fecha.getFullYear();
+
+        if (_cardInformation.exp_year < (new Date()).getFullYear()
+            || (_cardInformation.exp_year == (new Date()).getFullYear() && _cardInformation.exp_month < (new Date()).getMonth())) {
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'La fecha de expiración no es válida.'
+            });
+            return;
+        }
+
+        _cardInformation.exp_month += 1;
+
         if ($scope.paymentType == 1) {
             //pago con stripe
             makeStripePayment(_cardInformation);
