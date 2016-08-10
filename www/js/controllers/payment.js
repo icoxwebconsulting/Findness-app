@@ -34,7 +34,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
-                "amount": parseFloat(_cardInformation.total) * 100,
+                "amount": parseFloat(_cardInformation.amount) * 100,
                 "currency": "eur",
                 "source": response.id,
                 "description": "Cargo Findness"
@@ -43,7 +43,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
             return paymentSrv.processStripePayment(data).then(function (response) {
                 showConfirmation();
                 return registerPayment({
-                    balance: parseFloat(_cardInformation.total),
+                    balance: parseFloat(_cardInformation.amount),
                     operator: 3,
                     transactionId: response.id,
                     cardId: response.source.id
@@ -117,7 +117,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
             "transactions": [
                 {
                     "amount": {
-                        "total": _cardInformation.total.toFixed(2),
+                        "total": _cardInformation.amount.toFixed(2),
                         "currency": "EUR"
                     },
                     "description": "Fidness add credit"
@@ -134,12 +134,12 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     //pago con saldo paypal, el usuario debe confirmar
                     localStorage.setItem("execute_url", JSON.stringify(response.links[1]));
                     //localStorage.setItem("pay_id", response.id);
-                    localStorage.setItem("paypal_amount", _cardInformation.total);
+                    localStorage.setItem("paypal_amount", _cardInformation.amount);
                     $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
                     return registerPayment({
-                        balance: parseFloat(_cardInformation.total),
+                        balance: parseFloat(_cardInformation.amount),
                         operator: 2,
                         transactionId: response.id,
                         cardId: response.payer.payer_info.payer_id
@@ -155,14 +155,6 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
             $ionicLoading.hide();
             $scope.buttonDisabled = false;
         });
-    };
-
-    $scope.changeTotal = function () {
-        var subtotal = $scope.card.amount * TAX_CONF.IVA;
-        if ($scope.card.amount < 5) {
-            subtotal += TAX_CONF.FEE;
-        }
-        $scope.card.total = subtotal;
     };
 
     $scope.makeCreditCardPayment = function (_cardInformation, paymentForm) {
