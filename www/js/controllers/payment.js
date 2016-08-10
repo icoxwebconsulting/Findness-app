@@ -157,11 +157,10 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     };
 
     $scope.changeTotal = function () {
-        var subtotal = 0;
+        var subtotal = $scope.card.amount * TAX_CONF.IVA;
         if ($scope.card.amount < 5) {
-            subtotal = $scope.card.amount + TAX_CONF.FEE;
+            subtotal += TAX_CONF.FEE;
         }
-        subtotal = $scope.card.amount * TAX_CONF.IVA;
         $scope.card.total = subtotal;
     };
 
