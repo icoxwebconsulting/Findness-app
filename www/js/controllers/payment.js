@@ -1,4 +1,4 @@
-app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup) {
+app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, TAX_CONF) {
 
     $scope.card = {};
     $scope.total;
@@ -34,7 +34,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
-                "amount": parseFloat(_cardInformation.amount) * 100,
+                "amount": parseFloat(_cardInformation.total) * 100,
                 "currency": "eur",
                 "source": response.id,
                 "description": "Cargo Findness"
@@ -48,7 +48,6 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     transactionId: response.id,
                     cardId: response.source.id
                 });
-                //TODO: una vez registrado el pago se debe actualizar el balance del usuario
             });
 
         }).catch(function (error) {
@@ -117,7 +116,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
             "transactions": [
                 {
                     "amount": {
-                        "total": _cardInformation.amount + ".00",
+                        "total": _cardInformation.total.toFixed(2),
                         "currency": "EUR"
                     },
                     "description": "Fidness add credit"
@@ -134,6 +133,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     //pago con saldo paypal, el usuario debe confirmar
                     localStorage.setItem("execute_url", JSON.stringify(response.links[1]));
                     //localStorage.setItem("pay_id", response.id);
+                    localStorage.setItem("paypal_amount", _cardInformation.amount);
                     $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
@@ -156,12 +156,27 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         });
     };
 
+    $scope.changeTotal = function () {
+        var subtotal = 0;
+        if ($scope.card.amount < 5) {
+            subtotal = $scope.card.amount + TAX_CONF.FEE;
+        }
+        subtotal = $scope.card.amount * TAX_CONF.IVA;
+        $scope.card.total = subtotal;
+    };
+
     $scope.makeCreditCardPayment = function (_cardInformation, paymentForm) {
         //validar formulario
         if (!_cardInformation.amount) {
             $ionicPopup.alert({
                 title: 'Findness - Pago',
                 template: 'Debe escribir un monto para la recarga.'
+            });
+            return;
+        } else if (_cardInformation.amount < 1) {
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: '<p>La recarga mínima permita es de <b>1 €</b>.</p>'
             });
             return;
         }

@@ -46,7 +46,7 @@
 
                     <label class="item item-input">
                         <span class="input-label">Monto en €</span>
-                        <input type="number" ng-model="card.amount" name="cardAmount" placeholder="Escriba el monto a recargar...">
+                        <input type="number" ng-model="card.amount" name="cardAmount" placeholder="Escriba el monto a recargar..." ng-change="changeTotal()">
                     </label>
 
                     <!--Mostrados sólo si el tipo de pago es 3-->
@@ -79,6 +79,11 @@
                     <label class="item item-input">
                         <span class="input-label">Expiración</span>
                         <input type="month" ng-model="card.exp_date">
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Total a pagar €</span>
+                        <span>{{card.total | number:2}}</span>
                     </label>
 
                     <label class="item">

@@ -38,8 +38,9 @@ app.controller('PaypalCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
             localStorage.removeItem("external_load");
             //registrando el pago
             showConfirmation();
+            var amount  = localStorage.getItem("paypal_amount");
             var data = {
-                balance: parseFloat(5),//TODO:
+                balance: amount,
                 operator: 2,
                 transactionId: response.id,
                 cardId: response.payer.payer_info.payer_id
@@ -47,6 +48,7 @@ app.controller('PaypalCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
 
             paymentSrv.registerSuccessPayment(data).then(function (response) {
                 console.log("respuesta servicio de registro", response);
+                localStorage.removeItem("paypal_amount");
                 $ionicPopup.alert({
                     title: 'Findness - Pago',
                     template: 'Su pago se ha registrado satisfactoriamente.'
@@ -62,6 +64,7 @@ app.controller('PaypalCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
     $scope.cancelPayment = function () {
         localStorage.removeItem("execute_url");
         localStorage.removeItem("external_load");
+        localStorage.removeItem("paypal_amount");
         $state.go("app.account");
     };
 
