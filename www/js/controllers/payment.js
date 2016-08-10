@@ -6,6 +6,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
     $scope.setPaymentType = function (value) {
         $scope.paymentType = value;
+        $scope.card = {};
     };
 
     function showAlert(error) {
@@ -42,7 +43,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
             return paymentSrv.processStripePayment(data).then(function (response) {
                 showConfirmation();
                 return registerPayment({
-                    balance: parseFloat(_cardInformation.amount),
+                    balance: parseFloat(_cardInformation.total),
                     operator: 3,
                     transactionId: response.id,
                     cardId: response.source.id
@@ -133,12 +134,12 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     //pago con saldo paypal, el usuario debe confirmar
                     localStorage.setItem("execute_url", JSON.stringify(response.links[1]));
                     //localStorage.setItem("pay_id", response.id);
-                    localStorage.setItem("paypal_amount", _cardInformation.amount);
+                    localStorage.setItem("paypal_amount", _cardInformation.total);
                     $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
                     return registerPayment({
-                        balance: parseFloat(_cardInformation.amount),
+                        balance: parseFloat(_cardInformation.total),
                         operator: 2,
                         transactionId: response.id,
                         cardId: response.payer.payer_info.payer_id
