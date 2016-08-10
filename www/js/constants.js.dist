@@ -43,3 +43,8 @@ app.constant("COMPANY_STYLE", {
     },
     NUM: 'http://icox.com/img_findness/numeradas/'
 });
+
+app.constant("TAX_CONF", {
+    FEE: 0.25,
+    IVA: 1.21
+});

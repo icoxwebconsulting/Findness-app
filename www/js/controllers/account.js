@@ -6,6 +6,10 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, $ionicPopup)
         paymentSrv.requestBalance().then(function (balance) {
             $scope.balance = balance;
         });
+
+        $scope.view = {};
+        self.getTransactions();
+        $scope.$emit('menu:drag', true);
     });
 
     $scope.showDetail = function (transaction) {
@@ -23,13 +27,5 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, $ionicPopup)
             $scope.view.transactions = response.transactions;
         });
     };
-
-    $scope.init = function () {
-        $scope.view = {};
-        self.getTransactions();
-        $scope.$emit('menu:drag', true);
-    };
-
-    $scope.init();
 
 });

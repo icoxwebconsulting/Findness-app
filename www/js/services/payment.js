@@ -75,7 +75,7 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
                 'Content-Type': 'application/json'
             }
         }).then(function success(response) {
-            if (response.status == 200) {
+            if (response.status == 201) {
                 deferred.resolve(response.data);
             } else {
                 deferred.reject(response);
