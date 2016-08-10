@@ -11,18 +11,26 @@
             </div>
         </div>
 
-        <div id="mapButtons" style="position: absolute; bottom: 15px; right: 5px; z-index: 99;" ng-show="showRoute">
-            <button class="button button-small button-assertive" ng-click="createRoute()" ng-hide="routeMode || viewRoute">
-                Crear ruta
-            </button>
+        <div id="mapButtons" class="map-buttons" ng-show="showRoute">
+            <div class="row">
+                <div class="col-10">
+                </div>
+                <div class="col-80">
+                    <button class="button button-block button-assertive" ng-click="createRoute()" ng-hide="routeMode || viewRoute">
+                    CREAR RUTA
+                    </button>
 
-            <button class="button button-small button-assertive" ng-click="finishRoute()" ng-show="routeMode">
-                Ruta: guardar
-            </button>
+                    <button class="button button-block button-assertive" ng-click="finishRoute()" ng-show="routeMode">
+                    GUARDAR RUTA
+                    </button>
 
-            <button class="button button-small button-assertive" ng-click="finishEditRoute()" ng-show="viewRoute">
-                Ruta: guardar cambios
-            </button>
+                    <button class="button button-block button-assertive" ng-click="finishEditRoute()" ng-show="viewRoute">
+                    GUARDAR CAMBIOS
+                    </button>
+                </div>
+                <div class="col-10">
+                </div>
+            </div>
         </div>
 
         <div style="width:100%;height:100%" id="map_canvas" data-tap-disabled="true">

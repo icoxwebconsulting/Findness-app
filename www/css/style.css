@@ -556,3 +556,11 @@
 .modal-company-detail .my-location img{
     width: 40px;
 }
+
+.map-buttons {
+    position: absolute;
+    bottom: 15px;
+    z-index: 99;
+    display: table;
+    width: 100%;
+}

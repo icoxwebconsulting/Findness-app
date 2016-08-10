@@ -3,6 +3,8 @@
         <h1 class="title">{{title | uppercase | limitTo:25}} <span ng-if="title.length > 25">...</span></h1>
     </ion-header-bar>
     <ion-content scroll="true">
+        <p class="address">
+            <span style="font-weight: 500;font-size: 12px;" ng-show="routeMode">Ruta: {{routeName}}</span></p>
         <p class="social-object">
             {{socialObject | capitalize}}<span ng-if="socialObject.length > 1">.</span>
         </p>
@@ -39,18 +41,14 @@
             </a>
         </div>
 
-        <div class="row" ng-show="routeMode">
-            <div class="col-50">
-                <span style="font-weight: 500;font-size: 12px;">Ruta: {{routeName}}</span>
-            </div>
-            <div class="col-50">
-                <button class="button button-small button-assertive" ng-click="addToRoute()" ng-show="!isAddedd">
-                    Agregar a ruta
-                </button>
-                <button class="button button-small button-assertive" ng-click="removePoint(companyId)" ng-show="isAddedd">
-                    Quitar de ruta
-                </button>
-            </div>
+        <div style="text-align: center; width: 100%" ng-show="routeMode">
+            <button class="button button-small button-assertive" ng-click="addToRoute()" ng-show="!isAddedd">
+                Agregar a ruta
+            </button>
+            <button class="button button-small button-assertive" ng-click="removePoint(companyId)" ng-show="isAddedd">
+                Quitar de ruta
+            </button>
         </div>
+
     </ion-footer-bar>
 </ion-modal-view>
