@@ -82,8 +82,8 @@
                     </label>
 
                     <label class="item item-input">
-                        <span class="input-label">Total a pagar €</span>
-                        <span>{{card.total | number:2}}</span>
+                        <span class="input-label">Total a pagar </span>
+                        <span>{{card.total | number:2}} €</span>
                     </label>
 
                     <label class="item">
@@ -99,7 +99,12 @@
 
                     <label class="item item-input">
                         <span class="input-label">Monto en €</span>
-                        <input type="number" ng-model="card.amount" name="cardAmount2" placeholder="Escriba el monto a recargar...">
+                        <input type="number" ng-model="card.amount" name="cardAmount2" placeholder="Escriba el monto a recargar..." ng-change="changeTotal()">
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Total a pagar</span>
+                        <span>{{card.total | number:2}} €</span>
                     </label>
 
                     <div class="padding">

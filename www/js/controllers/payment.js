@@ -1,7 +1,6 @@
 app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, TAX_CONF) {
 
     $scope.card = {};
-    $scope.total;
     $scope.paymentType = 0;
     $scope.buttonDisabled = false;
 
@@ -53,6 +52,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         }).catch(function (error) {
             //TODO: handle error
             console.log(error);
+            showAlert(error.type);
         }).finally(function () {
             $scope.buttonDisabled = false;
             $ionicLoading.hide();
