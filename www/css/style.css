@@ -36,6 +36,14 @@
     opacity: 0.6 !important;
 }
 
+.platform-ios .scroll {
+    height: 100%;
+} 
+
+.platform-ios .tabs{
+    top: 0px !important;
+}
+
 .button-positive, .bar-positive, .toggle.toggle-calm input:checked+.track{
     background: #0185CF !important;
 }
@@ -440,6 +448,10 @@
     margin-top:95px;
 }
 
+.platform-ios .categories {
+    margin-top:75px;
+}
+
 .categories .item{
     color: #000000;
 }
@@ -451,6 +463,11 @@
 .header-menu .legend{
     margin-top: 80px;
 }
+
+.platform-ios .header-menu .legend{
+    margin-top: 65px;
+}
+
 
 .header-menu .legend .left{
     width: 50%;
