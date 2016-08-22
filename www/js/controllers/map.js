@@ -14,13 +14,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         selectedOption: {id: 'DRIVING', name: 'En automóvil'}
     };
 
+
+
     $scope.$on('$ionicView.enter', function (e) {
         $scope.$emit('menu:drag', false);
-        // if (window.localStorage.getItem('firstTime')) {
-        //     window.localStorage.removeItem('firstTime');
-        //     $state.go('app.filter');
-        //     return;
-        // }
         if (map.getMap()) {
             map.resize();
         }
@@ -52,6 +49,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     });
 
     function proccessMarkers(query) {
+        var showMyLocation = false;
         console.log("pasada por processMarkers");
         map.resize();
         var result = searchService.getResultSearch();
@@ -61,10 +59,17 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             lat = result.items[first].latitude;
             lon = result.items[first].longitude;
         } else {
+            showMyLocation = true;
             var lat = query.geoLocations.latitude;
             var lon = query.geoLocations.longitude;
         }
         setTimeout(function () {
+
+            if(showMyLocation)
+            {
+                var position = new google.maps.LatLng(lat, lon);
+                map.showMyLocation(position);
+            }
             map.moveCamera(lat, lon, 9);
         }, 1500);
         $scope.showRoute = true;

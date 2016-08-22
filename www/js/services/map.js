@@ -183,6 +183,17 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         markers.push(marker);
     }
 
+
+    function showMyLocation(position){
+        new google.maps.Marker({
+            position: position,
+            map: map,
+            icon: 'img/map/my-location-icon.png',
+            optimized: false,
+            zIndex: 5
+        });
+    }
+
     function deleteRouteLines() {
         var deferred = $q.defer();
         try {
@@ -412,6 +423,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         drawDirections: drawDirections,
         setShowPopup: setShowPopup,
         getShowPopup: getShowPopup,
-        deleteRouteLines: deleteRouteLines
+        deleteRouteLines: deleteRouteLines,
+        showMyLocation:showMyLocation
     };
 });
