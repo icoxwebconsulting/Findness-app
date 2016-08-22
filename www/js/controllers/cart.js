@@ -1,4 +1,4 @@
-app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup, TAX_CONF) {
+app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup) {
 
     $scope.closeCart = function () {
     };
@@ -10,6 +10,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     $scope.init = function () {
         $scope.$emit('menu:drag', true);
         $scope.view = {};
+        $scope.view.iva = 0;
         $scope.view.contCompanies = [];
         $scope.maxCompanies = cart.getTotalCompanies();
 
@@ -37,11 +38,11 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
             } else {
                 var subtotal = $scope.view.totalCompanies * $scope.view.unitPrice;
                 if(subtotal < 5){
-                    subtotal += TAX_CONF.FEE;
+                    subtotal += 0.25;
                 }
-                //IVA
-                subtotal *= TAX_CONF.IVA;
-                $scope.view.total = subtotal;
+                $scope.view.total = subtotal * 1.21;
+                //IVA 21%
+                $scope.view.iva = (subtotal * 21) / 100;
             }
         } else {
             $scope.view.total = 0;

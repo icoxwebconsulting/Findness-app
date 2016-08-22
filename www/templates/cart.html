@@ -24,7 +24,7 @@
             </label>
             <label class="item item-input item-stacked-label">
                 <div class="input-label" style="width: 50%">
-                    Precio por unidad
+                    Coste por unidad
                 </div>
                 <div class="input-label" style="text-align: right">
                     <span class="item-note">{{view.unitPrice| number:2}}€</span>
@@ -43,7 +43,15 @@
                 <span style="float: right; margin-right:25px">{{(view.totalCompanies*view.unitPrice| number:2)}}€</span>
             </ion-item>
             <ion-item class="item-divider item-title">
-                <span>Total a pagar</span>
+                <span> IVA </span>
+                <span style="float: right; margin-right:25px">{{ view.iva| number:2 }}€</span>
+            </ion-item>
+            <ion-item class="item-divider item-title" ng-show="view.totalCompanies*view.unitPrice < 5 " >
+                <span> Coste por compra inferior a 5€ </span>
+                <span style="float: right; margin-right:25px">{{ 0.25 }}€</span>
+            </ion-item>
+            <ion-item class="item-divider item-title">
+                <span>Importe total</span>
                 <span style="float: right; margin-right:25px">{{view.total| number:2}}€</span>
             </ion-item>
             <ion-item class="item-divider item-title" ng-if="view.balance > 0">
@@ -55,6 +63,9 @@
                 <span>Por pagar</span>
                 <span style="float: right; margin-right:25px">{{view.payable| number:2}}€</span>
             </ion-item>
+            <p style="font-size: 10px">
+                <b>Importante:</b> Para compras inferiores a 5 € se aplicará un gasto de 0,25€.
+            </p>
         </div>
         <div class="list input-list" style="padding:10px">
             <button class="button button-positive button-100" ng-click="checkout()" ng-if="view.payable > 0 && view.total > 0 ">
