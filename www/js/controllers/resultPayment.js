@@ -24,7 +24,7 @@ app.controller('ResultPaymentCtrl', function ($scope, $rootScope, $state, $ionic
             $ionicLoading.hide();
             console.log("error en consulta", e);
             $scope.error = true;
-            //$scope.errorName = e.error;
+            $scope.errorName = e;
         });
     });
 });
