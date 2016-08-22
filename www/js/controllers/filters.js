@@ -201,8 +201,15 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     });
                 });
             }).catch(function () {
-                $ionicPopup.alert({
-                    title: "No se pudo obtener su localización."
+                $ionicPopup.show({
+                    template: '<p style="color:#000;">Para poder usar tu ubicación debes tener activado tu gps.</p>',
+                    title: 'Activar GPS',
+                    buttons: [
+                        {
+                            text: '<b>Aceptar</b>',
+                            type: 'button-positive'
+                        }
+                    ]
                 });
             });
         } else {
