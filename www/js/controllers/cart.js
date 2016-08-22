@@ -1,4 +1,4 @@
-app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup) {
+app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup, TAX_CONF) {
 
     $scope.closeCart = function () {
     };
@@ -37,12 +37,12 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
                 });
             } else {
                 var subtotal = $scope.view.totalCompanies * $scope.view.unitPrice;
-                if(subtotal < 5){
-                    subtotal += 0.25;
+                if (subtotal < 5) {
+                    subtotal += TAX_CONF.FEE;
                 }
-                $scope.view.total = subtotal * 1.21;
-                //IVA 21%
-                $scope.view.iva = (subtotal * 21) / 100;
+                $scope.view.total = subtotal * TAX_CONF.IVA;
+                //IVA
+                $scope.view.iva = subtotal * (TAX_CONF.IVA - 1);
             }
         } else {
             $scope.view.total = 0;

@@ -183,8 +183,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         markers.push(marker);
     }
 
-
-    function showMyLocation(position){
+    function showMyLocation(position) {
         new google.maps.Marker({
             position: position,
             map: map,
@@ -326,7 +325,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
                             duration: routeData.duration
                         });
 
-                    if(routeService.removePoint(id)){
+                    if (routeService.removePoint(id)) {
                         routeService.reDrawMarkers();
                     }
                     deferred.resolve();
@@ -392,7 +391,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
         //startId: elemento anterior, endId: elemento actual
         routePath.setMap(map);
-        if(paths[node]['polyline']){
+        if (paths[node]['polyline']) {
             paths[node]['polyline'].setMap(null);
         }
         paths[node]['polyline'] = routePath;
@@ -424,6 +423,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         setShowPopup: setShowPopup,
         getShowPopup: getShowPopup,
         deleteRouteLines: deleteRouteLines,
-        showMyLocation:showMyLocation
+        showMyLocation: showMyLocation
     };
 });
