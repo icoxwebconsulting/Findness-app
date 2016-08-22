@@ -1,4 +1,4 @@
-app.controller('ResultPaymentCtrl', function ($scope, $rootScope, $state, $ionicLoading, $ionicHistory, searchService, paymentSrv, userDatastore) {
+app.controller('ResultPaymentCtrl', function ($scope, $rootScope, $state, $ionicLoading, $ionicHistory, cart, searchService, paymentSrv, userDatastore) {
 
     $scope.error = false;
 
@@ -12,7 +12,7 @@ app.controller('ResultPaymentCtrl', function ($scope, $rootScope, $state, $ionic
         var data = JSON.parse(userDatastore.getResultPayment());
         $scope.idPayment = data.idPayment;
         //llamar al servicio de búsqueda con el último query
-        searchService.executeLastQuery(data.totalCompanies).then(function (lastQuery) {
+        searchService.executeLastQuery(cart.getSelectedCompanies()).then(function (lastQuery) {
             $ionicLoading.hide();
             $ionicHistory.nextViewOptions({
                 historyRoot: true,

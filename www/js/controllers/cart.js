@@ -59,6 +59,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     $scope.checkout = function () {
         console.info('$scope.view.payable', $scope.view.payable);
         cart.setPayable($scope.view.payable);
+        cart.setSelectedCompanies($scope.view.totalCompanies);
         $state.go('app.checkout');
     };
 
@@ -67,11 +68,6 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         searchService.executeLastQuery($scope.view.totalCompanies).then(function (lastQuery) {
             $state.go("app.map");
             paymentSrv.requestBalance();
-            // setTimeout(function () {
-            //     $rootScope.$emit('processMarkers', {
-            //         lastQuery: lastQuery
-            //     });
-            // },1500);
         });
     };
 

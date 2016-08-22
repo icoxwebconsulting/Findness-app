@@ -75,8 +75,7 @@ app.controller('CheckoutCtrl', function ($scope, $state, paymentSrv, cart, $ioni
             console.log("respuesta servicio de registro", response);
             //cambiar de pagina para la pantalla que muestra el resultado del pago
             userDatastore.setResultPayment(JSON.stringify({
-                idPayment: response.id,
-                totalCompanies: cart.getTotalCompanies()
+                idPayment: response.id
             }));
             $state.go("app.resultPayment");
         });

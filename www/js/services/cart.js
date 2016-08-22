@@ -24,6 +24,14 @@ app.service('cart', function () {
         self.totalCompanies = total;
     }
 
+    function getSelectedCompanies() {
+        return self.selectedCompanies;
+    }
+
+    function setSelectedCompanies(total) {
+        self.selectedCompanies = total;
+    }
+
     function setPayable(amount) {
         self.payable = amount;
     }
@@ -39,6 +47,8 @@ app.service('cart', function () {
         getTotalCompanies: getTotalCompanies,
         setTotalCompanies: setTotalCompanies,
         setPayable: setPayable,
-        getPayable: getPayable
+        getPayable: getPayable,
+        getSelectedCompanies: getSelectedCompanies,
+        setSelectedCompanies: setSelectedCompanies
     };
 });
