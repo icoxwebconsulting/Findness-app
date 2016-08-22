@@ -87,11 +87,11 @@ app.factory('userDatastore', function () {
     function getSalt() {
         return window.localStorage.getItem('salt') || false;
     }
-    
+
     function setBalance(balance) {
         window.localStorage.setItem('balance', balance);
     }
-    
+
     function getBalance() {
         return window.localStorage.getItem('balance') || 0;
     }
@@ -102,6 +102,14 @@ app.factory('userDatastore', function () {
 
     function getUsernameRecover() {
         return window.localStorage.getItem('username_recover');
+    }
+
+    function setResultPayment(data) {
+        window.localStorage.setItem('result_payment', data);
+    }
+
+    function getResultPayment() {
+        return window.localStorage.getItem('result_payment');
     }
 
     return {
@@ -128,6 +136,8 @@ app.factory('userDatastore', function () {
         setBalance: setBalance,
         getBalance: getBalance,
         setUsernameRecover: setUsernameRecover,
-        getUsernameRecover: getUsernameRecover
+        getUsernameRecover: getUsernameRecover,
+        setResultPayment: setResultPayment,
+        getResultPayment: getResultPayment
     };
 });

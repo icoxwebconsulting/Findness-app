@@ -31,10 +31,10 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     function makeStripePayment(_cardInformation) {
         $scope.buttonDisabled = true;
         showLoading();
-
+        var amount = _cardInformation.amount * 100;
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
-                "amount": parseFloat(_cardInformation.amount) * 100,
+                "amount": amount.toFixed(),
                 "currency": "eur",
                 "source": response.id,
                 "description": "Cargo Findness"

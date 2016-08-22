@@ -1,6 +1,6 @@
 app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map, routeService) {
 
-    $scope.init = function(){
+    $scope.init = function () {
         $scope.options = {
             useLocation: false
         };
@@ -260,6 +260,18 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     template: 'Ocurrió un error en la búsqueda, intente más tarde. ' + e.statusText
                 });
             });
+        }
+    };
+
+    $scope.pickupChange = function (val) {
+        if (val) {
+            if ($scope.data.pickupAfter < 5) {
+                $scope.data.pickupAfter += 1;
+            }
+        } else {
+            if ($scope.data.pickupAfter > 1) {
+                $scope.data.pickupAfter -= 1;
+            }
         }
     }
 

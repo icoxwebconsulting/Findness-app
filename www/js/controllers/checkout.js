@@ -1,6 +1,6 @@
-app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, searchService) {
+app.controller('CheckoutCtrl', function ($scope, $state, paymentSrv, cart, $ionicLoading, $ionicPopup, $ionicHistory, userDatastore) {
 
-    $scope.init = function(){
+    $scope.init = function () {
         $scope.$emit('menu:drag', true);
         $scope.card = {};
         $scope.card.amount = cart.getPayable();
@@ -36,10 +36,10 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
     function makeStripePayment(_cardInformation) {
         $scope.buttonDisabled = true;
         showLoading();
-
+        var amount = _cardInformation.amount * 100;
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
-                "amount": parseFloat(_cardInformation.amount) * 100,
+                "amount": amount.toFixed(),
                 "currency": "eur",
                 "source": response.id,
                 "description": "Cargo Findness"
@@ -58,7 +58,7 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
         }).catch(function (error) {
             //TODO: handle error
             console.log(error);
-            showAlert(error.type);
+            showAlert(error.statusText);
         }).finally(function () {
             $scope.buttonDisabled = false;
             $ionicLoading.hide();
@@ -67,17 +67,18 @@ app.controller('CheckoutCtrl', function ($scope, $rootScope, $state, paymentSrv,
 
     function registerPayment(data) {
         return paymentSrv.registerSuccessPayment(data).then(function (response) {
-            console.log("respuesta servicio de registro", response);
-            //llamar al servicio de búsqueda con el último query
-            searchService.executeLastQuery(cart.getTotalCompanies()).then(function (lastQuery) {
-                $state.go("app.map");
-                paymentSrv.requestBalance();
-                // setTimeout(function () {
-                //     $rootScope.$emit('processMarkers', {
-                //         lastQuery: lastQuery
-                //     });
-                // },1500);
+            $ionicHistory.nextViewOptions({
+                historyRoot: true,
+                disableBack: true
             });
+
+            console.log("respuesta servicio de registro", response);
+            //cambiar de pagina para la pantalla que muestra el resultado del pago
+            userDatastore.setResultPayment(JSON.stringify({
+                idPayment: response.id,
+                totalCompanies: cart.getTotalCompanies()
+            }));
+            $state.go("app.resultPayment");
         });
     }
 
