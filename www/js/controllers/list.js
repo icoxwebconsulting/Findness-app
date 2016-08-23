@@ -50,6 +50,10 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
                 }, 2000);
             };
 
+            modalScope.closeDetail = function () {
+                modalScope.modal.hide();
+            };
+
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
                 animation: 'slide-in-up'
