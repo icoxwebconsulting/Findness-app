@@ -82,6 +82,10 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         return route.name;
     }
 
+    function getRouteTransport() {
+        return route.transport;
+    }
+
     // function setRouteMode(status) {
     //     routeMode = status;
     // }
@@ -313,6 +317,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         drawRoute: drawRoute,
         getRouteMode: getRouteMode,
         getRouteName: getRouteName,
+        getRouteTransport: getRouteTransport,
         initRoute: initRoute,
         addPoint: addPoint,
         removePoint: removePoint,

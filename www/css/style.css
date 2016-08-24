@@ -564,3 +564,24 @@
     display: table;
     width: 100%;
 }
+
+.info-map-button {
+    position: absolute;
+    top: 55px;
+    left: 5px;
+    z-index: 99;
+    display: table;
+}
+
+.info-map-button i {
+    font-size: 40px;
+    color: #0185CF;
+}
+
+.modal-route-info {
+    width: 80% !important;
+    min-height: 30%;
+    margin: 40% 10% !important;
+    max-height: 50%;
+    height: 90%;
+}

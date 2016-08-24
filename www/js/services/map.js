@@ -39,6 +39,34 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         markers = [];
     }
 
+    function infoRoute() {
+        var type = {
+            'WALKING': 'A pie',
+            'DRIVING': 'En automóvil',
+            'TRANSIT': 'Transporte público'
+        };
+        var modalScope = $rootScope.$new();
+        modalScope.name = routeService.getRouteName();
+        modalScope.transport = type[routeService.getRouteTransport()];
+        modalScope.distance = 0;
+        modalScope.duration = 0;
+        modalScope.counter = 0;
+        for (var p in paths) {
+            var temp = paths[p]["data"]["distance"];
+            modalScope.distance += parseFloat((temp) ? temp : 0);
+            temp = paths[p]["data"]["duration"];
+            modalScope.duration += parseFloat((temp) ? temp : 0);
+            modalScope.counter += 1;
+        }
+        //Muestra información de la ruta
+        $ionicModal.fromTemplateUrl('templates/route-info.html', {
+            scope: modalScope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            modal.show();
+        });
+    }
+
     function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position) {
 
         var modalScope = $rootScope.$new();
@@ -368,7 +396,8 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         paths[response.node] = {
             next: response.next,
             previous: response.previous,
-            polyline: null
+            polyline: null,
+            data: response.data
         };
 
         if (response.previous) {
@@ -423,6 +452,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         setShowPopup: setShowPopup,
         getShowPopup: getShowPopup,
         deleteRouteLines: deleteRouteLines,
-        showMyLocation: showMyLocation
+        showMyLocation: showMyLocation,
+        infoRoute: infoRoute
     };
 });

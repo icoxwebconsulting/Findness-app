@@ -201,6 +201,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                 template: text
             });
         });
+    };
+
+    $scope.showRouteInfo = function () {
+        map.infoRoute();
     }
 
 }).filter('capitalize', function () {
