@@ -1,4 +1,4 @@
-app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading, $ionicPopup, routeService, searchService, map) {
+app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading, $ionicPopup, $ionicModal, $ionicListDelegate, routeService, searchService, map) {
 
     $scope.items;
     $scope.type = {
@@ -6,12 +6,15 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
         'DRIVING': 'En automóvil',
         'TRANSIT': 'Transporte público'
     };
-    $scope.shouldShowDelete = false;
 
-    $scope.$on('$ionicView.enter', function (e) {
+    function getRoutes() {
         routeService.getRoutes().then(function (result) {
             $scope.items = result;
         });
+    }
+
+    $scope.$on('$ionicView.enter', function (e) {
+        getRoutes();
     });
 
     $scope.callRoute = function (item) {
@@ -50,7 +53,7 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
         });
     };
 
-    $scope.deleteRoute = function (index, item) {
+    $scope.deleteRoute = function (item, index) {
         $ionicPopup.show({
             template: '<p>Seguro que desea borrar la ruta: ' + item.name + '</p>',
             title: 'Findness',
@@ -74,5 +77,52 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
                 {text: 'Cancelar'}
             ]
         });
-    }
+    };
+
+    $scope.changeNameRoute = null;
+    $scope.showChangeName = function (item) {
+        $ionicModal.fromTemplateUrl('templates/routes-change-name.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $scope.changeNameRoute = item;
+            $scope.modal = modal;
+            $scope.modal.show();
+        });
+
+        // Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function () {
+            $scope.modal.remove();
+        });
+
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function () {
+            $scope.changeNameRoute = null;
+        });
+
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function () {
+            $scope.changeNameRoute = null;
+        });
+    };
+
+    $scope.changeName = function () {
+        $ionicLoading.show();
+        routeService.updateName($scope.changeNameRoute.id, $scope.changeNameRoute.name)
+            .then(function (response) {
+                if (!response.updated) {
+                    $scope.items = null;
+                    getRoutes();
+                }
+                $ionicLoading.hide();
+                $scope.modal.hide();
+                $ionicListDelegate.closeOptionButtons();
+            })
+            .catch(function () {
+                $ionicLoading.hide();
+                $scope.modal.hide();
+                $ionicListDelegate.closeOptionButtons();
+            });
+    };
+
 });

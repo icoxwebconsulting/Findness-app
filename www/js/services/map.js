@@ -275,7 +275,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             nro += 1;
         }
         markerCluster = new MarkerClusterer(map, markers, {
-            maxZoom: 10,
+            maxZoom: 13,
             imagePath: 'lib/js-marker-clusterer/images/m'
         });
     }
@@ -301,8 +301,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
     function deletePath(id) {
         var deferred = $q.defer();
-        console.log(paths)
-        console.log(markers)
 
         if (paths[id]["previous"] == null) {
             //es el primero

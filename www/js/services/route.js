@@ -227,12 +227,34 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         }
     }
 
+    function updateName(id, name) {
+
+        return routes(userDatastore.getTokens().accessToken).getRouteDetail(null, {
+            mapRoute: id
+        }).$promise.then(function (detail) {
+
+            return routes(userDatastore.getTokens().accessToken).editRoute({
+                mapRoute: id
+            }, {
+                name: name,
+                transport: detail.transport,
+                points: JSON.stringify(detail.points)
+            }).$promise.then(function (response) {
+                return response;
+            }, function (e) { //error
+                throw e;
+            });
+        }, function (e) { //error
+            throw e;
+        });
+
+    }
+
     function getRoutes() {
         var token = userDatastore.getTokens();
 
         return routes(token.accessToken).getRoutes().$promise
             .then(function (response) {
-                console.log(response);
                 return response;
             })
             .catch(function (response) {
@@ -323,6 +345,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         removePoint: removePoint,
         finishRoute: finishRoute,
         finishEditRoute: finishEditRoute,
+        updateName: updateName,
         existPoint: existPoint,
         getRoutes: getRoutes,
         setRoutes: setRoutes,
