@@ -56,7 +56,7 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
     }
 
     $scope.callSearch = function (search) {
-        console.log(search);
+
         $ionicLoading.show({
             template: '<p>Realizando búsqueda seleccionada</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });

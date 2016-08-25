@@ -1,27 +1,15 @@
 <ion-view>
-    <ion-content>
-        <div class="row subtitle filter" scroll="false">
-            <div class="col col-100">
-                <div class="left">
-                    <span>Mis búsquedas</span>
-                </div>
-                <div class="center">
-                    <br>
-                </div>
-                <div class="right">
-                    <br>
-                </div>
+    <ion-header-bar class="bar-subheader subtitle-subheader">
+        <h3 class="title">Mis búsquedas</h3>
+    </ion-header-bar>
 
-            </div>
-        </div>
-        <content has-header="true" padding="true">
-            <ion-list>
-                <ion-item ng-repeat="item in items" class="item-button-right" ng-click="callSearch(item)">
-                    <h3>{{item.name}}</h3>
-                    <ion-option-button class="button-energized icon ion-edit" ng-click="showChangeName(item)"></ion-option-button>
-                    <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(item, $index)"></ion-option-button>
-                </ion-item>
-            </ion-list>
-        </content>
+    <ion-content class="has-subheader">
+        <ion-list>
+            <ion-item ng-repeat="item in items" class="item-button-right" ng-click="callSearch(item)">
+                <h3>{{item.name}}</h3>
+                <ion-option-button class="button-energized icon ion-edit" ng-click="showChangeName(item)"></ion-option-button>
+                <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delete(item, $index)"></ion-option-button>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>
