@@ -13,7 +13,7 @@
 
     <ion-content class="has-subheader">
         <div class="list" scroll="true">
-            <a class="item item-icon-left" href="#" ng-repeat="list in companies">
+            <a class="item item-icon-left" href="#" ng-repeat="list in companies" ng-click="showCompanyDetail(list.id)">
                 <i class="icon ion-ios-bookmarks"></i>
                 {{list.social_reason}}
             </a>

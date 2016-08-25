@@ -1,4 +1,4 @@
-app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService) {
+app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService, company) {
 
     $scope.$on('$ionicView.enter', function (e) {
         $scope.init();
@@ -25,11 +25,8 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
                 $ionicPopup.alert({
                     title: "Ingrese un correo electrónico valido"
                 });
-            } else {
-                list(localStorage.getItem('accessToken')).share({
-                    'list': modalScope.listId,
-                    'username': obj.username
-                }).$promise.then(function (response) {
+            }else{
+                list(localStorage.getItem('accessToken')).share({'list':modalScope.listId, 'username':obj.username}).$promise.then(function (response) {
                     modalScope.modal.hide();
                 });
             }
@@ -92,5 +89,62 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
             map.moveCamera(lat, lng, 9);
         }, 1500);
     }
+
+    $scope.showCompanyDetail = function (id) {
+        company(localStorage.getItem('accessToken')).getCompany({'company': id}).$promise.then(function (response) {
+
+            console.info('response company', response);
+            var modalScope = $rootScope.$new();
+            modalScope.title = response.company.social_reason;
+            modalScope.socialObject = response.company.social_object;
+            modalScope.companyId = response.company.id;
+            modalScope.address = response.company.address;
+            modalScope.phoneNumber = response.company.phone_number;
+            if (typeof response.company.style != 'undefined')
+                modalScope.style = response.company.style;
+            else
+                modalScope.style = 'RED';
+            modalScope.latitude = response.company.latitude;
+            modalScope.longitude = response.company.longitude;
+
+
+
+            modalScope.initializeMap = function () {
+                console.info('initializeMap...');
+                var position = new google.maps.LatLng(modalScope.latitude, modalScope.longitude);
+                setTimeout(function () {
+
+                    var div = document.getElementById("map_canvas_detail");
+                    modalScope.mapDetail = new google.maps.Map(div, {
+                        center: position,
+                        zoom: 13,
+                        disableDefaultUI: true
+                    });
+
+                    new google.maps.Marker({
+                        position: position,
+                        map: modalScope.mapDetail,
+                        title: modalScope.title,
+                        icon: COMPANY_STYLE.COLOR[modalScope.style]
+                    });
+                }, 2000);
+            };
+
+            modalScope.closeDetail = function () {
+                modalScope.modal.hide();
+            };
+
+            $ionicModal.fromTemplateUrl('templates/company-detail.html', {
+                scope: modalScope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                modalScope.modal = modal;
+                modalScope.modal.show();
+            });
+        });
+
+
+    }
+
 
 });
