@@ -25,8 +25,11 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
                 $ionicPopup.alert({
                     title: "Ingrese un correo electrónico valido"
                 });
-            }else{
-                list(localStorage.getItem('accessToken')).share({'list':modalScope.listId, 'username':obj.username}).$promise.then(function (response) {
+            } else {
+                list(localStorage.getItem('accessToken')).share({
+                    'list': modalScope.listId,
+                    'username': obj.username
+                }).$promise.then(function (response) {
                     modalScope.modal.hide();
                 });
             }
@@ -88,7 +91,7 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
         setTimeout(function () {
             map.moveCamera(lat, lng, 9);
         }, 1500);
-    }
+    };
 
     $scope.showCompanyDetail = function (id) {
         company(localStorage.getItem('accessToken')).getCompany({'company': id}).$promise.then(function (response) {
@@ -106,7 +109,6 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
                 modalScope.style = 'RED';
             modalScope.latitude = response.company.latitude;
             modalScope.longitude = response.company.longitude;
-
 
 
             modalScope.initializeMap = function () {
@@ -145,6 +147,5 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
 
 
     }
-
 
 });
