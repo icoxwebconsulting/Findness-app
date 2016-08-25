@@ -34,6 +34,13 @@
       },
       "locator": "cordova-plugin-customurlscheme",
       "id": "cordova-plugin-customurlscheme"
+    },
+    {
+      "variables": {
+        "SENDER_ID": "32432862482"
+      },
+      "locator": "phonegap-plugin-push",
+      "id": "phonegap-plugin-push"
     }
   ],
   "cordovaPlatforms": [
