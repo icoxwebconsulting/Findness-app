@@ -1,4 +1,4 @@
-app.service('map', function ($q, $ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
+app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
 
     //var map;
     var markers = [];
@@ -108,7 +108,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             modalScope.modal.hide();
         };
 
-
         modalScope.initializeMap = function () {
             console.info('initializeMap...');
 
@@ -160,7 +159,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
         };
 
-
         modalScope.openDetail = function () {
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
@@ -171,6 +169,24 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             });
         };
 
+        modalScope.navigateTo = function () {
+            $ionicLoading.show({
+                template: '<p>Obteniendo localización...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+            });
+            navigator.geolocation.getCurrentPosition(function (gps) {
+                $ionicLoading.hide();
+                launchnavigator.navigate(position.lat() + ',' + position.lng(), {
+                    start: gps.coords.latitude + ',' + gps.coords.longitude
+                });
+            }, function (e) {
+                console.log(e);
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: "Findness",
+                    template: 'No se pudo obtener su localización.'
+                });
+            });
+        };
 
         modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
