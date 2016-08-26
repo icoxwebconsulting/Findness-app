@@ -97,6 +97,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             }).then(function (nro) {
                 modalScope.isAddedd = true;
                 modalScope.marker.setIcon(COMPANY_STYLE.NUM + nro + '.png');
+                modalScope.thisModal.hide();
             });
         };
 
@@ -203,6 +204,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             scope: modalScope,
             animation: 'slide-in-up'
         }).then(function (modal) {
+            modalScope.thisModal = modal;
             modal.show();
         });
 
