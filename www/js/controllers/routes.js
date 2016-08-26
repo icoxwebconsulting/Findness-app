@@ -28,7 +28,7 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
             var lng = detail.points[kyz[0]].longitude;
 
             //borro las rutas
-            map.deleteRouteLines().then(function () {
+            map.resetMap().then(function () {
                 var length = Object.keys(detail).length;
                 searchService.setResultSearch({
                     ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina

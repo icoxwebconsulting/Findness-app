@@ -91,7 +91,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
     // }
 
     function initRoute(name, transport) {
-        console.log(name, transport);
         routeMode = true;
         route = {
             id: null,
@@ -232,12 +231,17 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
             mapRoute: id
         }).$promise.then(function (detail) {
 
+            var points = [];
+            for (var i in detail.points) {
+                points.push(i);
+            }
+
             return routes(userDatastore.getTokens().accessToken).editRoute({
                 mapRoute: id
             }, {
                 name: name,
                 transport: detail.transport,
-                points: JSON.stringify(detail.points)
+                points: JSON.stringify(points)
             }).$promise.then(function (response) {
                 return response;
             }, function (e) { //error

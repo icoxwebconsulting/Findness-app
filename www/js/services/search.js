@@ -230,6 +230,10 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         return resultSearch;
     }
 
+    function resetResultSearch() {
+        resultSearch = null;
+    }
+
     function executeLastQuery(quantity) {
         var options = JSON.parse(getLastQuery());
         var token = userDatastore.getTokens();
@@ -269,6 +273,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         getLastQuery: getLastQuery,
         executeLastQuery: executeLastQuery,
         setResultSearch: setResultSearch,
+        resetResultSearch: resetResultSearch,
         withResults: withResults,
         getNonConsultedElements: getNonConsultedElements
     };

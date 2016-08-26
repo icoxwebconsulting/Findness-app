@@ -37,6 +37,9 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
     function deleteMarkers() {
         clearMarkers();
         markers = [];
+        if (markerCluster) {
+            markerCluster.clearMarkers();
+        }
     }
 
     function infoRoute() {
@@ -458,8 +461,9 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
     }
 
     function resetMap() {
-        deleteRouteLines().then(function () {
+        return deleteRouteLines().then(function () {
             deleteMarkers();
+            searchService.resetResultSearch();
         });
     }
 
