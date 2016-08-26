@@ -149,6 +149,17 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function logout() {
+        var data = {
+            device: deviceDatastore.getDeviceId()
+        };
+
+        return device(userDatastore.getTokens().accessToken).unregister(data).$promise
+            .then(function (response) {
+                console.log("dispositivo unregisted");
+            })
+            .catch(function () {
+                console.log("error al desregistrar dispositivo");
+            });
         userDatastore.deleteUserData();
     }
 

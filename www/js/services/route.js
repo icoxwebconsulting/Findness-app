@@ -117,7 +117,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 if (Object.keys(route.points).length > 1) { //si hay otro elemento puedo solicitar la ruta
                     requestRoute(route.lastPoint.position, point.position).then(function (data) {
                         $rootScope.$emit('addToRoutePath', {
-                            //cambiar esta mierda por listas doblemente enlazadas
                             node: point.id,
                             next: null,
                             previous: route.lastPoint.id,

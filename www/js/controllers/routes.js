@@ -28,22 +28,23 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
             var lng = detail.points[kyz[0]].longitude;
 
             //borro las rutas
-            map.deleteRouteLines();
-            var length = Object.keys(detail).length;
-            searchService.setResultSearch({
-                ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina
-                Pagina: 1,
-                TotalElementosNoConsultados: 0,		//es la cantidad de elementos que no has pagado
-                TotalElementos: length,	//nro de todos los elementos pagados y sin pagar
-                ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
-                items: detail.points
-            });
+            map.deleteRouteLines().then(function () {
+                var length = Object.keys(detail).length;
+                searchService.setResultSearch({
+                    ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina
+                    Pagina: 1,
+                    TotalElementosNoConsultados: 0,		//es la cantidad de elementos que no has pagado
+                    TotalElementos: length,	//nro de todos los elementos pagados y sin pagar
+                    ElementosDevueltosNoConsultados: 0,	//son los elementos devueltos en dicha pagina que no habias pagado antes
+                    items: detail.points
+                });
 
-            $ionicLoading.hide();
-            $state.go('app.map');
-            setTimeout(function () {
-                map.moveCamera(lat, lng, 9);
-            }, 1500);
+                $ionicLoading.hide();
+                $state.go('app.map');
+                setTimeout(function () {
+                    map.moveCamera(lat, lng, 9);
+                }, 1500);
+            });
         }).catch(function () {
             $ionicLoading.hide();
             $ionicPopup.alert({

@@ -11,7 +11,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
      polyline: routePath
      }
      * */
-    var paths = {};//la clave del objeto es el punto de llegada, el único que no debe estar aqui es el primero
+    var paths = {};
     var showPopup = false; //indica si se debe mostrar el popup en el mapa al tener resultados
 
     function init(div, location, zoom) {
@@ -241,7 +241,9 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         var deferred = $q.defer();
         try {
             for (var idx in paths) {
-                paths[idx].polyline.setMap(null);
+                if (paths[idx].polyline) {
+                    paths[idx].polyline.setMap(null);
+                }
             }
             paths = {};
             deferred.resolve();
@@ -455,6 +457,12 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         return showPopup;
     }
 
+    function resetMap() {
+        deleteRouteLines().then(function () {
+            deleteMarkers();
+        });
+    }
+
     return {
         init: init,
         processMakers: processMakers,
@@ -467,6 +475,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         getShowPopup: getShowPopup,
         deleteRouteLines: deleteRouteLines,
         showMyLocation: showMyLocation,
-        infoRoute: infoRoute
+        infoRoute: infoRoute,
+        resetMap: resetMap
     };
 });
