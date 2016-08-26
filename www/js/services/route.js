@@ -285,7 +285,8 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
             function addElement(element) {
                 addPoint({
                     id: element.id,
-                    position: new google.maps.LatLng(element.latitude, element.longitude)
+                    position: new google.maps.LatLng(element.latitude, element.longitude),
+                    marker: null //para ser agregado cuando se pinten las empresas en el mapa (controlador mapa)
                 }).then(function () {
                     count += 1;
                     if (count < keys.length) {
@@ -350,6 +351,13 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         });
     }
 
+    /**
+     * Usado cuando se abre una ruta desde Mis rutas
+     */
+    function addMarkerToPoint(companyId, marker) {
+        route.points[companyId].marker = marker;
+    }
+
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
@@ -369,6 +377,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         getModes: getModes,
         setModes: setModes,
         getRouteDetail: getRouteDetail,
-        reDrawMarkers: reDrawMarkers
+        reDrawMarkers: reDrawMarkers,
+        addMarkerToPoint: addMarkerToPoint
     };
 });

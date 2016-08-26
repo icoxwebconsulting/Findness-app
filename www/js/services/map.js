@@ -229,6 +229,9 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position);
         });
 
+        if (isNumeric) {
+            routeService.addMarkerToPoint(companyId, marker);
+        }
         markers.push(marker);
     }
 
