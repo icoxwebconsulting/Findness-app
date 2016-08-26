@@ -1,6 +1,7 @@
-<ion-modal-view class="modal-company-share" scroll="false">
+<ion-modal-view class="modal-company-share-new" scroll="false">
     <ion-header-bar class="bar-positive">
         <h1 class="title">{{listName | uppercase | limitTo:25}} <span ng-if="title.length > 25">...</span></h1>
+        <i class="ion-close" ng-click="closeDetail()" style="position: absolute; float: right; margin-top: 8px; right: 15px; font-size: 20px"></i>
     </ion-header-bar>
     <ion-content scroll="false">
         <div class="list">
@@ -13,8 +14,6 @@
                     Compartir
                 </button>
             </div>
-
         </div>
-
     </ion-content>
 </ion-modal-view>
