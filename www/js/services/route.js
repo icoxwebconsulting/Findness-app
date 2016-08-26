@@ -278,14 +278,28 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 points: {}
             };
 
-            for (var i in item.points) {
+            var count = 0;
+            var keys = Object.keys(item.points);
+            var id = keys[count];
+
+            function addElement(element) {
                 addPoint({
-                    id: item.points[i].id,
-                    position: new google.maps.LatLng(item.points[i].latitude, item.points[i].longitude)
-                });
+                    id: element.id,
+                    position: new google.maps.LatLng(element.latitude, element.longitude)
+                }).then(function () {
+                    count += 1;
+                    if (count < keys.length) {
+                        var id = keys[count];
+                        addElement(item.points[id]);
+                    } else {
+                        route.isEdit = false; //esto porque addPoint coloca la ruta como editada
+                        deferred.resolve();
+                    }
+                })
             }
-            route.isEdit = false; //esto porque addPoint coloca la ruta como editada
-            deferred.resolve();
+
+            addElement(item.points[id]);
+
         } catch (e) {
             deferred.reject();
         }
