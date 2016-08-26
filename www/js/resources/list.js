@@ -28,8 +28,7 @@ app.factory('list', function ($resource, SERVER_CONF) {
                     Authorization: 'Bearer ' + token
                 },
                 url: SERVER_CONF.API_HOST + 'static/list/:list/share/:username/customer',
-                params: {list: '@list', username: '@username'},
-                isArray: true
+                params: {list: '@list', username: '@username'}
             }
         });
     };

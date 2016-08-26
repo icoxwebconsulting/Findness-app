@@ -30,15 +30,25 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
                     'list': modalScope.listId,
                     'username': obj.username
                 }).$promise.then(function (response) {
+                    $ionicPopup.alert({
+                        title: "Se ha compartido la lista"
+                    });
                     modalScope.modal.hide();
+                }).catch(function (error) {
+                    $ionicPopup.alert({
+                        title: "No se pudo compartir la lista con el usuario"
+                    });
                 });
             }
+        };
+
+        modalScope.closeDetail = function () {
+            modalScope.modal.hide();
         };
 
         modalScope.listId = $scope.listId;
         modalScope.listName = $scope.listName;
         modalScope.id = id;
-        modalScope.username = 'nestor';
         $ionicModal.fromTemplateUrl('templates/companies-share.html', {
             scope: modalScope,
             animation: 'slide-in-up'
