@@ -149,7 +149,9 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 map.setShowPopup(true);
             }
             routeService.setModes(false, false);
-            $state.go("app.map");
+            map.deleteRouteLines().then(function () {
+                $state.go("app.map");
+            });
         }
     }
 

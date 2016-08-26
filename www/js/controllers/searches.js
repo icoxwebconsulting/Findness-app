@@ -51,7 +51,9 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                 map.setShowPopup(true);
             }
             routeService.setModes(false, false);
-            $state.go("app.map");
+            map.deleteRouteLines().then(function () {
+                $state.go("app.map");
+            });
         }
     }
 

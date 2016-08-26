@@ -134,7 +134,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 } else {
                     //si no hay otro igual debo agregarlo al arreglo
                     $rootScope.$emit('addToRoutePath', {
-                        //cambiar esta mierda por listas doblemente enlazadas
                         node: point.id,
                         next: null,
                         previous: null,

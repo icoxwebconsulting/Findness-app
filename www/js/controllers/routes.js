@@ -22,14 +22,14 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
             template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });
 
-        routeService.getRouteDetail(item).then(function (detail) {
-            var kyz = Object.keys(detail.points);
-            var lat = detail.points[kyz[0]].latitude;
-            var lng = detail.points[kyz[0]].longitude;
-
-            //borro las rutas
-            map.resetMap().then(function () {
+        //borro las rutas
+        map.resetMap().then(function () {
+            routeService.getRouteDetail(item).then(function (detail) {
+                var kyz = Object.keys(detail.points);
+                var lat = detail.points[kyz[0]].latitude;
+                var lng = detail.points[kyz[0]].longitude;
                 var length = Object.keys(detail).length;
+
                 searchService.setResultSearch({
                     ElementosDevueltos: length, //contiene el número de elementos que retorna la consulta para dicha pagina
                     Pagina: 1,
@@ -44,12 +44,12 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
                 setTimeout(function () {
                     map.moveCamera(lat, lng, 9);
                 }, 1500);
-            });
-        }).catch(function () {
-            $ionicLoading.hide();
-            $ionicPopup.alert({
-                title: "Findness",
-                template: 'Ocurrió un error en la búsqueda, intente más tarde.'
+            }).catch(function () {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: "Findness",
+                    template: 'Ocurrió un error en la búsqueda, intente más tarde.'
+                });
             });
         });
     };
