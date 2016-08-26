@@ -171,6 +171,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             $scope.routeMode = false;
             $scope.viewRoute = true;
             $ionicLoading.hide();
+            $scope.showRouteInfo();
         }).catch(function () {
             $ionicLoading.hide();
             $ionicPopup.alert({
