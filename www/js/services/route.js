@@ -366,9 +366,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
     * Reinicio de todas las variables relacionadas con la ruta
      */
     function resetRoutes() {
-        var routeMode = false; //modo de crear ruta
-        var viewRoute = false; //modo de visualizar ruta
-        var route = {
+        routeMode = false; //modo de crear ruta
+        viewRoute = false; //modo de visualizar ruta
+        route = {
             id: null, //mostrado al guardar la ruta
             isEdit: false,
             name: null,

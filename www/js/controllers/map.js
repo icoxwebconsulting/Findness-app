@@ -63,11 +63,12 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     $scope.$on('$ionicView.beforeLeave', function (e) {
         //resetear los estados
-        //map.resetMap();
-        routeService.resetRoutes();
-        $scope.showRoute = false; //controla la visualización de todos los botones
-        $scope.routeMode = false; //modo de crear ruta
-        $scope.viewRoute = false; //modo de visualizar ruta
+        map.deleteRouteLines().then(function () {
+            routeService.resetRoutes();
+            $scope.showRoute = false; //controla la visualización de todos los botones
+            $scope.routeMode = false; //modo de crear ruta
+            $scope.viewRoute = false; //modo de visualizar ruta
+        });
         $scope.deregisterHardBack();
     });
 
