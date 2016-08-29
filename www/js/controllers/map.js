@@ -1,4 +1,4 @@
-app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, map, searchService, routeService) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, map, cart, searchService, routeService) {
 
 
     $scope.showRoute = false; //controla la visualización de todos los botones
@@ -14,10 +14,27 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         selectedOption: {id: 'DRIVING', name: 'En automóvil'}
     };
 
-
+    var doCustomBack= function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $ionicPopup.confirm({
+            title: 'Findness',
+            template: '¿Desea salir de la aplicación?',
+            cancelText: 'Cancelar',
+            okText: 'Aceptar'
+        }).then(function(res){
+            if( res ){
+                navigator.app.exitApp();
+            }
+        })
+    };
 
     $scope.$on('$ionicView.enter', function (e) {
+        $scope.deregisterHardBack= $ionicPlatform.registerBackButtonAction(
+            doCustomBack, 101
+        );
         $scope.$emit('menu:drag', false);
+        $ionicHistory.clearHistory();
         if (map.getMap()) {
             map.resize();
         }
@@ -44,6 +61,16 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         console.log(modes, searchService.withResults());
     });
 
+    $scope.$on('$ionicView.beforeLeave', function (e) {
+        //resetear los estados
+        //map.resetMap();
+        routeService.resetRoutes();
+        $scope.showRoute = false; //controla la visualización de todos los botones
+        $scope.routeMode = false; //modo de crear ruta
+        $scope.viewRoute = false; //modo de visualizar ruta
+        $scope.deregisterHardBack();
+    });
+
     $rootScope.$on('processMarkers', function (e, query) {
         proccessMarkers(query.lastQuery);
     });
@@ -65,8 +92,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }
         setTimeout(function () {
 
-            if(showMyLocation)
-            {
+            if (showMyLocation) {
                 var position = new google.maps.LatLng(lat, lon);
                 map.showMyLocation(position);
             }
@@ -95,6 +121,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                     type: 'button-positive',
                     onTap: function (e) {
                         //ir al carrito
+                        cart.setTotalCompanies(searchService.getNonConsultedElements());
                         $state.go("app.cart");
                         return true;
                     }

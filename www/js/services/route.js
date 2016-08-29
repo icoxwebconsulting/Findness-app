@@ -355,7 +355,27 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
      * Usado cuando se abre una ruta desde Mis rutas
      */
     function addMarkerToPoint(companyId, marker) {
-        route.points[companyId].marker = marker;
+        try {
+            route.points[companyId].marker = marker;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /*
+    * Reinicio de todas las variables relacionadas con la ruta
+     */
+    function resetRoutes() {
+        var routeMode = false; //modo de crear ruta
+        var viewRoute = false; //modo de visualizar ruta
+        var route = {
+            id: null, //mostrado al guardar la ruta
+            isEdit: false,
+            name: null,
+            transport: null,
+            lastPoint: null,
+            points: {}
+        };
     }
 
     return {
@@ -378,6 +398,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         setModes: setModes,
         getRouteDetail: getRouteDetail,
         reDrawMarkers: reDrawMarkers,
-        addMarkerToPoint: addMarkerToPoint
+        addMarkerToPoint: addMarkerToPoint,
+        resetRoutes: resetRoutes
     };
 });

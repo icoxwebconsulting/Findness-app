@@ -70,6 +70,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         })
 
         .state('app.filter', {
+            cache: false,
             url: '/filter',
             views: {
                 'menuContent': {
