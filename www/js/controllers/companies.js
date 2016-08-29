@@ -36,7 +36,7 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
                     modalScope.modal.hide();
                 }).catch(function (error) {
                     $ionicPopup.alert({
-                        title: "No se pudo compartir la lista con el usuario"
+                        title: error.message
                     });
                 });
             }
