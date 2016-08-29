@@ -69,6 +69,12 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
         });
     };
 
+    $scope.reverseOrder = false;
+
+    $scope.changeOrderDirection = function () {
+        $scope.reverseOrder = !$scope.reverseOrder;
+    };
+
     $scope.openInMap = function () {
         var lat = $scope.companies[0].latitude;
         var lng = $scope.companies[0].longitude;
