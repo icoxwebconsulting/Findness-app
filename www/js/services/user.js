@@ -1,4 +1,4 @@
-app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, paymentSrv, OAUTH_CONF) {
+app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, paymentSrv, pushNotification, OAUTH_CONF) {
 
     function register(registrationData) {
         var bcrypt = dcodeIO.bcrypt;
@@ -18,6 +18,44 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                     return false;
                 }
             });
+    }
+
+    function registerDevice() {
+        var deviceToken = pushNotification.getRegistrationId();
+
+        function register(token) {
+            var data = {
+                token: token,
+                os: 'Android'
+            };
+            if (ionic.Platform.isIOS()) {
+                data.os = 'IOS';
+            }
+            return device(userDatastore.getTokens().accessToken).save(data).$promise
+                .then(function (response) {
+                    deviceDatastore.setDeviceId(response.device);
+                    return true;
+                })
+                .catch(function () {
+                    deviceDatastore.setDeviceId(token);
+                    return true;
+                });
+        }
+
+        if (deviceToken) {
+            return register(deviceToken);
+        } else {
+            var deferred = $q.defer();
+
+            $rootScope.$on('pushRegistrationId', function (pushRegistrationId) {
+                register(pushRegistrationId)
+                    .then(function () {
+                        deferred.resolve(true);
+                    });
+            });
+
+            return deferred.promise;
+        }
     }
 
     function requestSalt(loginData) {
@@ -43,7 +81,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function login(loginData) {
-        var deferred = $q.defer();
+
         var authData = {
             client_id: OAUTH_CONF.CLIENT_ID,
             client_secret: OAUTH_CONF.CLIENT_SECRET,
@@ -51,7 +89,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
             redirect_uri: 'www.findness.com'
         };
 
-        customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
+        return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
             .then(function (response) {
                 //TODO: el servicio de login debería devolver algún aviso si el usuario no se ha confirmado (y se ha logueado correctamente
                 userDatastore.setIsConfirm(1);
@@ -66,23 +104,26 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
 
                 var authResponse = response;
 
-                customer(null, null, userDatastore.getTokens().accessToken)
+                return customer(null, null, userDatastore.getTokens().accessToken)
                     .getProfile().$promise
                     .then(function (response) {
                         userDatastore.setProfile(response.first_name, response.last_name);
                         userDatastore.setCustomerId(response.id);
-                        deferred.resolve(authResponse);
+                        //deferred.resolve(authResponse);
+                        return registerDevice();
                     });
             })
             .catch(function (response) {
                 console.log(response);
+                var deferred = $q.defer();
                 deferred.reject({
                     type: 1,
                     data: response.data
                 });
+                return deferred.promise;
             });
 
-        return deferred.promise;
+
     }
 
     function confirm(token) {
@@ -108,6 +149,17 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
     }
 
     function logout() {
+        var data = {
+            device: deviceDatastore.getDeviceId()
+        };
+
+        return device(userDatastore.getTokens().accessToken).unregister(data).$promise
+            .then(function (response) {
+                console.log("dispositivo unregisted");
+            })
+            .catch(function () {
+                console.log("error al desregistrar dispositivo");
+            });
         userDatastore.deleteUserData();
     }
 

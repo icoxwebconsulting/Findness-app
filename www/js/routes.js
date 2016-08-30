@@ -70,6 +70,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         })
 
         .state('app.filter', {
+            cache: false,
             url: '/filter',
             views: {
                 'menuContent': {
@@ -190,6 +191,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 }
             }
         })
+
         .state('app.checkout', {
             cache: false,
             url: '/checkout',
@@ -197,6 +199,17 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 'menuContent': {
                     templateUrl: 'templates/checkout.html',
                     controller: 'CheckoutCtrl'
+                }
+            }
+        })
+
+        .state('app.resultPayment', {
+            cache: false,
+            url: '/result-payment',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/result-payment.html',
+                    controller: 'ResultPaymentCtrl'
                 }
             }
         });
@@ -207,7 +220,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     } else {
         if (window.localStorage.getItem('isConfirm') == 0) {
             $urlRouterProvider.otherwise('/confirm');
-        }else{
+        } else {
             $urlRouterProvider.otherwise('/slides');
         }
     }

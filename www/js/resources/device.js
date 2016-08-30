@@ -10,6 +10,12 @@ app.factory('device', function ($resource, SERVER_CONF) {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
+            },
+            unregister: {
+                method: 'DELETE',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             }
         });
     };

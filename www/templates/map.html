@@ -11,6 +11,10 @@
             </div>
         </div>
 
+        <div id="infoMapButton" class="info-map-button" ng-show="showRoute && (routeMode || viewRoute)">
+            <i class="icon ion-information-circled" ng-click="showRouteInfo()"></i>
+        </div>
+
         <div id="mapButtons" class="map-buttons" ng-show="showRoute">
             <div class="row">
                 <div class="col-10">

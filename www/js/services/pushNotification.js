@@ -12,7 +12,7 @@ app.factory('pushNotification', function ($rootScope) {
 
                 push = PushNotification.init({
                     android: {
-                        senderID: "850066050595",
+                        senderID: "32432862482",
                         icon: "findness",
                         iconColor: "lightgrey"
                     }

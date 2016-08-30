@@ -1,6 +1,6 @@
 app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map, routeService) {
 
-    $scope.init = function(){
+    $scope.init = function () {
         $scope.options = {
             useLocation: false
         };
@@ -149,7 +149,9 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 map.setShowPopup(true);
             }
             routeService.setModes(false, false);
-            $state.go("app.map");
+            map.deleteRouteLines().then(function () {
+                $state.go("app.map");
+            });
         }
     }
 
@@ -201,8 +203,15 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     });
                 });
             }).catch(function () {
-                $ionicPopup.alert({
-                    title: "No se pudo obtener su localización."
+                $ionicPopup.show({
+                    template: '<p style="color:#000;">Para poder usar tu ubicación debes tener activado tu gps.</p>',
+                    title: 'Activar GPS',
+                    buttons: [
+                        {
+                            text: '<b>Aceptar</b>',
+                            type: 'button-positive'
+                        }
+                    ]
                 });
             });
         } else {
@@ -260,6 +269,18 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     template: 'Ocurrió un error en la búsqueda, intente más tarde. ' + e.statusText
                 });
             });
+        }
+    };
+
+    $scope.pickupChange = function (val) {
+        if (val) {
+            if ($scope.data.pickupAfter < 5) {
+                $scope.data.pickupAfter += 1;
+            }
+        } else {
+            if ($scope.data.pickupAfter > 1) {
+                $scope.data.pickupAfter -= 1;
+            }
         }
     }
 

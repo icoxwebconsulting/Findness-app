@@ -1,4 +1,4 @@
-app.service('map', function ($q, $ionicModal, $rootScope, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
+app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
 
     //var map;
     var markers = [];
@@ -11,7 +11,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
      polyline: routePath
      }
      * */
-    var paths = {};//la clave del objeto es el punto de llegada, el único que no debe estar aqui es el primero
+    var paths = {};
     var showPopup = false; //indica si se debe mostrar el popup en el mapa al tener resultados
 
     function init(div, location, zoom) {
@@ -37,6 +37,37 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
     function deleteMarkers() {
         clearMarkers();
         markers = [];
+        if (markerCluster) {
+            markerCluster.clearMarkers();
+        }
+    }
+
+    function infoRoute() {
+        var type = {
+            'WALKING': 'A pie',
+            'DRIVING': 'En automóvil',
+            'TRANSIT': 'Transporte público'
+        };
+        var modalScope = $rootScope.$new();
+        modalScope.name = routeService.getRouteName();
+        modalScope.transport = type[routeService.getRouteTransport()];
+        modalScope.distance = 0;
+        modalScope.duration = 0;
+        modalScope.counter = 0;
+        for (var p in paths) {
+            var temp = paths[p]["data"]["distance"];
+            modalScope.distance += parseFloat((temp) ? temp : 0);
+            temp = paths[p]["data"]["duration"];
+            modalScope.duration += parseFloat((temp) ? temp : 0);
+            modalScope.counter += 1;
+        }
+        //Muestra información de la ruta
+        $ionicModal.fromTemplateUrl('templates/route-info.html', {
+            scope: modalScope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            modal.show();
+        });
     }
 
     function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position) {
@@ -66,6 +97,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             }).then(function (nro) {
                 modalScope.isAddedd = true;
                 modalScope.marker.setIcon(COMPANY_STYLE.NUM + nro + '.png');
+                modalScope.thisModal.hide();
             });
         };
 
@@ -79,7 +111,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         modalScope.closeDetail = function () {
             modalScope.modal.hide();
         };
-
 
         modalScope.initializeMap = function () {
             console.info('initializeMap...');
@@ -132,7 +163,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
         };
 
-
         modalScope.openDetail = function () {
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
@@ -143,6 +173,24 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             });
         };
 
+        modalScope.navigateTo = function () {
+            $ionicLoading.show({
+                template: '<p>Obteniendo localización...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+            });
+            navigator.geolocation.getCurrentPosition(function (gps) {
+                $ionicLoading.hide();
+                launchnavigator.navigate(position.lat() + ',' + position.lng(), {
+                    start: gps.coords.latitude + ',' + gps.coords.longitude
+                });
+            }, function (e) {
+                console.log(e);
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: "Findness",
+                    template: 'No se pudo obtener su localización.'
+                });
+            });
+        };
 
         modalScope.changeStyle = function (marker, color, companyId) {
             modalScope.style = color;
@@ -156,6 +204,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             scope: modalScope,
             animation: 'slide-in-up'
         }).then(function (modal) {
+            modalScope.thisModal = modal;
             modal.show();
         });
 
@@ -180,14 +229,29 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position);
         });
 
+        if (isNumeric) {
+            routeService.addMarkerToPoint(companyId, marker);
+        }
         markers.push(marker);
+    }
+
+    function showMyLocation(position) {
+        new google.maps.Marker({
+            position: position,
+            map: map,
+            icon: 'img/map/my-location-icon.png',
+            optimized: false,
+            zIndex: 5
+        });
     }
 
     function deleteRouteLines() {
         var deferred = $q.defer();
         try {
             for (var idx in paths) {
-                paths[idx].polyline.setMap(null);
+                if (paths[idx].polyline) {
+                    paths[idx].polyline.setMap(null);
+                }
             }
             paths = {};
             deferred.resolve();
@@ -237,7 +301,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
             nro += 1;
         }
         markerCluster = new MarkerClusterer(map, markers, {
-            maxZoom: 10,
+            maxZoom: 13,
             imagePath: 'lib/js-marker-clusterer/images/m'
         });
     }
@@ -263,8 +327,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
     function deletePath(id) {
         var deferred = $q.defer();
-        console.log(paths)
-        console.log(markers)
 
         if (paths[id]["previous"] == null) {
             //es el primero
@@ -315,7 +377,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
                             duration: routeData.duration
                         });
 
-                    if(routeService.removePoint(id)){
+                    if (routeService.removePoint(id)) {
                         routeService.reDrawMarkers();
                     }
                     deferred.resolve();
@@ -358,7 +420,8 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         paths[response.node] = {
             next: response.next,
             previous: response.previous,
-            polyline: null
+            polyline: null,
+            data: response.data
         };
 
         if (response.previous) {
@@ -381,7 +444,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
 
         //startId: elemento anterior, endId: elemento actual
         routePath.setMap(map);
-        if(paths[node]['polyline']){
+        if (paths[node]['polyline']) {
             paths[node]['polyline'].setMap(null);
         }
         paths[node]['polyline'] = routePath;
@@ -402,6 +465,13 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         return showPopup;
     }
 
+    function resetMap() {
+        return deleteRouteLines().then(function () {
+            deleteMarkers();
+            searchService.resetResultSearch();
+        });
+    }
+
     return {
         init: init,
         processMakers: processMakers,
@@ -412,6 +482,9 @@ app.service('map', function ($q, $ionicModal, $rootScope, company, routeService,
         drawDirections: drawDirections,
         setShowPopup: setShowPopup,
         getShowPopup: getShowPopup,
-        deleteRouteLines: deleteRouteLines
+        deleteRouteLines: deleteRouteLines,
+        showMyLocation: showMyLocation,
+        infoRoute: infoRoute,
+        resetMap: resetMap
     };
 });

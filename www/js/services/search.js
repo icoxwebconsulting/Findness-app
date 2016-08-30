@@ -185,21 +185,25 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         function exec() {
             storeQuery(query);
             callSearch(token.accessToken, query).then(function (response) {
-                if (query.page == 1) {
-                    total = response.TotalElementos - response.TotalElementosNoConsultados;
-                    llevo = response.ElementosDevueltos;
+                if (!response.hasOwnProperty("error")) {
+                    if (query.page == 1) {
+                        total = response.TotalElementos - response.TotalElementosNoConsultados;
+                        llevo = response.ElementosDevueltos;
+                    } else {
+                        llevo += response.ElementosDevueltos;
+                    }
+                    console.log("query nro", query.page, llevo, '<', total);
+                    query.page += 1;
+                    setResultSearch(response);
+                    if (llevo < total) {
+                        exec();
+                    } else {
+                        //fin del query
+                        console.log("fin de la cadena", getResultSearch());
+                        deferred.resolve(getResultSearch());
+                    }
                 } else {
-                    llevo += response.ElementosDevueltos;
-                }
-                console.log("query nro", query.page, llevo, '<', total);
-                query.page += 1;
-                setResultSearch(response);
-                if (llevo < total) {
-                    exec();
-                } else {
-                    //fin del query
-                    console.log("fin de la cadena", getResultSearch());
-                    deferred.resolve(getResultSearch());
+                    deferred.reject(response.error);
                 }
             }).catch(function (e) {
                 console.log("error", e);
@@ -226,6 +230,10 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         return resultSearch;
     }
 
+    function resetResultSearch() {
+        resultSearch = null;
+    }
+
     function executeLastQuery(quantity) {
         var options = JSON.parse(getLastQuery());
         var token = userDatastore.getTokens();
@@ -249,7 +257,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
     function withResults() {
         return (typeof resultSearch == 'object' && (typeof resultSearch.items == 'object' && Object.keys(resultSearch.items).length > 0))
     }
-    
+
     function getNonConsultedElements() {
         return resultSearch.TotalElementosNoConsultados;
     }
@@ -265,6 +273,7 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
         getLastQuery: getLastQuery,
         executeLastQuery: executeLastQuery,
         setResultSearch: setResultSearch,
+        resetResultSearch: resetResultSearch,
         withResults: withResults,
         getNonConsultedElements: getNonConsultedElements
     };

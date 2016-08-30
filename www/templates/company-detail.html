@@ -2,11 +2,8 @@
     <ion-header-bar>
         <div class="header-company-detail">
             <i class="ion-arrow-left-c back-icon" ng-click="closeDetail()"></i>
-            <div class="title title-center">
-                <p>{{title | uppercase}}</p>
-            </div>
-            <div class="category">
-                <p>{{socialObject | capitalize}}</p>
+            <div class="title-center">
+                {{title | uppercase}}
             </div>
         </div>
     </ion-header-bar>
@@ -38,10 +35,10 @@
         <div class="row row-info">
             <div class="col col-100">
                 <div class="up">
-                    <span>Tel&eacute;fono</span>
+                    <span>Objeto social</span>
                 </div>
                 <div class="down">
-                    <p>{{title}}</p>
+                    <p style="font-size: 12px; text-align: justify">{{socialObject | capitalize}}</p>
                 </div>
             </div>
         </div>
@@ -75,11 +72,11 @@
                 </div>
             </div>
         </div>
-        <div class="row row-info row-map" ng-init="initializeMap()">
+        <div class="row row-info row-map" ng-init="initializeMap()" scroll="false">
             <a class="my-location" ng-click="showMyLocation()" title="Mi ubicación">
                 <img src="img/map/my_location.png">
             </a>
-            <div style="width:111%;height:100%;left: -40px !important; position: absolute!important;" id="map_canvas_detail" data-tap-disabled="true">
+            <div style="width:111%;height:70%;left: -40px !important; position: absolute!important;" id="map_canvas_detail" data-tap-disabled="true">
             </div>
         </div>
     </ion-content>

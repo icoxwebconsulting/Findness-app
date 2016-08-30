@@ -157,10 +157,10 @@
                     Cubrir un radio de {{data.pickupAfter}} km
                 </div>
                 <div class="item range range-positive">
-                    <i class="icon ion-ios-minus-outline"></i>
+                    <i class="icon ion-ios-minus-outline" ng-click="pickupChange(0)"></i>
                     <input type="range" name="volume" min="1" max="5" value="{{data.pickupAfter}}"
                            ng-model="data.pickupAfter">
-                    <i class="icon ion-ios-plus-outline"></i>
+                    <i class="icon ion-ios-plus-outline" ng-click="pickupChange(1)"></i>
                 </div>
             </div>
 

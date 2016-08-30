@@ -51,12 +51,15 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                 map.setShowPopup(true);
             }
             routeService.setModes(false, false);
-            $state.go("app.map");
+            map.deleteRouteLines().then(function () {
+                $state.go("app.map");
+            });
         }
     }
 
     $scope.callSearch = function (search) {
-        console.log(search);
+
+        console.info('search --> ', search);
         $ionicLoading.show({
             template: '<p>Realizando búsqueda seleccionada</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });
@@ -67,15 +70,11 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
         if (search.filters.geoLocation.hasOwnProperty("latitude")) {
             options.geoLocations = search.filters.geoLocation;
         } else {
-            if (search.filters.states.length > 0) {
-                options.states = JSON.stringify(search.filters.states);
-            }
-
-            if (search.filters.cities.length > 0) {
+            if (search.filters.cities.cities.length > 0) {
                 options.cities = JSON.stringify(search.filters.cities);
-            }
-
-            if (search.filters.postalCodes.length > 0) {
+            }else if(search.filters.states.length > 0) {
+                options.states = JSON.stringify(search.filters.states);
+            }else if(search.filters.postalCodes.length > 0) {
                 options.postalCodes = JSON.stringify(search.filters.postalCodes);
             }
         }

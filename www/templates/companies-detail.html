@@ -1,21 +1,24 @@
 <ion-view>
-    <ion-content>
-        <div class="row subtitle filter" scroll="false">
-            <div class="col col-100">
-                <div class="left">
-                    <span>{{listName}}</span>
-                </div>
-                <div class="center">
-                    <br>
-                </div>
-                <div class="right">
-                    <i class="ion-share" ng-click="openShare('{{listId}}')"></i>
-                </div>
-
-            </div>
+    <ion-header-bar class="bar-subheader subtitle-subheader">
+        <h3 class="title">{{listName}}</h3>
+        <div class="buttons">
+            <button class="button button-positive" ng-click="openShare('{{listId}}')">
+                <i class="icon ion-share"></i>
+            </button>
+            <button class="button button-positive" ng-click="openInMap()">
+                <i class="icon ion-map"></i>
+            </button>
+            <button class="button button-positive" ng-click="changeOrderDirection()">
+                <i class="icon ion-arrow-graph-up-right" ng-if="!reverseOrder"></i>
+                <i class="icon ion-arrow-graph-down-right" ng-if="reverseOrder"></i>
+            </button>
         </div>
+    </ion-header-bar>
+
+    <ion-content class="has-subheader">
         <div class="list" scroll="true">
-            <a class="item item-icon-left" href="#" ng-repeat="list in companies">
+            <a class="item item-icon-left" href="#" ng-repeat="list in companies | orderBy:'social_reason':reverseOrder"
+               ng-click="showCompanyDetail(list.id)">
                 <i class="icon ion-ios-bookmarks"></i>
                 {{list.social_reason}}
             </a>

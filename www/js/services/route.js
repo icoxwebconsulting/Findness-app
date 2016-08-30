@@ -82,12 +82,15 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         return route.name;
     }
 
+    function getRouteTransport() {
+        return route.transport;
+    }
+
     // function setRouteMode(status) {
     //     routeMode = status;
     // }
 
     function initRoute(name, transport) {
-        console.log(name, transport);
         routeMode = true;
         route = {
             id: null,
@@ -113,7 +116,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 if (Object.keys(route.points).length > 1) { //si hay otro elemento puedo solicitar la ruta
                     requestRoute(route.lastPoint.position, point.position).then(function (data) {
                         $rootScope.$emit('addToRoutePath', {
-                            //cambiar esta mierda por listas doblemente enlazadas
                             node: point.id,
                             next: null,
                             previous: route.lastPoint.id,
@@ -132,7 +134,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 } else {
                     //si no hay otro igual debo agregarlo al arreglo
                     $rootScope.$emit('addToRoutePath', {
-                        //cambiar esta mierda por listas doblemente enlazadas
                         node: point.id,
                         next: null,
                         previous: null,
@@ -223,12 +224,39 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         }
     }
 
+    function updateName(id, name) {
+
+        return routes(userDatastore.getTokens().accessToken).getRouteDetail(null, {
+            mapRoute: id
+        }).$promise.then(function (detail) {
+
+            var points = [];
+            for (var i in detail.points) {
+                points.push(i);
+            }
+
+            return routes(userDatastore.getTokens().accessToken).editRoute({
+                mapRoute: id
+            }, {
+                name: name,
+                transport: detail.transport,
+                points: JSON.stringify(points)
+            }).$promise.then(function (response) {
+                return response;
+            }, function (e) { //error
+                throw e;
+            });
+        }, function (e) { //error
+            throw e;
+        });
+
+    }
+
     function getRoutes() {
         var token = userDatastore.getTokens();
 
         return routes(token.accessToken).getRoutes().$promise
             .then(function (response) {
-                console.log(response);
                 return response;
             })
             .catch(function (response) {
@@ -250,14 +278,29 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 points: {}
             };
 
-            for (var i in item.points) {
+            var count = 0;
+            var keys = Object.keys(item.points);
+            var id = keys[count];
+
+            function addElement(element) {
                 addPoint({
-                    id: item.points[i].id,
-                    position: new google.maps.LatLng(item.points[i].latitude, item.points[i].longitude)
-                });
+                    id: element.id,
+                    position: new google.maps.LatLng(element.latitude, element.longitude),
+                    marker: null //para ser agregado cuando se pinten las empresas en el mapa (controlador mapa)
+                }).then(function () {
+                    count += 1;
+                    if (count < keys.length) {
+                        var id = keys[count];
+                        addElement(item.points[id]);
+                    } else {
+                        route.isEdit = false; //esto porque addPoint coloca la ruta como editada
+                        deferred.resolve();
+                    }
+                })
             }
-            route.isEdit = false; //esto porque addPoint coloca la ruta como editada
-            deferred.resolve();
+
+            addElement(item.points[id]);
+
         } catch (e) {
             deferred.reject();
         }
@@ -308,16 +351,45 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         });
     }
 
+    /**
+     * Usado cuando se abre una ruta desde Mis rutas
+     */
+    function addMarkerToPoint(companyId, marker) {
+        try {
+            route.points[companyId].marker = marker;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /*
+    * Reinicio de todas las variables relacionadas con la ruta
+     */
+    function resetRoutes() {
+        routeMode = false; //modo de crear ruta
+        viewRoute = false; //modo de visualizar ruta
+        route = {
+            id: null, //mostrado al guardar la ruta
+            isEdit: false,
+            name: null,
+            transport: null,
+            lastPoint: null,
+            points: {}
+        };
+    }
+
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
         getRouteMode: getRouteMode,
         getRouteName: getRouteName,
+        getRouteTransport: getRouteTransport,
         initRoute: initRoute,
         addPoint: addPoint,
         removePoint: removePoint,
         finishRoute: finishRoute,
         finishEditRoute: finishEditRoute,
+        updateName: updateName,
         existPoint: existPoint,
         getRoutes: getRoutes,
         setRoutes: setRoutes,
@@ -325,6 +397,8 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         getModes: getModes,
         setModes: setModes,
         getRouteDetail: getRouteDetail,
-        reDrawMarkers: reDrawMarkers
+        reDrawMarkers: reDrawMarkers,
+        addMarkerToPoint: addMarkerToPoint,
+        resetRoutes: resetRoutes
     };
 });

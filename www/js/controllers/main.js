@@ -1,4 +1,4 @@
-app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideMenuDelegate, userDatastore, user, cart) {
+app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicSideMenuDelegate, $ionicPopup, userDatastore, user, cart) {
 
     $scope.dragStatus = true;
     userDatastore.setRefreshingAccessToken(0);
@@ -20,7 +20,7 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
         $state.go(to);
     };
 
-    $scope.$on('menu:drag', function(event, args) {
+    $scope.$on('menu:drag', function (event, args) {
         $scope.dragStatus = args;
     });
 
@@ -32,6 +32,22 @@ app.controller('MainCtrl', function ($scope, $state, $ionicPlatform, $ionicSideM
     $scope.$on('$ionicView.enter', function (e) {
         $scope.view = {};
         $scope.init();
+    });
+
+    $rootScope.$on('receivedNotification', function (e, data) {
+        $ionicPopup.confirm({
+            title: 'Findness - Nueva lista compartida',
+            template: data.message,
+            cancelText: 'Después',
+            okText: 'Ver ahora'
+        }).then(function (res) {
+            if (res) {
+                $state.go('app.companies-detail', {
+                    'id': data.additionalData.staticListId,
+                    'name': data.additionalData.staticListName
+                });
+            }
+        })
     });
 
 });

@@ -10,6 +10,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     $scope.init = function () {
         $scope.$emit('menu:drag', true);
         $scope.view = {};
+        $scope.view.iva = 0;
         $scope.view.contCompanies = [];
         $scope.maxCompanies = cart.getTotalCompanies();
 
@@ -36,12 +37,12 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
                 });
             } else {
                 var subtotal = $scope.view.totalCompanies * $scope.view.unitPrice;
-                if(subtotal < 5){
+                if (subtotal < 5) {
                     subtotal += TAX_CONF.FEE;
                 }
+                $scope.view.total = subtotal * TAX_CONF.IVA;
                 //IVA
-                subtotal *= TAX_CONF.IVA;
-                $scope.view.total = subtotal;
+                $scope.view.iva = subtotal * (TAX_CONF.IVA - 1);
             }
         } else {
             $scope.view.total = 0;
@@ -58,6 +59,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
     $scope.checkout = function () {
         console.info('$scope.view.payable', $scope.view.payable);
         cart.setPayable($scope.view.payable);
+        cart.setSelectedCompanies($scope.view.totalCompanies);
         $state.go('app.checkout');
     };
 
@@ -66,11 +68,6 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         searchService.executeLastQuery($scope.view.totalCompanies).then(function (lastQuery) {
             $state.go("app.map");
             paymentSrv.requestBalance();
-            // setTimeout(function () {
-            //     $rootScope.$emit('processMarkers', {
-            //         lastQuery: lastQuery
-            //     });
-            // },1500);
         });
     };
 

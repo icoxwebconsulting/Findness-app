@@ -20,8 +20,8 @@ app.constant("APP_STORE_CONF", {
 
 app.constant("PAYMENT_CONF", {
 
-    STRIPE_KEY: "pk_test_8haj2zz4mgXuDF9vTvQ5AH3m",
-    STRIPE_SECRET: "sk_test_2GZfoWNzoHdevzlMlGSPya26",
+    STRIPE_KEY: "pk_live_ltYbnS1lHMag1qNfSuzyqHmZ",
+    STRIPE_SECRET: "sk_live_nNj9otxhjFHQ4BZH4uDIWs9T",
     STRIPE_HOST: "https://api.stripe.com/v1/",
 
     PAYPAL_HOST: "https://api.sandbox.paypal.com/v1/",
