@@ -1,4 +1,4 @@
-app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService, company) {
+app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService, company, COMPANY_STYLE) {
 
     $scope.$on('$ionicView.enter', function (e) {
         $scope.init();
