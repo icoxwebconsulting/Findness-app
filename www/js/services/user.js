@@ -91,7 +91,6 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
 
         return customer(loginData.username, loginData.password).refreshAccessToken(authData).$promise
             .then(function (response) {
-                //TODO: el servicio de login debería devolver algún aviso si el usuario no se ha confirmado (y se ha logueado correctamente
                 userDatastore.setIsConfirm(1);
                 userDatastore.setIsLogged(1);
                 userDatastore.setCustomerId(response.id);

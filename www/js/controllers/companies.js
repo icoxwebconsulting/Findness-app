@@ -1,4 +1,4 @@
-app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService, company, COMPANY_STYLE) {
+app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService, company, COMPANY_STYLE, userDatastore) {
 
     $scope.$on('$ionicView.enter', function (e) {
         $scope.init();
@@ -67,6 +67,8 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
         list(localStorage.getItem('accessToken')).getList().$promise.then(function (response) {
             $scope.lists = response;
         });
+        $scope.tabActive = 'me';
+        $scope.customerId = userDatastore.getCustomerId();
     };
 
     $scope.reverseOrder = false;
