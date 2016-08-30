@@ -15,7 +15,7 @@
         <div class="list">
             <a class="item item-icon-left" href="#" ng-repeat="list in lists"
                ng-click="showDetail('{{list.id}}', '{{list.name}}')"
-               ng-if="tabActive == 'me' && list.customer == customerId || tabActive == 'me' && list.customer != customerId">
+               ng-if="(tabActive == 'me' && list.customer == customerId) || (tabActive == 'other' && list.customer != customerId)">
                 <i class="icon ion-ios-bookmarks"></i>
                 {{list.name}}
             </a>
