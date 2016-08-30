@@ -14,7 +14,13 @@ app.factory('pushNotification', function ($rootScope) {
                     android: {
                         senderID: "32432862482",
                         icon: "findness",
-                        iconColor: "lightgrey"
+                        iconColor: "lightgrey",
+                        forceShow: true
+                    },
+                    ios: {
+                        alert: "true",
+                        badge: true,
+                        sound: "true"
                     }
                 });
 
