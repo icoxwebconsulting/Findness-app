@@ -586,3 +586,7 @@
     max-height: 50%;
     height: 90%;
 }
+
+.justify-text {
+    text-align: justify;
+}

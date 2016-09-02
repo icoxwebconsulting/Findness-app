@@ -154,12 +154,14 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
 
         return device(userDatastore.getTokens().accessToken).unregister(data).$promise
             .then(function (response) {
-                console.log("dispositivo unregisted");
+                console.log("dispositivo unregisted", response);
+                userDatastore.deleteUserData();
             })
-            .catch(function () {
-                console.log("error al desregistrar dispositivo");
+            .catch(function (e) {
+                console.log("error al desregistrar dispositivo",e);
+                userDatastore.deleteUserData();
             });
-        userDatastore.deleteUserData();
+
     }
 
     function refreshAccessToken() {

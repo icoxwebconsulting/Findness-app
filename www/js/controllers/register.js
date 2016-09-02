@@ -37,11 +37,6 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 title: "Las contraseñas no coinciden"
             });
         }
-        else if (!$scope.data.isChecked) {
-            $ionicPopup.alert({
-                title: "Para poder registrarse debe aceptar los términos y condiciones"
-            });
-        }
         else {
             $ionicLoading.show({
                 template: 'Creando Cuenta...'

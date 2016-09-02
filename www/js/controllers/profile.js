@@ -1,14 +1,16 @@
 app.controller('ProfileCtrl', function ($scope, $state, user, $ionicHistory, $ionicLoading) {
-    $scope.$emit('menu:drag', true);
+
     $scope.logout = function () {
-        user.logout();
-        $ionicHistory.nextViewOptions({
-            disableBack: true
+        user.logout().then(function () {
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('login');
         });
-        $state.go('login');
     };
 
     $scope.$on('$ionicView.enter', function (e) {
+        $scope.$emit('menu:drag', true);
         $scope.customer = user.getProfile();
         $scope.data = {
             password: null
