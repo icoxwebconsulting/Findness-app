@@ -68,6 +68,11 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         searchService.executeLastQuery($scope.view.totalCompanies).then(function (lastQuery) {
             $state.go("app.map");
             paymentSrv.requestBalance();
+        }, function (error) {
+            $ionicPopup.alert({
+                title: 'Findness - Error en búsqueda.',
+                template: error
+            });
         });
     };
 
