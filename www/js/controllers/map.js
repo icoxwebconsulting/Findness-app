@@ -62,14 +62,16 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     });
 
     $scope.$on('$ionicView.beforeLeave', function (e) {
-        //resetear los estados
-        map.deleteRouteLines().then(function () {
-            routeService.resetRoutes();
-            $scope.showRoute = false; //controla la visualización de todos los botones
-            $scope.routeMode = false; //modo de crear ruta
-            $scope.viewRoute = false; //modo de visualizar ruta
-        });
-        $scope.deregisterHardBack();
+        //resetear los estados, sólo cuando no va a ver el listado.
+        if ($state.current.name != 'app.list') {
+            map.deleteRouteLines().then(function () {
+                routeService.resetRoutes();
+                $scope.showRoute = false; //controla la visualización de todos los botones
+                $scope.routeMode = false; //modo de crear ruta
+                $scope.viewRoute = false; //modo de visualizar ruta
+            });
+            $scope.deregisterHardBack();
+        }
     });
 
     $rootScope.$on('processMarkers', function (e, query) {
