@@ -203,15 +203,9 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     });
                 });
             }).catch(function () {
-                $ionicPopup.show({
-                    template: '<p style="color:#000;">Para poder usar tu ubicación debes tener activado tu gps.</p>',
-                    title: 'Activar GPS',
-                    buttons: [
-                        {
-                            text: '<b>Aceptar</b>',
-                            type: 'button-positive'
-                        }
-                    ]
+                $ionicPopup.alert({
+                    title: 'Findness - Ubicación',
+                    template: '<p>Ocurrió un error al obtener su localización.</p>',
                 });
             });
         } else {
@@ -281,6 +275,15 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             if ($scope.data.pickupAfter > 1) {
                 $scope.data.pickupAfter -= 1;
             }
+        }
+    };
+
+    $scope.checkLocation = function () {
+        if ($scope.options.useLocation) {
+            map.checkLocation(function () {
+            }, function () {
+                $scope.options.useLocation = false;
+            })
         }
     }
 
