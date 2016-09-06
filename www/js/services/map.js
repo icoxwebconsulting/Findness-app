@@ -109,7 +109,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         };
 
         modalScope.closeDetail = function () {
-            modalScope.modal.hide();
+            modalScope.modal.remove();
         };
 
         modalScope.initializeMap = function () {
@@ -133,6 +133,12 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                 });
             }, 2000);
         };
+
+        modalScope.$on('modal.hidden', function () {
+            modalScope.$on('$destroy', function () {
+                modalScope.mapDetail = null;
+            });
+        });
 
         modalScope.showMyLocation = function () {
             checkLocation(function () {
