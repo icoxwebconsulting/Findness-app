@@ -43,8 +43,14 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
         };
 
         modalScope.closeDetail = function () {
-            modalScope.modal.hide();
+            modalScope.modal.remove();
         };
+
+        modalScope.$on('modal.hidden', function () {
+            modalScope.$on('$destroy', function () {
+                modalScope.mapDetail = null;
+            });
+        });
 
         modalScope.listId = $scope.listId;
         modalScope.listName = $scope.listName;
@@ -151,8 +157,14 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
             };
 
             modalScope.closeDetail = function () {
-                modalScope.modal.hide();
+                modalScope.modal.remove();
             };
+
+            modalScope.$on('modal.hidden', function () {
+                modalScope.$on('$destroy', function () {
+                    modalScope.mapDetail = null;
+                });
+            });
 
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
