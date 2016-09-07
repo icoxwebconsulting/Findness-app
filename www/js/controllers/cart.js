@@ -1,4 +1,4 @@
-app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup, TAX_CONF) {
+app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup, $ionicLoading, TAX_CONF) {
 
     $scope.closeCart = function () {
     };
@@ -65,10 +65,15 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
 
     $scope.confirmCheckout = function () {
         //llamar al servicio de búsqueda con el último query
+        $ionicLoading.show({
+            template: '<p>Realizando compra...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+        });
         searchService.executeLastQuery($scope.view.totalCompanies).then(function (lastQuery) {
+            $ionicLoading.hide();
             $state.go("app.map");
             paymentSrv.requestBalance();
         }, function (error) {
+            $ionicLoading.hide();
             $ionicPopup.alert({
                 title: 'Findness - Error en búsqueda.',
                 template: error
