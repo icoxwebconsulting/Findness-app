@@ -63,12 +63,19 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
             };
 
             modalScope.closeDetail = function () {
-                modalScope.modal.hide();
+                modalScope.modal.remove();
             };
+
+            modalScope.$on('modal.hidden', function () {
+                modalScope.$on('$destroy', function () {
+                    modalScope.mapDetail = null;
+                });
+            });
 
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
-                animation: 'slide-in-up'
+                animation: 'slide-in-up',
+                hardwareBackButtonClose: false
             }).then(function (modal) {
                 modalScope.modal = modal;
                 modalScope.modal.show();

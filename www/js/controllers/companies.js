@@ -168,7 +168,8 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
 
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
-                animation: 'slide-in-up'
+                animation: 'slide-in-up',
+                hardwareBackButtonClose: false
             }).then(function (modal) {
                 modalScope.modal = modal;
                 modalScope.modal.show();

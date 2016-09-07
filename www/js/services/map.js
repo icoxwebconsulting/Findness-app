@@ -165,7 +165,8 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         modalScope.openDetail = function () {
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
-                animation: 'slide-in-up'
+                animation: 'slide-in-up',
+                hardwareBackButtonClose: false
             }).then(function (modal) {
                 modalScope.modal = modal;
                 modalScope.modal.show();
