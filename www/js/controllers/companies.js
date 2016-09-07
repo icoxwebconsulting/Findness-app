@@ -13,6 +13,9 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
     }
 
     $scope.openShare = function (id) {
+        if (id == undefined || id == null || id == ''){
+            return;
+        }
         var modalScope = $rootScope.$new();
 
         modalScope.validateEmail = function (email) {
@@ -21,7 +24,7 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
         };
 
         modalScope.share = function (obj) {
-            if (!obj.username || !modalScope.validateEmail(obj.username)) {
+            if (!obj || !obj.username || !modalScope.validateEmail(obj.username)) {
                 $ionicPopup.alert({
                     title: "Ingrese un correo electrónico valido"
                 });
@@ -45,12 +48,6 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
         modalScope.closeDetail = function () {
             modalScope.modal.remove();
         };
-
-        modalScope.$on('modal.hidden', function () {
-            modalScope.$on('$destroy', function () {
-                modalScope.mapDetail = null;
-            });
-        });
 
         modalScope.listId = $scope.listId;
         modalScope.listName = $scope.listName;
