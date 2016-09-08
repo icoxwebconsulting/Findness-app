@@ -40,6 +40,14 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         if (markerCluster) {
             markerCluster.clearMarkers();
         }
+        try {
+            if (myLocation) {
+                myLocation.setMap(null);
+                myLocation = null;
+            }
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     function infoRoute() {
@@ -149,7 +157,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                         map: modalScope.mapDetail,
                         icon: 'img/map/my-location-icon.png',
                         optimized: false,
-                        zIndex: 5
+                        zIndex: -1
                     });
                     modalScope.mapDetail.setZoom(16);
                     modalScope.mapDetail.setCenter(myPosition);
@@ -237,13 +245,20 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         markers.push(marker);
     }
 
+    var myLocation;
+
     function showMyLocation(position) {
-        new google.maps.Marker({
+        myLocation = new google.maps.Marker({
             position: position,
             map: map,
             icon: 'img/map/my-location-icon.png',
             optimized: false,
-            zIndex: 5
+            zIndex: -1
+        });
+
+        myLocation.addListener('click', function () {
+            map.setZoom(17);
+            map.setCenter(myLocation.getPosition());
         });
     }
 
