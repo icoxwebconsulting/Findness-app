@@ -57,7 +57,7 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
         user.resendConfirm().then(function (result) {
             console.log(result);
             $ionicPopup.alert({
-                title: "Se ha enviado un correo a la dirección " + $scope.username + "con su nuevo código de confirmación."
+                title: "Se ha enviado un correo a la dirección " + $scope.username + " con su nuevo código de confirmación."
             });
         }, function (error) {
             $ionicPopup.alert({
