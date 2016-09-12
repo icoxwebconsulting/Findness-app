@@ -70,11 +70,15 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
         if (search.filters.geoLocation.hasOwnProperty("latitude")) {
             options.geoLocations = search.filters.geoLocation;
         } else {
-            if (search.filters.cities.cities.length > 0) {
+            if (typeof search.filters.cities == 'object' && search.filters.cities.hasOwnProperty('cities') && search.filters.cities.cities.length > 0) {
                 options.cities = JSON.stringify(search.filters.cities);
-            }else if(search.filters.states.length > 0) {
+            }
+
+            if (search.filters.states && search.filters.states.length > 0) {
                 options.states = JSON.stringify(search.filters.states);
-            }else if(search.filters.postalCodes.length > 0) {
+            }
+
+            if (search.filters.postalCodes && search.filters.postalCodes.length > 0) {
                 options.postalCodes = JSON.stringify(search.filters.postalCodes);
             }
         }
