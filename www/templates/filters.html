@@ -150,7 +150,7 @@
                 </div>
             </div>
 
-            <label><ion-toggle ng-model="options.useLocation" toggle-class="toggle-calm" class="item-location">Usar mi localización</ion-toggle></label>
+            <label><ion-toggle ng-model="options.useLocation" toggle-class="toggle-calm" class="item-location" ng-change="checkLocation()">Usar mi localización</ion-toggle></label>
 
             <div class="card" ng-show="options.useLocation">
                 <div class="item item-text-wrap">

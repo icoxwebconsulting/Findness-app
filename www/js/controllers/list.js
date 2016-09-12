@@ -1,4 +1,4 @@
-app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, company, $ionicModal, COMPANY_STYLE) {
+app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, company, $ionicModal, map, routeService, COMPANY_STYLE) {
 
     $scope.list;
 
@@ -7,6 +7,18 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
         var list = searchService.getResultSearch();
         if (typeof  list == "object" && list.hasOwnProperty("items")) {
             $scope.list = list.items;
+        }
+    });
+
+    $scope.$on('$ionicView.beforeLeave', function (e) {
+        //resetear los estados, sólo cuando no va a ver el mapa.
+        if ($state.current.name != 'app.map') {
+            map.deleteRouteLines().then(function () {
+                routeService.resetRoutes();
+                $scope.showRoute = false; //controla la visualización de todos los botones
+                $scope.routeMode = false; //modo de crear ruta
+                $scope.viewRoute = false; //modo de visualizar ruta
+            });
         }
     });
 
@@ -51,12 +63,19 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
             };
 
             modalScope.closeDetail = function () {
-                modalScope.modal.hide();
+                modalScope.modal.remove();
             };
+
+            modalScope.$on('modal.hidden', function () {
+                modalScope.$on('$destroy', function () {
+                    modalScope.mapDetail = null;
+                });
+            });
 
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
-                animation: 'slide-in-up'
+                animation: 'slide-in-up',
+                hardwareBackButtonClose: false
             }).then(function (modal) {
                 modalScope.modal = modal;
                 modalScope.modal.show();

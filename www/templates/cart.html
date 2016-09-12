@@ -15,6 +15,14 @@
             </div>
         </div>
         <div class="list list-cart">
+            <label class="item item-input item-stacked-label">
+                <div class="input-label" style="width: 50%">
+                    Mi saldo
+                </div>
+                <div class="input-label" style="text-align: right">
+                    <span class="item-note">{{view.balance| number:2}}€</span>
+                </div>
+            </label>
             <label class="item item-input">
                 <div class="input-label">
                     Total de empresas
@@ -30,14 +38,6 @@
                     <span class="item-note">{{view.unitPrice| number:2}}€</span>
                 </div>
             </label>
-            <label class="item item-input item-stacked-label">
-                <div class="input-label" style="width: 50%">
-                    Mi saldo
-                </div>
-                <div class="input-label" style="text-align: right">
-                    <span class="item-note">{{view.balance| number:2}}€</span>
-                </div>
-            </label>
             <ion-item class="item-divider item-title">
                 <span>Total sin impuesto </span>
                 <span style="float: right; margin-right:25px">{{(view.totalCompanies*view.unitPrice| number:2)}}€</span>
@@ -47,30 +47,30 @@
                 <span style="float: right; margin-right:25px">{{ view.iva| number:2 }}€</span>
             </ion-item>
             <ion-item class="item-divider item-title" ng-show="view.totalCompanies*view.unitPrice < 5 " >
-                <span> Coste por compra inferior a 5€ </span>
+                <span> Gastos de gestión </span>
                 <span style="float: right; margin-right:25px">{{ 0.25 }}€</span>
             </ion-item>
             <ion-item class="item-divider item-title">
                 <span>Importe total</span>
                 <span style="float: right; margin-right:25px">{{view.total| number:2}}€</span>
             </ion-item>
-            <ion-item class="item-divider item-title" ng-if="view.balance > 0">
-                <span>Descuento de saldo</span>
-                <span style="float: right; margin-right:25px" ng-if="view.balance >= view.total">- {{view.total | number:2}}€</span>
-                <span style="float: right; margin-right:25px" ng-if="view.balance < view.total">- {{view.balance | number:2}}€</span>
-            </ion-item>
+            <!--<ion-item class="item-divider item-title" ng-if="view.balance > 0">-->
+                <!--<span>Descuento de saldo</span>-->
+                <!--<span style="float: right; margin-right:25px" ng-if="view.balance >= view.total">- {{view.total | number:2}}€</span>-->
+                <!--<span style="float: right; margin-right:25px" ng-if="view.balance < view.total">- {{view.balance | number:2}}€</span>-->
+            <!--</ion-item>-->
             <ion-item class="item-divider item-title" ng-if="view.payable > 0" style="background-color:darkgrey">
                 <span>Por pagar</span>
                 <span style="float: right; margin-right:25px">{{view.payable| number:2}}€</span>
             </ion-item>
-            <p style="font-size: 10px">
+            <p class="padding" style="font-size: 10px">
                 <b>Importante:</b> Para compras inferiores a 5 € se aplicará un gasto de 0,25€.
             </p>
         </div>
         <div class="list input-list" style="padding:10px">
             <button class="button button-positive button-100" ng-click="checkout()" ng-if="view.payable > 0 && view.total > 0 ">
                 <i class="icon ion-card"></i>
-                Pagar diferencia
+                PAGAR
             </button>
         </div>
         <div class="list input-list" style="padding:10px">

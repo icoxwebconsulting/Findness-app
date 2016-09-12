@@ -1,4 +1,4 @@
-app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user) {
+app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, userDatastore) {
 
     $scope.data = {};
     $scope.error = false;
@@ -32,22 +32,17 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
                     $ionicLoading.hide();
                     $scope.data.email = '';
                     $scope.data.password = '';
-                    //TODO: si está confirmado al mapa sino al confirm
                     $state.go('app.map');
                 }).catch(function (error) {
                     $ionicLoading.hide();
-                    var msg = "El servidor no responde, intente más tarde.";
-                    if (error.type == 1 && error.data != null) {
-                        msg = "Usuario y/o contraseña incorrectos, intente nuevamente."
-                    } else if (error.type == 2 && error.data != null) {
-                        msg = "El correo " + $scope.data.email + " no se encuentra registrado."
-                    } else if (error.type == 3 && error.data != null) {
-                        msg = "Ocurrió un error al intentar realizar el login, intente nuevamente."
-                    }
-
                     $ionicPopup.alert({
-                        title: 'Error',
-                        template: msg
+                        title: 'Findness - Login',
+                        template: error.data.message
+                    }).then(function () {
+                        if (error.data.message == 'Usuario no confirmado.') {
+                            userDatastore.setUsername($scope.data.email);
+                            $state.go('confirm');
+                        }
                     });
                 });
             }).catch(function () {

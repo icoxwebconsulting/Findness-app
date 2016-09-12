@@ -14,7 +14,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         selectedOption: {id: 'DRIVING', name: 'En automóvil'}
     };
 
-    var doCustomBack= function(event) {
+    var doCustomBack = function (event) {
         event.preventDefault();
         event.stopPropagation();
         $ionicPopup.confirm({
@@ -22,54 +22,58 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             template: '¿Desea salir de la aplicación?',
             cancelText: 'Cancelar',
             okText: 'Aceptar'
-        }).then(function(res){
-            if( res ){
+        }).then(function (res) {
+            if (res) {
                 navigator.app.exitApp();
             }
         })
     };
 
     $scope.$on('$ionicView.enter', function (e) {
-        $scope.deregisterHardBack= $ionicPlatform.registerBackButtonAction(
-            doCustomBack, 101
-        );
-        $scope.$emit('menu:drag', false);
-        $ionicHistory.clearHistory();
-        if (map.getMap()) {
-            map.resize();
-        }
-        if (map.getShowPopup()) {
-            showPopUp();
-        }
-        var modes = routeService.getModes();
-        $scope.routeMode = modes.routeMode;
-        $scope.viewRoute = modes.viewRoute;
-        $scope.showRoute = searchService.withResults();
-        //El controlador se encarga de mostrar los resultados si existen cada vez que se entra
-        if ($scope.showRoute) {
-            var query = searchService.getLastQuery();
-            if (query) {
-                query = JSON.parse(query);
-            }
-            proccessMarkers(query);
-        } else {
-            //centra el mapa en españa
+        if ($rootScope.previousState != 'app.list') {
+            $scope.deregisterHardBack = $ionicPlatform.registerBackButtonAction(
+                doCustomBack, 101
+            );
+            $scope.$emit('menu:drag', false);
+            $ionicHistory.clearHistory();
             if (map.getMap()) {
-                map.moveCamera(39.9997938, -3.1926017, 6);
+                map.resize();
             }
+            if (map.getShowPopup()) {
+                showPopUp();
+            }
+            var modes = routeService.getModes();
+            $scope.routeMode = modes.routeMode;
+            $scope.viewRoute = modes.viewRoute;
+            $scope.showRoute = searchService.withResults();
+            //El controlador se encarga de mostrar los resultados si existen cada vez que se entra
+            if ($scope.showRoute) {
+                var query = searchService.getLastQuery();
+                if (query) {
+                    query = JSON.parse(query);
+                }
+                proccessMarkers(query);
+            } else {
+                //centra el mapa en españa
+                if (map.getMap()) {
+                    map.moveCamera(39.9997938, -3.1926017, 6);
+                }
+            }
+            console.log(modes, searchService.withResults());
         }
-        console.log(modes, searchService.withResults());
     });
 
     $scope.$on('$ionicView.beforeLeave', function (e) {
-        //resetear los estados
-        map.deleteRouteLines().then(function () {
-            routeService.resetRoutes();
-            $scope.showRoute = false; //controla la visualización de todos los botones
-            $scope.routeMode = false; //modo de crear ruta
-            $scope.viewRoute = false; //modo de visualizar ruta
-        });
-        $scope.deregisterHardBack();
+        //resetear los estados, sólo cuando no va a ver el listado.
+        if ($state.current.name != 'app.list') {
+            map.deleteRouteLines().then(function () {
+                routeService.resetRoutes();
+                $scope.showRoute = false; //controla la visualización de todos los botones
+                $scope.routeMode = false; //modo de crear ruta
+                $scope.viewRoute = false; //modo de visualizar ruta
+            });
+            $scope.deregisterHardBack();
+        }
     });
 
     $rootScope.$on('processMarkers', function (e, query) {

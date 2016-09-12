@@ -2,7 +2,6 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
 
     $scope.data = {};
     $scope.error = false;
-    var errorMsg = "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde.";
 
     $scope.register = function () {
 
@@ -37,11 +36,6 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 title: "Las contraseñas no coinciden"
             });
         }
-        else if (!$scope.data.isChecked) {
-            $ionicPopup.alert({
-                title: "Para poder registrarse debe aceptar los términos y condiciones"
-            });
-        }
         else {
             $ionicLoading.show({
                 template: 'Creando Cuenta...'
@@ -58,17 +52,14 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                     $state.go('confirm');
                 } else {
                     $ionicPopup.alert({
-                        title: errorMsg
+                        title: "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde."
                     });
                 }
             }, function (error) {
                 $ionicLoading.hide();
-                var msg = errorMsg;
-                if (error.data.code == 409) {
-                    msg = "El correo que intenta usar ya se encuentra registrado.";
-                }
                 $ionicPopup.alert({
-                    title: msg
+                    title: 'Findness - error en registro',
+                    template: error.data.message
                 });
             });
         }

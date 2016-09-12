@@ -171,13 +171,7 @@ app.controller('CheckoutCtrl', function ($scope, $state, paymentSrv, cart, $ioni
         if (!_cardInformation.amount) {
             $ionicPopup.alert({
                 title: 'Findness - Pago',
-                template: 'Debe escribir un monto para la recarga.'
-            });
-            return;
-        } else if (_cardInformation.amount < 1) {
-            $ionicPopup.alert({
-                title: 'Findness - Pago',
-                template: '<p>La recarga mínima permita es de <b>1 €</b>.</p>'
+                template: 'Debe escribir un saldo para la recarga.'
             });
             return;
         }

@@ -40,6 +40,14 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         if (markerCluster) {
             markerCluster.clearMarkers();
         }
+        try {
+            if (myLocation) {
+                myLocation.setMap(null);
+                myLocation = null;
+            }
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     function infoRoute() {
@@ -109,7 +117,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         };
 
         modalScope.closeDetail = function () {
-            modalScope.modal.hide();
+            modalScope.modal.remove();
         };
 
         modalScope.initializeMap = function () {
@@ -134,39 +142,39 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             }, 2000);
         };
 
-        modalScope.showMyLocation = function () {
-
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var myPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                new google.maps.Marker({
-                    position: myPosition,
-                    map: modalScope.mapDetail,
-                    icon: 'img/map/my-location-icon.png',
-                    optimized: false,
-                    zIndex: 5
-                });
-                modalScope.mapDetail.setZoom(16);
-                modalScope.mapDetail.setCenter(myPosition);
-            }, function (e) {
-                $ionicPopup.show({
-                    template: '<p style="color:#000;">Para poder usar tu ubicación debes tener datos o activado tu gps.</p>',
-                    title: 'Active su GPS',
-                    buttons: [
-                        {
-                            text: '<b>Aceptar</b>',
-                            type: 'button-positive'
-                        }
-                    ]
-                });
+        modalScope.$on('modal.hidden', function () {
+            modalScope.$on('$destroy', function () {
+                modalScope.mapDetail = null;
             });
+        });
 
-
+        modalScope.showMyLocation = function () {
+            checkLocation(function () {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var myPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    new google.maps.Marker({
+                        position: myPosition,
+                        map: modalScope.mapDetail,
+                        icon: 'img/map/my-location-icon.png',
+                        optimized: false,
+                        zIndex: -1
+                    });
+                    modalScope.mapDetail.setZoom(16);
+                    modalScope.mapDetail.setCenter(myPosition);
+                }, function (e) {
+                    $ionicPopup.alert({
+                        title: 'Findness - Ubicación',
+                        template: '<p>Ocurrió un error al obtener su localización: ' + e + '</p>',
+                    });
+                });
+            })
         };
 
         modalScope.openDetail = function () {
             $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                 scope: modalScope,
-                animation: 'slide-in-up'
+                animation: 'slide-in-up',
+                hardwareBackButtonClose: false
             }).then(function (modal) {
                 modalScope.modal = modal;
                 modalScope.modal.show();
@@ -174,20 +182,22 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         };
 
         modalScope.navigateTo = function () {
-            $ionicLoading.show({
-                template: '<p>Obteniendo localización...</p><p><ion-spinner icon="android"></ion-spinner></p>'
-            });
-            navigator.geolocation.getCurrentPosition(function (gps) {
-                $ionicLoading.hide();
-                launchnavigator.navigate(position.lat() + ',' + position.lng(), {
-                    start: gps.coords.latitude + ',' + gps.coords.longitude
+            checkLocation(function () {
+                $ionicLoading.show({
+                    template: '<p>Obteniendo localización...</p><p><ion-spinner icon="android"></ion-spinner></p>'
                 });
-            }, function (e) {
-                console.log(e);
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                    title: "Findness",
-                    template: 'No se pudo obtener su localización.'
+                navigator.geolocation.getCurrentPosition(function (gps) {
+                    $ionicLoading.hide();
+                    launchnavigator.navigate(position.lat() + ',' + position.lng(), {
+                        start: gps.coords.latitude + ',' + gps.coords.longitude
+                    });
+                }, function (e) {
+                    console.log(e);
+                    $ionicLoading.hide();
+                    $ionicPopup.alert({
+                        title: "Findness",
+                        template: 'No se pudo obtener su localización.'
+                    });
                 });
             });
         };
@@ -235,13 +245,20 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         markers.push(marker);
     }
 
+    var myLocation;
+
     function showMyLocation(position) {
-        new google.maps.Marker({
+        myLocation = new google.maps.Marker({
             position: position,
             map: map,
             icon: 'img/map/my-location-icon.png',
             optimized: false,
-            zIndex: 5
+            zIndex: -1
+        });
+
+        myLocation.addListener('click', function () {
+            map.setZoom(17);
+            map.setCenter(myLocation.getPosition());
         });
     }
 
@@ -402,8 +419,11 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                         text: '<b>Navegar</b>',
                         type: 'button-positive',
                         onTap: function (e) {
-                            launchnavigator.navigate(data.end.lat() + ',' + data.end.lng(), {
-                                start: data.start.lat() + ',' + data.start.lng()
+                            checkLocation(function () {
+                                //activo
+                                launchnavigator.navigate(data.end.lat() + ',' + data.end.lng(), {
+                                    start: data.start.lat() + ',' + data.start.lng()
+                                });
                             });
                         }
                     },
@@ -472,6 +492,41 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         });
     }
 
+    function checkLocation(successCallback, cancelCallback) {
+        cordova.plugins.diagnostic.isLocationEnabled(function (enabled) {
+            if (!enabled) {
+                $ionicPopup.show({
+                    title: 'Findness - Ubicación',
+                    template: '<p>El GPS está desactivado, debe activarlo para poder usar esta función.</p>',
+                    buttons: [
+                        {
+                            text: '<b>Activar</b>',
+                            type: 'button-positive',
+                            onTap: function (e) {
+                                cordova.plugins.diagnostic.switchToLocationSettings();
+                            }
+                        },
+                        {
+                            text: 'Cancelar',
+                            onTap: function () {
+                                if (typeof cancelCallback == 'function') {
+                                    cancelCallback();
+                                }
+                            }
+                        }
+                    ]
+                });
+            } else {
+                successCallback();
+            }
+        }, function (error) {
+            $ionicPopup.alert({
+                title: 'Findness - Ubicación',
+                template: '<p>Ocurrió un error al obtener su localización: ' + error + '</p>',
+            });
+        });
+    }
+
     return {
         init: init,
         processMakers: processMakers,
@@ -485,6 +540,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         deleteRouteLines: deleteRouteLines,
         showMyLocation: showMyLocation,
         infoRoute: infoRoute,
-        resetMap: resetMap
+        resetMap: resetMap,
+        checkLocation: checkLocation
     };
 });

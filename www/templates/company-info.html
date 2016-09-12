@@ -13,7 +13,7 @@
         <p class="address">
             <b ng-if="address.length > 1">Direcci&oacute;n: </b>
             {{address | capitalize}} <span ng-if="address.length > 1">.</span><br>
-            <b ng-if="phoneNumber.length > 1">Tel&eacute;fono: </b> {{phoneNumber}} <br>
+            <b ng-if="phoneNumber.length > 1">Tel&eacute;fono: </b> <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a><br>
             <div style="text-align: center">
                 <button class="button button-small button-positive" ng-click="openDetail()">Ver detalle empresa</button>
             </div>

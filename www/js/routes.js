@@ -8,6 +8,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         })
 
         .state('register', {
+            cache: false,
             url: '/register',
             templateUrl: 'templates/register.html',
             controller: 'RegisterCtrl'

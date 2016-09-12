@@ -45,8 +45,8 @@
                 <form name="paymentForm" novalidate ng-submit="makeCreditCardPayment(card, paymentForm)">
 
                     <label class="item item-input">
-                        <span class="input-label">Monto en €</span>
-                        <input type="number" ng-model="card.amount" name="cardAmount" placeholder="Escriba el monto a recargar...">
+                        <span class="input-label">Saldo en €</span>
+                        <input type="number" ng-model="card.amount" name="cardAmount" placeholder="Escriba el saldo a recargar...">
                     </label>
 
                     <!--Mostrados sólo si el tipo de pago es 3-->
@@ -77,7 +77,7 @@
                     </label>
 
                     <label class="item item-input">
-                        <span class="input-label">Expiración</span>
+                        <span class="input-label">Caducidad</span>
                         <input type="month" ng-model="card.exp_date">
                     </label>
 
@@ -93,8 +93,8 @@
                 <form name="paymentFormPaypal" class="padding" ng-submit="makePayPalPayment(card, true)">
 
                     <label class="item item-input">
-                        <span class="input-label">Monto en €</span>
-                        <input type="number" ng-model="card.amount" name="cardAmount2" placeholder="Escriba el monto a recargar...">
+                        <span class="input-label">Saldo en €</span>
+                        <input type="number" ng-model="card.amount" name="cardAmount2" placeholder="Escriba el saldo a recargar...">
                     </label>
 
                     <div class="padding">

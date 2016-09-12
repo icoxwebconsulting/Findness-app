@@ -14,26 +14,52 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
                 title: "Debe ingresar el número de confirmación."
             });
         } else {
+            $ionicLoading.show({
+                template: '<p>Confirmando cuenta, por favor espere...</p><p><p><ion-spinner icon="android"></ion-spinner></p></p>'
+            });
             user.confirm(
                 $scope.confirm.token
             ).then(function (result) {
                 console.log(result);
-                user.login({
-                    username: $scope.username,
-                    password: userDatastore.getPassword()
-                }).then(function () {
-                    $ionicHistory.nextViewOptions({
-                        disableAnimate: false,
-                        disableBack: true,
-                        historyRoot: true
+                if (userDatastore.getPassword()) {
+                    $ionicLoading.show({
+                        template: '<p>Iniciando sesión, por favor espere...</p><p><p><ion-spinner icon="android"></ion-spinner></p></p>'
                     });
-                    window.localStorage.setItem('firstTime',1);
-                   $state.go('app.map');
-                });
+                    user.login({
+                        username: $scope.username,
+                        password: userDatastore.getPassword()
+                    }).then(function () {
+                        $ionicLoading.hide();
+                        $ionicHistory.nextViewOptions({
+                            disableAnimate: false,
+                            disableBack: true,
+                            historyRoot: true
+                        });
+                        window.localStorage.setItem('firstTime', 1);
+                        $state.go('app.map');
+                    }, function (error) {
+                        $ionicLoading.hide();
+                        $ionicPopup.alert({
+                            title: "Ocurrió un error al intentar iniciar sesión."
+                        });
+                        console.log(error);
+                    });
+                } else {
+                    $ionicLoading.hide();
+                    userDatastore.deleteUserData();
+                    $ionicPopup.alert({
+                        title: "Findness",
+                        template: "Se ha verificado el código correctamente, puede iniciar sesión."
+                    }).then(function () {
+                        $state.go('login');
+                    });
+                }
             }, function (error) {
+                $ionicLoading.hide();
                 $ionicPopup.alert({
                     title: "Código erróneo, verifique e intente nuevamente."
                 });
+                console.log(error);
             });
         }
     };
@@ -42,7 +68,7 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
         user.resendConfirm().then(function (result) {
             console.log(result);
             $ionicPopup.alert({
-                title: "Se ha enviado un correo a la dirección " + $scope.username + "con su nuevo código de confirmación."
+                title: "Se ha enviado un correo a la dirección " + $scope.username + " con su nuevo código de confirmación."
             });
         }, function (error) {
             $ionicPopup.alert({
