@@ -76,7 +76,9 @@
                     <label class="item">
                         <button type="submit" ng-dblclick="return;" ng-disabled="paymentForm.$invalid || buttonDisabled" class="button button-block button-positive">REALIZAR PAGO</button>
                     </label>
-
+                    <p class="padding" style="font-size: 10px" ng-show="messageMinimal">
+                        <b>Importante:</b> El pago mínimo que puede procesar la plataforma es de 0.47 €. El resto del monto estará disponible en su cuenta.
+                    </p>
                 </form>
             </div>
 

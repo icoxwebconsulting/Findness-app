@@ -98,14 +98,25 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         modalScope.phoneNumber = phoneNumber;
 
         modalScope.addToRoute = function () {
+            $ionicLoading.show({
+                template: '<p>Agregando punto...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+            });
             routeService.addPoint({
                 id: companyId,
                 position: position,
                 marker: modalScope.marker
             }).then(function (nro) {
+                $ionicLoading.hide();
                 modalScope.isAddedd = true;
                 modalScope.marker.setIcon(COMPANY_STYLE.NUM + nro + '.png');
                 modalScope.thisModal.hide();
+            }).catch(function (e) {
+                $ionicLoading.hide();
+                $ionicPopup.alert({
+                    title: 'Findness - Error',
+                    template: 'No se ha podido agregar la empresa a la ruta'
+                });
+                console.error(e);
             });
         };
 
