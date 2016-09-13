@@ -74,14 +74,18 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
             });
     }
 
-    function queryZipcodes() {
-        return qualitas().searchPostalCodes().$promise
-            .then(function (response) {
-                return response;
-            })
-            .catch(function (response) {
-                console.log(response);
-            });
+    function readZipcodesJson() {
+        var deferred = $q.defer();
+
+        $http.get('js/zipcodes.json',
+            {header: {'Content-Type': 'application/json; charset=UTF-8'}}
+        ).then(function (zipcodes) {
+            deferred.resolve(zipcodes.data);
+        }).catch(function () {
+            deferred.reject(false);
+        });
+
+        return deferred.promise;
     }
 
     function getStates(query) {
@@ -128,12 +132,9 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
 
     function getZipcodes(query) {
         var deferred = $q.defer();
-
         if (!zipcodes) {
-            queryZipcodes().then(function (data) {
-                zipcodes = {
-                    items: data
-                };
+            readZipcodesJson().then(function (data) {
+                zipcodes = data;
                 var filtered = filter(zipcodes, query);
                 deferred.resolve({
                     items: filtered
