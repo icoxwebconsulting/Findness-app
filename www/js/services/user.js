@@ -109,7 +109,7 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                         userDatastore.setProfile(response.first_name, response.last_name);
                         userDatastore.setCustomerId(response.id);
                         //deferred.resolve(authResponse);
-                        //return registerDevice();
+                        return registerDevice();
                     });
             })
             .catch(function (response) {

@@ -31,7 +31,7 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
 
         function init() {
             sqliteDatastore.initDb();
-            <!-- Fill in your publishable key -->
+            //Fill in your publishable key -->
             Stripe.setPublishableKey(PAYMENT_CONF.STRIPE_KEY);
             pushNotification.init();
             pushNotification.listenNotification(notificationMessage.processNotification);
