@@ -12,7 +12,8 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
         });
     }
 
-    $scope.openShare = function (id) {
+    $scope.openShare = function () {
+        var id = $scope.listId;
         if (id == undefined || id == null || id == ''){
             return;
         }
