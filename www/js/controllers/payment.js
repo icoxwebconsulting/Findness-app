@@ -165,6 +165,12 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                 template: 'Debe escribir un saldo para la recarga.'
             });
             return;
+        } else if(_cardInformation.amount < 0.47){
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'El saldo mímino que acepta la plataforma para la recarga es de 0.47 €.'
+            });
+            return;
         }
 
         if (paymentForm.$invalid) {

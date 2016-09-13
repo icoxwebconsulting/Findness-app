@@ -9,9 +9,16 @@ app.controller('CheckoutCtrl', function ($scope, $state, paymentSrv, cart, $ioni
     };
 
     $scope.init();
+    $scope.messageMinimal = false;
 
     $scope.setPaymentType = function (value) {
         $scope.paymentType = value;
+        if (value == 1 && $scope.card.amount < 0.47) {
+            $scope.card.amount = 0.47;
+            $scope.messageMinimal = true;
+        } else {
+            $scope.messageMinimal = false;
+        }
     };
 
     function showAlert(error) {

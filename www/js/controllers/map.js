@@ -160,7 +160,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.createRoute = function () {
-        delete $scope.formRoute.name;
+        $scope.formRoute.name = '';
         var routePopup = $ionicPopup.show({
             templateUrl: 'templates/createRoute-popup.html',
             title: 'Findness',

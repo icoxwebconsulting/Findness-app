@@ -130,6 +130,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                         route.lastPoint = point;
                         route.isEdit = true;
                         deferred.resolve(Object.keys(route.points).length);
+                    }).catch(function (e) {
+                        delete route.points[point.id];
+                        deferred.reject();
                     });
                 } else {
                     //si no hay otro igual debo agregarlo al arreglo
@@ -363,7 +366,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
     }
 
     /*
-    * Reinicio de todas las variables relacionadas con la ruta
+     * Reinicio de todas las variables relacionadas con la ruta
      */
     function resetRoutes() {
         routeMode = false; //modo de crear ruta
