@@ -48,9 +48,13 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     return cities;
                 });
             } else if (type == 'zipcodes') {
-                return searchService.getZipcodes(query).then(function (zipcodes) {
-                    return zipcodes;
-                });
+                if (query.length > 3) {
+                    return searchService.getZipcodes(query).then(function (zipcodes) {
+                        return zipcodes;
+                    });
+                } else {
+                    return {items: []};
+                }
             }
 
         }
