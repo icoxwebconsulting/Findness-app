@@ -1,13 +1,15 @@
 app.constant("SERVER_CONF", {
 
-    HOST: "http://mum.icox.mobi/framework/web/app_dev.php/",
-    API_HOST: "http://mum.icox.mobi/framework/web/app_dev.php/api/v1/"
+    HOST: "http://findness.icox.mobi/",
+    API_HOST: "http://findness.icox.mobi/api/v1/"
 });
 
 app.constant("OAUTH_CONF", {
 
-    CLIENT_ID: "56f024877f41a_62m2o1kwzawwwcko4ooscc0g48ooocoswkco8c0cs0gg8wckog",
-    CLIENT_SECRET: "3hu7mfv1gg6co8s0k88480wggwg8wgosss888cscs8c0osk8wk",
+    OAUTH_HOST: "http://findness.icox.mobi/oauth/v2/",
+
+    CLIENT_ID: "578e7e8f7aa12_4uxoquy48b6sooocgws0wgg4wgcs8ooks8cwsw0ks84so0c0g8",
+    CLIENT_SECRET: "1cyx26089gys0k4gskcgg8c8gskcw44gog4co04sckkoog4s0w",
 
     REFRESH_INTERVAL: 600000
 });
@@ -29,4 +31,20 @@ app.constant("PAYMENT_CONF", {
 
 app.constant("DATETIME_FORMAT_CONF", {
     dateTimeFormat : "YYYY-MM-DD HH:mm:ss"
-})
+});
+
+app.constant("COMPANY_STYLE", {
+    COLOR:{
+        BLUE:'http://icox.com/img_findness/blue-dot.png',
+        PINK:'http://icox.com/img_findness/pink-dot.png',
+        YELLOW:'http://icox.com/img_findness/yellow-dot.png',
+        RED: 'http://icox.com/img_findness/red-dot.png',
+        GREEN: 'http://icox.com/img_findness/green-dot.png'
+    },
+    NUM: 'http://icox.com/img_findness/numeradas/'
+});
+
+app.constant("TAX_CONF", {
+    FEE: 0.25,
+    IVA: 1.21
+});

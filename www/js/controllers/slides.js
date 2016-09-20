@@ -1,10 +1,12 @@
 app.controller('SlidesCtrl', function ($scope, $state) {
 
     $scope.options = {
-        loop: false,
+        //autoplay: true,
+        loop: true,
         effect: 'slide',
-        speed: 500,
-    }
+        speed: 1000
+    };
+
     $scope.data = {};
 
     $scope.$watch('data.slider', function (nv, ov) {

@@ -1,0 +1,83 @@
+<ion-modal-view class="modal-company-detail">
+    <ion-header-bar>
+        <div class="header-company-detail">
+            <i class="ion-arrow-left-c back-icon" ng-click="closeDetail()"></i>
+            <div class="title-center">
+                {{title | uppercase}}
+            </div>
+        </div>
+    </ion-header-bar>
+    <ion-content scroll="true">
+        <div class="row subtitle">
+            <div class="col col-100">
+                <div class="left">
+                    <span>DETALLE DE EMPRESA</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Cliente</span>
+                </div>
+                <div class="down">
+                    <p>{{title}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Objeto social</span>
+                </div>
+                <div class="down">
+                    <p style="font-size: 12px; text-align: justify">{{socialObject | capitalize}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Direcci&oacute;n</span>
+                </div>
+                <div class="down">
+                    <p>{{address}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Tel&eacute;fono</span>
+                </div>
+                <div class="down">
+                    <p><a href="tel:{{phoneNumber}}">{{phoneNumber}}</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info">
+            <div class="col col-100">
+                <div class="up">
+                    <span>Ubicaci&oacute;n</span>
+                </div>
+                <div class="down">
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="row row-info row-map" ng-init="initializeMap()" scroll="false">
+            <a class="my-location" ng-click="showMyLocation()" title="Mi ubicación">
+                <img src="img/map/my_location.png">
+            </a>
+            <div style="width:111%;height:70%;left: -40px !important; position: absolute!important;" id="map_canvas_detail" data-tap-disabled="true">
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

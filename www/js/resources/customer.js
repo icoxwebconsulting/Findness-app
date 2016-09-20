@@ -3,7 +3,7 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
         return $resource(SERVER_CONF.API_HOST + 'customers/:customer', {customer: '@customer'}, {
             requestAccessToken: {
                 method: 'GET',
-                url: OAUTH_CONF.OAUTH_HOST + 'token?client_id=' + OAUTH_CONF.CLIENT_ID + '&client_secret=' + OAUTH_CONF.CLIENT_SECRET + '&grant_type=password&redirect_uri=www.findness.com',
+                url: OAUTH_CONF.OAUTH_HOST + 'token',
                 headers: {
                     username: username,
                     password: password
@@ -11,7 +11,7 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
             },
             refreshAccessToken: {
                 method: 'GET',
-                url: OAUTH_CONF.OAUTH_HOST + 'token?client_id=' + OAUTH_CONF.CLIENT_ID + '&client_secret=' + OAUTH_CONF.CLIENT_SECRET + '&grant_type=refresh_token&redirect_uri=www.findness.com&refresh_token=' + userDatastore.getRefreshingAccessToken(),
+                url: OAUTH_CONF.OAUTH_HOST + 'token',
                 headers: {
                     username: username,
                     password: password
@@ -24,6 +24,46 @@ app.factory('customer', function ($resource, userDatastore, deviceDatastore, SER
             logout: {
                 method: 'DELETE',
                 url: SERVER_CONF.API_HOST + 'devices/' + deviceDatastore.getDeviceId() || 0
+            },
+            confirm: {
+                method: 'POST',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/confirm',
+                params: {customer: '@customer'}
+            },
+            resendConfirm: {
+                method: 'POST',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/resend-confirmation-email'
+            },
+            requestPassword: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/reset/password',
+                params: {customer: '@customer'}
+            },
+            confirmPassword: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/:customer/new/password',
+                params: {customer: '@customer'}
+            },
+            getProfile: {
+                method: 'GET',
+                url: SERVER_CONF.API_HOST + 'customers/profile',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            },
+            updateProfile: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/update-profile',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            },
+            changePassword: {
+                method: 'PUT',
+                url: SERVER_CONF.API_HOST + 'customers/change/password',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             }
         });
     }

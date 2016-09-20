@@ -1,0 +1,102 @@
+<ion-view class="modal-checkout">
+    <ion-content>
+        <content has-header="true" padding="true">
+            <div class="list">
+                <div class="item item-divider">
+                    Métodos de pago
+                </div>
+                <div ng-show="paymentType==0">
+                    <div class="item padding">
+                        <button class="button button-block button-positive" ng-click="setPaymentType(1)">
+                            Pagar con Tarjeta de crédito
+                        </button>
+                    </div>
+                    <div class="item padding">
+                        <button class="button button-block button-positive" ng-click="setPaymentType(2)">
+                            Pagar con saldo paypal
+                        </button>
+                    </div>
+                    <div class="item padding">
+                        <button class="button button-block button-positive" ng-click="setPaymentType(3)">
+                            Pagar con tarjeta en paypal
+                        </button>
+                    </div>
+                </div>
+                <div class="item padding" ng-show="paymentType!=0">
+                    <button class="button button-block button-positive" ng-click="setPaymentType(0)">
+                        Elegir otro método de pago
+                    </button>
+                </div>
+            </div>
+
+            <div class="list" ng-show="paymentType==1 || paymentType==3">
+
+                <form name="paymentForm" novalidate ng-submit="makeCreditCardPayment(card, paymentForm)">
+
+                    <a class="item item-icon-left" href="#">
+                        <i class="icon ion-pricetag"></i>
+                        Saldo a pagar
+                        <span class="item-note">
+                      {{card.amount}} €
+                    </span>
+                    </a>
+
+                    <!--Mostrados sólo si el tipo de pago es 3-->
+                    <label class="item item-input item-stacked-label" ng-show="paymentType==3">
+                        <span class="input-label">Primer nombre</span>
+                        <input type="text" ng-model="card.firstName" name="firstName" placeholder="Su nombre aquí..." maxlength="25">
+                    </label>
+
+                    <label class="item item-input item-stacked-label" ng-show="paymentType==3">
+                        <span class="input-label">Primer apellido</span>
+                        <input type="text" ng-model="card.lastName" name="lastName" placeholder="Su apellido aquí..." maxlength="25">
+                    </label>
+                    <!-- -->
+
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Número de tarjeta</span>
+                        <input type="text" ng-model="card.number" cc-number cc-eager-type name="ccNumber" cc-type="card.cardType" cc-format placeholder="Ingrese el número de su tarjeta..." ng-required="true">
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Tipo de tarjeta</span>
+                        <span>{{paymentForm.ccNumber.$ccEagerType || 'Se agregará automáticamente...'}}</span>
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">CVC</span>
+                        <input type="text" ng-model="card.cvc" id="cvc" cc-cvc name="ccCvc" cc-type="paymentForm.ccNumber.$ccType">
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Caducidad</span>
+                        <input type="month" ng-model="card.exp_date">
+                    </label>
+
+                    <label class="item">
+                        <button type="submit" ng-dblclick="return;" ng-disabled="paymentForm.$invalid || buttonDisabled" class="button button-block button-positive">REALIZAR PAGO</button>
+                    </label>
+                    <p class="padding" style="font-size: 10px" ng-show="messageMinimal">
+                        <b>Importante:</b> El pago mínimo que puede procesar la plataforma es de 0.47 €. El resto del monto estará disponible en su cuenta.
+                    </p>
+                </form>
+            </div>
+
+            <form name="paymentFormPaypal" class="padding" ng-submit="makePayPalPayment(card, true)" ng-show="paymentType==2">
+
+                <a class="item item-icon-left" href="#">
+                    <i class="icon ion-pricetag"></i>
+                    Saldo a pagar
+                    <span class="item-note">
+                      {{card.amount}} €
+                    </span>
+                </a>
+
+                <div class="padding">
+                    <button type="submit" class="button button-block button-positive">Procesar pago PayPal</button>
+                </div>
+            </form>
+
+        </content>
+    </ion-content>
+</ion-view>

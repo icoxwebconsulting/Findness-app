@@ -1,11 +1,24 @@
-<ion-view view-title="Mis listados">
-    <ion-content>
-        <content has-header="true" padding="true">
-            <div class="card">
-                <div class="item item-text-wrap">
-                    Mis listados
-                </div>
-            </div>
-        </content>
+<ion-view>
+    <div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+        <div class="tabs">
+            <a class="tab-item" ng-class="{ 'active': tabActive == 'me' }" ng-click="tabActive='me'">
+                Mis listados
+            </a>
+            <a class="tab-item" ng-class="{ 'active': tabActive == 'other' }" ng-click="tabActive='other'">
+                Compartidas
+            </a>
+        </div>
+    </div>
+
+
+    <ion-content class="has-subheader">
+        <div class="list">
+            <a class="item item-icon-left" href="#" ng-repeat="list in lists"
+               ng-click="showDetail('{{list.id}}', '{{list.name}}')"
+               ng-if="(tabActive == 'me' && list.customer == customerId) || (tabActive == 'other' && list.customer != customerId)">
+                <i class="icon ion-ios-bookmarks"></i>
+                {{list.name}}
+            </a>
+        </div>
     </ion-content>
 </ion-view>

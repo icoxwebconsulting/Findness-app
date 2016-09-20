@@ -1,57 +1,173 @@
-<ion-view view-title="Filtros">
+<ion-view class="filters">
     <ion-content>
+        <div class="row subtitle filter" scroll="false">
+            <div class="col col-100">
+                <div class="left">
+                    <span>CNAE</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+
+            </div>
+        </div>
         <content has-header="true" padding="true">
-            <ion-list>
-                <ion-radio ng-model="choice" ng-value="'A'">Localización geográfica</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'B'">Radial</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'C'">Seleccionar punto</ion-radio>
-                <ion-radio ng-model="choice" ng-value="'D'">Listado de CNAE:</ion-radio>
-            </ion-list>
-            <div class="card" ng-show="choice=='A'">
-                <div class="item item-text-wrap">
-                    Su búsqueda se realizará por localización geográfica (código postal, ciudad, etc.)
+
+            <div class="row subtitle filter" scroll="false" ng-show="model != ''" style="border-top: solid 1px">
+                <div class="col col-100">
+                    <div class="left">
+                        <span>CNAES Seleccionados:</span>
+                    </div>
+                    <div class="center">
+                        <br>
+                    </div>
+                    <div class="right">
+                        <br>
+                    </div>
+
                 </div>
             </div>
-            <div class="card" ng-show="choice=='B'">
+            <label class="item item-input item-cnae">
+                <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
+                       autocomplete="off"
+                       ng-model="model"
+                       item-value-key="id"
+                       item-view-value-key="id"
+                       items-method-value-key="items"
+                       items-method="getItems(query, 'CNAE')"
+                       placeholder="Click para buscar CNAE..."
+                       items-clicked-method="itemsClicked(callback, 'CNAE')"
+                       items-removed-method="itemsRemoved(callback, 'CNAE')"
+                       select-items-label="Seleccione los CNAES correspondientes..."
+                       selected-items-label="Seleccionados:"
+                       template-url="templates/template-autocomplete.html"
+                       max-selected-items="10"/>
+            </label>
+
+            <div class="card">
+                <div class="item item-text-wrap cnae-text">
+                    <b>Listado CNAE:</b> Puede seleccionar varios CNAES, los CNAE de 2 dígitos incluyen sus subcategorías.
+                </div>
+            </div>
+
+            <div class="card" ng-hide="options.useLocation">
+                <div class="row subtitle filter" scroll="false" ng-show="stateModel != ''">
+                    <div class="col col-100">
+                        <div class="left">
+                            <span>Provincia seleccionada:</span>
+                        </div>
+                        <div class="center">
+                            <br>
+                        </div>
+                        <div class="right">
+                            <br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="item item-text-wrap" ng-hide="zipCodeModel != ''">
+                    <!-- BUSQUEDA DE PROVINCIAS -->
+                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
+                           autocomplete="off"
+                           ng-model="stateModel"
+                           item-value-key="id"
+                           item-view-value-key="name"
+                           items-method-value-key="items"
+                           items-method="getItems(query, 'states')"
+                           placeholder="Click para buscar Provincias..."
+                           items-clicked-method="itemsClicked(callback, 'states')"
+                           items-removed-method="itemsRemoved(callback, 'states')"
+                           select-items-label="Seleccione las Provincias deseadas..."
+                           selected-items-label="Seleccionados:"
+                           template-url="templates/template-autocomplete-states.html"
+                           max-selected-items="1"/>
+                </div>
+
+                <div class="row subtitle filter" scroll="false" ng-show="cityModel != '' && stateModel != ''">
+                    <div class="col col-100">
+                        <div class="left">
+                            <span>Ciudad seleccionada:</span>
+                        </div>
+                        <div class="center">
+                            <br>
+                        </div>
+                        <div class="right">
+                            <br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="item item-text-wrap" ng-show="stateModel != ''">
+                    <!-- BUSQUEDA DE CIUDADES -->
+                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
+                           autocomplete="off"
+                           ng-model="cityModel"
+                           item-value-key="id"
+                           item-view-value-key="name"
+                           items-method-value-key="items"
+                           items-method="getItems(query, 'cities')"
+                           placeholder="Click para buscar Ciudades..."
+                           items-clicked-method="itemsClicked(callback, 'cities')"
+                           items-removed-method="itemsRemoved(callback, 'cities')"
+                           select-items-label="Seleccione las ciudades correspondientes..."
+                           selected-items-label="Seleccionados:"
+                           template-url="templates/template-autocomplete-states.html"
+                           max-selected-items="1"/>
+                </div>
+
+                <div class="row subtitle filter" scroll="false" ng-show="zipCodeModel != ''">
+                    <div class="col col-100">
+                        <div class="left">
+                            <span>Código postal seleccionado:</span>
+                        </div>
+                        <div class="center">
+                            <br>
+                        </div>
+                        <div class="right">
+                            <br>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="item item-text-wrap" ng-hide="stateModel != ''">
+                    <!-- BUSQUEDA DE ZIPCODE-->
+                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
+                           autocomplete="off"
+                           ng-model="zipCodeModel"
+                           item-value-key="id"
+                           items-method-value-key="items"
+                           items-method="getItems(query, 'zipcodes')"
+                           placeholder="Click para buscar Código postal..."
+                           items-clicked-method="itemsClicked(callback, 'zipcodes')"
+                           items-removed-method="itemsRemoved(callback, 'zipcodes')"
+                           select-items-label="Seleccione los códigos postales correspondientes..."
+                           selected-items-label="Seleccionados:"
+                           template-url="templates/template-autocomplete-states.html"
+                           max-selected-items="1"/>
+                </div>
+            </div>
+
+            <label><ion-toggle ng-model="options.useLocation" toggle-class="toggle-calm" class="item-location" ng-change="checkLocation()">Usar mi localización</ion-toggle></label>
+
+            <div class="card" ng-show="options.useLocation">
                 <div class="item item-text-wrap">
                     Cubrir un radio de {{data.pickupAfter}} km
                 </div>
                 <div class="item range range-positive">
-                    <i class="icon ion-ios-minus-outline"></i>
-                    <input type="range" name="volume" min="1" max="10" value="{{data.pickupAfter}}"
+                    <i class="icon ion-ios-minus-outline" ng-click="pickupChange(0)"></i>
+                    <input type="range" name="volume" min="1" max="5" value="{{data.pickupAfter}}"
                            ng-model="data.pickupAfter">
-                    <i class="icon ion-ios-plus-outline"></i>
-                </div>
-            </div>
-            <div class="card" ng-show="choice=='C'">
-                <div class="item item-text-wrap">
-                    Podrá establecer un punto en el mapa desde donde se extenderá su búsqueda.
+                    <i class="icon ion-ios-plus-outline" ng-click="pickupChange(1)"></i>
                 </div>
             </div>
 
-            <form ng-show="choice=='D'">
-                <div class="card">
-                    <div class="item item-text-wrap">
-                        Puede seleccionar varios CNAES, los CNAE de 2 dígitos incluyen sus subcategorías.
-                    </div>
-                </div>
-                <label class="item item-input">
-                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
-                           autocomplete="off"
-                           ng-model="model"
-                           item-value-key="id"
-                           item-view-value-key="id"
-                           items-method-value-key="items"
-                           items-method="getItems(query)"
-                           placeholder="Click aquí para buscar..."
-                           items-clicked-method="itemsClicked(callback)"
-                           items-removed-method="itemsRemoved(callback)"
-                           select-items-label="Seleccione los CNAES correspondientes..."
-                           selected-items-label="Seleccionados:"
-                           template-url="templates/template-autocomplete.html"
-                           max-selected-items="10"/>
-                </label>
-            </form>
+
+            <div class="padding">
+                <button class="button button-full button-positive" ng-click="search()">Buscar</button>
+            </div>
         </content>
     </ion-content>
 </ion-view>

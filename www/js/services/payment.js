@@ -1,4 +1,4 @@
-app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_CONF) {
+app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_CONF, userDatastore) {
 
     function processStripePayment(data) {
         var deferred = $q.defer();
@@ -75,7 +75,7 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
                 'Content-Type': 'application/json'
             }
         }).then(function success(response) {
-            if (response.status == 200) {
+            if (response.status == 201) {
                 deferred.resolve(response.data);
             } else {
                 deferred.reject(response);
@@ -113,6 +113,7 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
     function registerSuccessPayment(data) {
         return transaction(localStorage.getItem('accessToken')).save(data).$promise.then(function (response) {
             console.log(response);
+            return response;
         });
     }
 
@@ -123,6 +124,14 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
         });
     }
 
+    function requestBalance() {
+        return transaction(localStorage.getItem('accessToken')).getBalance().$promise.then(function (response) {
+            userDatastore.setBalance(response.balance);
+            console.log("seteado el saldo en ", response);
+            return response.balance;
+        });
+    }
+
     return {
         processStripePayment: processStripePayment,
         requestPayPalAccessToken: requestPayPalAccessToken,
@@ -130,6 +139,7 @@ app.factory('paymentSrv', function ($q, $rootScope, $http, transaction, PAYMENT_
         processPayPalPayment: processPayPalPayment,
         executePayPalPayment: executePayPalPayment,
         registerSuccessPayment: registerSuccessPayment,
-        getTransactions:getTransactions
+        getTransactions:getTransactions,
+        requestBalance: requestBalance
     };
 });

@@ -12,6 +12,13 @@ app.factory('transaction', function ($resource, SERVER_CONF) {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
+            },
+            getBalance: {
+                method: 'GET',
+                url: SERVER_CONF.API_HOST + 'balance',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             }
         });
     }

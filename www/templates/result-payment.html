@@ -1,0 +1,22 @@
+<ion-view>
+
+    <ion-header-bar align-title="center" class="bar-calm">
+        <!--<i class="ion-arrow-left-c" ng-click="goBack()">&nbsp;</i>-->
+        <h1 class="title">Resultado del pago</h1>
+    </ion-header-bar>
+
+    <ion-content has-bouncing="false">
+
+        <div class="card">
+            <div class="item item-text-wrap" ng-hide="error">
+                Su pago se realizó exitosamente, código de confirmación: <b>{{idPayment}}</b>
+            </div>
+            <div class="item item-text-wrap" ng-show="error">
+                <p>Ocurrió un error al realizar la búsqueda después del pago, sin embargo su saldo fue acreditado y no será descontado hasta que la búsqueda sea realizada de manera correcta.</p>
+                <p>Puede volver a realizar la búsqueda.</p>
+                <p>Código del error: <b>{{errorName}}</b></p>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

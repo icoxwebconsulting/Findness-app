@@ -1,4 +1,4 @@
-app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user) {
+app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, userDatastore) {
 
     $scope.data = {};
     $scope.error = false;
@@ -21,18 +21,35 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
                 template: 'Verificando ...'
             });
 
-            user.login({
+            user.requestSalt({
                 username: $scope.data.email,
                 password: $scope.data.password
-            }).then(function () {
+            }).then(function (encriptPassword) {
+                user.login({
+                    username: $scope.data.email,
+                    password: encriptPassword
+                }).then(function () {
+                    $ionicLoading.hide();
+                    $scope.data.email = '';
+                    $scope.data.password = '';
+                    $state.go('app.map');
+                }).catch(function (error) {
+                    $ionicLoading.hide();
+                    $ionicPopup.alert({
+                        title: 'Findness - Login',
+                        template: error.data.message
+                    }).then(function () {
+                        if (error.data.message == 'Usuario no confirmado.') {
+                            userDatastore.setUsername($scope.data.email);
+                            $state.go('confirm');
+                        }
+                    });
+                });
+            }).catch(function () {
                 $ionicLoading.hide();
-                
-                $state.go('app.map');
-            }, function (error) {
-                $ionicLoading.hide();
-
                 $ionicPopup.alert({
-                    title: error.message
+                    title: 'Error',
+                    template: "Ha ocurrido un error al consultar por el usuario: " + $scope.data.email
                 });
             });
         }

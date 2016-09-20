@@ -1,24 +1,90 @@
-<ion-slides options="options" slider="data.slider">
-    <ion-slide-page style="background: yellow">
-        <div class="box blue">
-            <i class="icon ion-alert"></i>
+<ion-slides options="options" slider="data.slider" does-continue="true">
+    <ion-slide-page class="slide-1" >
+        <div class="content">
+            <div class="row">
+                <div class="col logo">
+                    <img src="img/findness_white.png">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h2 class="title">¡Bienvenido!</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="description">La app diseñada para vendedores que localiza a tus clientes potenciales.
+                    ¡No pierdas ninguna oportunidad de negocio y maximiza tus ventas!</p>
+                </div>
+            </div>
         </div>
-    </ion-slide-page>
-    <ion-slide-page style="background: #2cf5ff">
-        <div class="box yellow">
-            <i class="icon ion-alert"></i>
-        </div>
-    </ion-slide-page>
-    <ion-slide-page>
         <div class="box">
             <div class="row row-bottom bottom-div">
                 <div class="col" style="align-items: center">
                     <button class="button button-block button-positive" ng-click="goToPage('register')">
-                        Registro
+                        Crear cuenta
                     </button>
                 </div>
                 <div class="col" style="align-items: center">
-                    <button class="button button-block button-positive" ng-click="goToPage('login')">
+                    <button class="button button-block button-stable" ng-click="goToPage('login')">
+                        Accede
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ion-slide-page>
+    <ion-slide-page class="slide-2">
+        <div class="content">
+            <div class="row">
+                <div class="col logo">
+                    <img src="img/findness_white.png">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="description">Ponemos al alcance de tu mano el 100% de tus clientes potenciales. Elevando así
+                        tus posibilidades de éxito.</p>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="row row-bottom bottom-div">
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-positive" ng-click="goToPage('register')">
+                        Crear cuenta
+                    </button>
+                </div>
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-stable" ng-click="goToPage('login')">
+                        Accede
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ion-slide-page>
+    <ion-slide-page class="slide-3">
+        <div class="content">
+            <div class="row">
+                <div class="col logo">
+                    <img src="img/findness_white.png">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="description">Selecciona las empresas que quieres visitar y nosotros organizamos tu ruta
+                        comercial para que puedas dedicarte a lo más importante. Vender, vender y vender.</p>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="row row-bottom bottom-div">
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-positive" ng-click="goToPage('register')">
+                        Crear cuenta
+                    </button>
+                </div>
+                <div class="col" style="align-items: center">
+                    <button class="button button-block button-stable" ng-click="goToPage('login')">
                         Accede
                     </button>
                 </div>

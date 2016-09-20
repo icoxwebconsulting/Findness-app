@@ -1,4 +1,4 @@
-app.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider
 
         .state('slides', {
@@ -8,15 +8,39 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
 
         .state('register', {
+            cache: false,
             url: '/register',
             templateUrl: 'templates/register.html',
             controller: 'RegisterCtrl'
+        })
+
+        .state('recover-password', {
+            url: '/recover-password',
+            templateUrl: 'templates/recover-password.html',
+            controller: 'RecoverPasswordCtrl'
+        })
+
+        .state('confirmPassword', {
+            url: '/confirmPassword',
+            templateUrl: 'templates/confirm-password.html',
+            controller: 'ConfirmPasswordCtrl'
+        })
+
+        .state('confirm', {
+            url: '/confirm',
+            templateUrl: 'templates/confirmation.html',
+            controller: 'ConfirmCtrl'
         })
 
         .state('login', {
             url: '/login',
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'
+        })
+
+        .state('terms', {
+            url: '/terms',
+            templateUrl: 'templates/terms.html'
         })
 
         .state('app', {
@@ -36,7 +60,18 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
+        .state('app.list', {
+            url: '/list',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/list.html',
+                    controller: 'ListCtrl'
+                }
+            }
+        })
+
         .state('app.filter', {
+            cache: false,
             url: '/filter',
             views: {
                 'menuContent': {
@@ -65,8 +100,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
-    
-        .state('app.profile',{
+
+        .state('app.profile', {
             url: '/profile',
             views: {
                 'menuContent': {
@@ -76,7 +111,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.routes',{
+        .state('app.routes', {
             url: '/routes',
             views: {
                 'menuContent': {
@@ -86,7 +121,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.companies',{
+        .state('app.companies', {
+            cache: false,
             url: '/companies',
             views: {
                 'menuContent': {
@@ -95,8 +131,28 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
+        .state('app.companies-detail', {
+            cache: false,
+            url: 'companies/:id/:name',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/companies-detail.html',
+                    controller: 'CompaniesCtrl'
+                }
+            }
+        })
 
-        .state('app.account',{
+        .state('app.searches', {
+            url: '/searches',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/searches.html',
+                    controller: 'SearchesCtrl'
+                }
+            }
+        })
+
+        .state('app.account', {
             url: '/account',
             views: {
                 'menuContent': {
@@ -106,7 +162,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.faq',{
+        .state('app.faq', {
             url: '/faq',
             views: {
                 'menuContent': {
@@ -116,12 +172,45 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('app.advice',{
-            url: '/faq',
+        .state('app.advice', {
+            url: '/advice',
             views: {
                 'menuContent': {
                     templateUrl: 'templates/advice.html'//,
                     //controller: 'FaqCtrl'
+                }
+            }
+        })
+
+        .state('app.cart', {
+            cache: false,
+            url: '/cart',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/cart.html',
+                    controller: 'CartCtrl'
+                }
+            }
+        })
+
+        .state('app.checkout', {
+            cache: false,
+            url: '/checkout',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/checkout.html',
+                    controller: 'CheckoutCtrl'
+                }
+            }
+        })
+
+        .state('app.resultPayment', {
+            cache: false,
+            url: '/result-payment',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/result-payment.html',
+                    controller: 'ResultPaymentCtrl'
                 }
             }
         });
@@ -130,6 +219,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     if (window.localStorage.getItem('isLogged') == 1) {
         $urlRouterProvider.otherwise('/app/map');
     } else {
-        $urlRouterProvider.otherwise('/slides');
+        if (window.localStorage.getItem('isConfirm') == 0) {
+            $urlRouterProvider.otherwise('/confirm');
+        } else {
+            $urlRouterProvider.otherwise('/slides');
+        }
     }
 });

@@ -1,11 +1,16 @@
-<ion-view view-title="Mis rutas">
-    <ion-content>
-        <content has-header="true" padding="true">
-            <div class="card">
-                <div class="item item-text-wrap">
-                    Mis rutas
-                </div>
-            </div>
-        </content>
+<ion-view>
+
+    <ion-header-bar class="bar-subheader subtitle-subheader">
+        <h3 class="title">Mis rutas</h3>
+    </ion-header-bar>
+
+    <ion-content class="has-subheader">
+        <ion-list show-delete="shouldShowDelete">
+            <ion-item ng-repeat="item in items" class="item-button-right" ng-click="callRoute(item)">
+                <h3>{{item.name}} - {{type[item.transport]}}</h3>
+                <ion-option-button class="button-energized icon ion-edit" ng-click="showChangeName(item)"></ion-option-button>
+                <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteRoute(item, $index)"></ion-option-button>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

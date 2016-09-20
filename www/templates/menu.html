@@ -1,41 +1,63 @@
-<ion-side-menus enable-menu-with-back-views="false">
-    <ion-side-menu-content>
-        <ion-nav-bar class="bar-stable">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
+<ion-side-menus enable-menu-with-back-views="true">
+    <ion-side-menu-content drag-content="dragStatus">
+        <ion-nav-bar class="bar-light">
+            <ion-nav-title>
+                <div class="left">
+                    <img src="img/findness.png" class="logo">
+                </div>
+            </ion-nav-title>
 
             <ion-nav-buttons side="left">
-                <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-click="toggleMenu()">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
                 </button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right" >
+                <img src="img/search.png" class="search-btn" ui-sref="app.filter">
             </ion-nav-buttons>
         </ion-nav-bar>
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
 
-    <ion-side-menu side="left"  id="mainMenu" ng-show="menuVisible">
-        <ion-header-bar class="bar-stable">
-            <h1 class="title">Menú</h1>
+    <ion-side-menu side="left"  id="mainMenu">
+        <ion-header-bar class="bar-light">
+            <div class="header-menu">
+                <div class="legend">
+                    <div class="left">
+                        <p ng-if="customer.firstName.length <= 21">{{customer.firstName}}</p>
+                        <p ng-if="customer.firstName.length >= 24">{{customer.firstName| limitTo:22}} <span ng-if="customer.firstName.length >= 24">...</span></p>
+                        <p ng-if="username.length <= 21">{{username}}</p>
+                        <p ng-if="username.length >= 24">{{username| limitTo:22}} <span ng-if="username.length >= 24">...</span></p>
+                    </div>
+                    <div class="right">
+                        <span>{{view.balance | number:2}} €</span>
+                        <img src="img/cart.png" ui-sref="app.profile" menu-close>
+                    </div>
+                </div>
+            </div>
         </ion-header-bar>
-        <ion-content>
+        <ion-content class="categories">
             <ion-list>
                 <ion-item menu-close ng-click="stateChange('app.profile')">
                     Mi perfil
                 </ion-item>
-                <ion-item menu-close ng-click="stateChange('app.routes')">
-                    Mis rutas
+                <ion-item menu-close ng-click="stateChange('app.map')">
+                    Ver mapa
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.companies')">
                     Mis listados
                 </ion-item>
+                <ion-item menu-close ng-click="stateChange('app.routes')">
+                    Mis rutas
+                </ion-item>
+                <ion-item menu-close ng-click="stateChange('app.searches')">
+                    Historial de búsquedas
+                </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.account')">
-                    Mi cuenta
+                    Añadir créditos
                 </ion-item>
-                <ion-item menu-close ng-click="stateChange('app.payment')">
-                    Agregar saldo
-                </ion-item>
-                <ion-item menu-close ng-click="stateChange('app.faq')">
-                    FAQs
-                </ion-item>
+                <!--<ion-item menu-close ng-click="stateChange('app.faq')">-->
+                    <!--FAQs-->
+                <!--</ion-item>-->
                 <ion-item menu-close ng-click="stateChange('app.advice')">
                     Aviso legal
                 </ion-item>

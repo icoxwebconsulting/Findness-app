@@ -1,4 +1,68 @@
-/* Empty. Add your own CSS if you like */
+@font-face{
+    font-family: 'Roboto-Regular';
+    src: url("../lib/ionic/fonts/Roboto-Regular.eot");
+    src: url("../lib/ionic/fonts/Roboto-Regular.eot")
+    format("embedded-opentype"),
+    url("../lib/ionic/fonts/Roboto-Regular.woff") format("woff"),
+    url("../lib/ionic/fonts/Roboto-Regular.ttf") format("truetype"),
+    url("../lib/ionic/fonts/Roboto-Regular.svg") format("svg");
+}
+
+::-webkit-input-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 12px !important;
+    color: #04041B !important;
+    opacity: 0.6 !important;
+}
+
+:-moz-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 12px !important;
+    color: #04041B !important;
+    opacity: 0.6 !important;
+}
+
+::-moz-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 12px !important;
+    color: #04041B !important;
+    opacity: 0.6 !important;
+}
+
+:-ms-input-placeholder{
+    font-family:  Roboto-Regular!important;
+    font-size: 12px !important;
+    color: #04041B !important;
+    opacity: 0.6 !important;
+}
+
+.button-positive, .bar-positive, .toggle.toggle-calm input:checked+.track{
+    background: #0185CF !important;
+}
+
+.toggle-calm {
+    color: #0185CF !important;
+}
+
+.button-stable{
+    background: #636363 !important;
+    color: #ffffff !important;
+}
+
+.logo-center{
+    width: 100%;
+}
+
+.login-logo{
+    padding: 50px;
+}
+
+.recover-text{
+    font-family:  Roboto-Regular!important;
+    text-align: center;
+    margin: 30px;
+}
+
 .hidden {
     display: none;
 }
@@ -8,8 +72,9 @@
     bottom: 30px;
 }
 
-.center {
-    margin-left: auto;
+.left {
+    float: left;
+    margin-left: 0px;
     margin-right: auto;
     display: block;
 }
@@ -23,4 +88,505 @@
     width: 100%;
     height: 65px;
     padding: 0px;
+}
+
+.bar-positive{
+    background-color: #0185CF !important;
+}
+
+.tabs-striped.tabs-background-positive .tabs {
+    background-color: #0185CF !important;
+    background-image: none;
+}
+
+.bar-header .logo{
+    width: auto;
+    height: 33px;
+    padding: 5px 25px;
+    margin-top: 5px;
+}
+
+.search-btn{
+    width: 20px;
+    height: 20px;
+    margin-top: 8px;
+}
+
+.bar .title.title-left{
+    text-align: left;
+    padding: 0px 10px;
+}
+
+.title-left{
+    left: 0px !important;
+}
+
+.button-100{
+    width: 100%;
+}
+
+.subtitle{
+    background-color: #E6E7E7 !important;
+    position: static!important;
+    height: 40px!important;
+    text-align: left;
+}
+
+.filters .subtitle{
+    background-color: #0185CF !important;
+    color: #ffffff;
+}
+
+.filters .item-cnae, .filters .item-location{
+    background-color: #E6E7E7 !important;
+}
+
+.filters .cnae-text{
+    color: #0185CF !important;
+}
+
+
+.subtitle-subheader {
+    background-color: #E6E7E7;
+}
+
+.subtitle-subheader h3 {
+    font-size: 13px !important;
+}
+
+.subtitle .left{
+    margin-left: 5px;
+}
+
+
+.subtitle .left{
+    width: 60% !important;
+    display: inline-block;
+}
+
+.subtitle .right, .subtitle .center{
+    width: 20% !important;
+    display: inline-block;
+}
+
+.subtitle .right{
+    font-size: 30px;
+    margin-top: -6px;
+    float: right;
+}
+
+.item-select select{
+    width: 60% !important;
+}
+
+.item-title, .input-label, .item-input, .item-input input,  .subtitle span, .item-text-wrap, .item,  .item span, a{
+    font-family:  Roboto-Regular!important;
+    font-size: 13px;
+    /*text-shadow: 2px 2px 4px #A1A1A1;*/
+}
+
+.input-label, .item-input{
+    font-size: 13px;
+    font-weight: 600;
+    /*text-shadow: 2px 2px 4px #A1A1A1;*/
+}
+
+.list-cart{
+    margin: 10px;
+}
+
+.ion-autocomplete{
+    width: 100%;
+}
+
+.register{
+    background-image: url("../img/bg/1.jpg");
+    background-size: cover;
+}
+
+.register .title{
+    text-align: left;
+    font-size:20px;
+}
+
+.register .list{
+    margin-bottom: 0;
+}
+
+.register, .register a, .register input, .register .input-label, .register .item-input, .register .ion-close, .register .ion-arrow-left-c{
+    color: #ffffff;
+}
+
+.register input, .register .item-checkbox, .register .item-text-wrap, .register .card, .register .bar-transparent{
+    background: rgba(10,10,32,0.0) !important;
+}
+
+.register ::-webkit-input-placeholder{
+    color: #ffffff !important;
+
+}
+
+.register :-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.register ::-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.register :-ms-input-placeholder{
+    color: #ffffff !important;
+}
+
+.login{
+    background-image: url("../img/bg/2.jpg");
+    background-size: cover;
+}
+
+.login .title{
+    text-align: left;
+    font-size:20px;
+}
+
+.login .list{
+    margin-bottom: 0;
+}
+
+.login, .login a, .login input, .login .input-label, .login .item-input, .login .ion-close{
+    color: #ffffff;
+}
+
+.login input, .login .item-checkbox, .login .item-text-wrap, .login .card, .login .bar-transparent, .login .item-input{
+    background: rgba(10,10,32,0.0) !important;
+}
+
+.login ::-webkit-input-placeholder{
+    color: #ffffff !important;
+
+}
+
+.login :-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.login ::-moz-placeholder{
+    color: #ffffff !important;
+
+}
+
+.login :-ms-input-placeholder{
+    color: #ffffff !important;
+}
+
+.modal-company-share{
+    width: 80%!important;
+    min-height: 20%;
+    margin: 40% 10%!important;
+    max-height: 50px;
+    height: 90%;
+    border: 2px solid #636363;
+}
+
+.modal-company-info{
+    width: 80%!important;
+    min-height: 20%;
+    margin: 40% 10%!important;
+    max-height: 50%;
+    height: 90%;
+}
+
+.modal-company-info .social-object{
+    padding: 0px 10px;
+    text-align: justify;
+}
+
+.modal-company-info .address{
+    padding: 2px 10px;
+    text-align: justify;
+    font-size: 12px;
+}
+
+.modal-company-info .row img{
+    max-width: 100%;
+    padding: 3px;
+}
+
+.modal-company-info .row .active{
+    border: 1px solid #000000;
+    border-radius: 2px;
+    background: #696969;
+}
+
+.modal-company-info .row .col-20{
+    height: 56px;
+}
+
+.slides-header img{
+    width: 20px;
+    padding: 1px;
+    margin-top: 2px;
+}
+
+.slide-1{
+    background-image: url("../img/bg/slide-1.jpg");
+    background-size: cover;
+}
+
+.slide-1 .content, .slide-2 .content, .slide-3 .content{
+    margin-top: 40%;
+    padding: 10px;
+}
+
+.slide-1 h2, .slide-2 h2, .slide-3 h2{
+    color: #ffffff;
+    font-family:  Roboto-Regular!important;
+    /*font-size: 15px;*/
+    /*line-height: 1.8;*/
+}
+
+.slide-1 p, .slide-2 p, .slide-3 p{
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.slide-1 .title, .slide-2 .title,.slide-3 .title{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.slide-1 .description, .slide-2 .description,.slide-3 .description{
+    text-align: justify;
+    padding: 0px 20px;
+    color: #ffffff;
+}
+
+.slide-1 .logo, .slide-2 .logo .slide-3 .logo{
+    /*background-color: #ffffff;*/
+}
+
+.slide-1 .logo img, .slide-2 .logo img, .slide-3 .logo img{
+    padding: 10px 30px;
+}
+
+
+.slide-2{
+    background-image: url("../img/bg/slide-2.jpg");
+    background-size: cover;
+}
+
+
+.slide-3{
+    background-image: url("../img/bg/slide-3.jpg");
+    background-size: cover;
+}
+
+
+.swiper-pagination-bullet{
+    background: #ffffff !important;
+}
+
+/*tab en mapa*/
+.tabs-mapa>.tabs, .tabs.tabs-mapa {
+    top: 0px;!important;
+}
+
+/* estilos para manejo de error en formulario */
+.error-container {
+    margin: 5px 0;
+}
+
+.error-container:last-child {
+    margin: 5px 0 0;
+}
+
+.error {
+    padding: 10px 16px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #555;
+    vertical-align: middle;
+}
+
+.error i {
+    font-size: 24px;
+    color: #B83E2C;
+    vertical-align: middle;
+}
+
+.last-error-container > .error {
+    padding: 10px 16px 0;
+}
+
+.has-errors {
+    border-bottom: 3px solid #B83E2C;
+}
+
+.no-errors {
+    border-bottom: 3px solid green;
+}
+
+#mainMenu .bar-header{
+    height: 140px;
+    background-image: url("../img/bg/menu.jpg");
+    background-size: cover;
+}
+
+.categories{
+    margin-top:95px;
+}
+
+.categories .item{
+    color: #000000;
+}
+
+.header-menu{
+    width: 100%;
+}
+
+.header-menu .legend{
+    margin-top: 80px;
+}
+
+.header-menu .legend .left{
+    width: 90%;
+    display: inline-block;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.header-menu .legend .left p{
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-bottom: 0;
+}
+
+.header-menu .legend .right{
+    width: 35%;
+    display: block;
+    color: #fff;
+    position: absolute;
+    margin-top: -75px;
+    margin-left: 65%;
+    font-size: 14px;
+    float: right;
+    line-height: 40px;
+}
+
+.header-menu .legend .right img{
+    width: 30px;
+    float: right;
+    margin-right: 10px
+}
+
+.modal-company-detail .bar-header{
+    padding: 0 !important;
+}
+
+.modal-company-detail .back-icon{
+    margin: 10px;
+    font-size: 33px;
+    color: #E6E7E7;
+}
+
+.modal-company-detail .header-company-detail{
+    background-image: url('../img/bg/company.jpg');
+    background-size: cover;
+    width: 100%;
+    height: 250px;
+}
+
+.modal-company-detail .title-center, .modal-company-detail .category{
+    text-align: center !important;
+    color: #E6E7E7;
+    font-family:  Roboto-Regular!important;
+}
+
+.modal-company-detail .title-center{
+    margin-top: 80px;
+    font-size: 20px !important;
+    word-wrap: break-word;
+}
+
+.modal-company-detail .category{
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.modal-company-detail .scroll-content{
+    margin-top: 205px !important;
+    z-index: 12 !important;
+}
+
+.modal-company-detail .row-info{
+    border-bottom: solid 2px #E6E7E7;
+}
+
+.modal-company-detail .row-info .col{
+    margin: 15px 0px 0px 5px!important;
+}
+
+.modal-company-detail .row-info .up{
+    color: #A8A8A8;
+}
+
+.modal-company-detail .row-info .down{
+    color: #0185CF;
+}
+
+.modal-company-detail .row-map{
+    height: 210px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.modal-company-detail .my-location{
+    position: relative;
+    z-index: 15;
+    display: block;
+    float: right;
+    left: 80%;
+    top: 10px;
+    width: 40px;
+}
+
+.modal-company-detail .my-location img{
+    width: 40px;
+}
+
+.map-buttons {
+    position: absolute;
+    bottom: 15px;
+    z-index: 99;
+    display: table;
+    width: 100%;
+}
+
+.info-map-button {
+    position: absolute;
+    top: 55px;
+    left: 5px;
+    z-index: 99;
+    display: table;
+}
+
+.info-map-button i {
+    font-size: 40px;
+    color: #0185CF;
+}
+
+.modal-route-info {
+    width: 80% !important;
+    min-height: 30%;
+    margin: 40% 10% !important;
+    max-height: 50%;
+    height: 90%;
+}
+
+.justify-text {
+    text-align: justify;
 }

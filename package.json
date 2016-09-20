@@ -1,7 +1,7 @@
 {
   "name": "findness-app",
   "version": "1.1.1",
-  "description": "findness-app: An Ionic project",
+  "description": "findness-app: Findness",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
@@ -23,24 +23,26 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    {
-      "variables": {
-        "API_KEY_FOR_ANDROID": "AIzaSyBZ0Vz5_Ud1WDLevnr9_nF-zSeojTS0N2w"
-      },
-      "locator": "cordova-plugin-googlemaps",
-      "id": "cordova-plugin-googlemaps"
-    },
-    "cordova-plugin-geolocation",
     "cordova-plugin-compat",
     "cordova-plugin-inappbrowser",
+    "cordova-sqlite-storage",
+    "cordova-plugin-geolocation",
+    "cordova.plugins.diagnostic",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator",
     {
       "variables": {
         "URL_SCHEME": "findness"
       },
-      "locator": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
-      "id": "plugin.google.maps"
+      "locator": "cordova-plugin-customurlscheme",
+      "id": "cordova-plugin-customurlscheme"
     },
-    "cordova-sqlite-storage"
+    {
+      "variables": {
+        "SENDER_ID": "261758463616"
+      },
+      "locator": "phonegap-plugin-push",
+      "id": "phonegap-plugin-push"
+    }
   ],
   "cordovaPlatforms": [
     "android"

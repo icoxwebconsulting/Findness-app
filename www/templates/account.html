@@ -1,9 +1,25 @@
-<ion-view view-title="Mi cuenta">
+<ion-view>
     <ion-content>
+        <div class="row subtitle filter" scroll="false">
+            <div class="col col-100">
+                <div class="left">
+                    <span>Mi cuenta</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+
+            </div>
+        </div>
         <content has-header="true" padding="true">
-            <div class="card">
-                <div class="item item-text-wrap">
-                    Mi cuenta
+            <div class="list">
+                <div class="item padding">
+                    Su credito es {{balance| number:2}}€
+                </div>
+                <div class="item padding">
                     <button class="button button-block button-positive" ui-sref="app.payment">
                         Añadir créditos
                     </button>
@@ -14,13 +30,13 @@
                 <div class="item item-text-wrap">
                     <div class="row">
                         <div class="col">Fecha</div>
-                        <div class="col">Nro.</div>
-                        <div class="col">Monto</div>
+                        <!--<div class="col">Nro.</div>-->
+                        <div class="col">Saldo</div>
                     </div>
-                    <div class="row" ng-repeat="transaction in view.transactions">
-                        <div class="col">10/01/2016</div>
-                        <div class="col">{{transaction.transaction_id}}</div>
-                        <div class="col">{{transaction.balance}}</div>
+                    <div class="row" ng-repeat="transaction in view.transactions" ng-click="showDetail(transaction)">
+                        <div class="col">{{transaction.created| date:'dd/MM/yyyy'}}</div>
+                        <!--<div class="col">{{transaction.transaction_id}}</div>-->
+                        <div class="col">{{transaction.balance}} €</div>
                     </div>
                 </div>
             </div>

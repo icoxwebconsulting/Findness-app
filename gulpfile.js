@@ -22,6 +22,7 @@ var paths = {
         './www/lib/angular-credit-cards/release/angular-credit-cards.js',
         './www/lib/moment/min/moment.min.js',
         './www/lib/moment/locale/es.js',
+        './www/lib/js-marker-clusterer/src/markerclusterer.js',
         './www/js/**/*.js'
     ]
 };

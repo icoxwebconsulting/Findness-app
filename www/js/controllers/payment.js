@@ -1,19 +1,12 @@
-app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, transactionStorage) {
+app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, TAX_CONF) {
 
-    $scope.cardType = {};
     $scope.card = {};
     $scope.paymentType = 0;
-    $scope.firstName;
-    $scope.lastName;
-    $scope.products = [
-        {amount: 1.0, title: " 1$ combo"},
-        {amount: 5.0, title: " 5$ combo"},
-        {amount: 10.0, title: " 10$ combo"}
-    ];
     $scope.buttonDisabled = false;
 
     $scope.setPaymentType = function (value) {
         $scope.paymentType = value;
+        $scope.card = {};
     };
 
     function showAlert(error) {
@@ -38,36 +31,29 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     function makeStripePayment(_cardInformation) {
         $scope.buttonDisabled = true;
         showLoading();
-
+        var amount = _cardInformation.amount * 100;
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
-                "amount": parseFloat(_cardInformation.amount) * 100,
-                "currency": "usd",
+                "amount": amount.toFixed(),
+                "currency": "eur",
                 "source": response.id,
                 "description": "Cargo Findness"
             };
 
             return paymentSrv.processStripePayment(data).then(function (response) {
                 showConfirmation();
-                transactionStorage.saveTransaction({
-                    id_registered: response.id,
-                    operator: 3,
-                    reference: response.source.id,
-                    status: (response.status == "succeeded") ? 1 : 2,
-                    amount: response.amount / 100
-                });
                 return registerPayment({
                     balance: parseFloat(_cardInformation.amount),
                     operator: 3,
                     transactionId: response.id,
                     cardId: response.source.id
                 });
-                //TODO: una vez registrado el pago se debe actualizar el balance del usuario
             });
 
         }).catch(function (error) {
             //TODO: handle error
             console.log(error);
+            showAlert(error.type);
         }).finally(function () {
             $scope.buttonDisabled = false;
             $ionicLoading.hide();
@@ -77,16 +63,24 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     function registerPayment(data) {
         return paymentSrv.registerSuccessPayment(data).then(function (response) {
             console.log("respuesta servicio de registro", response)
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'Su pago se ha registrado satisfactoriamente.'
+            }).then(function () {
+                $state.go("app.account");
+            });
         });
     }
 
     $scope.makePayPalPayment = function (_cardInformation, paypal) {
         $scope.buttonDisabled = true;
         console.log(_cardInformation);
-        if (!paypal && ($scope.firstName == "" || $scope.lastName == "")) {
+        if (!paypal && ($scope.card.firstName == "" || $scope.card.lastName == "")) {
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'Debe colocar su nombre y apellido.'
+            });
             return;
-            // $scope.firstName == "test";
-            // $scope.lastName == " test";
         }
 
         showLoading();
@@ -106,8 +100,8 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                         "expire_month": _cardInformation.exp_month,
                         "expire_year": _cardInformation.exp_year,
                         "cvv2": _cardInformation.cvc,
-                        "first_name": $scope.firstName,
-                        "last_name": $scope.lastName
+                        "first_name": _cardInformation.firstName,
+                        "last_name": _cardInformation.lastName
                     }
                 }
             ];
@@ -123,10 +117,10 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
             "transactions": [
                 {
                     "amount": {
-                        "total": _cardInformation.amount + ".00",
-                        "currency": "USD"
+                        "total": _cardInformation.amount.toFixed(2),
+                        "currency": "EUR"
                     },
-                    "description": "This is the payment transaction description."
+                    "description": "Fidness add credit"
                 }
             ]
         };
@@ -140,16 +134,10 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     //pago con saldo paypal, el usuario debe confirmar
                     localStorage.setItem("execute_url", JSON.stringify(response.links[1]));
                     //localStorage.setItem("pay_id", response.id);
+                    localStorage.setItem("paypal_amount", _cardInformation.amount);
                     $ionicLoading.hide();
                     var ref = cordova.InAppBrowser.open(response.links[1].href, '_system', '');
                 } else {
-                    transactionStorage.saveTransaction({
-                        id_registered: response.id,
-                        operator: 2,
-                        reference: response.payer.payer_info.payer_id,
-                        status: (response.state == "approved") ? 1 : 2,
-                        amount: response.transactions.amount.total
-                    });
                     return registerPayment({
                         balance: parseFloat(_cardInformation.amount),
                         operator: 2,
@@ -169,8 +157,56 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         });
     };
 
-    $scope.makeCreditCardPayment = function (_cardInformation) {
-        console.log($scope.paymentType);
+    $scope.makeCreditCardPayment = function (_cardInformation, paymentForm) {
+        //validar formulario
+        if (!_cardInformation.amount) {
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'Debe escribir un saldo para la recarga.'
+            });
+            return;
+        } else if(_cardInformation.amount < 0.47){
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'El saldo mímino que acepta la plataforma para la recarga es de 0.47 €.'
+            });
+            return;
+        }
+
+        if (paymentForm.$invalid) {
+            if (paymentForm.ccNumber.$invalid) {
+                $ionicPopup.alert({
+                    title: 'Findness - Pago',
+                    template: 'El número de tarjeta no es válido.'
+                });
+                return;
+            }
+            if (paymentForm.ccCvc.$invalid) {
+                $ionicPopup.alert({
+                    title: 'Findness - Pago',
+                    template: 'El código de confirmación no es válido.'
+                });
+                return;
+            }
+        }
+
+        _cardInformation.cardType = paymentForm.ccNumber.$ccType;
+
+        var fecha = new Date(_cardInformation.exp_date);
+        _cardInformation.exp_month = fecha.getMonth();
+        _cardInformation.exp_year = fecha.getFullYear();
+
+        if (_cardInformation.exp_year < (new Date()).getFullYear()
+            || (_cardInformation.exp_year == (new Date()).getFullYear() && _cardInformation.exp_month < (new Date()).getMonth())) {
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'La fecha de expiración no es válida.'
+            });
+            return;
+        }
+
+        _cardInformation.exp_month += 1;
+
         if ($scope.paymentType == 1) {
             //pago con stripe
             makeStripePayment(_cardInformation);

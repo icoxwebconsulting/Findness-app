@@ -8,6 +8,14 @@ app.factory('userDatastore', function () {
         return window.localStorage.getItem('isLogged') || 0;
     }
 
+    function setIsConfirm(status) {
+        window.localStorage.setItem('isConfirm', status);
+    }
+
+    function getIsConfirm() {
+        return window.localStorage.getItem('isConfirm') || 0;
+    }
+
     function setCustomerId(id) {
         window.localStorage.setItem('customerId', id);
     }
@@ -56,26 +64,20 @@ app.factory('userDatastore', function () {
         return window.localStorage.getItem('refreshingAccessToken');
     }
 
-    function setProfile(displayName, avatarURL) {
-        window.localStorage.setItem('displayName', displayName);
-        window.localStorage.setItem('avatarURL', avatarURL);
+    function setProfile(firstName, lastName) {
+        window.localStorage.setItem('firstName', firstName);
+        window.localStorage.setItem('lastName', lastName);
     }
 
     function getProfile() {
         return {
-            displayName: window.localStorage.getItem('displayName'),
-            avatarURL: window.localStorage.getItem('avatarURL')
+            firstName: window.localStorage.getItem('firstName'),
+            lastName: window.localStorage.getItem('lastName')
         }
     }
 
     function deleteUserData() {
-        window.localStorage.removeItem('isLogged');
-        window.localStorage.removeItem('customerId');
-        window.localStorage.removeItem('password');
-        window.localStorage.removeItem('username');
-        window.localStorage.removeItem('accessToken');
-        window.localStorage.removeItem('refreshToken');
-        window.localStorage.removeItem('device_id');
+        window.localStorage.clear();
     }
 
     function setSalt(salt, username) {
@@ -86,9 +88,35 @@ app.factory('userDatastore', function () {
         return window.localStorage.getItem('salt') || false;
     }
 
+    function setBalance(balance) {
+        window.localStorage.setItem('balance', balance);
+    }
+
+    function getBalance() {
+        return window.localStorage.getItem('balance') || 0;
+    }
+
+    function setUsernameRecover(email) {
+        window.localStorage.setItem('username_recover', email);
+    }
+
+    function getUsernameRecover() {
+        return window.localStorage.getItem('username_recover');
+    }
+
+    function setResultPayment(data) {
+        window.localStorage.setItem('result_payment', data);
+    }
+
+    function getResultPayment() {
+        return window.localStorage.getItem('result_payment');
+    }
+
     return {
         setIsLogged: setIsLogged,
         getIsLogged: getIsLogged,
+        setIsConfirm: setIsConfirm,
+        getIsConfirm: getIsConfirm,
         setCustomerId: setCustomerId,
         getCustomerId: getCustomerId,
         setUsername: setUsername,
@@ -104,6 +132,12 @@ app.factory('userDatastore', function () {
         getProfile: getProfile,
         deleteUserData: deleteUserData,
         setSalt: setSalt,
-        getSalt: getSalt
+        getSalt: getSalt,
+        setBalance: setBalance,
+        getBalance: getBalance,
+        setUsernameRecover: setUsernameRecover,
+        getUsernameRecover: getUsernameRecover,
+        setResultPayment: setResultPayment,
+        getResultPayment: getResultPayment
     };
 });
