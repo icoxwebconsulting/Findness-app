@@ -37,7 +37,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                 "amount": amount.toFixed(),
                 "currency": "eur",
                 "source": response.id,
-                "description": "Cargo Findness"
+                "description": "Usuario: " + userDatastore.getUsername()
             };
 
             return paymentSrv.processStripePayment(data).then(function (response) {
