@@ -49,7 +49,7 @@ app.controller('CheckoutCtrl', function ($scope, $state, paymentSrv, cart, $ioni
                 "amount": amount.toFixed(),
                 "currency": "eur",
                 "source": response.id,
-                "description": "Cargo Findness"
+                "description": "Usuario: " + userDatastore.getUsername()
             };
 
             return paymentSrv.processStripePayment(data).then(function (response) {
