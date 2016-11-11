@@ -97,11 +97,11 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                 userDatastore.setPassword(loginData.password);
                 userDatastore.setUsername(loginData.username);
                 userDatastore.setTokens(response.access_token, response.refresh_token);
-                //
-//                paymentSrv.requestBalance();
-                subscriptionSrv.requestSubscription();
-                subscriptionSrv.validateSubscription();
 
+                subscriptionSrv.requestSubscription();
+                if (subscriptionSrv.requestSubscription()){
+                    subscriptionSrv.detailSubscription();
+                }
 
                 refreshAccessToken();
 
