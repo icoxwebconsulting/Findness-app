@@ -1,4 +1,4 @@
-app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, paymentSrv, pushNotification, OAUTH_CONF) {
+app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, paymentSrv, subscriptionSrv, pushNotification, OAUTH_CONF) {
 
     function register(registrationData) {
         var bcrypt = dcodeIO.bcrypt;
@@ -98,7 +98,11 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                 userDatastore.setUsername(loginData.username);
                 userDatastore.setTokens(response.access_token, response.refresh_token);
                 //
-                paymentSrv.requestBalance();
+//                paymentSrv.requestBalance();
+                subscriptionSrv.requestSubscription();
+                subscriptionSrv.validateSubscription();
+
+
                 refreshAccessToken();
 
                 var authResponse = response;

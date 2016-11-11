@@ -1,10 +1,15 @@
-app.controller('AccountCtrl', function ($scope, $state, paymentSrv, $ionicPopup) {
+app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscriptionSrv, $ionicPopup) {
 
     $scope.balance;
+    $scope.subscription;
 
     $scope.$on('$ionicView.enter', function (e) {
         paymentSrv.requestBalance().then(function (balance) {
             $scope.balance = balance;
+        });
+
+        subscriptionSrv.requestSubscription().then(function (subscription) {
+            $scope.subscription = subscription;
         });
 
         $scope.view = {};

@@ -19,6 +19,13 @@ app.factory('transaction', function ($resource, SERVER_CONF) {
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
+            },
+            getSubscription: {
+                method: 'GET',
+                url: SERVER_CONF.API_HOST + 'subscription',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             }
         });
     }
