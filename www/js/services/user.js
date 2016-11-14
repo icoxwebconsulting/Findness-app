@@ -1,4 +1,4 @@
-app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer, userDatastore, paymentSrv, subscriptionSrv, pushNotification, OAUTH_CONF) {
+app.factory('user', function ($q, $rootScope, device, $state, deviceDatastore, customer, userDatastore, paymentSrv, subscriptionSrv, pushNotification, OAUTH_CONF) {
 
     function register(registrationData) {
         var bcrypt = dcodeIO.bcrypt;
@@ -99,9 +99,6 @@ app.factory('user', function ($q, $rootScope, device, deviceDatastore, customer,
                 userDatastore.setTokens(response.access_token, response.refresh_token);
 
                 subscriptionSrv.requestSubscription();
-                if (subscriptionSrv.requestSubscription()){
-                    subscriptionSrv.detailSubscription();
-                }
 
                 refreshAccessToken();
 
