@@ -182,7 +182,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         };
 
         modalScope.openDetail = function () {
-            var res = subscriptionSrv.validateSubscription();
+            var res = subscriptionSrv.validateSubscription('búsquedas');
             if (res == true){
                 console.info('expired subscription');
             }else{

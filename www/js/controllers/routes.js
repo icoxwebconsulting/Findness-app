@@ -18,7 +18,7 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
     });
 
     $scope.callRoute = function (item) {
-        var res = subscriptionSrv.validateSubscription();
+        var res = subscriptionSrv.validateSubscription('rutas');
         if (res == true){
             console.info('expired subscription');
         }else{

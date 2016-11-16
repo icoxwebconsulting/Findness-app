@@ -24,7 +24,7 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
 
     $scope.showDetail = function (id) {
         company(localStorage.getItem('accessToken')).getCompany({'company': id}).$promise.then(function (response) {
-            var res = subscriptionSrv.validateSubscription();
+            var res = subscriptionSrv.validateSubscription('búsquedas');
             if (res == true){
                 console.info('expired subscription');
             }else{
