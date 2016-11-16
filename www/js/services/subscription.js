@@ -3,12 +3,12 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
     var objectSubscription;
     var dateSubscription;
     var dateNow;
-    var daysRemaining;
+    $rootScope.daysRemaining;
 
     function requestSubscription() {
         return transaction(localStorage.getItem('accessToken')).getSubscription().$promise.then(function (response) {
             userDatastore.setSubscription(response.subscription);
-            console.log("seteado el saldo en ", response);
+            console.log("seteado la suscripcion en ", response);
 
             return response.subscription;
         });
@@ -17,16 +17,22 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
     function init(){
         objectSubscription = userDatastore.getSubscription();
         dateSubscription = moment(objectSubscription.endDate).format('YYYY-MM-DD');
-        dateNow = moment().add(10,'months').format('YYYY-MM-DD');
-        daysRemaining = moment(moment(dateSubscription).diff(moment(dateNow), 'days'));
+        dateNow = moment().format('YYYY-MM-DD');
+        //dateNow = moment().add(10,'months').format('YYYY-MM-DD');
+        if(dateSubscription > dateNow){
+            $rootScope.daysRemaining = moment(moment(dateSubscription).diff(moment(dateNow), 'days'));
+            userDatastore.setDaysRemaining($rootScope.daysRemaining._i);
+        }else{
+            userDatastore.setDaysRemaining(0);
+        }
     }
 
-    function detailSubscription(){
+    function detailSubscription(site){
         $ionicLoading.hide();
         init();
         console.log("ejecutando init");
         if (dateNow > dateSubscription){
-            validateSubscription();
+            validateSubscription(site);
         }else{
             if(objectSubscription.lapse == 1 ){
                 var lapse = 'Período de Prueba';
@@ -37,7 +43,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
             var end = moment(objectSubscription.endDate).format('DD-MM-YYYY');
             var html =  '<p><b>Tipo: </b>'+lapse+' </p>'+
                 '<p><b>Período: </b>' + start +' - '+ end +' </p>'+
-                '<p><b>Tiempo Restante: </b>' + daysRemaining + ' días</p>';
+                '<p><b>Tiempo Restante: </b><ng-pluralize count="'+$rootScope.daysRemaining+'" when="{\'0\': \'Expiro\', \'1\': \'1 día\', \'other\': \''+$rootScope.daysRemaining+' días\'}"></ng-pluralize></p>';
             $ionicPopup.alert({
                 title: 'Suscripción',
                 template: html
@@ -46,13 +52,21 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
         console.log('detail subscription',userDatastore.getSubscription());
     }
 
-    function validateSubscription(){
+    function validateSubscription(site){
         init();
+        console.log("ejecutando init");
         if (dateNow > dateSubscription){
-            $ionicPopup.alert({
-                title: 'Suscripción',
-                template: 'Su suscripción a expirado.'
-            });
+            if (site != ''){
+                $ionicPopup.alert({
+                    title: 'Suscripción',
+                    template: 'Para poder acceder a tus '+site+' debes tener tu suscripción activa.',
+                    okText:'SUSCRÍBETE',
+                }).then(function (res) {
+                    if (res) {
+                        $state.go('app.account');
+                    }
+                });
+            }
             return true;
         }
     }

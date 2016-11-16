@@ -104,6 +104,14 @@ app.factory('userDatastore', function () {
         return JSON.parse(window.localStorage.getItem('subscription')) || 0;
     }
 
+    function setDaysRemaining(daysRemaining){
+        window.localStorage.setItem('daysRemaining', daysRemaining);
+    }
+
+    function getDaysRemaining(){
+        return window.localStorage.getItem('daysRemaining') || 0;
+    }
+
     function setUsernameRecover(email) {
         window.localStorage.setItem('username_recover', email);
     }
@@ -148,6 +156,8 @@ app.factory('userDatastore', function () {
         setResultPayment: setResultPayment,
         getResultPayment: getResultPayment,
         setSubscription: setSubscription,
-        getSubscription: getSubscription
+        getSubscription: getSubscription,
+        setDaysRemaining: setDaysRemaining,
+        getDaysRemaining: getDaysRemaining
     };
 });

@@ -26,7 +26,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform,
 
     $scope.init = function () {
         $scope.customer = user.getProfile();
-        $scope.view.balance = cart.getBalance();
+        $scope.view.daysRemaining = userDatastore.getDaysRemaining();
     };
 
     $scope.$on('$ionicView.enter', function (e) {

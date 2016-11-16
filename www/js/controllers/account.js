@@ -1,11 +1,9 @@
-app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscriptionSrv, $ionicPopup) {
+app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscriptionSrv, $ionicPopup, userDatastore) {
 
     $scope.balance;
     $scope.subscription;
     $scope.typeSubscription;
     $scope.daysRemaining;
-    var dateSubscription;
-    var dateNow;
 
     $scope.$on('$ionicView.enter', function (e) {
         paymentSrv.requestBalance().then(function (balance) {
@@ -21,9 +19,7 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscription
                 $scope.typeSubscription = $scope.subscription.lapse + ' Meses';
             }
 
-            dateSubscription = moment(($scope.subscription.endDate).toString()).format('YYYY-MM-DD');
-            dateNow = moment().format('YYYY-MM-DD');
-            $scope.daysRemaining = moment(moment(dateSubscription).diff(moment(dateNow), 'days'));
+            $scope.daysRemaining = userDatastore.getDaysRemaining();
         });
         $scope.view = {};
         self.getTransactions();
