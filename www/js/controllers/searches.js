@@ -1,6 +1,6 @@
 app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal, searchesService,
                                          searchService, routeService, $ionicPopup, cart, map, $ionicLoading,
-                                         $ionicListDelegate) {
+                                         $ionicListDelegate, subscriptionSrv) {
 
     $scope.items;
 
@@ -29,6 +29,7 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
         //
         //     return;
         // }
+        var validate = subscriptionSrv.validateSubscription('');
 
         if (results.ElementosDevueltos == 0) {
             if (results.TotalElementosNoConsultados == 0) {
@@ -47,8 +48,22 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                 //caso 3 mostrar mapa sin popup
                 map.setShowPopup(false);
             } else {
-                //caso 4 mostrar mapa con popup
-                map.setShowPopup(true);
+                if (validate == true) {
+                    $ionicPopup.alert({
+                        title: 'Suscripción',
+                        template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
+                        okText: 'SUSCRÍBETE',
+                    }).then(function (res) {
+                        if (res) {
+                            $state.go('app.account');
+                        }
+                    });
+                    map.setShowPopup(false);
+                }
+                else {
+                    //caso 4 mostrar mapa con popup
+                    map.setShowPopup(true);
+                }
             }
             routeService.setModes(false, false);
             map.deleteRouteLines().then(function () {

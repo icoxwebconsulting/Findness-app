@@ -117,31 +117,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         map.clear();
         map.setShowPopup(false);
         //proccessMarkers(query);
-        var myPopup = $ionicPopup.show({
+        var myPopup = $ionicPopup.alert({
             template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
             title: 'Findness',
-            subTitle: 'Resultados',
-            scope: $scope,
-            buttons: [
-                {
-                    text: 'Comprar',
-                    type: 'button-positive',
-                    onTap: function (e) {
-                        //ir al carrito
-                        cart.setTotalCompanies(searchService.getNonConsultedElements());
-                        $state.go("app.cart");
-                        return true;
-                    }
-                },
-                {
-                    text: 'Ver anteriores',
-                    type: 'button-positive',
-                    onTap: function (e) {
-                        myPopup.close();
-                        return true;
-                    }
-                }
-            ]
+            subTitle: 'Resultados'
         });
     }
 

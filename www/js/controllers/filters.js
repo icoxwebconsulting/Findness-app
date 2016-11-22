@@ -1,4 +1,4 @@
-app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map, routeService) {
+app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map, routeService, subscriptionSrv) {
 
     $scope.init = function () {
         $scope.options = {
@@ -123,6 +123,8 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
          4- Si el total de resultados es diferente de 0 y el total de empresas por comprar es diferente de 0: Mostrar el mapa con un popup al carrito
          - Cuando se visualicen las búsquedas en el mapa  en la parte superior debe salir un selector para cambiar el modo entre mapa y listado
          */
+        var validate = subscriptionSrv.validateSubscription('');
+
         if (!results) {
             $ionicPopup.alert({
                 title: "Hubo un problema interno.",
@@ -149,8 +151,22 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 //caso 3 mostrar mapa sin popup
                 map.setShowPopup(false);
             } else {
-                //caso 4 mostrar mapa con popup
-                map.setShowPopup(true);
+                if (validate == true) {
+                    $ionicPopup.alert({
+                        title: 'Suscripción',
+                        template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
+                        okText: 'SUSCRÍBETE',
+                    }).then(function (res) {
+                        if (res) {
+                            $state.go('app.account');
+                        }
+                    });
+                    map.setShowPopup(false);
+                }
+                else {
+                    //caso 4 mostrar mapa con popup
+                    map.setShowPopup(true);
+                }
             }
             routeService.setModes(false, false);
             map.deleteRouteLines().then(function () {

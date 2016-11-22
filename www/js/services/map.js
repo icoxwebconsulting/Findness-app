@@ -185,6 +185,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             var res = subscriptionSrv.validateSubscription('búsquedas');
             if (res == true){
                 console.info('expired subscription');
+                modalScope.thisModal.remove();
             }else{
                 $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                     scope: modalScope,
