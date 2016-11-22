@@ -1,4 +1,4 @@
-app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup, $ionicLoading, TAX_CONF) {
+app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, paymentSrv, searchService, $ionicPopup, $ionicLoading, TAX_CONF, userDatastore) {
 
     $scope.closeCart = function () {
     };
@@ -23,6 +23,13 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         $scope.view.totalCompanies = cart.getTotalCompanies();
         $scope.view.unitPrice = cart.getUnitPrice();
         $scope.changeTotal();
+        $scope.view.subscription = userDatastore.getSubscription();
+
+        if($scope.view.subscription.lapse == 1 ){
+            $scope.lapse = 'Período de Prueba';
+        }else {
+            $scope.lapse = 'Suscripción '+$scope.view.subscription.lapse+ ' Meses';
+        }
 
     };
 
