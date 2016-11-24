@@ -43,10 +43,26 @@
             <div class="list" ng-show="paymentType==1 || paymentType==3">
 
                 <form name="paymentForm" novalidate ng-submit="makeCreditCardPayment(card, paymentForm)">
+                    <label class="item item-input">
+                        <span class="item-label">Producto: </span>
+                    </label>
+                    <ion-radio ng-model="card.lapse" name="cardLapse" ng-value="6" ng-model="lapse" ng-change="hasChanged()">Suscripción 6 meses</ion-radio>
+                    <!--<ion-radio ng-model="card.lapse" name="cardLapse" ng-value="12">12 meses</ion-radio>-->
 
                     <label class="item item-input">
-                        <span class="input-label">Saldo en €</span>
-                        <input type="number" ng-model="card.amount" name="cardAmount" placeholder="Escriba el saldo a recargar...">
+                        <span class="input-label">Total sin impuestos</span>
+                        <span class="item-note">{{card.amount| number:2}}€</span>
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">IVA</span>
+                        <span class="item-note">{{card.iva| number:2}}€</span>
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Importe total</span>
+                        <span class="item-note">{{card.total| number:2}}€</span>
+
                     </label>
 
                     <!--Mostrados sólo si el tipo de pago es 3-->

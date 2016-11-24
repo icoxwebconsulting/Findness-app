@@ -20,6 +20,8 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscription
             }
 
             $scope.daysRemaining = userDatastore.getDaysRemaining();
+        }).then(function(){
+            subscriptionSrv.init();
         });
         $scope.view = {};
         self.getTransactions();

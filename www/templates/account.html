@@ -24,7 +24,7 @@
                 </div>
                 <div class="item padding">
                     <button class="button button-block button-positive" ui-sref="app.payment">
-                        Añadir créditos
+                        Añadir suscripción
                     </button>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col">Fecha</div>
                         <!--<div class="col">Nro.</div>-->
-                        <div class="col">Saldo</div>
+                        <div class="col">Monto Suscripción</div>
                     </div>
                     <div class="row" ng-repeat="transaction in view.transactions" ng-click="showDetail(transaction)">
                         <div class="col">{{transaction.created| date:'dd/MM/yyyy'}}</div>

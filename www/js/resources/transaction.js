@@ -9,6 +9,7 @@ app.factory('transaction', function ($resource, SERVER_CONF) {
             },
             save: {
                 method: 'POST',
+                url: SERVER_CONF.API_HOST + 'subscription',
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
