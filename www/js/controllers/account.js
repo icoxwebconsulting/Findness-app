@@ -10,8 +10,8 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscription
             $scope.balance = balance;
         });
 
-        subscriptionSrv.requestSubscription().then(function (subscription) {
-            $scope.subscription = subscription;
+        subscriptionSrv.requestSubscription(false, '').then(function () {
+            $scope.subscription = userDatastore.getSubscription();
 
             if($scope.subscription.lapse == 1 ){
                 $scope.typeSubscription = 'Período de Prueba';
@@ -20,8 +20,6 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscription
             }
 
             $scope.daysRemaining = userDatastore.getDaysRemaining();
-        }).then(function(){
-            subscriptionSrv.init();
         });
         $scope.view = {};
         self.getTransactions();

@@ -5,13 +5,29 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
     var dateNow;
     $rootScope.daysRemaining;
 
-    function requestSubscription() {
-        return transaction(localStorage.getItem('accessToken')).getSubscription().$promise.then(function (response) {
-            userDatastore.setSubscription(response.subscription);
-            console.log("seteado la suscripcion en ", response);
 
-            return response.subscription;
-        });
+    function requestSubscription(detail, site) {
+        return transaction(localStorage.getItem('accessToken')).getSubscription().$promise
+            .then(function (response) {
+                userDatastore.setSubscription(response.subscription);
+                console.log("seteado la suscripcion en ", response);
+            })
+            .then(function(){
+                init();
+                console.log("ejecutando init");
+            })
+            .then(function(){
+                if (detail == true)
+                    detailSubscription();
+            })
+            .then(function(){
+                validateSubscription(site);
+            })
+            .catch(function(){
+                throw 'Error subscription localStorage';
+            });
+        return response.subscription;
+
     }
 
     function init(){
@@ -27,13 +43,8 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
         }
     }
 
-    function detailSubscription(site){
-        $ionicLoading.hide();
-        init();
-        console.log("ejecutando init");
-        if (dateNow > dateSubscription){
-            validateSubscription(site);
-        }else{
+    function detailSubscription(){
+        if (dateNow < dateSubscription){
             if(objectSubscription.lapse == 1 ){
                 var lapse = 'Período de Prueba';
             }else {
@@ -49,12 +60,9 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
                 template: html
             });
         }
-        console.log('detail subscription',userDatastore.getSubscription());
     }
 
     function validateSubscription(site){
-        init();
-        console.log("ejecutando init");
         if (dateNow > dateSubscription){
             if (site != ''){
                 $ionicPopup.alert({

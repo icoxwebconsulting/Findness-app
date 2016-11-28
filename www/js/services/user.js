@@ -98,7 +98,7 @@ app.factory('user', function ($q, $rootScope, device, $state, deviceDatastore, c
                 userDatastore.setUsername(loginData.username);
                 userDatastore.setTokens(response.access_token, response.refresh_token);
 
-                subscriptionSrv.requestSubscription();
+                subscriptionSrv.requestSubscription(false, '');
 
                 refreshAccessToken();
 

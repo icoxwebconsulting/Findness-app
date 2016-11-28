@@ -1,7 +1,6 @@
 app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, map, cart, searchService, routeService, subscriptionSrv) {
 
-    subscriptionSrv.requestSubscription();
-    subscriptionSrv.detailSubscription('búsquedas');
+    subscriptionSrv.requestSubscription(true, 'búsquedas');
 
     $scope.showRoute = false; //controla la visualización de todos los botones
     $scope.routeMode = false; //modo de crear ruta
@@ -32,6 +31,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.$on('$ionicView.enter', function (e) {
+        subscriptionSrv.requestSubscription(false, '');
         if ($rootScope.previousState != 'app.list') {
             $scope.deregisterHardBack = $ionicPlatform.registerBackButtonAction(
                 doCustomBack, 101

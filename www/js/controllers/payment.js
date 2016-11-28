@@ -71,7 +71,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                     startDate : startDate
                 });
             });
-            subscriptionSrv.requestSubscription();
+            subscriptionSrv.requestSubscription(false, '');
 
         }).catch(function (error) {
             //TODO: handle error
