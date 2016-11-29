@@ -5,15 +5,16 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     $scope.buttonDisabled = false;
     $scope.daysRemaining = userDatastore.getDaysRemaining();
 
-    $scope.hasChanged = function(){
-        console.log($scope.card.lapse);
-        if($scope.card.lapse == 6)
-            $scope.card.amount = 12;
-        else
-            $scope.card.amount = 22;
+
+    $scope.init = function(){
+        $scope.card.lapse = 6;
+        $scope.card.amount = 12;
         $scope.card.iva = parseFloat($scope.card.amount) * parseFloat(TAX_CONF.IVA);
-        $scope.card.total = parseFloat($scope.card.amount) + parseFloat($scope.card.iva) ;
-    }
+        $scope.card.total = parseFloat($scope.card.amount) + parseFloat($scope.card.iva);
+        $scope.paymentType = 1;
+    };
+
+    $scope.init();
 
     $scope.setPaymentType = function (value) {
         $scope.paymentType = value;

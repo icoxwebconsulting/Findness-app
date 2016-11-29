@@ -33,11 +33,11 @@
                         <!--</button>-->
                     <!--</div>-->
                 </div>
-                <div class="item padding" ng-show="paymentType!=0">
-                    <button class="button button-block button-positive" ng-click="setPaymentType(0)">
-                        Elegir otro método de pago
-                    </button>
-                </div>
+                <!--<div class="item padding" ng-show="paymentType!=0">-->
+                    <!--<button class="button button-block button-positive" ng-click="setPaymentType(0)">-->
+                        <!--Elegir otro método de pago-->
+                    <!--</button>-->
+                <!--</div>-->
             </div>
 
             <div class="list" ng-show="paymentType==1 || paymentType==3">
@@ -45,8 +45,8 @@
                 <form name="paymentForm" novalidate ng-submit="makeCreditCardPayment(card, paymentForm)">
                     <label class="item item-input">
                         <span class="item-label">Producto: </span>
+                        <span class="item-note" style="font-size: 13px; margin-left: 15px">{{"Suscripción 6 meses"|uppercase}}</span>
                     </label>
-                    <ion-radio ng-model="card.lapse" name="cardLapse" ng-value="6" ng-model="lapse" ng-change="hasChanged()">Suscripción 6 meses</ion-radio>
                     <!--<ion-radio ng-model="card.lapse" name="cardLapse" ng-value="12">12 meses</ion-radio>-->
 
                     <label class="item item-input">
