@@ -51,7 +51,7 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                 if (validate == true) {
                     $ionicPopup.alert({
                         title: 'Suscripción',
-                        template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
+                        template: '<div>Se han encontrado ' + searchService.getNonConsultedElements() + ' empresas.</div>',
                         okText: 'SUSCRÍBETE',
                     }).then(function (res) {
                         if (res) {

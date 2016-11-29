@@ -46,5 +46,5 @@ app.constant("COMPANY_STYLE", {
 
 app.constant("TAX_CONF", {
     FEE: 0.25,
-    IVA: 0.21
-});
+    IVA: 1.21
+})

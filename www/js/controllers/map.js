@@ -118,7 +118,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         map.setShowPopup(false);
         //proccessMarkers(query);
         var myPopup = $ionicPopup.alert({
-            template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
+            template: '<div>Se han encontrado ' + searchService.getNonConsultedElements() + ' empresas.</div>',
             title: 'Findness',
             subTitle: 'Resultados'
         });
