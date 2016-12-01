@@ -22,11 +22,12 @@ app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform,
 
     $scope.$on('menu:drag', function (event, args) {
         $scope.dragStatus = args;
+        $scope.daysRemaining = userDatastore.getDaysRemaining();
     });
 
     $scope.init = function () {
         $scope.customer = user.getProfile();
-        $scope.view.daysRemaining = userDatastore.getDaysRemaining();
+        $scope.daysRemaining = userDatastore.getDaysRemaining();
     };
 
     $scope.$on('$ionicView.enter', function (e) {
