@@ -1,4 +1,4 @@
-app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService, company, COMPANY_STYLE, userDatastore) {
+app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $stateParams, $ionicModal, $ionicPopup, list, map, searchService, company, COMPANY_STYLE, userDatastore, subscriptionSrv) {
 
     $scope.$on('$ionicView.enter', function (e) {
         $scope.init();
@@ -63,7 +63,12 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
     };
 
     $scope.showDetail = function (id, name) {
-        $state.go('app.companies-detail', {'id': id, 'name': name});
+        var res = subscriptionSrv.validateSubscription('listados');
+        if (res == true){
+            console.info('expired subscription');
+        }else{
+            $state.go('app.companies-detail', {'id': id, 'name': name});
+        }
     };
 
     $scope.init = function () {

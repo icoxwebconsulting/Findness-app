@@ -29,7 +29,9 @@
                         <p ng-if="username.length >= 24">{{username| limitTo:22}} <span ng-if="username.length >= 24">...</span></p>
                     </div>
                     <div class="right">
-                        <span>{{view.balance | number:2}} €</span>
+                        <span>
+                            <ng-pluralize count="daysRemaining" when="{'0': 'Expiro', '1': '1 día', 'other': '{{daysRemaining}} días'}"></ng-pluralize>
+                        </span>
                         <img src="img/cart.png" ui-sref="app.profile" menu-close>
                     </div>
                 </div>
@@ -53,7 +55,7 @@
                     Historial de búsquedas
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.account')">
-                    Añadir créditos
+                    SUSCRÍBETE
                 </ion-item>
                 <!--<ion-item menu-close ng-click="stateChange('app.faq')">-->
                     <!--FAQs-->

@@ -1,12 +1,26 @@
-app.controller('AccountCtrl', function ($scope, $state, paymentSrv, $ionicPopup) {
+app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscriptionSrv, $ionicPopup, userDatastore) {
 
     $scope.balance;
+    $scope.subscription;
+    $scope.typeSubscription;
+    $scope.daysRemaining;
 
     $scope.$on('$ionicView.enter', function (e) {
         paymentSrv.requestBalance().then(function (balance) {
             $scope.balance = balance;
         });
 
+        subscriptionSrv.requestSubscription(false, '').then(function () {
+            $scope.subscription = userDatastore.getSubscription();
+
+            if($scope.subscription.lapse == 1 ){
+                $scope.typeSubscription = 'Período de Prueba';
+            }else {
+                $scope.typeSubscription = $scope.subscription.lapse + ' Meses';
+            }
+
+            $scope.daysRemaining = userDatastore.getDaysRemaining();
+        });
         $scope.view = {};
         self.getTransactions();
         $scope.$emit('menu:drag', true);

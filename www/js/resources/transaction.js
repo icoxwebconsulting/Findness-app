@@ -9,6 +9,7 @@ app.factory('transaction', function ($resource, SERVER_CONF) {
             },
             save: {
                 method: 'POST',
+                url: SERVER_CONF.API_HOST + 'subscription',
                 headers: {
                     Authorization: 'Bearer ' + token
                 }
@@ -16,6 +17,13 @@ app.factory('transaction', function ($resource, SERVER_CONF) {
             getBalance: {
                 method: 'GET',
                 url: SERVER_CONF.API_HOST + 'balance',
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            },
+            getSubscription: {
+                method: 'GET',
+                url: SERVER_CONF.API_HOST + 'subscription',
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

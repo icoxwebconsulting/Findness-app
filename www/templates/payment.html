@@ -33,20 +33,36 @@
                         <!--</button>-->
                     <!--</div>-->
                 </div>
-                <div class="item padding" ng-show="paymentType!=0">
-                    <button class="button button-block button-positive" ng-click="setPaymentType(0)">
-                        Elegir otro método de pago
-                    </button>
-                </div>
+                <!--<div class="item padding" ng-show="paymentType!=0">-->
+                    <!--<button class="button button-block button-positive" ng-click="setPaymentType(0)">-->
+                        <!--Elegir otro método de pago-->
+                    <!--</button>-->
+                <!--</div>-->
             </div>
 
             <div class="list" ng-show="paymentType==1 || paymentType==3">
 
                 <form name="paymentForm" novalidate ng-submit="makeCreditCardPayment(card, paymentForm)">
+                    <label class="item item-input">
+                        <span class="item-label">Producto: </span>
+                        <span class="item-note" style="font-size: 13px; margin-left: 15px">{{"Suscripción 6 meses"|uppercase}}</span>
+                    </label>
+                    <!--<ion-radio ng-model="card.lapse" name="cardLapse" ng-value="12">12 meses</ion-radio>-->
 
                     <label class="item item-input">
-                        <span class="input-label">Saldo en €</span>
-                        <input type="number" ng-model="card.amount" name="cardAmount" placeholder="Escriba el saldo a recargar...">
+                        <span class="input-label">Total sin impuestos</span>
+                        <span class="item-note">{{card.amount| number:2}}€</span>
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">IVA</span>
+                        <span class="item-note">{{card.iva| number:2}}€</span>
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Importe total</span>
+                        <span class="item-note">{{card.total| number:2}}€</span>
+
                     </label>
 
                     <!--Mostrados sólo si el tipo de pago es 3-->

@@ -1,8 +1,20 @@
-app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, TAX_CONF) {
+app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, TAX_CONF, userDatastore, subscriptionSrv) {
 
     $scope.card = {};
     $scope.paymentType = 0;
     $scope.buttonDisabled = false;
+    $scope.daysRemaining = userDatastore.getDaysRemaining();
+
+
+    $scope.init = function(){
+        $scope.card.lapse = 6;
+        $scope.card.amount = 12;
+        $scope.card.iva = parseFloat($scope.card.amount) * parseFloat(TAX_CONF.IVA);
+        $scope.card.total = parseFloat($scope.card.amount) + parseFloat($scope.card.iva);
+        $scope.paymentType = 1;
+    };
+
+    $scope.init();
 
     $scope.setPaymentType = function (value) {
         $scope.paymentType = value;
@@ -29,26 +41,38 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     }
 
     function makeStripePayment(_cardInformation) {
+        if ($scope.daysRemaining != 0){
+            $ionicPopup.alert({
+                title: 'Findness - Pago',
+                template: 'Su suscripción está activa, no puede comprar una nueva.'
+            });
+            return;
+        }
         $scope.buttonDisabled = true;
         showLoading();
-        var amount = _cardInformation.amount * 100;
+        var startDate = moment().format('YYYY/MM/DD');
+        var amount = _cardInformation.total * 100;
         paymentSrv.requestStripeToken(_cardInformation).then(function (response) {
             var data = {
                 "amount": amount.toFixed(),
                 "currency": "eur",
                 "source": response.id,
-                "description": "Usuario: " + userDatastore.getUsername()
+                "description": "Usuario: " + userDatastore.getUsername(),
             };
+            console.log('data',data);
 
             return paymentSrv.processStripePayment(data).then(function (response) {
                 showConfirmation();
                 return registerPayment({
-                    balance: parseFloat(_cardInformation.amount),
+                    balance: parseFloat(_cardInformation.total),
                     operator: 3,
                     transactionId: response.id,
-                    cardId: response.source.id
+                    cardId: response.source.id,
+                    lapse: $scope.card.lapse,
+                    startDate : startDate
                 });
             });
+            subscriptionSrv.requestSubscription(false, '');
 
         }).catch(function (error) {
             //TODO: handle error
@@ -67,7 +91,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
                 title: 'Findness - Pago',
                 template: 'Su pago se ha registrado satisfactoriamente.'
             }).then(function () {
-                $state.go("app.account");
+                $state.go("app.account", {}, {reload: true});
             });
         });
     }
@@ -159,10 +183,10 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
     $scope.makeCreditCardPayment = function (_cardInformation, paymentForm) {
         //validar formulario
-        if (!_cardInformation.amount) {
+        if (!_cardInformation.lapse) {
             $ionicPopup.alert({
                 title: 'Findness - Pago',
-                template: 'Debe escribir un saldo para la recarga.'
+                template: 'Debe seleccionar una suscripción.'
             });
             return;
         } else if(_cardInformation.amount < 0.47){

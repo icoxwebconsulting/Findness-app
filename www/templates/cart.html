@@ -17,25 +17,10 @@
         <div class="list list-cart">
             <label class="item item-input item-stacked-label">
                 <div class="input-label" style="width: 50%">
-                    Mi saldo
+                    Producto:
                 </div>
                 <div class="input-label" style="text-align: right">
-                    <span class="item-note">{{view.balance| number:2}}€</span>
-                </div>
-            </label>
-            <label class="item item-input">
-                <div class="input-label">
-                    Total de empresas
-                </div>
-                <input type="number" style="float: right; margin-right:10px;text-align:right"
-                        min="0" ng-model="view.totalCompanies"  ng-change="changeTotal()">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <div class="input-label" style="width: 50%">
-                    Coste por unidad
-                </div>
-                <div class="input-label" style="text-align: right">
-                    <span class="item-note">{{view.unitPrice| number:2}}€</span>
+                    <span class="item-note">{{ lapse }}</span>
                 </div>
             </label>
             <ion-item class="item-divider item-title">
@@ -45,10 +30,6 @@
             <ion-item class="item-divider item-title">
                 <span> IVA </span>
                 <span style="float: right; margin-right:25px">{{ view.iva| number:2 }}€</span>
-            </ion-item>
-            <ion-item class="item-divider item-title" ng-show="view.totalCompanies*view.unitPrice < 5 " >
-                <span> Gastos de gestión </span>
-                <span style="float: right; margin-right:25px">{{ 0.25 }}€</span>
             </ion-item>
             <ion-item class="item-divider item-title">
                 <span>Importe total</span>

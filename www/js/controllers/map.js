@@ -1,5 +1,6 @@
-app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, map, cart, searchService, routeService) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, map, cart, searchService, routeService, subscriptionSrv) {
 
+    subscriptionSrv.requestSubscription(true, 'búsquedas');
 
     $scope.showRoute = false; //controla la visualización de todos los botones
     $scope.routeMode = false; //modo de crear ruta
@@ -30,6 +31,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.$on('$ionicView.enter', function (e) {
+        subscriptionSrv.requestSubscription(false, '');
         if ($rootScope.previousState != 'app.list') {
             $scope.deregisterHardBack = $ionicPlatform.registerBackButtonAction(
                 doCustomBack, 101
@@ -115,31 +117,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         map.clear();
         map.setShowPopup(false);
         //proccessMarkers(query);
-        var myPopup = $ionicPopup.show({
-            template: '<div>Existen ' + searchService.getNonConsultedElements() + ' resultados que puede adquirir.</div>',
+        var myPopup = $ionicPopup.alert({
+            template: '<div>Se han encontrado ' + searchService.getNonConsultedElements() + ' empresas.</div>',
             title: 'Findness',
-            subTitle: 'Resultados',
-            scope: $scope,
-            buttons: [
-                {
-                    text: 'Comprar',
-                    type: 'button-positive',
-                    onTap: function (e) {
-                        //ir al carrito
-                        cart.setTotalCompanies(searchService.getNonConsultedElements());
-                        $state.go("app.cart");
-                        return true;
-                    }
-                },
-                {
-                    text: 'Ver anteriores',
-                    type: 'button-positive',
-                    onTap: function (e) {
-                        myPopup.close();
-                        return true;
-                    }
-                }
-            ]
+            subTitle: 'Resultados'
         });
     }
 

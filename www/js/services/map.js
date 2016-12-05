@@ -1,4 +1,4 @@
-app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup) {
+app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup, subscriptionSrv) {
 
     //var map;
     var markers = [];
@@ -182,14 +182,20 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         };
 
         modalScope.openDetail = function () {
-            $ionicModal.fromTemplateUrl('templates/company-detail.html', {
-                scope: modalScope,
-                animation: 'slide-in-up',
-                hardwareBackButtonClose: false
-            }).then(function (modal) {
-                modalScope.modal = modal;
-                modalScope.modal.show();
-            });
+            var res = subscriptionSrv.validateSubscription('búsquedas');
+            if (res == true){
+                console.info('expired subscription');
+                modalScope.thisModal.remove();
+            }else{
+                $ionicModal.fromTemplateUrl('templates/company-detail.html', {
+                    scope: modalScope,
+                    animation: 'slide-in-up',
+                    hardwareBackButtonClose: false
+                }).then(function (modal) {
+                    modalScope.modal = modal;
+                    modalScope.modal.show();
+                });
+            }
         };
 
         modalScope.navigateTo = function () {
