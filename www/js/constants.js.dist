@@ -1,15 +1,20 @@
 app.constant("SERVER_CONF", {
 
-    HOST: "http://findness.icox.mobi/",
-    API_HOST: "http://findness.icox.mobi/api/v1/"
+    //HOST: "http://findness.icox.mobi/",
+    //API_HOST: "http://findness.icox.mobi/api/v1/"
+    HOST: "http://62.75.162.219/",  
+    API_HOST: "http://62.75.162.219/api/v1/"    
 });
 
 app.constant("OAUTH_CONF", {
 
-    OAUTH_HOST: "http://findness.icox.mobi/oauth/v2/",
+    //OAUTH_HOST: "http://findness.icox.mobi/oauth/v2/",
+    OAUTH_HOST: "http://62.75.162.219/oauth/v2/",
 
-    CLIENT_ID: "578e7e8f7aa12_4uxoquy48b6sooocgws0wgg4wgcs8ooks8cwsw0ks84so0c0g8",
-    CLIENT_SECRET: "1cyx26089gys0k4gskcgg8c8gskcw44gog4co04sckkoog4s0w",
+    CLIENT_ID: "583f1e27a2c18_5x1kc695sw004skckso80ggoc8gckcocwcwgwgkk8g04k0g4gw",
+    CLIENT_SECRET: "27irdm72pzpcgs8kgso4goswsog0ss8cwwcokgwk40w0wo4484",
+    //CLIENT_ID: "578e7e8f7aa12_4uxoquy48b6sooocgws0wgg4wgcs8ooks8cwsw0ks84so0c0g8",
+    //CLIENT_SECRET: "1cyx26089gys0k4gskcgg8c8gskcw44gog4co04sckkoog4s0w",
 
     REFRESH_INTERVAL: 600000
 });
