@@ -2,6 +2,8 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];
+    var arrPointCurrent = [];
+    var newPoints = [];
     var routeMode = false; //modo de crear ruta
     var viewRoute = false; //modo de visualizar ruta
     var route = {
@@ -280,12 +282,15 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 lastPoint: null,
                 points: {}
             };
-
+//console.log('item', item);
+            addPointCurrent(item.points);
+            orderPoint();
             var count = 0;
             var keys = Object.keys(item.points);
             var id = keys[count];
 
             function addElement(element) {
+
                 addPoint({
                     id: element.id,
                     position: new google.maps.LatLng(element.latitude, element.longitude),
@@ -303,6 +308,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
             }
 
             addElement(item.points[id]);
+
 
         } catch (e) {
             deferred.reject();
@@ -381,6 +387,79 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         };
     }
 
+    function addPointCurrent(points){
+        for(var i = 0;i < points.length; i++){
+            arrPointCurrent.push([points[i]['latitude'], points[i]['longitude']]);
+        }
+    }
+
+    function orderByPoint(point, dataArray){
+
+        console.log(point);
+        var tempArray = [];
+        var distanceShort = 0;
+
+        for(var i = 0; i< dataArray.length; i++){
+            console.log(dataArray[i]);
+            var currentDistance = calcDistance(point, dataArray[i]);
+
+            if (tempArray.length > 0) {
+                for (var j = 0; j < tempArray.length; j++) {
+                    if (currentDistance < tempArray[j]){
+                        distanceShort = dataArray[i];
+                    }
+                }
+            }else {
+                tempArray.push(calcDistance(point, dataArray[i]));
+                distanceShort = dataArray[i];
+            }
+
+            tempArray.push(calcDistance(point, dataArray[i]));
+            tempArray.sort(function(a, b){return a-b})
+
+        }
+
+        var result = [];
+        result.push(distanceShort);
+        for(var i = 0; i< dataArray.length; i++){
+            if (distanceShort != dataArray[i]){
+                result.push(dataArray[i]);
+            }
+        }
+        console.log('result', result)
+        return result;
+    }
+
+
+    function orderPoint(){
+
+        console.log('arrPointCurrent', arrPointCurrent);
+
+//        var currentElement = arrPointCurrent.shift();
+//        newPoints.push(currentElement);
+//console.log('currentElement ', currentElement)
+//        arrPointCurrent = orderByPoint(currentElement, arrPointCurrent);
+
+//        if(arrPointCurrent.length > 0)
+//            orderPoint();
+//        else
+//            return newPoints;
+
+    }
+
+    //calculates distance between two points in km's
+    function calcDistance(point, nextPoint) {
+        var dataOne = new google.maps.LatLng(point[0],point[1]);
+        var dataTwo = new google.maps.LatLng(nextPoint[0], nextPoint[1]);
+
+        console.log('point', point);
+        console.log('nextpoint', nextPoint);
+
+
+        var result = (google.maps.geometry.spherical.computeDistanceBetween(dataOne, dataTwo)/ 1000).toFixed(2);
+        return result;
+    }
+
     return {
         requestRoute: requestRoute,
         drawRoute: drawRoute,
@@ -402,6 +481,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         getRouteDetail: getRouteDetail,
         reDrawMarkers: reDrawMarkers,
         addMarkerToPoint: addMarkerToPoint,
-        resetRoutes: resetRoutes
+        resetRoutes: resetRoutes,
+        addPointCurrent: addPointCurrent,
+        orderPoint: orderPoint,
+        calcDistance: calcDistance
     };
 });
