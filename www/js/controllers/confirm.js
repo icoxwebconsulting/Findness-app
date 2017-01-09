@@ -77,6 +77,22 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
         });
     };
 
+   function register(){
+
+       user.register({
+           username: userDatastore.getUsername(),
+           firstName: userDatastore.getProfile().firstName,
+           lastName: userDatastore.getProfile().lastName,
+           password: userDatastore.getPassword()
+       }).then(function (result) {
+           console.log('result', result)
+       }, function (error) {
+           console.log('error', error)
+       });
+   }
+
+    register();
+
     $scope.goToPage = function (page) {
         $state.go(page);
     }

@@ -1,4 +1,4 @@
-app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user) {
+app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, $timeout, userDatastore) {
 
     $scope.data = {};
     $scope.error = false;
@@ -37,11 +37,20 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             });
         }
         else {
-            $ionicLoading.show({
-                template: 'Creando Cuenta...'
-            });
+//            $ionicLoading.show({
+//                template: 'Creando Cuenta...'
+//            });
 
-            user.register({
+            $timeout(function () {
+                userDatastore.setProfile($scope.data.name, $scope.data.lastName);
+                userDatastore.setUsername($scope.data.email);
+                userDatastore.setPassword($scope.data.password);
+                $state.go('confirm');
+
+            }, 2000);
+
+
+            /*user.register({
                 username: $scope.data.email,
                 firstName: $scope.data.name,
                 lastName: $scope.data.lastName,
@@ -61,7 +70,7 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                     title: 'Findness - error en registro',
                     template: error.data.message
                 });
-            });
+            });*/
         }
     };
 
