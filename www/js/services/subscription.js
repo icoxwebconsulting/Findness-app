@@ -10,7 +10,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
         return transaction(localStorage.getItem('accessToken')).getSubscription().$promise
             .then(function (response) {
                 userDatastore.setSubscription(response.subscription);
-                console.log("seteado la suscripcion en ", response);
+                console.log("seteado la cuenta en ", response);
             })
             .then(function(){
                 init();
@@ -56,7 +56,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
                 '<p><b>Período: </b>' + start +' - '+ end +' </p>'+
                 '<p><b>Tiempo Restante: </b><ng-pluralize count="'+$rootScope.daysRemaining+'" when="{\'0\': \'Expiro\', \'1\': \'1 día\', \'other\': \''+$rootScope.daysRemaining+' días\'}"></ng-pluralize></p>';
             $ionicPopup.alert({
-                title: 'Suscripción',
+                title: 'Cuenta',
                 template: html
             });
         }
@@ -66,9 +66,9 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
         if (dateNow > dateSubscription){
             if (site != ''){
                 $ionicPopup.alert({
-                    title: 'Suscripción',
-                    template: 'Para poder acceder a tus '+site+' debes tener tu suscripción activa.',
-                    okText:'SUSCRÍBETE',
+                    title: 'Cuenta',
+                    template: 'Para poder acceder a tus '+site+' debes tener tu cuenta activa.',
+                    okText:'Activar',
                 }).then(function (res) {
                     if (res) {
                         $state.go('app.account');

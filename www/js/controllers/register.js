@@ -2,6 +2,7 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
 
     $scope.data = {};
     $scope.error = false;
+    var errorMsg = "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde.";
 
     $scope.register = function () {
 
@@ -40,7 +41,7 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             $ionicLoading.show({
                 template: 'Creando Cuenta...'
             });
-
+            
             user.register({
                 username: $scope.data.email,
                 firstName: $scope.data.name,
@@ -52,14 +53,14 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                     $state.go('confirm');
                 } else {
                     $ionicPopup.alert({
-                        title: "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde."
+                        title: errorMsg
                     });
                 }
             }, function (error) {
                 $ionicLoading.hide();
+                var msg = errorMsg;
                 $ionicPopup.alert({
-                    title: 'Findness - error en registro',
-                    template: error.data.message
+                    title: msg
                 });
             });
         }

@@ -17,14 +17,14 @@
         <content has-header="true" padding="true">
             <div class="list">
                 <div class="item padding">
-                    <p><b>Su suscripci&oacute;n es:</b> {{typeSubscription}}</p>
+                    <p><b>Su cuenta es:</b> {{typeSubscription}}</p>
                     <p><b>Fecha de inicio:</b> {{subscription.startDate | date:'dd/MM/yyyy'}}</p>
                     <p><b>Fecha de culminaci&oacute;n:</b> {{subscription.endDate | date:'dd/MM/yyyy'}}</p>
                     <p><b>D&iacute;as restantes:</b> {{daysRemaining }}</p>
                 </div>
                 <div class="item padding">
                     <button class="button button-block button-positive" ui-sref="app.payment">
-                        Añadir suscripción
+                        Añadir Cuenta
                     </button>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col">Fecha</div>
                         <!--<div class="col">Nro.</div>-->
-                        <div class="col">Monto Suscripción</div>
+                        <div class="col">Monto Cuenta</div>
                     </div>
                     <div class="row" ng-repeat="transaction in view.transactions" ng-click="showDetail(transaction)">
                         <div class="col">{{transaction.created| date:'dd/MM/yyyy'}}</div>

@@ -153,9 +153,9 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             } else {
                 if (validate == true) {
                     $ionicPopup.alert({
-                        title: 'Suscripción',
+                        title: 'Cuenta',
                         template: '<div>Se han encontrado ' + searchService.getNonConsultedElements() + ' empresas.</div>',
-                        okText: 'SUSCRÍBETE',
+                        okText: 'Activar',
                     }).then(function (res) {
                         if (res) {
                             $state.go('app.account');

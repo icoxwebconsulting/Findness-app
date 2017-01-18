@@ -44,7 +44,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         if ($scope.daysRemaining != 0){
             $ionicPopup.alert({
                 title: 'Findness - Pago',
-                template: 'Su suscripción está activa, no puede comprar una nueva.'
+                template: 'Su registro está activo, no puede comprar uno nuevo.'
             });
             return;
         }
@@ -186,7 +186,7 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
         if (!_cardInformation.lapse) {
             $ionicPopup.alert({
                 title: 'Findness - Pago',
-                template: 'Debe seleccionar una suscripción.'
+                template: 'Debe seleccionar una Cuenta.'
             });
             return;
         } else if(_cardInformation.amount < 0.47){
