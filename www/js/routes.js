@@ -121,6 +121,16 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             }
         })
 
+        .state('app.orderRoutes', {
+            url: '/order-routes',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/orderRoutes.html',
+                    controller: 'OrderRoutesCtrl'
+                }
+            }
+        })
+
         .state('app.companies', {
             cache: false,
             url: '/companies',

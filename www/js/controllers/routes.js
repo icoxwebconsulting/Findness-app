@@ -1,4 +1,4 @@
-app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading, $ionicPopup, $ionicModal, $ionicListDelegate, routeService, searchService, map, subscriptionSrv) {
+app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading, $ionicPopup, $ionicModal, $ionicListDelegate, routeService, searchService, map, subscriptionSrv, userDatastore) {
 
     $scope.items;
     $scope.type = {
@@ -14,13 +14,40 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
     }
 
     $scope.$on('$ionicView.enter', function (e) {
-        getRoutes();
+//        var newRoute = JSON.parse(userDatastore.getNewRoute());
+        if (userDatastore.getNewRoute()){
+            getRoutes();
+            showCallRoute(JSON.parse(userDatastore.getNewRoute()));
+            userDatastore.removeNewRoute();
+        }else{
+            getRoutes();
+        }
+
     });
 
     $scope.callRoute = function (item) {
         var res = subscriptionSrv.validateSubscription('rutas');
+
         if (res == true){
-            console.info('expired subscription');
+
+        }else {
+            $ionicLoading.show({
+                template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+            });
+
+            map.resetMap().then(function () {
+                routeService.getRouteDetailOrder(item).then(function (detail) {
+                    showCallRoute(item);
+                })
+            })
+
+        }
+
+    };
+
+    function showCallRoute(item){
+        var res = subscriptionSrv.validateSubscription('rutas');
+        if (res == true){
         }else{
             $ionicLoading.show({
                 template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
@@ -60,7 +87,7 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
                 });
             });
         }
-    };
+    }
 
     $scope.deleteRoute = function (item, index) {
         $ionicPopup.show({

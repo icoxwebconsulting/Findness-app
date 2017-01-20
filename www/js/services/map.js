@@ -1,4 +1,4 @@
-app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup, subscriptionSrv) {
+app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup, subscriptionSrv, $state) {
 
     //var map;
     var markers = [];
@@ -76,6 +76,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         }).then(function (modal) {
             modal.show();
         });
+        $state.go('app.orderRoutes');
     }
 
     function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position) {

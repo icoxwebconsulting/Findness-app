@@ -1,7 +1,9 @@
-app.service('routeService', function ($q, $rootScope, routes, userDatastore, COMPANY_STYLE) {
+app.service('routeService', function ($q, $rootScope, routes, userDatastore, COMPANY_STYLE, $state) {
 
     var directionsService = new google.maps.DirectionsService();
     var polylines = [];
+    var arrayPointCurrent = [];
+    var newPoints = [];
     var routeMode = false; //modo de crear ruta
     var viewRoute = false; //modo de visualizar ruta
     var route = {
@@ -21,7 +23,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 nro += 1;
             }
         } catch (e) {
-            console.log(e);
+
         }
     }
 
@@ -165,7 +167,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         if (typeof route.points[id] != "undefined") {
             delete route.points[id];
             route.isEdit = true;
-            console.log(route);
             return true;
         } else {
             return false;
@@ -179,16 +180,31 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
             arr.push(p);
         }
 
+        for (var i = 0; i < arr.length; i++){
+            arrayPointCurrent.push([arr[i], route.points[arr[i]].position.lat(), route.points[arr[i]].position.lng()]);
+        }
+        orderPoint();
+
+        var newPointsRoute = [];
+
+        for (var j = 0; j < newPoints.length; j++){
+            newPointsRoute.push(newPoints[j][0]);
+        }
+
+        resetArrays();
+
+        reDrawMarkers();
+
         return routes(token.accessToken).saveRoute({
             name: route.name,
             transport: route.transport,
-            points: JSON.stringify(arr)
+            points: JSON.stringify(newPointsRoute)
         }).$promise
             .then(function (response) {
-                console.log(response);
                 routeMode = false;
                 viewRoute = true; //como estoy mostrando la ruta, paso al modo de edición
                 route.id = response.id;
+                userDatastore.setNewRoute(JSON.stringify(response));
                 return response;
             }, function (e) { //error
                 throw e;
@@ -196,7 +212,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
     }
 
     function finishEditRoute() {
-        console.log("la ruta editada", route);
 
         if (route.isEdit) {
             var token = userDatastore.getTokens();
@@ -205,14 +220,26 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 arr.push(p);
             }
 
+            for (var i = 0; i < arr.length; i++){
+                arrayPointCurrent.push([arr[i], route.points[arr[i]].position.lat(), route.points[arr[i]].position.lng()]);
+            }
+            orderPoint();
+
+            var newPointsRoute = [];
+
+            for (var j = 0; j < newPoints.length; j++){
+                newPointsRoute.push(newPoints[j][0]);
+            }
+            resetArrays();
+            reDrawMarkers();
+
             return routes(token.accessToken).editRoute({
                 mapRoute: route.id
             }, {
                 name: route.name,
                 transport: route.transport,
-                points: JSON.stringify(arr)
+                points: JSON.stringify(newPointsRoute)
             }).$promise.then(function (response) {
-                console.log(response);
                 routeMode = false;
                 viewRoute = true; //como estoy mostrando la ruta, paso al modo de edición
                 route.isEdit = false;
@@ -263,7 +290,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 return response;
             })
             .catch(function (response) {
-                console.log(response);
+
             });
     }
 
@@ -317,7 +344,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         return routes(token.accessToken).deleteRoute(null, {
             mapRoute: id
         }).$promise.then(function (response) {
-            console.log(response);
             return response;
         }, function (e) { //error
             throw e;
@@ -342,7 +368,6 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         return routes(token.accessToken).getRouteDetail(null, {
             mapRoute: item.id
         }).$promise.then(function (detail) {
-            console.log(detail);
             routeMode = false;
             viewRoute = true; //modo de visualizar ruta
 
@@ -361,7 +386,7 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         try {
             route.points[companyId].marker = marker;
         } catch (e) {
-            console.log(e);
+
         }
     }
 
@@ -379,6 +404,115 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
             lastPoint: null,
             points: {}
         };
+    }
+
+    function addPointCurrent(points) {
+        for(var i = 0;i < points.length; i++){
+            arrayPointCurrent.push([points[i]['id'],points[i]['latitude'], points[i]['longitude']]);
+        }
+    }
+
+    function orderPoint() {
+        if (arrayPointCurrent.length > 0) {
+            var currentElement = arrayPointCurrent.shift();
+            newPoints.push(currentElement);
+            if (arrayPointCurrent.length > 0) {
+                arrayPointCurrent = orderByPoint(currentElement, arrayPointCurrent);
+                orderPoint();
+            }else{
+                return newPoints;
+            }
+        }else
+            return newPoints;
+    }
+
+    function orderByPoint(point, dataArray) {
+        var lastDistance = null;
+        var distanceShort = null;
+        for (var i = 0; i < dataArray.length; i++) {
+
+            var currentDistance = Math.round(calcDistance(point, dataArray[i]));
+            if(lastDistance == null)
+            {
+                lastDistance = currentDistance;
+                distanceShort = dataArray[i];
+            }else{
+                if (currentDistance < lastDistance ) {
+                    lastDistance = currentDistance;
+                    distanceShort = dataArray[i];
+                }
+            }
+        }
+
+        var result = [];
+
+        result.push(distanceShort);
+        for (var k = 0; k < dataArray.length; k++) {
+            if (distanceShort[1] != dataArray[k][1] && distanceShort[2] != dataArray[k][2]) {
+                result.push(dataArray[k])
+            }
+        }
+
+        return result;
+    }
+
+    //calculates distance between two points in meters
+    function calcDistance(point, nextPoint) {
+        var dataOne = new google.maps.LatLng(point[1],point[2]);
+        var dataTwo = new google.maps.LatLng(nextPoint[1], nextPoint[2]);
+
+        var result = (google.maps.geometry.spherical.computeDistanceBetween(dataOne, dataTwo)).toFixed(2);
+        return result;
+    }
+
+    function resetArrays(){
+        arrayPointCurrent = [];
+        newPoints = [];
+    }
+
+    function getRouteDetailOrder(item){
+        var token = userDatastore.getTokens();
+
+        return routes(token.accessToken).getRouteDetail(null, {
+            mapRoute: item.id
+        }).$promise.then(function (detail) {
+//            updateRoutes(detail);
+//            return detail;
+            return updateRoutes(detail).then(function () {
+                return detail;
+            })
+
+        }, function (e) { //error
+            throw e;
+        });
+    }
+
+    function updateRoutes(item) {
+        var deferred = $q.defer();
+        addPointCurrent(item.points);
+
+        orderPoint();
+        var newPointsRoute = [];
+
+        for (var i = 0; i < newPoints.length; i++) {
+            newPointsRoute.push(newPoints[i][0]);
+        }
+
+        resetArrays();
+
+        return routes(userDatastore.getTokens().accessToken).editRoute({
+            mapRoute: item.id
+        }, {
+            name: item.name,
+            transport: item.transport,
+            points: JSON.stringify(newPointsRoute)
+        }).$promise.then(function (response) {
+            return response
+        }, function (e) {
+            throw e;
+        });
+
+        deferred.promise;
     }
 
     return {
@@ -402,6 +536,11 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
         getRouteDetail: getRouteDetail,
         reDrawMarkers: reDrawMarkers,
         addMarkerToPoint: addMarkerToPoint,
-        resetRoutes: resetRoutes
+        resetRoutes: resetRoutes,
+        addPointCurrent: addPointCurrent,
+        orderPoint: orderPoint,
+        orderByPoint: orderByPoint,
+        calcDistance: calcDistance,
+        getRouteDetailOrder: getRouteDetailOrder
     };
 });

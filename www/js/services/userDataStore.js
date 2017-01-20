@@ -128,6 +128,17 @@ app.factory('userDatastore', function () {
         return window.localStorage.getItem('result_payment');
     }
 
+    function setNewRoute(data) {
+        window.localStorage.setItem('newRoute', data);
+    }
+
+    function getNewRoute() {
+        return window.localStorage.getItem('newRoute');
+    }
+    function removeNewRoute() {
+        return localStorage.removeItem('newRoute');
+    }
+
     return {
         setIsLogged: setIsLogged,
         getIsLogged: getIsLogged,
@@ -158,6 +169,9 @@ app.factory('userDatastore', function () {
         setSubscription: setSubscription,
         getSubscription: getSubscription,
         setDaysRemaining: setDaysRemaining,
-        getDaysRemaining: getDaysRemaining
+        getDaysRemaining: getDaysRemaining,
+        setNewRoute: setNewRoute,
+        getNewRoute: getNewRoute,
+        removeNewRoute: removeNewRoute
     };
 });
