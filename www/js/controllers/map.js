@@ -1,4 +1,4 @@
-app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, map, cart, searchService, routeService, subscriptionSrv) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, map, cart, searchService, routeService, subscriptionSrv, userDatastore, $ionicModal) {
 
     subscriptionSrv.requestSubscription(true, 'búsquedas');
 
@@ -63,6 +63,32 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             }
             console.log(modes, searchService.withResults());
         }
+
+        if (userDatastore.getModalInfo()){
+            var modalInfo = JSON.parse(userDatastore.getModalInfo());
+            $scope.name = modalInfo.name;
+            $scope.transport = modalInfo.transport;
+            $scope.counter = modalInfo.counter;
+            $scope.distance = modalInfo.distance;
+            $scope.duration = modalInfo.duration;
+
+            $ionicModal.fromTemplateUrl('templates/route-info.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                modal.show();
+                userDatastore.removeModalInfo();
+            });
+        }
+
+        if (userDatastore.getEditRoute()){
+            $ionicPopup.alert({
+                title: "Findness",
+                template: "Se han guardado los cambios en la ruta correctamente."
+            });
+            userDatastore.removeEditRoute();
+        }
+
     });
 
     $scope.$on('$ionicView.beforeLeave', function (e) {
@@ -84,7 +110,6 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     function proccessMarkers(query) {
         var showMyLocation = false;
-        console.log("pasada por processMarkers");
         map.resize();
         var result = searchService.getResultSearch();
         map.processMakers(result.items, $scope.viewRoute);//2d parameter to use numeric icons
@@ -158,6 +183,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                             map.deleteRouteLines().then(function () {
                                 routeService.initRoute($scope.formRoute.name.trim(), $scope.formRoute.selectedOption.id);
                             });
+                            userDatastore.setRouteValid(true);
                         } else {
                             $scope.formRoute.error = true;
                             e.preventDefault();
@@ -185,6 +211,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             $scope.viewRoute = true;
             $ionicLoading.hide();
             $scope.showRouteInfo();
+            userDatastore.removeRouteValid();
         }).catch(function () {
             $ionicLoading.hide();
             $ionicPopup.alert({
@@ -199,10 +226,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         });
         routeService.finishEditRoute().then(function () {
             $scope.routeMode = false;
-            $ionicPopup.alert({
+            /*$ionicPopup.alert({
                 title: "Findness",
                 template: "Se han guardado los cambios en la ruta correctamente."
-            });
+            });*/
             $ionicLoading.hide();
         }).catch(function (e) {
             $ionicLoading.hide();
@@ -215,6 +242,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                 template: text
             });
         });
+        $state.go('app.orderRoutes');
     };
 
     $scope.showRouteInfo = function () {

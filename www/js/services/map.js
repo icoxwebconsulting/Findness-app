@@ -1,4 +1,4 @@
-app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup, subscriptionSrv, $state) {
+app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup, subscriptionSrv, $state, userDatastore) {
 
     //var map;
     var markers = [];
@@ -69,12 +69,23 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             modalScope.duration += parseFloat((temp) ? temp : 0);
             modalScope.counter += 1;
         }
+
+        var infoRoute = {};
+
+        infoRoute["name"] = modalScope.name;
+        infoRoute["transport"] = modalScope.transport;
+        infoRoute["distance"] = modalScope.distance;
+        infoRoute["duration"] = modalScope.duration;
+        infoRoute["counter"] = modalScope.counter;
+
+        userDatastore.setModalInfo(JSON.stringify(infoRoute));
+
         //Muestra información de la ruta
         $ionicModal.fromTemplateUrl('templates/route-info.html', {
             scope: modalScope,
             animation: 'slide-in-up'
         }).then(function (modal) {
-            modal.show();
+//            modal.show();
         });
         $state.go('app.orderRoutes');
     }
@@ -185,7 +196,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         modalScope.openDetail = function () {
             var res = subscriptionSrv.validateSubscription('búsquedas');
             if (res == true){
-                console.info('expired subscription');
                 modalScope.thisModal.remove();
             }else{
                 $ionicModal.fromTemplateUrl('templates/company-detail.html', {
@@ -472,11 +482,18 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
 
     function drawDirections(node, previous, path, data) {
         //directionsDisplay.setDirections(result);
+        var strokeOpacity;
+
+        if (userDatastore.getRouteValid()){
+            strokeOpacity = 0.0;
+        }else {
+            strokeOpacity = 1.0;
+        }
         var routePath = new google.maps.Polyline({
             path: path,
             geodesic: true,
             strokeColor: '#FF0000',
-            strokeOpacity: 1.0,
+            strokeOpacity: strokeOpacity,
             strokeWeight: 3
         });
 

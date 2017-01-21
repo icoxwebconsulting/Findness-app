@@ -17,7 +17,7 @@ app.controller('OrderRoutesCtrl', function ($rootScope, $scope, $state, $ionicLo
         if (res == true){
         }else{
             $ionicLoading.show({
-                template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
+                template: '<p>Generando ruta lógica...</p><p><ion-spinner icon="android"></ion-spinner></p>'
             });
 
             //borro las rutas

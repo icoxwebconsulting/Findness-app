@@ -15,13 +15,13 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
 
     $scope.$on('$ionicView.enter', function (e) {
 //        var newRoute = JSON.parse(userDatastore.getNewRoute());
-        if (userDatastore.getNewRoute()){
+        /*if (userDatastore.getNewRoute()){
             getRoutes();
             showCallRoute(JSON.parse(userDatastore.getNewRoute()));
             userDatastore.removeNewRoute();
         }else{
-            getRoutes();
-        }
+        }*/
+        getRoutes();
 
     });
 
@@ -31,9 +31,9 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
         if (res == true){
 
         }else {
-            $ionicLoading.show({
+            /*$ionicLoading.show({
                 template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
-            });
+            });*/
 
             map.resetMap().then(function () {
                 routeService.getRouteDetailOrder(item).then(function (detail) {

@@ -125,7 +125,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             url: '/order-routes',
             views: {
                 'menuContent': {
-                    templateUrl: 'templates/orderRoutes.html',
+                    templateUrl: 'templates/map.html',
                     controller: 'OrderRoutesCtrl'
                 }
             }

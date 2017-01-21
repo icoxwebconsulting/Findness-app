@@ -135,8 +135,45 @@ app.factory('userDatastore', function () {
     function getNewRoute() {
         return window.localStorage.getItem('newRoute');
     }
+
     function removeNewRoute() {
         return localStorage.removeItem('newRoute');
+    }
+
+    function setRouteValid(data) {
+        window.localStorage.setItem('routeValid', data);
+    }
+
+    function getRouteValid() {
+        return window.localStorage.getItem('routeValid');
+    }
+
+    function removeRouteValid() {
+        return localStorage.removeItem('routeValid');
+    }
+
+    function setModalInfo(data) {
+        window.localStorage.setItem('modalInfo', data);
+    }
+
+    function getModalInfo() {
+        return window.localStorage.getItem('modalInfo');
+    }
+
+    function removeModalInfo() {
+        return localStorage.removeItem('modalInfo');
+    }
+
+    function setEditRoute(data) {
+        window.localStorage.setItem('editRoute', data);
+    }
+
+    function getEditRoute() {
+        return window.localStorage.getItem('editRoute');
+    }
+
+    function removeEditRoute() {
+        return localStorage.removeItem('editRoute');
     }
 
     return {
@@ -172,6 +209,15 @@ app.factory('userDatastore', function () {
         getDaysRemaining: getDaysRemaining,
         setNewRoute: setNewRoute,
         getNewRoute: getNewRoute,
-        removeNewRoute: removeNewRoute
+        removeNewRoute: removeNewRoute,
+        setRouteValid: setRouteValid,
+        getRouteValid: getRouteValid,
+        removeRouteValid: removeRouteValid,
+        getModalInfo: getModalInfo,
+        setModalInfo: setModalInfo,
+        removeModalInfo: removeModalInfo,
+        setEditRoute: setEditRoute,
+        getEditRoute: getEditRoute,
+        removeEditRoute: removeEditRoute
     };
 });

@@ -243,6 +243,8 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 routeMode = false;
                 viewRoute = true; //como estoy mostrando la ruta, paso al modo de edición
                 route.isEdit = false;
+                userDatastore.setNewRoute(JSON.stringify(response));
+                userDatastore.setEditRoute(true);
                 return response;
             }, function (e) { //error
                 throw e;
