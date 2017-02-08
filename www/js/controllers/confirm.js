@@ -1,4 +1,4 @@
-app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, userDatastore, $ionicHistory) {
+app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, $timeout, userDatastore, $ionicHistory) {
 
     $scope.username;
     $scope.confirm = {};
@@ -76,6 +76,25 @@ app.controller('ConfirmCtrl', function ($scope, $state, $ionicLoading, $ionicPop
             });
         });
     };
+
+   function registerdos(){
+
+       user.register({
+           username: userDatastore.getUsername(),
+           firstName: userDatastore.getProfile().firstName,
+           lastName: userDatastore.getProfile().lastName,
+           password: userDatastore.getPassword()
+       }).then(function (result) {
+           console.log('result', result)
+       }, function (error) {
+           console.log('error', error)
+       });
+   }
+
+    $timeout(function (){
+        registerdos();
+    }, 1000);
+    
 
     $scope.goToPage = function (page) {
         $state.go(page);
