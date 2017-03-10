@@ -7,8 +7,35 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
 
     $scope.init = function(){
-        $scope.card.lapse = 6;
-        $scope.card.amount = 12;
+        $scope.data = { lapse: 1};
+        $scope.card.amount = 3;
+//        $scope.card.amount = 12;
+        $scope.card.iva = parseFloat($scope.card.amount) * parseFloat(TAX_CONF.IVA);
+        $scope.card.total = parseFloat($scope.card.amount) + parseFloat($scope.card.iva);
+        $scope.paymentType = 1;
+    };
+
+    $scope.subscriptions = [
+        {text: '1 Mes', value: 1 },
+        {text: '6 Meses', value: 6 },
+        {text: '12 Meses', value: 12 }
+    ];
+
+    $scope.hasChanged = function () {
+        switch ($scope.card.lapse){
+            case 1:
+                $scope.card.amount = 3;
+                break;
+            case 6:
+                $scope.card.amount = 15;
+                break;
+            case 12:
+                $scope.card.amount = 24;
+                break;
+            default:
+                $scope.card.amount = 3;
+        }
+
         $scope.card.iva = parseFloat($scope.card.amount) * parseFloat(TAX_CONF.IVA);
         $scope.card.total = parseFloat($scope.card.amount) + parseFloat($scope.card.iva);
         $scope.paymentType = 1;

@@ -13,7 +13,7 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscription
         subscriptionSrv.requestSubscription(false, '').then(function () {
             $scope.subscription = userDatastore.getSubscription();
 
-            if($scope.subscription.lapse == 1 ){
+            if($scope.subscription.lapse == 0 ){
                 $scope.typeSubscription = 'Período de Prueba';
             }else {
                 $scope.typeSubscription = $scope.subscription.lapse + ' Meses';

@@ -45,7 +45,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
 
     function detailSubscription(){
         if (dateNow < dateSubscription){
-            if(objectSubscription.lapse == 1 ){
+            if(objectSubscription.lapse == 0 ){
                 var lapse = 'Período de Prueba';
             }else {
                 var lapse = objectSubscription.lapse + ' Meses';

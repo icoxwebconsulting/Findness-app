@@ -25,7 +25,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         $scope.changeTotal();
         $scope.view.subscription = userDatastore.getSubscription();
 
-        if($scope.view.subscription.lapse == 1 ){
+        if($scope.view.subscription.lapse == 0 ){
             $scope.lapse = 'Período de Prueba';
         }else {
             $scope.lapse = 'Suscripción '+$scope.view.subscription.lapse+ ' Meses';

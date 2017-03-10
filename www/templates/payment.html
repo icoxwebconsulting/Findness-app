@@ -44,10 +44,18 @@
 
                 <form name="paymentForm" novalidate ng-submit="makeCreditCardPayment(card, paymentForm)">
                     <label class="item item-input">
-                        <span class="item-label">Producto: </span>
-                        <span class="item-note" style="font-size: 13px; margin-left: 15px">{{"Suscripción 6 meses"|uppercase}}</span>
+                        <span class="item-label">Seleccione un Producto: </span>
+                        <!--<span class="item-note" style="font-size: 13px; margin-left: 15px">{{"Suscripción 6 meses"|uppercase}}</span>-->
                     </label>
                     <!--<ion-radio ng-model="card.lapse" name="cardLapse" ng-value="12">12 meses</ion-radio>-->
+                    <ion-radio ng-repeat="item in subscriptions"
+                               ng-init="card.lapse = 1"
+                               ng-value="item.value"
+                               name="cardLapse"
+                               ng-model="card.lapse"
+                               ng-change="hasChanged()">
+                        Suscripción de {{item.text}}
+                    </ion-radio>
 
                     <label class="item item-input">
                         <span class="input-label">Total sin impuestos</span>
