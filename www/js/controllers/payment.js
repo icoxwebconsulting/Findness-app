@@ -16,9 +16,9 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
     };
 
     $scope.subscriptions = [
-        {text: '1 Mes', value: 1 },
-        {text: '6 Meses', value: 6 },
-        {text: '12 Meses', value: 12 }
+        {text: '1 Mes', value: 1, amount: 3 },
+        {text: '6 Meses', value: 6, amount: 15 },
+        {text: '12 Meses', value: 12, amount: 24 }
     ];
 
     $scope.hasChanged = function () {

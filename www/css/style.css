@@ -590,3 +590,11 @@
 .justify-text {
     text-align: justify;
 }
+
+.list {
+    position: relative;
+    padding-top: 1px;
+    padding-bottom: 0px!important;
+    padding-left: 0;
+    margin-bottom: 0px!important;
+}
