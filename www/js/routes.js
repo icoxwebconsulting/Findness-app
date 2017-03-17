@@ -82,7 +82,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         })
 
         .state('app.payment', {
-            url: '/payment',
+            url: '/payment/{month}',
             views: {
                 'menuContent': {
                     templateUrl: 'templates/payment.html',
@@ -168,6 +168,16 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 'menuContent': {
                     templateUrl: 'templates/account.html',
                     controller: 'AccountCtrl'
+                }
+            }
+        })
+
+        .state('app.pricing', {
+            url: '/pricing',
+            views: {
+                'menuContent': {
+                    templateUrl: 'templates/pricing.html',
+                    controller: 'PricingCtrl'
                 }
             }
         })

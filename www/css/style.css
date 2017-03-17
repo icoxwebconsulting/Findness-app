@@ -8,6 +8,28 @@
     url("../lib/ionic/fonts/Roboto-Regular.svg") format("svg");
 }
 
+@font-face {
+    font-family: 'fontawesome';
+    src:url('../lib/ionic/fonts/fontawesome-webfont.eot');
+    src:url('../lib/ionic/fonts/fontawesome-webfont.eot') format('embedded-opentype'),
+        url('../lib/ionic/fonts/fontawesome-webfont.woff') format('woff'),
+        url('../lib/ionic/fonts/fontawesome-webfont.ttf') format('truetype'),
+        url('../lib/ionic/fonts/fontawesome-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon-road:before {
+    font-family: "fontawesome";
+    content: "\f018";
+}
+
+.icon-center {
+    position: absolute;
+    top: 30px;
+    left: 5px;
+}
+
 ::-webkit-input-placeholder{
     font-family:  Roboto-Regular!important;
     font-size: 12px !important;
@@ -597,4 +619,83 @@
     padding-bottom: 0px!important;
     padding-left: 0;
     margin-bottom: 0px!important;
+}
+
+.month {
+    margin-top: 25px;
+}
+.month-text{
+    color: darkgray;
+    font-weight: bold;
+}
+
+.pricing {
+    color: darkgray;
+    font-weight: 100;
+}
+
+.recommended{
+    color: #ffffff!important;
+    font-weight: bold;
+}
+
+.recommended-pricing {
+    color: #ffffff!important;
+    font-weight: 100;
+}
+
+.icons-pricing {
+    font-size: 2.2rem;
+    color: #387ef5;
+}
+
+.include-text{
+    /*font-size: large!important;*/
+    font-weight: bold!important;
+    color: #387ef5;
+}
+
+.card-pricing {
+    margin: 0px!important;
+}
+
+.item-pricing{
+    padding: 0px!important;
+}
+
+#shape-pricing {
+    text-align: center;
+    background: #387ef5;
+    display: inline-block;
+    height: 20px;
+    /*margin-left: 20px;*/
+    /*margin-top: 55px;*/
+    position: relative;
+    top:-13px;
+    width: 100px;
+}
+
+#shape-pricing:before {
+    border-top: 12px solid #387ef5;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    content: "";
+    height: 0;
+    left: 0;
+    position: absolute;
+    top: 20px;
+    width: 0;
+}
+
+.text-recommended{
+    margin-top: 3px;
+    color: #ffffff;
+}
+
+.ul-recommended {
+    margin-top: -12px;
+}
+
+.ul-pricing {
+    margin-top: 36px;
 }
