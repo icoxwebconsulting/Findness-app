@@ -1,4 +1,4 @@
-app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoading, $ionicPopup, TAX_CONF, userDatastore, subscriptionSrv) {
+app.controller('PaymentCtrl', function ($scope, $state, $stateParams, $ionicLoading, $ionicPopup, paymentSrv, TAX_CONF, userDatastore, subscriptionSrv) {
 
     $scope.card = {};
     $scope.paymentType = 0;
@@ -7,19 +7,42 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
 
     $scope.init = function(){
-        $scope.data = { lapse: 1};
-        $scope.card.amount = 3;
+//        $scope.data = { lapse: 1};
+//        $scope.card.amount = 3;
 //        $scope.card.amount = 12;
+        console.info('$stateParams.month', typeof $stateParams.month);
+
+        var month = parseInt($stateParams.month);
+
+        switch (month){
+            case 1:
+                $scope.card.amount = 3;
+                $scope.subscriptions = '1 Meses';
+                break;
+            case 6:
+                $scope.card.amount = 15;
+                $scope.subscriptions = '6 Meses';
+                break;
+            case 12:
+                $scope.card.amount = 24;
+                $scope.subscriptions = '12 Meses';
+                break;
+            default:
+                $scope.card.amount = 3;
+                $scope.subscriptions = '1 Meses';
+        }
+
+        $scope.card.lapse = month;
         $scope.card.iva = parseFloat($scope.card.amount) * parseFloat(TAX_CONF.IVA);
         $scope.card.total = parseFloat($scope.card.amount) + parseFloat($scope.card.iva);
         $scope.paymentType = 1;
     };
 
-    $scope.subscriptions = [
-        {text: '1 Mes', value: 1, amount: 3 },
-        {text: '6 Meses', value: 6, amount: 15 },
-        {text: '12 Meses', value: 12, amount: 24 }
-    ];
+//    $scope.subscriptions = [
+//        {text: '1 Meses', value: 1, amount: 3 },
+//        {text: '6 Meses', value: 6, amount: 15 },
+//        {text: '12 Meses', value: 12, amount: 24 }
+//    ];
 
     $scope.hasChanged = function () {
         switch ($scope.card.lapse){
@@ -210,13 +233,13 @@ app.controller('PaymentCtrl', function ($scope, $state, paymentSrv, $ionicLoadin
 
     $scope.makeCreditCardPayment = function (_cardInformation, paymentForm) {
         //validar formulario
-        if (!_cardInformation.lapse) {
+        /*if (!_cardInformation.lapse) {
             $ionicPopup.alert({
                 title: 'Findness - Pago',
                 template: 'Debe seleccionar una suscripción.'
             });
             return;
-        } else if(_cardInformation.amount < 0.47){
+        } else*/ if(_cardInformation.amount < 0.47){
             $ionicPopup.alert({
                 title: 'Findness - Pago',
                 template: 'El saldo mímino que acepta la plataforma para la recarga es de 0.47 €.'
