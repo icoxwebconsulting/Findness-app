@@ -1,4 +1,4 @@
-app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicSideMenuDelegate, $ionicPopup, userDatastore, user, cart) {
+app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicSideMenuDelegate, $ionicPopup, userDatastore, user, cart, subscriptionSrv) {
 
     $scope.dragStatus = true;
     userDatastore.setRefreshingAccessToken(0);
@@ -22,6 +22,19 @@ app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform,
 
     $scope.$on('menu:drag', function (event, args) {
         $scope.dragStatus = args;
+
+        subscriptionSrv.requestSubscription(false, '').then(function () {
+            $scope.subscription = userDatastore.getSubscription();
+
+            if($scope.subscription.lapse == 0 ){
+                $scope.typeSubscription = 'Período de Prueba';
+            }else {
+                $scope.typeSubscription = $scope.subscription.lapse + ' Meses';
+            }
+
+            $scope.daysRemaining = userDatastore.getDaysRemaining();
+        });
+
         $scope.daysRemaining = userDatastore.getDaysRemaining();
     });
 
