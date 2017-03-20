@@ -25,7 +25,13 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         $scope.changeTotal();
         $scope.view.subscription = userDatastore.getSubscription();
 
-        if($scope.view.subscription.lapse == 0 ){
+        var startDate = moment($scope.view.subscription.startDate).format('YYYY-MM-DD');
+        var endDate = moment($scope.view.subscription.endDate).format('YYYY-MM-DD');
+        var daySubscription = moment(moment(endDate).diff(moment(startDate), 'days'))._i;
+
+        if (($scope.view.subscription.lapse == 1 ) && (daySubscription < 7)){
+            $scope.lapse = 'Período de Prueba';
+        }else if($scope.view.subscription.lapse == 0 ){
             $scope.lapse = 'Período de Prueba';
         }else {
             $scope.lapse = 'Suscripción '+$scope.view.subscription.lapse+ ' Meses';

@@ -12,14 +12,21 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscription
 
         subscriptionSrv.requestSubscription(false, '').then(function () {
             $scope.subscription = userDatastore.getSubscription();
+            var startDate = moment($scope.subscription.startDate).format('YYYY-MM-DD');
+            var endDate = moment($scope.subscription.endDate).format('YYYY-MM-DD');
+            var daySubscription = moment(moment(endDate).diff(moment(startDate), 'days'))._i;
 
-            if($scope.subscription.lapse == 0 ){
+            if (($scope.subscription.lapse == 1 ) && (daySubscription > 7)){
                 $scope.typeSubscription = 'Período de Prueba';
+                $scope.daysRemaining = 0;
+            } else if($scope.subscription.lapse == 0 ){
+                $scope.typeSubscription = 'Período de Prueba';
+                $scope.daysRemaining = userDatastore.getDaysRemaining();
             }else {
                 $scope.typeSubscription = $scope.subscription.lapse + ' Meses';
+                $scope.daysRemaining = userDatastore.getDaysRemaining();
             }
 
-            $scope.daysRemaining = userDatastore.getDaysRemaining();
         });
         $scope.view = {};
         self.getTransactions();

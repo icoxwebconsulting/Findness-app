@@ -45,7 +45,14 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
 
     function detailSubscription(){
         if (dateNow < dateSubscription){
-            if(objectSubscription.lapse == 0 ){
+
+            var startDate = moment(objectSubscription.startDate).format('YYYY-MM-DD');
+            var endDate = moment(objectSubscription.endDate).format('YYYY-MM-DD');
+            var daySubscription = moment(moment(endDate).diff(moment(startDate), 'days'))._i;
+
+            if ((objectSubscription.lapse == 1 ) && (daySubscription > 7)){
+                var lapse = 'Período de Prueba';
+            }else if(objectSubscription.lapse == 0 ){
                 var lapse = 'Período de Prueba';
             }else {
                 var lapse = objectSubscription.lapse + ' Meses';
