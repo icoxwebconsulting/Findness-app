@@ -86,7 +86,7 @@
 
                     <label class="item item-input item-stacked-label">
                         <span class="input-label">Número de tarjeta</span>
-                        <input type="text" ng-model="card.number" cc-number cc-eager-type name="ccNumber" cc-type="card.cardType" cc-format placeholder="Ingrese el número de su tarjeta..." ng-required="true">
+                        <input type="text" ng-model="card.number" maxlength="19" cc-number cc-eager-type name="ccNumber" cc-type="card.cardType" cc-format placeholder="Ingrese el número de su tarjeta..." ng-required="true">
                     </label>
 
                     <label class="item item-input">

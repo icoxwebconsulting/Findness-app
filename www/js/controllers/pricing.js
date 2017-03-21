@@ -7,7 +7,7 @@ app.controller('PricingCtrl', function ($scope, $state, paymentSrv, subscription
     $scope.init();
 
     $scope.$on('$ionicView.enter', function (e) {
-
+        $scope.$emit('menu:drag', true);
     });
 
 

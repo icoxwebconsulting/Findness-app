@@ -16,7 +16,7 @@ app.controller('AccountCtrl', function ($scope, $state, paymentSrv, subscription
             var endDate = moment($scope.subscription.endDate).format('YYYY-MM-DD');
             var daySubscription = moment(moment(endDate).diff(moment(startDate), 'days'))._i;
 
-            if (($scope.subscription.lapse == 1 ) && (daySubscription > 7)){
+            if (($scope.subscription.lapse == 1 ) && (daySubscription == 7)){
                 $scope.typeSubscription = 'Período de Prueba';
                 $scope.daysRemaining = 0;
             } else if($scope.subscription.lapse == 0 ){

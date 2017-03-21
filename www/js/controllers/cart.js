@@ -29,7 +29,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         var endDate = moment($scope.view.subscription.endDate).format('YYYY-MM-DD');
         var daySubscription = moment(moment(endDate).diff(moment(startDate), 'days'))._i;
 
-        if (($scope.view.subscription.lapse == 1 ) && (daySubscription < 7)){
+        if (($scope.view.subscription.lapse == 1 ) && (daySubscription == 7)){
             $scope.lapse = 'Período de Prueba';
         }else if($scope.view.subscription.lapse == 0 ){
             $scope.lapse = 'Período de Prueba';
