@@ -53,7 +53,7 @@ app.controller('PaypalCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
                     title: 'Findness - Pago',
                     template: 'Su pago se ha registrado satisfactoriamente.'
                 }).then(function () {
-                    $state.go("app.account");
+                    $state.go("app.pricing");
                 });
             }).catch(function () {
                 //TODO: handle error
@@ -65,11 +65,11 @@ app.controller('PaypalCtrl', function ($scope, $state, $ionicLoading, $ionicPopu
         localStorage.removeItem("execute_url");
         localStorage.removeItem("external_load");
         localStorage.removeItem("paypal_amount");
-        $state.go("app.account");
+        $state.go("app.pricing");
     };
 
     $scope.goToAccount = function () {
-        $state.go("app.account");
+        $state.go("app.pricing");
     };
 
     function getParameterByName(name, url) {

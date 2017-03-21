@@ -35,7 +35,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
         dateSubscription = moment(objectSubscription.endDate).format('YYYY-MM-DD');
         dateNow = moment().format('YYYY-MM-DD');
         //dateNow = moment().add(10,'months').format('YYYY-MM-DD');
-        if(dateSubscription > dateNow){
+        if(dateNow < dateSubscription){
             $rootScope.daysRemaining = moment(moment(dateSubscription).diff(moment(dateNow), 'days'));
             userDatastore.setDaysRemaining($rootScope.daysRemaining._i);
         }else{
@@ -50,7 +50,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
             var endDate = moment(objectSubscription.endDate).format('YYYY-MM-DD');
             var daySubscription = moment(moment(endDate).diff(moment(startDate), 'days'))._i;
 
-            if ((objectSubscription.lapse == 1 ) && (daySubscription > 7)){
+            if ((objectSubscription.lapse == 1 ) && (daySubscription <= 7)){
                 var lapse = 'Período de Prueba';
             }else if(objectSubscription.lapse == 0 ){
                 var lapse = 'Período de Prueba';
@@ -78,7 +78,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
                     okText:'SUSCRÍBETE',
                 }).then(function (res) {
                     if (res) {
-                        $state.go('app.account');
+                        $state.go('app.pricing');
                     }
                 });
             }

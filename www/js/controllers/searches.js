@@ -55,7 +55,7 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                         okText: 'SUSCRÍBETE',
                     }).then(function (res) {
                         if (res) {
-                            $state.go('app.account');
+                            $state.go('app.pricing');
                         }
                     });
                     map.setShowPopup(false);

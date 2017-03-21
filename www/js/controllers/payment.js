@@ -141,7 +141,7 @@ app.controller('PaymentCtrl', function ($scope, $state, $stateParams, $ionicLoad
                 title: 'Findness - Pago',
                 template: 'Su pago se ha registrado satisfactoriamente.'
             }).then(function () {
-                $state.go("app.account", {}, {reload: true});
+                $state.go("app.pricing", {}, {reload: true});
             });
         });
     }

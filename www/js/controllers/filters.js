@@ -158,7 +158,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                         okText: 'SUSCRÍBETE',
                     }).then(function (res) {
                         if (res) {
-                            $state.go('app.account');
+                            $state.go('app.pricing');
                         }
                     });
                     map.setShowPopup(false);
