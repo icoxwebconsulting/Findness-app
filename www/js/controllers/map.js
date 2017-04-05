@@ -215,7 +215,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }).catch(function () {
             $ionicLoading.hide();
             $ionicPopup.alert({
-                title: "Ocurrió un error al guardar la ruta, intente nuevamente."
+                title: "PARA GENERAR LA RUTA PRIMERO TIENES QUE SELECCIONAR LAS EMPRESAS QUE QUIERES AÑADIR. PARA ELLO HAZ CLIC SOBRE UNA EMPRESA Y DESPUÉS CLICSOBRE \u0022AGREGAR A RUTA\u0022."
             });
         });
     };
