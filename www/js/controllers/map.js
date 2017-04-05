@@ -215,7 +215,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         }).catch(function () {
             $ionicLoading.hide();
             $ionicPopup.alert({
-                title: "PARA GENERAR LA RUTA PRIMERO TIENES QUE SELECCIONAR LAS EMPRESAS QUE QUIERES AÑADIR. PARA ELLO HAZ CLIC SOBRE UNA EMPRESA Y DESPUÉS CLICSOBRE \u0022AGREGAR A RUTA\u0022."
+                title: "PARA GENERAR LA RUTA PRIMERO TIENES QUE SELECCIONAR LAS EMPRESAS QUE QUIERES AÑADIR. PARA ELLO HAZ CLICK SOBRE UNA EMPRESA Y DESPUÉS CLICSOBRE \u0022AGREGAR A RUTA\u0022."
             });
         });
     };
