@@ -53,3 +53,7 @@ app.constant("TAX_CONF", {
     FEE: 0.25,
     IVA: 0.21
 })
+
+app.constant("KEY_ANALYTICS", {
+    TRACK_ID: "UA-97662717-1"
+});
