@@ -221,6 +221,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
     $scope.finishEditRoute = function () {
+        var generateRoute = false;
         $ionicLoading.show({
             template: '<p>Guardando la ruta...</p><p><ion-spinner icon="android"></ion-spinner></p>'
         });
@@ -230,6 +231,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                 title: "Findness",
                 template: "Se han guardado los cambios en la ruta correctamente."
             });*/
+            generateRoute = true;
             $ionicLoading.hide();
         }).catch(function (e) {
             $ionicLoading.hide();
@@ -237,12 +239,16 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             if (e == "noEdit") {
                 text = "No hay cambios en la ruta para guardar."
             }
+            generateRoute = false;
             $ionicPopup.alert({
                 title: "Findness",
                 template: text
             });
         });
-        $state.go('app.orderRoutes');
+        if (generateRoute == true) {
+            console.log('generateRoute', generateRoute);
+            $state.go('app.orderRoutes');
+        }
     };
 
     $scope.showRouteInfo = function () {
