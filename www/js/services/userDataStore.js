@@ -176,6 +176,15 @@ app.factory('userDatastore', function () {
         return localStorage.removeItem('editRoute');
     }
 
+    function setLastFilter(lastFilter) {
+        window.localStorage.setItem('lastFilter', JSON.stringify(lastFilter));
+    }
+
+    function getLastFilter() {
+        return JSON.parse(window.localStorage.getItem('lastFilter')) || 0;
+    }
+
+
     return {
         setIsLogged: setIsLogged,
         getIsLogged: getIsLogged,
@@ -218,6 +227,8 @@ app.factory('userDatastore', function () {
         removeModalInfo: removeModalInfo,
         setEditRoute: setEditRoute,
         getEditRoute: getEditRoute,
-        removeEditRoute: removeEditRoute
+        removeEditRoute: removeEditRoute,
+        setLastFilter: setLastFilter,
+        getLastFilter: getLastFilter
     };
 });

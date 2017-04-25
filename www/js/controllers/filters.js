@@ -1,9 +1,11 @@
-app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup, $ionicLoading, cart, map, routeService, subscriptionSrv) {
+app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter, searchService, $ionicPopup,
+                                        $ionicLoading, $http, cart, map, routeService, subscriptionSrv, userDatastore) {
 
     $scope.init = function () {
         $scope.options = {
             useLocation: false
         };
+        $scope.getLastFilter();
     };
 
     $scope.data = {};
@@ -21,14 +23,298 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.clickedZipCodeModel = "";
     $scope.removedZipCodeModel = "";
     $scope.selectedCNAE = [];
-    $scope.selectedState = [];
-    $scope.selectedCity = [];
+    $scope.selectedState = {};
+    $scope.selectedCity = {};
     $scope.selectedZipCode = [];
+    $scope.cnaeValid = "";
+    $scope.categoriesValid = true;
+    $scope.selectedBilling = [];
+    $scope.selectedEmployees = [];
+    $scope.lastFilter = {
+        /*'cnaes': '',
+        'state': '',
+        'city': '',
+        'zipcode': ''*/
+    };
 
+
+//    $scope.states = [];
 
     $scope.$on('$ionicView.enter', function (e) {
         $scope.init();
     });
+
+    $http.get('js/cnae-categories.json').success(function (data) {
+        data.unshift({"id": '', "name": "Sectores de activad"});
+        $scope.cnaesCategories = data;
+    });
+
+    $scope.hasChanged = function (id, name) {
+        $scope.categoriesValid = true;
+        $scope.selectedCNAE = [];
+        if (id != ''){
+            objectCnae = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
+            $scope.selectedCNAE.push(objectCnae);
+        }else{
+            $scope.categoriesValid = true;
+        }
+        console.info($scope.selectedCNAE);
+    };
+
+    $scope.group = [{name: 1, items: 1, show: false}];
+    $scope.toggleGroup = function(group) {
+        group.show = !group.show;
+    };
+    $scope.isGroupShow = function(group) {
+        return group.show;
+    };
+
+
+    $scope.billing = [{name: 1, items: 1, show: false}];
+    $scope.toggleBilling = function(billing) {
+        billing.show = !billing.show;
+    };
+    $scope.isBillingShow = function(billing) {
+        return billing.show;
+    };
+
+    $scope.listBilling = [
+        {"id": 1,"name": "Menor de 500.000 €", "Minimum": "", "Maximum": "500000"},
+        {"id": 2,"name": "Entre 500.000 y 1.500.000", "Minimum": "500000", "Maximum": "1500000"},
+        {"id": 3,"name": "Entre  1.500.000 y 5.000.000", "Minimum": "1500000", "Maximum": "5000000"},
+        {"id": 4,"name": "Más de 5.000.000", "Minimum": "5000000", "Maximum": ""}
+    ];
+
+    $scope.billingChanged = function (id, name) {
+        $scope.selectedBilling = [];
+        if (id != ''){
+            objectBilling = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
+            $scope.selectedBilling.push(objectBilling);
+        }
+        console.info($scope.selectedBilling);
+    };
+
+    $scope.listEmployees = [
+        {"id": 1,"name": "Menos de 10", "Minimum": "", "Maximum": "10"},
+        {"id": 2,"name": "Entre 10 y 100", "Minimum": "10", "Maximum": "100"},
+        {"id": 3,"name": "Entre 100 y 500", "Minimum": "100", "Maximum": "500"},
+        {"id": 4,"name": "Más de 500", "Minimum": "500", "Maximum": ""}
+    ];
+
+    $scope.employees = [{name: 1, items: 1, show: false}];
+    $scope.toggleEmployees = function(employees) {
+        employees.show = !employees.show;
+    };
+    $scope.isEmployeesShow = function(employees) {
+        return employees.show;
+    };
+
+    $scope.employeesChanged = function (id, name) {
+        $scope.selectedEmployees = [];
+        if (id != ''){
+            objectEmployees = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
+            $scope.selectedEmployees.push(objectEmployees);
+        }
+        console.info($scope.selectedEmployees);
+    };
+
+    $scope.cancel = function () {
+        $scope.clickedValueModel = "";
+        $scope.removedValueModel = "";
+        $scope.clickedStateModel = "";
+        $scope.removedStateModel = "";
+        $scope.clickedCityModel = "";
+        $scope.removedCityModel = "";
+        $scope.clickedZipCodeModel = "";
+        $scope.removedZipCodeModel = "";
+        $scope.selectedCNAE = [];
+        $scope.selectedState = {};
+        $scope.selectedCity = {};
+        $scope.selectedZipCode = [];
+        $scope.cnaeValid = "";
+        $scope.categoriesValid = true;
+        $scope.selectedBilling = [];
+        $scope.selectedEmployees = [];
+    };
+
+
+    /*$http.get('js/cnaes.json').success(function (data) {
+        $scope.cnaesItems = data.items;
+    });*/
+
+    $scope.listCnaes = function (query) {
+        if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
+            query = searchService.omitirAcentos(query);
+            query = query.toLowerCase();
+
+            return searchService.getCnaes(query).then(function (cnaes) {
+                return $scope.cnaesItems = cnaes.items;
+            });
+        }
+    };
+
+    $scope.searchState = '';
+    $scope.searchCity = '';
+    $scope.searchZipcodes = '';
+
+    $scope.clickCNAE = function (id, name, view) {
+        var index = $scope.selectedCNAE.map(function (element) {return element.id;}).indexOf(id);
+        $scope.categoriesValid = false;
+
+        if ($scope.selectedCNAE.length < 10){
+            if ($scope.categoriesValid == true) {
+                $scope.selectedCNAE = [];
+            }
+            else if ($scope.selectedCNAE.length == 0) {
+                $scope.categoriesValid = false;
+                objectCnae = {id: id, name: name, view: view};
+                $scope.selectedCNAE.push(objectCnae);
+            }
+            else {
+                if ( index == -1){
+                    $scope.categoriesValid = false;
+                    objectCnae = {id: id, name: name, view: view};
+                    $scope.selectedCNAE.push(objectCnae);
+                }
+            }
+        }else {
+            $ionicPopup.alert({
+                title: "Informacion.",
+                template: 'Maximo 10 CNAE.'
+            });
+        }
+    };
+    $scope.clickState = function (created, id, name, updated) {
+        $scope.selectedState = {};
+        objectState = {created: created, id: id, name: name.toUpperCase(), updated: updated};
+        $scope.selectedState = objectState;
+    };
+
+    $scope.deleteSelect = function (arraySelected,id) {
+        if(arraySelected == 'selectedCNAE'){
+            var index = $scope.selectedCNAE.map(function (element) {return element.id;}).indexOf(id);
+            $scope.selectedCNAE.splice(index, 1);
+            if ($scope.selectedCNAE.length == 0){
+                $scope.categoriesValid = true;
+            }
+        }else if(arraySelected == 'selectedState'){
+            $scope.selectedState = {};
+            $scope.selectedCity = {};
+        }else if(arraySelected == 'selectedCity'){
+            $scope.selectedCity = {};
+        }else if (arraySelected == 'selectedZipCode'){
+            $scope.selectedZipCode = [];
+        }
+
+    };
+
+    $scope.listStates = function (query) {
+        if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
+            query = searchService.omitirAcentos(query);
+            query = query.toLowerCase();
+
+            return searchService.getStates(query).then(function (states) {
+                return $scope.states = states.items;
+            });
+        }
+    };
+
+
+    $scope.listCities = function (query) {
+        if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
+            query = searchService.omitirAcentos(query);
+            query = query.toLowerCase();
+            return searchService.getCities(query, $scope.selectedState).then(function (cities) {
+                return $scope.cities = cities.items;
+            });
+        }
+    };
+
+
+    $scope.clickCity = function (created, id, name, updated) {
+        $scope.selectedCity = {};
+        if ($scope.selectedState.id){
+            objectCity = {created: created, id: id, name: name.toUpperCase(), updated: updated,
+                state: {
+                    created: $scope.selectedState.created,
+                    id: $scope.selectedState.id,
+                    name: $scope.selectedState.name,
+                    updated: $scope.selectedState.updated
+                }};
+            $scope.selectedCity = objectCity;
+        }
+    };
+
+    $scope.listZipcodes = function (query) {
+        if (query.length > 3) {
+            return searchService.getZipcodes(query).then(function (zipcodes) {
+                return $scope.zipcodes = zipcodes.items;
+            });
+        } else {
+            return {items: []};
+        }
+    };
+
+    $scope.clickZipcode = function (zip) {
+        $scope.selectedZipCode = [];
+        $scope.selectedZipCode.push(zip)
+    };
+
+    // Set LastFilter
+    $scope.setLastFilter = function () {
+        if ($scope.selectedCNAE.length > 0){
+            objectCnaes = {'cnaes': $scope.selectedCNAE};
+            $scope.lastFilter['cnaes'] = $scope.selectedCNAE;
+        }
+
+        if ($scope.selectedState.id){
+            $scope.lastFilter['state'] = $scope.selectedState;
+        }
+
+        if ($scope.selectedCity.id){
+            $scope.lastFilter['city'] = $scope.selectedCity;
+        }
+
+        if ($scope.selectedZipCode.length > 0){
+            $scope.lastFilter['zipcode'] = $scope.selectedZipCode[0];
+        }
+
+        if ($scope.selectedBilling.length > 0){
+            $scope.lastFilter['billing'] = $scope.selectedBilling[0];
+        }
+
+        if ($scope.selectedEmployees.length > 0){
+            $scope.lastFilter['employees'] = $scope.selectedEmployees[0];
+        }
+
+        userDatastore.setLastFilter($scope.lastFilter);
+        console.log('$scope.lastFilterE', $scope.lastFilter);
+    };
+
+    // Get LastFilter
+    $scope.getLastFilter = function () {
+        var lastFilter =  userDatastore.getLastFilter();
+        console.log('userDatastore.getLastFilter',userDatastore.getLastFilter());
+
+        if (userDatastore.getLastFilter()){
+            if (lastFilter.cnaes.length > 0){
+                $scope.categoriesValid = false;
+                for (i = 0; i < lastFilter.cnaes.length; i++){
+                    $scope.selectedCNAE.push(lastFilter.cnaes[i]);
+                }
+            }
+            if (lastFilter.state){
+                $scope.selectedState = lastFilter.state;
+            }
+            if (lastFilter.city){
+                $scope.selectedCity = lastFilter.city;
+            }
+            if (lastFilter.zipcode){
+                $scope.selectedZipCode.push(lastFilter.zipcode);
+            }
+        }
+
+    };
 
     $scope.getItems = function (query, type) {
         if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
@@ -230,7 +516,8 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             });
         } else {
             //recoger datos de ubicación
-            if ($scope.selectedState.length == 0) {
+            console.info('recoger datos de ubicación',$scope.selectedState)
+            if (!$scope.selectedState.id) {
                 delete options.states;
                 if ($scope.selectedZipCode.length == 0) {
                     $ionicPopup.alert({
@@ -247,7 +534,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     //     options.postalCodes.push($scope.selectedZipCode[i]);
                     // }
                     // options.postalCodes = JSON.stringify(options.postalCodes);
-                    options.postalCodes.push($scope.selectedZipCode);
+                    options.postalCodes.push($scope.selectedZipCode[0]);
                     options.postalCodes = JSON.stringify(options.postalCodes);
                 }
             } else {
@@ -256,7 +543,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                 options.states = [];
                 options.states.push($scope.selectedState.id);
                 options.states = JSON.stringify(options.states);
-                if ($scope.selectedCity.length != 0) {
+                if ($scope.selectedCity.id) {
                     // (2)consulta con la provincial y la ciudad
                     options.cities = {
                         "state": $scope.selectedState.id,
@@ -267,6 +554,10 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     delete options.cities;
                 }
             }
+
+            // Set Last Filter
+            $scope.setLastFilter();
+
             console.log(options);
             $ionicLoading.show({
                 template: '<p>Realizando búsqueda...</p><p><ion-spinner icon="android"></ion-spinner></p>'
@@ -299,6 +590,9 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     };
 
     $scope.checkLocation = function () {
+        $scope.selectedState = {};
+        $scope.selectedCity = {};
+        $scope.selectedZipCode = [];
         if ($scope.options.useLocation) {
             map.checkLocation(function () {
             }, function () {

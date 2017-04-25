@@ -3,7 +3,7 @@
         <div class="row subtitle filter" scroll="false">
             <div class="col col-100">
                 <div class="left">
-                    <span>CNAE</span>
+                    <span class="title-views">Filtros</span>
                 </div>
                 <div class="center">
                     <br>
@@ -16,157 +16,255 @@
         </div>
         <content has-header="true" padding="true">
 
-            <div class="row subtitle filter" scroll="false" ng-show="model != ''" style="border-top: solid 1px">
-                <div class="col col-100">
-                    <div class="left">
-                        <span>CNAES Seleccionados:</span>
+            <!--<div class="card" ng-hide="options.useLocation"></div>-->
+
+            <div class="row">
+                <div class="col list-content">
+                    <div class="row">
+                        <span class="subtitle-input">Sector de Actividad</span>
                     </div>
-                    <div class="center">
-                        <br>
+                    <div class="row">
+                        <label class="item item-input col col-80 border-radius">
+                            <input type="search" ng-model="searchCnaes"
+                                   ng-change="listCnaes(searchCnaes)"
+                                   class="ng-pristine ng-valid ng-touched input-search "
+                                   placeholder="Buscador de CNAES">
+                        </label>
+                        <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                                ng-class="selectedCNAE.length > 0 && categoriesValid == false ? 'button-positive btn-positive' : 'button-clear'"
+                                ng-click="searchCnaes = ''">listo
+                        </button>
                     </div>
-                    <div class="right">
-                        <br>
+
+                    <div class="" style="padding: 10px" ng-if="selectedCNAE.length > 0 && categoriesValid == false">
+                        <a class="button button-small btn-cnae" ng-repeat="itemSelect in selectedCNAE"
+                           ng-click="deleteSelect('selectedCNAE',itemSelect.id)">
+                            <span class="btn-text-cnae">{{itemSelect.id}}</span>
+                            <i class="icon ion-close-round btn-icon-cnae"></i>
+                        </a>
+                    </div>
+                    <div class="list">
+                        <ion-item ng-repeat="cnaeItem in cnaesItems" ng-show="searchCnaes.length > 1"
+                                  ng-click="clickCNAE(cnaeItem.id,cnaeItem.name, cnaeItem.view)">
+                            {{cnaeItem.name}}
+                        </ion-item>
+                    </div>
+
+                    <ion-list ng-show="categoriesValid == true">
+                        <ion-item class="item item-icon-right border-radius"
+                                  ng-click="toggleGroup(group)"
+                                  ng-class="{active: isGroupShow(group)}">
+                            <i class="icon icon-right" style="font-size: 20px;"
+                               ng-class="isGroupShow(group) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                            <span class="span-item" ng-if="(selectedCNAE.length == 0) || (selectedCNAE.length != 0 && categoriesValid == false)">
+                                Sectores de actividad
+                            </span>
+                            <span ng-if="selectedCNAE.length != 0 && categoriesValid == true">{{selectedCNAE[0].view}}</span>
+                        </ion-item>
+                        <ion-list ng-show="isGroupShow(group)">
+                            <ion-radio ng-repeat="item in cnaesCategories"
+                                       ng-model="selectedCNAE"
+                                       ng-change="hasChanged(item.id, item.name)"
+                                       ng-value="item.id">
+                                <span ng-if="item.id == ''">{{item.name}}</span>
+                                <span ng-if="item.id != ''">{{item.id}} - {{item.name}}</span>
+                            </ion-radio>
+                        </ion-list>
+                    </ion-list>
+                </div>
+            </div>
+
+            <!-- Localización -->
+            <div class="row list-content" ng-hide="options.useLocation">
+                <div class="col">
+                    <div class="row">
+                        <span class="subtitle-input">Localización</span>
+                    </div>
+                    <!-- Provincias -->
+                    <div class="row" ng-hide="selectedZipCode.length == 1">
+                        <label class="item item-input col col-80 border-radius">
+                            <input type="search" ng-model="searchState"
+                                   ng-change="listStates(searchState)"
+                                   class="ng-pristine ng-valid ng-touched input-search"
+                                   placeholder="Provincia">
+                        </label>
+                        <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                                ng-class="searchState.length > 0 ? 'button-positive btn-positive' : 'button-clear'"
+                                ng-click="searchState = ''">listo
+                        </button>
+                    </div>
+                    <div class="row" style="padding: 10px" ng-if="selectedState.id" ng-hide="zipCodeModel != ''">
+                        <a class="button button-small btn-filter"
+                           ng-click="deleteSelect('selectedState',selectedState.id)">
+                            <span class="btn-text-cnae" style="text-transform: capitalize; margin-right: 4px!important;">
+                                {{selectedState.name | lowercase}}
+                            </span>
+                            <i class="icon ion-close-round btn-icon-cnae"></i>
+                        </a>
+
+                        <a class="button button-small btn-filter" style="margin-left: 5px!important;"
+                           ng-if="selectedCity.id"
+                           ng-click="deleteSelect('selectedCity',selectedCity.id)">
+                            <span class="btn-text-cnae" style="text-transform: capitalize; margin-right: 4px!important;">
+                                {{selectedCity.name | lowercase}}
+                            </span>
+                            <i class="icon ion-close-round btn-icon-cnae"></i>
+                        </a>
+
+                    </div>
+
+                    <ion-item style="text-transform: capitalize" ng-repeat="state in states | filter: {name: searchState}"
+                              ng-show="searchState.length > 1"
+                              ng-click="clickState(state.created,state.id,state.name, state.updated)">
+                        {{state.name}}
+                    </ion-item>
+
+                    <!-- Ciudades -->
+                    <div class="row" ng-show="selectedState.id">
+                        <div class="row">
+                            <label class="item item-input col col-80 border-radius">
+                                <input type="search" ng-model="searchCity"
+                                       ng-change="listCities(searchCity)"
+                                       class="ng-pristine ng-valid ng-touched input-search"
+                                       placeholder="Ciudad">
+                            </label>
+                            <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                                    ng-class="searchCity.length > 0 ? 'button-positive btn-positive' : 'button-clear'"
+                                    ng-click="searchCity = ''">listo
+                            </button>
+                        </div>
+                    </div>
+                    <ion-item style="text-transform: capitalize" ng-repeat="city in cities"
+                              ng-show="searchCity.length > 1"
+                              ng-click="clickCity(city.created,city.id,city.name, city.updated)">
+                        {{city.name}}
+                    </ion-item>
+
+                    <!-- Zipcodes -->
+                    <div class="row" style="padding-top: 10px" ng-show="!selectedState.id">
+                        <label class="item item-input col col-80 border-radius">
+                            <input type="search" ng-model="searchZipcodes"
+                                   ng-change="listZipcodes(searchZipcodes)"
+                                   class="ng-pristine ng-valid ng-touched input-search"
+                                   placeholder="Código Postal">
+                        </label>
+                        <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                                ng-class="searchZipcodes.length > 3 ? 'button-positive btn-positive' : 'button-clear'"
+                                ng-click="searchZipcodes = ''">listo
+                        </button>
+                    </div>
+                    <ion-item style="text-transform: capitalize" ng-repeat="zip in zipcodes"
+                              ng-show="searchZipcodes.length > 3"
+                              ng-click="clickZipcode(zip)">
+                        {{zip}}
+                    </ion-item>
+                    <div class="" style="padding: 10px" ng-repeat="zip in selectedZipCode"
+                         ng-if="selectedZipCode.length == 1" ng-hide="stateModel != ''">
+                        <a class="button button-small btn-filter"
+                           ng-click="deleteSelect('selectedZipCode',zip)">
+                            <span class="btn-text-cnae" style="text-transform: capitalize;margin-right: 4px!important;">
+                                {{zip}}
+                            </span>
+                            <i class="icon ion-close-round btn-icon-cnae"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list" style="margin-top: 10px">
+                <div class="col list-content">
+                    <div class="row border-top-bottm">
+                        <div class="col col-75 span-item">Usar mi localización</div>
+                        <div class="col"><label class="toggle" >
+                            <input type="checkbox" ng-change="checkLocation()"  ng-model="options.useLocation" >
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list" ng-show="options.useLocation"
+                 style="border-bottom: 1px solid #ddd;padding-left: 5px;padding-right: 10px;">
+                <div class="">
+                    <span class="subtitle-input" style="padding: 13px!important;">Usar mi localización</span>
+                    <div class="col">
+                        <div class=" range range-positive">
+                            <!--<i class="icon ion-ios-minus-outline" ng-click="pickupChange(0)"></i>-->
+                            <input type="range" name="volume" min="1" max="5" value="{{data.pickupAfter}}"
+                                   ng-model="data.pickupAfter">{{data.pickupAfter}}Km
+                            <!--<i class="icon ion-ios-plus-outline" ng-click="pickupChange(1)"></i>-->
+                        </div>
                     </div>
 
                 </div>
             </div>
-            <label class="item item-input item-cnae">
-                <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
-                       autocomplete="off"
-                       ng-model="model"
-                       item-value-key="id"
-                       item-view-value-key="id"
-                       items-method-value-key="items"
-                       items-method="getItems(query, 'CNAE')"
-                       placeholder="Click para buscar CNAE..."
-                       items-clicked-method="itemsClicked(callback, 'CNAE')"
-                       items-removed-method="itemsRemoved(callback, 'CNAE')"
-                       select-items-label="Seleccione los CNAES correspondientes..."
-                       selected-items-label="Seleccionados:"
-                       template-url="templates/template-autocomplete.html"
-                       max-selected-items="10"/>
-            </label>
 
-            <div class="card">
-                <div class="item item-text-wrap cnae-text">
-                    <b>Listado CNAE:</b> Puede seleccionar varios CNAES, los CNAE de 2 dígitos incluyen sus subcategorías.
+            <!-- Sector de Empresas -->
+            <div class="row">
+                <div class="col list-content">
+                    <div class="row">
+                        <span class="subtitle-input">Característica de Empresa</span>
+                    </div>
+                    <ion-list >
+                        <ion-item class="item item-icon-right border-radius"
+                                  ng-click="toggleBilling(billing)"
+                                  ng-class="{active: isBillingShow(billing)}">
+                            <i class="icon icon-right" style="font-size: 20px;"
+                               ng-class="isBillingShow(billing) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                                <span class="span-item" ng-if="selectedBilling.length == 0">
+                                    Facturacíon
+                                </span>
+                            <span ng-if="selectedBilling.length != 0">{{selectedBilling[0].view}}</span>
+                        </ion-item>
+                        <ion-list ng-show="isBillingShow(billing)">
+                            <ion-radio ng-repeat="item in listBilling"
+                                       ng-model="selectedBilling"
+                                       ng-change="billingChanged(item.id, item.name)"
+                                       ng-value="item.id">
+                                <span ng-if="item.id == ''">{{item.name}}</span>
+                                <span ng-if="item.id != ''">{{item.id}} - {{item.name}}</span>
+                            </ion-radio>
+                        </ion-list>
+                    </ion-list>
                 </div>
             </div>
 
-            <div class="card" ng-hide="options.useLocation">
-                <div class="row subtitle filter" scroll="false" ng-show="stateModel != ''">
-                    <div class="col col-100">
-                        <div class="left">
-                            <span>Provincia seleccionada:</span>
-                        </div>
-                        <div class="center">
-                            <br>
-                        </div>
-                        <div class="right">
-                            <br>
-                        </div>
-
+            <div class="row">
+                <div class="col list-content">
+                    <div class="row">
+                        <span class="subtitle-input">Filtro Empleados</span>
                     </div>
-                </div>
-                <div class="item item-text-wrap" ng-hide="zipCodeModel != ''">
-                    <!-- BUSQUEDA DE PROVINCIAS -->
-                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
-                           autocomplete="off"
-                           ng-model="stateModel"
-                           item-value-key="id"
-                           item-view-value-key="name"
-                           items-method-value-key="items"
-                           items-method="getItems(query, 'states')"
-                           placeholder="Click para buscar Provincias..."
-                           items-clicked-method="itemsClicked(callback, 'states')"
-                           items-removed-method="itemsRemoved(callback, 'states')"
-                           select-items-label="Seleccione las Provincias deseadas..."
-                           selected-items-label="Seleccionados:"
-                           template-url="templates/template-autocomplete-states.html"
-                           max-selected-items="1"/>
-                </div>
-
-                <div class="row subtitle filter" scroll="false" ng-show="cityModel != '' && stateModel != ''">
-                    <div class="col col-100">
-                        <div class="left">
-                            <span>Ciudad seleccionada:</span>
-                        </div>
-                        <div class="center">
-                            <br>
-                        </div>
-                        <div class="right">
-                            <br>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="item item-text-wrap" ng-show="stateModel != ''">
-                    <!-- BUSQUEDA DE CIUDADES -->
-                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
-                           autocomplete="off"
-                           ng-model="cityModel"
-                           item-value-key="id"
-                           item-view-value-key="name"
-                           items-method-value-key="items"
-                           items-method="getItems(query, 'cities')"
-                           placeholder="Click para buscar Ciudades..."
-                           items-clicked-method="itemsClicked(callback, 'cities')"
-                           items-removed-method="itemsRemoved(callback, 'cities')"
-                           select-items-label="Seleccione las ciudades correspondientes..."
-                           selected-items-label="Seleccionados:"
-                           template-url="templates/template-autocomplete-states.html"
-                           max-selected-items="1"/>
+                    <ion-list >
+                        <ion-item class="item item-icon-right border-radius"
+                                  ng-click="toggleEmployees(employees)"
+                                  ng-class="{active: isEmployeesShow(employees)}">
+                            <i class="icon icon-right" style="font-size: 20px;"
+                               ng-class="isEmployeesShow(employees) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+                                <span class="span-item" ng-if="selectedEmployees.length == 0">
+                                    Empleados
+                                </span>
+                            <span ng-if="selectedEmployees.length != 0">{{selectedEmployees[0].view}}</span>
+                        </ion-item>
+                        <ion-list ng-show="isEmployeesShow(employees)">
+                            <ion-radio ng-repeat="item in listEmployees"
+                                       ng-model="selectedEmployees"
+                                       ng-change="employeesChanged(item.id, item.name)"
+                                       ng-value="item.id">
+                                <span ng-if="item.id == ''">{{item.name}}</span>
+                                <span ng-if="item.id != ''">{{item.id}} - {{item.name}}</span>
+                            </ion-radio>
+                        </ion-list>
+                    </ion-list>
                 </div>
 
-                <div class="row subtitle filter" scroll="false" ng-show="zipCodeModel != ''">
-                    <div class="col col-100">
-                        <div class="left">
-                            <span>Código postal seleccionado:</span>
-                        </div>
-                        <div class="center">
-                            <br>
-                        </div>
-                        <div class="right">
-                            <br>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="item item-text-wrap" ng-hide="stateModel != ''">
-                    <!-- BUSQUEDA DE ZIPCODE-->
-                    <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
-                           autocomplete="off"
-                           ng-model="zipCodeModel"
-                           item-value-key="id"
-                           items-method-value-key="items"
-                           items-method="getItems(query, 'zipcodes')"
-                           placeholder="Click para buscar Código postal..."
-                           items-clicked-method="itemsClicked(callback, 'zipcodes')"
-                           items-removed-method="itemsRemoved(callback, 'zipcodes')"
-                           select-items-label="Seleccione los códigos postales correspondientes..."
-                           selected-items-label="Seleccionados:"
-                           template-url="templates/template-autocomplete-states.html"
-                           max-selected-items="1"/>
-                </div>
-            </div>
-
-            <label><ion-toggle ng-model="options.useLocation" toggle-class="toggle-calm" class="item-location" ng-change="checkLocation()">Usar mi localización</ion-toggle></label>
-
-            <div class="card" ng-show="options.useLocation">
-                <div class="item item-text-wrap">
-                    Cubrir un radio de {{data.pickupAfter}} km
-                </div>
-                <div class="item range range-positive">
-                    <i class="icon ion-ios-minus-outline" ng-click="pickupChange(0)"></i>
-                    <input type="range" name="volume" min="1" max="5" value="{{data.pickupAfter}}"
-                           ng-model="data.pickupAfter">
-                    <i class="icon ion-ios-plus-outline" ng-click="pickupChange(1)"></i>
-                </div>
             </div>
 
 
-            <div class="padding">
-                <button class="button button-full button-positive" ng-click="search()">Buscar</button>
+            <div class="padding row">
+                <button class="button button-full button-assertive btn-cancel btn-text col col-45" style="margin-right: 5px" ng-click="cancel()">cancelar</button>
+                <button class="button button-full button-positive btn-positive btn-text col col-45"  ng-click="search()">Aplicar Filtros</button>
             </div>
         </content>
     </ion-content>
