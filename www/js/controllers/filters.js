@@ -30,12 +30,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.categoriesValid = true;
     $scope.selectedBilling = [];
     $scope.selectedEmployees = [];
-    $scope.lastFilter = {
-        /*'cnaes': '',
-        'state': '',
-        'city': '',
-        'zipcode': ''*/
-    };
+    $scope.lastFilter = {};
+    $scope.hideListCnaes = false;
+    $scope.hideListState = false;
+    $scope.hideListCity = false;
+    $scope.hideListZipcode = false;
+    console.log('init typeof',$scope.hideListCnaes);
 
 
 //    $scope.states = [];
@@ -49,24 +49,24 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         $scope.cnaesCategories = data;
     });
 
-    $scope.hasChanged = function (id, name) {
-        $scope.categoriesValid = true;
-        $scope.selectedCNAE = [];
-        if (id != ''){
-            objectCnae = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
-            $scope.selectedCNAE.push(objectCnae);
-        }else{
-            $scope.categoriesValid = true;
-        }
-        console.info($scope.selectedCNAE);
-    };
-
     $scope.group = [{name: 1, items: 1, show: false}];
     $scope.toggleGroup = function(group) {
         group.show = !group.show;
     };
     $scope.isGroupShow = function(group) {
         return group.show;
+    };
+
+    $scope.hasChanged = function (id, name, group) {
+        $scope.categoriesValid = true;
+        console.log('isGroupShow', group)
+        $scope.selectedCNAE = [];
+        if (id != ''){
+            objectCnae = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
+            $scope.selectedCNAE.push(objectCnae);
+        }
+        $scope.toggleGroup(group);
+        console.info($scope.selectedCNAE);
     };
 
 
@@ -147,6 +147,9 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             query = searchService.omitirAcentos(query);
             query = query.toLowerCase();
 
+            $scope.hideListCnaes = true;
+            console.log('haschange typeof',query);
+
             return searchService.getCnaes(query).then(function (cnaes) {
                 return $scope.cnaesItems = cnaes.items;
             });
@@ -156,35 +159,31 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.searchState = '';
     $scope.searchCity = '';
     $scope.searchZipcodes = '';
+    $scope.searchCnaes = '';
 
     $scope.clickCNAE = function (id, name, view) {
         var index = $scope.selectedCNAE.map(function (element) {return element.id;}).indexOf(id);
-        $scope.categoriesValid = false;
 
-        if ($scope.selectedCNAE.length < 10){
-            if ($scope.categoriesValid == true) {
-                $scope.selectedCNAE = [];
-            }
-            else if ($scope.selectedCNAE.length == 0) {
+        if ($scope.selectedCNAE.length > 0 && $scope.categoriesValid == true) {
+            $scope.selectedCNAE = [];
+            $scope.categoriesValid = false;
+            objectCnae = {id: id, name: name, view: view};
+            $scope.hideListCnaes = false;
+            $scope.selectedCNAE.push(objectCnae);
+        }
+        else {
+            if ( index == -1){
+                $scope.hideListCnaes = false;
                 $scope.categoriesValid = false;
                 objectCnae = {id: id, name: name, view: view};
                 $scope.selectedCNAE.push(objectCnae);
             }
-            else {
-                if ( index == -1){
-                    $scope.categoriesValid = false;
-                    objectCnae = {id: id, name: name, view: view};
-                    $scope.selectedCNAE.push(objectCnae);
-                }
-            }
-        }else {
-            $ionicPopup.alert({
-                title: "Informacion.",
-                template: 'Maximo 10 CNAE.'
-            });
         }
     };
+
+
     $scope.clickState = function (created, id, name, updated) {
+        $scope.hideListState = false;
         $scope.selectedState = {};
         objectState = {created: created, id: id, name: name.toUpperCase(), updated: updated};
         $scope.selectedState = objectState;
@@ -212,7 +211,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
             query = searchService.omitirAcentos(query);
             query = query.toLowerCase();
-
+            $scope.hideListState = true;
             return searchService.getStates(query).then(function (states) {
                 return $scope.states = states.items;
             });
@@ -224,6 +223,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
             query = searchService.omitirAcentos(query);
             query = query.toLowerCase();
+            $scope.hideListCity = true;
             return searchService.getCities(query, $scope.selectedState).then(function (cities) {
                 return $scope.cities = cities.items;
             });
@@ -241,12 +241,14 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     name: $scope.selectedState.name,
                     updated: $scope.selectedState.updated
                 }};
+            $scope.hideListCity = false;
             $scope.selectedCity = objectCity;
         }
     };
 
     $scope.listZipcodes = function (query) {
         if (query.length > 3) {
+            $scope.hideListZipcode = true;
             return searchService.getZipcodes(query).then(function (zipcodes) {
                 return $scope.zipcodes = zipcodes.items;
             });
@@ -256,6 +258,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     };
 
     $scope.clickZipcode = function (zip) {
+        $scope.hideListZipcode = false;
         $scope.selectedZipCode = [];
         $scope.selectedZipCode.push(zip)
     };

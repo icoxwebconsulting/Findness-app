@@ -24,16 +24,16 @@
                         <span class="subtitle-input">Sector de Actividad</span>
                     </div>
                     <div class="row">
-                        <label class="item item-input col col-80 border-radius">
+                        <label class="item item-input col border-radius">
                             <input type="search" ng-model="searchCnaes"
                                    ng-change="listCnaes(searchCnaes)"
                                    class="ng-pristine ng-valid ng-touched input-search "
                                    placeholder="Buscador de CNAES">
                         </label>
-                        <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                        <!--<button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
                                 ng-class="selectedCNAE.length > 0 && categoriesValid == false ? 'button-positive btn-positive' : 'button-clear'"
                                 ng-click="searchCnaes = ''">listo
-                        </button>
+                        </button>-->
                     </div>
 
                     <div class="" style="padding: 10px" ng-if="selectedCNAE.length > 0 && categoriesValid == false">
@@ -44,7 +44,7 @@
                         </a>
                     </div>
                     <div class="list">
-                        <ion-item ng-repeat="cnaeItem in cnaesItems" ng-show="searchCnaes.length > 1"
+                        <ion-item ng-repeat="cnaeItem in cnaesItems" ng-show="searchCnaes.length > 1 && hideListCnaes == true"
                                   ng-click="clickCNAE(cnaeItem.id,cnaeItem.name, cnaeItem.view)">
                             {{cnaeItem.name}}
                         </ion-item>
@@ -64,7 +64,7 @@
                         <ion-list ng-show="isGroupShow(group)">
                             <ion-radio ng-repeat="item in cnaesCategories"
                                        ng-model="selectedCNAE"
-                                       ng-change="hasChanged(item.id, item.name)"
+                                       ng-change="hasChanged(item.id, item.name, group)"
                                        ng-value="item.id">
                                 <span ng-if="item.id == ''">{{item.name}}</span>
                                 <span ng-if="item.id != ''">{{item.id}} - {{item.name}}</span>
@@ -82,16 +82,16 @@
                     </div>
                     <!-- Provincias -->
                     <div class="row" ng-hide="selectedZipCode.length == 1">
-                        <label class="item item-input col col-80 border-radius">
+                        <label class="item item-input col border-radius">
                             <input type="search" ng-model="searchState"
                                    ng-change="listStates(searchState)"
                                    class="ng-pristine ng-valid ng-touched input-search"
                                    placeholder="Provincia">
                         </label>
-                        <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                        <!--<button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
                                 ng-class="searchState.length > 0 ? 'button-positive btn-positive' : 'button-clear'"
                                 ng-click="searchState = ''">listo
-                        </button>
+                        </button>-->
                     </div>
                     <div class="row" style="padding: 10px" ng-if="selectedState.id" ng-hide="zipCodeModel != ''">
                         <a class="button button-small btn-filter"
@@ -114,7 +114,7 @@
                     </div>
 
                     <ion-item style="text-transform: capitalize" ng-repeat="state in states | filter: {name: searchState}"
-                              ng-show="searchState.length > 1"
+                              ng-show="searchState.length > 1 && hideListState == true"
                               ng-click="clickState(state.created,state.id,state.name, state.updated)">
                         {{state.name}}
                     </ion-item>
@@ -122,39 +122,39 @@
                     <!-- Ciudades -->
                     <div class="row" ng-show="selectedState.id">
                         <div class="row">
-                            <label class="item item-input col col-80 border-radius">
+                            <label class="item item-input col border-radius">
                                 <input type="search" ng-model="searchCity"
                                        ng-change="listCities(searchCity)"
                                        class="ng-pristine ng-valid ng-touched input-search"
                                        placeholder="Ciudad">
                             </label>
-                            <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                            <!--<button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
                                     ng-class="searchCity.length > 0 ? 'button-positive btn-positive' : 'button-clear'"
                                     ng-click="searchCity = ''">listo
-                            </button>
+                            </button>-->
                         </div>
                     </div>
                     <ion-item style="text-transform: capitalize" ng-repeat="city in cities"
-                              ng-show="searchCity.length > 1"
+                              ng-show="searchCity.length > 1 && hideListCity == true"
                               ng-click="clickCity(city.created,city.id,city.name, city.updated)">
                         {{city.name}}
                     </ion-item>
 
                     <!-- Zipcodes -->
                     <div class="row" style="padding-top: 10px" ng-show="!selectedState.id">
-                        <label class="item item-input col col-80 border-radius">
+                        <label class="item item-input col border-radius">
                             <input type="search" ng-model="searchZipcodes"
                                    ng-change="listZipcodes(searchZipcodes)"
                                    class="ng-pristine ng-valid ng-touched input-search"
                                    placeholder="Código Postal">
                         </label>
-                        <button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                        <!--<button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
                                 ng-class="searchZipcodes.length > 3 ? 'button-positive btn-positive' : 'button-clear'"
                                 ng-click="searchZipcodes = ''">listo
-                        </button>
+                        </button>-->
                     </div>
                     <ion-item style="text-transform: capitalize" ng-repeat="zip in zipcodes"
-                              ng-show="searchZipcodes.length > 3"
+                              ng-show="searchZipcodes.length > 3 && hideListZipcodes == true"
                               ng-click="clickZipcode(zip)">
                         {{zip}}
                     </ion-item>
