@@ -10,27 +10,60 @@
                 <img src="img/findness_white.png" class="center logo-center"  />
             </div>
 
-            <div class="list">
-                <label class="item item-input" style="background: #252527 !important;">
-                    <span class="input-label" style="background: #252527 !important;">Email</span>
-                    <input ng-model="data.email" type="email">
-                </label>
-                <label class="item item-input" style="background: #252527 !important;">
-                    <span class="input-label" style="background: #252527 !important;">Contraseña</span>
-                    <input ng-model="data.password" type="password">
-                </label>
+            <div class="login-inputs">
+                <div class="row">
+                    <div class="col">
+                        <input type="email" class="input-login" placeholder="Email" ng-model="data.email">
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col">
-                        <div class="recover-text">
-                            <a ui-sref="recover-password">¿Has olvidado tu contraseña?</a>
-                        </div>
+                        <input type="password" class="input-login" placeholder="Contraseña" ng-model="data.password">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
                         <button ng-disabled="!data.email || !data.password" ng-click="login()"
-                                class="button button-full button-positive">Ingresar
+                                class="button button-full button-sign">Entrar
                         </button>
                     </div>
                 </div>
             </div>
+
+
+
+
+            <div class="row">
+                <div class="col">
+                    <div class="recover-text">
+                        <a ui-sref="recover-password">Contraseña olvidada</a>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="list">-->
+                <!--<label class="item item-input">-->
+                    <!--<span class="input-label">Email</span>-->
+                    <!--<input ng-model="data.email" type="email">-->
+                <!--</label>-->
+                <!--<label class="item item-input" style="background: #252527 !important;">-->
+                    <!--<span class="input-label" style="background: #252527 !important;">Contraseña</span>-->
+                    <!--<input ng-model="data.password" type="password">-->
+                <!--</label>-->
+
+                <!--<div class="row">-->
+                    <!--<div class="col">-->
+                        <!--<div class="recover-text">-->
+                            <!--<a ui-sref="recover-password">¿Has olvidado tu contraseña?</a>-->
+                        <!--</div>-->
+                        <!--<button ng-disabled="!data.email || !data.password" ng-click="login()"-->
+                                <!--class="button button-full button-positive">Ingresar-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </ion-content>
 </ion-view>
