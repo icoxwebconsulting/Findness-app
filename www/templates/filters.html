@@ -104,17 +104,6 @@
                         </a>
                     </div>
 
-                    <div class="selected-button" style="" ng-if="selectedState.id && selectedCity.id" ng-hide="zipCodeModel != ''">
-                        <a class="button button-small btn-filter"
-                           ng-click="deleteSelect('selectedCity',selectedCity.id)">
-                            <span class="btn-text-cnae" style="text-transform: capitalize;">
-                                {{selectedCity.name | lowercase}}
-                            </span>
-                            <i class="icon ion-close-round btn-icon-cnae"></i>
-                        </a>
-
-                    </div>
-
                     <div class="list">
                         <ion-item style="text-transform: capitalize" ng-repeat="state in states | filter: {name: searchState}"
                                   ng-show="searchState.length > 1 && hideListState == true"
@@ -131,6 +120,16 @@
                                    class="ng-pristine ng-valid ng-touched input-search"
                                    placeholder="Ciudad">
                         </label>
+                    </div>
+                    <div class="selected-button" style="" ng-if="selectedState.id && selectedCity.id" ng-hide="zipCodeModel != ''">
+                        <a class="button button-small btn-filter"
+                           ng-click="deleteSelect('selectedCity',selectedCity.id)">
+                            <span class="btn-text-cnae" style="text-transform: capitalize;">
+                                {{selectedCity.name | lowercase}}
+                            </span>
+                            <i class="icon ion-close-round btn-icon-cnae"></i>
+                        </a>
+
                     </div>
                     <div class="list">
                         <ion-item style="text-transform: capitalize" ng-repeat="city in cities"
