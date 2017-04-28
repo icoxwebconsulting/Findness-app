@@ -26,16 +26,6 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 title: "Ingrese su contraseña"
             });
         }
-        else if (!$scope.data.confirmPassword) {
-            $ionicPopup.alert({
-                title: "confirme su Contraseña"
-            });
-        }
-        else if ($scope.data.password !== $scope.data.confirmPassword) {
-            $ionicPopup.alert({
-                title: "Las contraseñas no coinciden"
-            });
-        }
         else {
 //            $ionicLoading.show({
 //                template: 'Creando Cuenta...'

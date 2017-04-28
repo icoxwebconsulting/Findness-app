@@ -8,41 +8,54 @@
 
     <ion-content has-bouncing="false">
 
-        <div class="list">
-            <label class="item item-input item-stacked-label" style="background: #252527 !important;">
-                <span class="input-label" style="background: #252527 !important;">Nombre</span>
-                <input type="text" placeholder="Escriba su nombre" ng-model="data.name">
-            </label>
-            <label class="item item-input item-stacked-label" style="background: #252527 !important;">
-                <span class="input-label" style="background: #252527 !important;">Apellido</span>
-                <input type="text" placeholder="Escriba su apellido" ng-model="data.lastName">
-            </label>
-            <label class="item item-input item-stacked-label" style="background: #252527 !important;">
-                <span class="input-label" style="background: #252527 !important;">Email</span>
-                <input type="email" placeholder="Escriba su email" ng-model="data.email">
-            </label>
-            <label class="item item-input item-stacked-label" style="background: #252527 !important;">
-                <span class="input-label" style="background: #252527 !important;">Contraseña</span>
-                <input type="password" placeholder="Elija una contraseña" ng-model="data.password">
-            </label>
-            <label class="item item-input item-stacked-label" style="background: #252527 !important;">
-                <span class="input-label" style="background: #252527 !important;">Confirmar contraseña</span>
-                <input type="password" placeholder="Repita su contraseña" ng-model="data.confirmPassword">
-            </label>
+        <div class="login-logo" style="padding-bottom:30px!important;">
+            <img src="img/findness_white.png" class="center logo-center"  />
         </div>
+
+        <div class="register-inputs">
+            <div class="row">
+                <div class="col">
+                    <input type="email" placeholder="Nombre" ng-model="data.name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="email"  placeholder="Apellidos" ng-model="data.lastName">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="email" placeholder="Email" ng-model="data.email">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="email" placeholder="Contraseña" ng-model="data.password">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                    <button ng-click="register()" class="button button-full button-sign">
+                        Registrarme
+                    </button>
+                </div>
+            </div>
+        </div>
+
 
         <div class="row">
             <div class="col" style="text-align: center">
-                Registrándote aceptas nuestros <a href="#/terms">Términos legales y Política de privacidad</a>
+                <div class="recover-text" style="line-height: initial !important; margin:0!important;">
+                    Registrándote aceptas nuestros <br>
+                    <a href="#/terms">
+                        <b style="text-transform: none!important;">Términos legales</b> y
+                        <b style="text-transform: none!important;">Política de privacidad</b>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
-                <button ng-click="register()" class="button button-full button-positive">
-                    Registrarse
-                </button>
-            </div>
-        </div>
     </ion-content>
 </ion-view>

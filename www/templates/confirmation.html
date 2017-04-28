@@ -1,36 +1,41 @@
-<ion-view>
+<ion-view class="register">
 
-    <ion-header-bar align-title="center" class="bar-positive">
-        <h1 class="title">Confirmar cuenta</h1>
+    <ion-header-bar class="bar-transparent">
+        <h1 class="title slides-header" ui-sref="slides">
+            <img src="img/x.png">
+        </h1>
     </ion-header-bar>
 
     <ion-content has-bouncing="false">
 
-        <div class="card">
-            <div class="item item-text-wrap">
-                Se ha enviado un email a la cuenta: {{username}} con el código de confirmación de su cuenta.
-            </div>
+        <div class="login-logo">
+            <img src="img/findness_white.png" class="center logo-center"  />
         </div>
 
-        <div class="list">
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Código de confirmación</span>
-                <input type="number" placeholder="Introduce el código de confirmación" ng-model="confirm.token">
-            </label>
+        <div class="register-inputs">
+            <div class="row">
+                <div class="col">
+                    <label style="color:#fff; font-size: 11px;margin-bottom:10px;">Introduzca aqui su código de confirmación</label>
+                    <input type="email" placeholder="Código de confirmación" ng-model="confirm.token">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button ng-click="confirmation()" ng-disabled="!confirmation"
+                            class="button button-full button-sign">Validar
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="row">
-            <div class="col">
-                <button ng-click="confirmation()" ng-disabled="!confirmation"
-                        class="button button-full button-positive">Confirmar
-                </button>
+            <div class="col" style="text-align: center">
+                <div class="recover-text" style="line-height: initial !important; margin:0!important;">
+                    <a ng-click="resend()">Reenviar código de confirmación</a>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="item item-text-wrap">
-                <a ng-click="resend()">Reenviar código de confirmación</a>
-            </div>
-        </div>
+
     </ion-content>
 </ion-view>

@@ -240,10 +240,7 @@
     width: 100%;
 }
 
-.register{
-    background-image: url("../img/bg/1.jpg");
-    background-size: cover;
-}
+
 
 .register .title{
     text-align: left;
@@ -254,31 +251,44 @@
     margin-bottom: 0;
 }
 
-.register, .register a, .register input, .register .input-label, .register .item-input, .register .ion-close, .register .ion-arrow-left-c{
-    color: #ffffff;
+.register input, .register .input-label, .register .item-input, .register .ion-close, .register .ion-arrow-left-c{
+    color: #888888;
+    text-align: center;
+    background: #ffffff;
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    font-size: 12px;
+    align-content: center;
+    vertical-align: middle !important;
+    line-height: normal !important;
 }
 
-.register input, .register .item-checkbox, .register .item-text-wrap, .register .card, .register .bar-transparent{
+.register .item-checkbox, .register .item-text-wrap, .register .card, .register .bar-transparent{
     background: rgba(10,10,32,0.0) !important;
 }
 
 .register ::-webkit-input-placeholder{
-    color: #ffffff !important;
+    color: #888888 !important;
+    font-size: 12px !important;
 
 }
 
 .register :-moz-placeholder{
-    color: #ffffff !important;
+    color: #888888 !important;
+    font-size: 12px !important;
 
 }
 
 .register ::-moz-placeholder{
-    color: #ffffff !important;
+    color: #888888 !important;
+    font-size: 12px !important;
 
 }
 
 .register :-ms-input-placeholder{
-    color: #ffffff !important;
+    color: #888888 !important;
+    font-size: 12px !important;
 }
 
 /*.login{*/
@@ -286,7 +296,7 @@
     /*background-size: cover;*/
 /*}*/
 
-.login{
+.login, .register{
     padding: 0% 8% 8%;
     background-image: -webkit-gradient(linear, left top, right bottom, from(#956294), color-stop(50%, #816195), color-stop(50%, #4F5C98));
     background-image: -webkit-linear-gradient(top left, #956294, #816195 50%, #4F5C98);
@@ -303,7 +313,7 @@
     margin-bottom: 0;
 }
 
-.login .login-inputs{
+.login .login-inputs, .register-inputs{
     margin: 0 30px;
 }
 
@@ -325,8 +335,6 @@
 
 .login input::-webkit-input-placeholder{
     color: #888888 !important;
-    text-align:center;
-    vertical-align: middle !important;
     font-size: 12px !important;
     padding-top: 16px !important;
 }
