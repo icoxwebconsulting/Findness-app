@@ -692,10 +692,16 @@
 
 .list {
     position: relative;
-    padding-top: 1px;
-    padding-bottom: 0px!important;
-    padding-left: 0;
-    margin-bottom: 0px!important;
+    padding-bottom: 0!important;
+    padding-left: 5px!important;
+    padding-right: 5px!important;
+    margin-bottom: 0!important;
+}
+
+.list-radio {
+    position: relative;
+    padding: 0!important;
+    margin-bottom: 0!important;
 }
 
 .month {
@@ -893,3 +899,26 @@
     padding-left: 5px!important;
     padding-right: 10px!important;
 }
+
+.div-search {
+    padding-bottom: 0px!important;
+}
+
+.selected-button {
+    padding-top: 10px;
+    padding-left: 6px;
+    padding-right: 5px;
+}
+
+.list-item{
+
+}
+
+/*
+input[type="range"] {
+    -webkit-appearance: none;
+    -moz-apperance: none;
+    border-radius: 6px;
+    height: 6px;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0.50, #713d70), color-stop(0.50, #ddd));
+}*/
