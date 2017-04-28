@@ -26,7 +26,7 @@
                     <div class="row div-search">
                         <label class="item item-input col border-radius div-search">
                             <input type="search" ng-model="searchCnaes"
-                                   ng-click="listCnaes(searchCnaes)"
+                                   ng-change="listCnaes(searchCnaes)"
                                    class="ng-pristine ng-valid ng-touched input-search "
                                    placeholder="Buscador de CNAES">
                         </label>
@@ -177,9 +177,9 @@
             <div class="list" style="margin-top: 10px">
                 <div class="col list-content">
                     <div class="row border-top-bottm">
-                        <div class="col col-75 span-item">Usar mi localización</div>
-                        <div class="col">
-                            <label class="toggle" style="margin-left: 35px!important;" >
+                        <div class="col col-70  span-item">Usar mi localización</div>
+                        <div class="col col-20 col-offset-10">
+                            <label class="toggle" style="" >
                                 <input type="checkbox" ng-change="checkLocation()"  ng-model="options.useLocation" >
                                 <div class="track">
                                     <div class="handle"></div>

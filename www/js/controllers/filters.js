@@ -600,7 +600,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             // Set Last Filter
             $scope.setLastFilter();
 
-            console.log('options', options.billing);
+            console.log('options', options);
 //            debugger;
 
 
