@@ -33,7 +33,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.lastFilter = {};
     $scope.hideListCnaes = false;
     $scope.hideListState = false;
-    $scope.hideListCity = false;
+    $scope.hideListCity = true;
     $scope.hideListZipcode = false;
     console.log('init typeof',$scope.hideListCnaes);
 
@@ -79,26 +79,37 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     };
 
     $scope.listBilling = [
-        {"id": 1,"name": "Menor de 500.000 €", "Minimum": "", "Maximum": "500000"},
-        {"id": 2,"name": "Entre 500.000 y 1.500.000", "Minimum": "500000", "Maximum": "1500000"},
-        {"id": 3,"name": "Entre  1.500.000 y 5.000.000", "Minimum": "1500000", "Maximum": "5000000"},
-        {"id": 4,"name": "Más de 5.000.000", "Minimum": "5000000", "Maximum": ""}
+        {"id": '',"name": "Facturación"},
+        {"id": 1,"name": "Menor de 500.000 €", "min": "", "max": "500000"},
+        {"id": 2,"name": "Entre 500.000 y 1.500.000", "min": "500000", "max": "1500000"},
+        {"id": 3,"name": "Entre  1.500.000 y 5.000.000", "min": "1500000", "max": "5000000"},
+        {"id": 4,"name": "Más de 5.000.000", "min": "5000000", "max": ""}
     ];
 
-    $scope.billingChanged = function (id, name) {
+    $scope.billingChanged = function (id, group) {
         $scope.selectedBilling = [];
+        item = $scope.listBilling;
+        console.log(id);
         if (id != ''){
-            objectBilling = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
-            $scope.selectedBilling.push(objectBilling);
+            for (i = 0; i < item.length; i++){
+                if ( id == item[i].id){
+                    objectBilling = {id: item[i].id, name: item[i].name, max: item[i].max, min: item[i].min};
+                    $scope.selectedBilling.push(objectBilling);
+                }
+            }
+//            objectBilling = {id: id, name: name, max: max};
+//            $scope.selectedBilling.push(objectBilling);
         }
+        $scope.toggleBilling(group);
         console.info($scope.selectedBilling);
     };
 
     $scope.listEmployees = [
-        {"id": 1,"name": "Menos de 10", "Minimum": "", "Maximum": "10"},
-        {"id": 2,"name": "Entre 10 y 100", "Minimum": "10", "Maximum": "100"},
-        {"id": 3,"name": "Entre 100 y 500", "Minimum": "100", "Maximum": "500"},
-        {"id": 4,"name": "Más de 500", "Minimum": "500", "Maximum": ""}
+        {"id": '',"name": "Empleados"},
+        {"id": 1,"name": "Menos de 10", "min": "", "max": "10"},
+        {"id": 2,"name": "Entre 10 y 100", "min": "10", "max": "100"},
+        {"id": 3,"name": "Entre 100 y 500", "min": "100", "max": "500"},
+        {"id": 4,"name": "Más de 500", "min": "500", "max": ""}
     ];
 
     $scope.employees = [{name: 1, items: 1, show: false}];
@@ -109,12 +120,19 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         return employees.show;
     };
 
-    $scope.employeesChanged = function (id, name) {
+    $scope.employeesChanged = function (id, name, group) {
         $scope.selectedEmployees = [];
+        item = $scope.listEmployees;
+        console.log(id);
         if (id != ''){
-            objectEmployees = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
-            $scope.selectedEmployees.push(objectEmployees);
+            for (i = 0; i < item.length; i++){
+                if ( id == item[i].id){
+                    objectEmployees = {id: item[i].id, name: item[i].name, max: item[i].max, min: item[i].min};
+                    $scope.selectedEmployees.push(objectEmployees);
+                }
+            }
         }
+        $scope.toggleEmployees(group);
         console.info($scope.selectedEmployees);
     };
 
@@ -315,6 +333,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             if (lastFilter.zipcode){
                 $scope.selectedZipCode.push(lastFilter.zipcode);
             }
+            if (lastFilter.billing){
+                $scope.selectedBilling.push(lastFilter.billing);
+            }
+            if (lastFilter.employees){
+                $scope.selectedEmployees.push(lastFilter.employees);
+            }
         }
 
     };
@@ -473,7 +497,11 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             cities: null,
             postalCodes: null,
             geoLocations: null,
-            nonViewedCompanies: 0
+            nonViewedCompanies: 0,
+            billing_min: null,
+            billing_max: null,
+            employees_min: [],
+            employees_max: []
         };
 
         if ($scope.selectedCNAE.length == 0) {
@@ -482,6 +510,17 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             });
             return;
         }
+
+        if ($scope.selectedBilling.length > 0){
+            options.billing_min = $scope.selectedBilling[0].min;
+            options.billing_max = $scope.selectedBilling[0].max;
+        }
+
+        if ($scope.selectedEmployees.length > 0){
+            options.employees_min = $scope.selectedEmployees[0].min;
+            options.employees_max = $scope.selectedEmployees[0].max;
+        }
+
 
         for (var i = 0; i < $scope.selectedCNAE.length; i++) {
             options.cnaes.push($scope.selectedCNAE[i].id);
@@ -561,7 +600,10 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             // Set Last Filter
             $scope.setLastFilter();
 
-            console.log(options);
+            console.log('options', options);
+//            debugger;
+
+
             $ionicLoading.show({
                 template: '<p>Realizando búsqueda...</p><p><ion-spinner icon="android"></ion-spinner></p>'
             });

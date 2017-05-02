@@ -1,9 +1,9 @@
-<ion-view>
+<ion-view class="filters">
     <ion-content>
-        <div class="row subtitle filter" scroll="false">
+        <div class="row subtitle " scroll="false">
             <div class="col col-100">
                 <div class="left">
-                    <span><b>Suscribete</b></span>
+                    <span class="title-views">Suscribete</span>
                 </div>
                 <div class="center">
                     <br>
@@ -15,10 +15,10 @@
             </div>
         </div>
         <content has-header="true" padding="true">
-            <div class="list">
-                <div class="item padding">
-                    <p><b>Accede de manera ilimitada a la información más </b></p>
-                    <p><b>actualizada del mercado</b></p>
+            <div class="col">
+                <div class="item info-subscription">
+                    <p>Accede de manera ilimitada a la información más </p>
+                    <p>actualizada del mercado</p>
                 </div>
 
             </div>
@@ -26,39 +26,42 @@
             <div class="card card-pricing">
                 <div class="item item-text-wrap item-pricing">
                     <div class="row">
-                        <div class="col" style="border: 1px solid #387ef5; text-align: center">
+                        <div class="col border-pricing" >
                             <ul class="ul-pricing">
                                 <li class="month"><h3 class="month-text">1 MESES</h3></li>
                                 <li><h4 class="pricing">3€ + IVA</h4></li>
                                 <li>
-                                    <button class="button button-block button-positive" ui-sref="app.payment({month: 1})" style="font-size: 12px; margin-top: 30px;">
+                                    <button class="button button-block button-create btn-subscribe" ui-sref="app.payment({month: 1})">
                                         SUSCRIBIRSE
                                     </button>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="col" style="border: 1px solid #387ef5; text-align: center; background-color: #2F69CC">
-                            <div id="shape-pricing">
+                        <div class="col border-pricing bg-pricing" >
+                            <!--<div id="shape-pricing">
                                 <div class="text-recommended"><span>Recomendado</span></div>
+                            </div>-->
+                            <div style="text-align: center">
+                                <img src="img/recommend.png" alt="" style="width: auto!important;" class="tag-subscribe-6">
                             </div>
                             <ul class="ul-recommended">
-                                <li class="month"><h3 class="month-text recommended">6 MESES</h3></li>
+                                <li class="month-6"><h3 class="month-text recommended">6 MESES</h3></li>
                                 <li><h4 class="recommended-pricing">15€ + IVA</h4></li>
                                 <li>
-                                    <button class="button button-block button-positive" ui-sref="app.payment({month: 6})" style="font-size: 12px; margin-top: 30px;">
+                                    <button class="button button-block button-create btn-subscribe" ui-sref="app.payment({month: 6})">
                                         SUSCRIBIRSE
                                     </button>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="col" style="border: 1px solid #387ef5; text-align: center">
+                        <div class="col border-pricing" >
                             <ul class="ul-pricing">
                                 <li class="month"><h3 class="month-text">12 MESES</h3></li>
                                 <li><h4 class="pricing">24€ + IVA</h4></li>
                                 <li>
-                                    <button class="button button-block button-positive" ui-sref="app.payment({month: 12})" style="font-size: 12px; margin-top: 30px;">
+                                    <button class="button button-block button-create btn-subscribe" ui-sref="app.payment({month: 12})">
                                         SUSCRIBIRSE
                                     </button>
                                 </li>
@@ -70,90 +73,87 @@
 
             <!-- Include -->
             <div class="list">
-                <div class="item padding">
-                    <p><b>Incluye</b></p>
+                <div class="item item-pricing-subtitle">
+                    <p class="list-pricing-subtitle">Incluye</p>
                 </div>
             </div>
 
-            <div class="card card-pricing">
+            <div class="list">
+
                 <div class="item item-text-wrap item-pricing">
                     <div class="row">
                         <div class="col">
-                            <i class="ion-ios-list-outline icons-pricing"></i>
+                            <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                            <img src="img/listado.png" alt="" class="icon-pricing icon-center-vertical" style="">
                         </div>
                         <div class="col col-90">
                             <h3 class="include-text">Listado de empresas</h3>
-                            <p>Accede a más de 7 millones de empresas y autónomos.</p>
+                            <p class="list-pricing-text">Accede a más de 7 millones de empresas y autónomos.</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card card-pricing">
                 <div class="item item-text-wrap item-pricing">
                     <div class="row">
                         <div class="col">
-                            <i class="ion-android-globe icons-pricing"></i>
+                            <img src="img/map.png" alt="" class="icon-pricing icon-center-vertical">
+                            <!--<i class="ion-android-globe icons-pricing"></i>-->
                         </div>
                         <div class="col col-90">
                             <h3 class="include-text">Mapa Interactivo</h3>
-                            <p>Vizualiza a tus potenciales clientes en el mapa.</p>
+                            <p class="list-pricing-text">Vizualiza a tus potenciales clientes en el mapa.</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card card-pricing">
                 <div class="item item-text-wrap item-pricing">
                     <div class="row">
                         <div class="col">
-                            <i class="icon-road icons-pricing icon-center"></i>
+                            <img src="img/rutas.png" alt="" class="icon-pricing icon-center-vertical">
+                            <!--<i class="icon-road icons-pricing icon-center"></i>-->
                         </div>
                         <div class="col col-90">
                             <h3 class="include-text">Rutas</h3>
-                            <p>Selecciona las empresas que quieres visitar y nosotros creamos tu ruta comercial.</p>
+                            <p class="list-pricing-text">Selecciona las empresas que quieres visitar y nosotros creamos tu ruta comercial.</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card card-pricing">
                 <div class="item item-text-wrap item-pricing">
                     <div class="row">
                         <div class="col">
-                            <i class="ion-ios-people icons-pricing"></i>
+                            <!--<img src="img/listado.png" alt="">-->
+                            <i class="ion-ios-people icon-font-pricing"></i>
                         </div>
                         <div class="col col-90">
                             <h3 class="include-text">Equipos</h3>
-                            <p>Comparte las empresas con tu equipo comercial.</p>
+                            <p class="list-pricing-text">Comparte las empresas con tu equipo comercial.</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card card-pricing">
                 <div class="item item-text-wrap item-pricing">
                     <div class="row">
                         <div class="col">
-                            <i class="ion-ios-location icons-pricing"></i>
+                            <img src="img/geo.png" alt="" class="icon-pricing icon-center-vertical">
+                            <!--<i class="ion-ios-location icons-pricing"></i>-->
                         </div>
                         <div class="col col-90">
                             <h3 class="include-text">Geolocalización</h3>
-                            <p>Geolocaliza la información que tienes a 1,3 y 5km desde tu posición.</p>
+                            <p class="list-pricing-text">Geolocaliza la información que tienes a 1,3 y 5km desde tu posición.</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card card-pricing">
                 <div class="item item-text-wrap item-pricing">
                     <div class="row">
                         <div class="col">
-                            <i class="ion-navigate icons-pricing"></i>
+                            <img src="img/nav.png" alt="" class="icon-pricing icon-center-vertical">
+                            <!--<i class="ion-navigate icons-pricing"></i>-->
                         </div>
                         <div class="col col-90">
                             <h3 class="include-text">Navegación</h3>
-                            <p>Selecciona la empresa que quieres visitar y navega hasta ella optimizando tu ruta.</p>
+                            <p class="list-pricing-text">Selecciona la empresa que quieres visitar y navega hasta ella optimizando tu ruta.</p>
                         </div>
                     </div>
                 </div>

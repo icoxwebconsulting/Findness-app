@@ -32,7 +32,7 @@
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     font-family: "Helvetica Neue";
-    font-size: 16px !important;
+    font-size: 12px !important;
     font-weight: 300!important;
     margin-top: 10px!important;
     /*margin-left: px!important;*/
@@ -41,7 +41,7 @@
 }
 ::-moz-placeholder { /* Firefox 19+ */
     font-family: "Helvetica Neue";
-    font-size: 16px !important;
+    font-size: 12px !important;
     font-weight: 300!important;
     margin-top: 10px!important;
     /*margin-left: px!important;*/
@@ -50,7 +50,7 @@
 }
 :-ms-input-placeholder { /* IE 10+ */
     font-family: "Helvetica Neue";
-    font-size: 16px !important;
+    font-size: 12px !important;
     font-weight: 300!important;
     margin-top: 10px!important;
     /*margin-left: px!important;*/
@@ -59,7 +59,7 @@
 }
 :-moz-placeholder { /* Firefox 18- */
     font-family: "Helvetica Neue";
-    font-size: 16px !important;
+    font-size: 12px !important;
     font-weight: 300!important;
     margin-top: 10px!important;
     /*margin-left: px!important;*/
@@ -141,16 +141,86 @@
     background-image: none;
 }
 
+.header-bar {
+    /*background: #6f3b6e!important; !* For browsers that do not support gradients *!
+    background: -webkit-linear-gradient(left, #6f3b6e , #956294)!important; !* For Safari 5.1 to 6.0 *!
+    background: -o-linear-gradient(right, #6f3b6e, #956294)!important; !* For Opera 11.1 to 12.0 *!
+    background: -moz-linear-gradient(right, #6f3b6e, #956294)!important; !* For Firefox 3.6 to 15 *!
+    background: linear-gradient(to right, #6f3b6e , #956294)!important; !* Standard syntax *!*/
+    background-image: url("../img/Head_background.png")!important;
+    background-size: 100%!important;
+    background-repeat: repeat-y;
+}
+
+.border-pricing {
+    border: 1px solid #713d70;
+    text-align: center;
+}
+
+.icon-pricing {
+    width: 20px!important;
+}
+
+.icon-center-vertical {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.list-pricing {
+    height: 80px!important;
+}
+
+.item-pricing-subtitle {
+    padding-left: 10px!important;
+    padding-bottom: 5px!important;
+    padding-top: 5px!important;
+}
+
+.list-pricing-subtitle {
+    color: #713d70!important;
+    font-size: 14px!important;
+    font-weight: 100!important;
+}
+
+.list-pricing-text {
+    font-size: 13px!important;
+    font-weight: 100!important;
+}
+
+.bg-pricing {
+    margin-left: 2px;
+    margin-right: 2px;
+    background: #7d497c!important; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, #7d497c, #935f92)!important;; /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #7d497c, #935f92)!important;; /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #7d497c, #935f92)!important;; /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #7d497c, #935f92)!important;; /* Standard syntax */
+}
+
+.bar-light .button.button-clear{
+    color: #ffffff!important;
+}
 .bar-header .logo{
     width: auto;
     height: 33px;
     margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .search-btn{
     width: 20px;
     height: 20px;
     margin-top: 8px;
+    margin-right: 8px;
+}
+
+.menu-btn {
+    width: 20px;
+    height: 20px;
+    margin-top: 8px;
+    margin-left: 8px;
 }
 
 .bar .title.title-left{
@@ -700,15 +770,20 @@
 
 .list {
     position: relative;
-    padding-top: 1px;
-    padding-bottom: 0px!important;
-    padding-left: 0;
-    margin-bottom: 0px!important;
+    padding-bottom: 0!important;
+    padding-left: 5px!important;
+    padding-right: 5px!important;
+    margin-bottom: 0!important;
 }
 
 .month {
     margin-top: 25px;
 }
+
+.month-6 {
+    margin-top: 10px;
+}
+
 .month-text{
     color: darkgray;
     font-weight: bold;
@@ -729,15 +804,16 @@
     font-weight: 100;
 }
 
-.icons-pricing {
-    font-size: 2.2rem;
-    color: #387ef5;
+.icon-font-pricing {
+    font-size: 30px;
+    color: #713d70;
 }
 
 .include-text{
     /*font-size: large!important;*/
+    margin-bottom: 0px!important;
     font-weight: bold!important;
-    color: #387ef5;
+    color: #713d70;
 }
 
 .card-pricing {
@@ -750,7 +826,7 @@
 
 #shape-pricing {
     text-align: center;
-    background: #387ef5;
+    background: #51A6BA;
     display: inline-block;
     height: 20px;
     /*margin-left: 20px;*/
@@ -761,7 +837,7 @@
 }
 
 #shape-pricing:before {
-    border-top: 12px solid #387ef5;
+    border-top: 12px solid #51A6BA;
     border-left: 50px solid transparent;
     border-right: 50px solid transparent;
     content: "";
@@ -785,11 +861,13 @@
     margin-top: 36px;
 }
 
+.btn-color {
+    background-color: #b79db6!important;
+}
 .btn-cnae {
-    background-color: #7fc1e6!important;
     border-radius: 5px!important;
     margin-right: 5px!important;
-    width: 85px!important;
+    width: 70px!important;
     margin-bottom: 5px!important;
 }
 
@@ -797,27 +875,49 @@
     float: left!important;
     margin-left: 4px!important;
     color: #fff!important;
-    font-size: 16px!important;
+    font-size: 14px!important;
 }
 
-.btn-filter {
-    background-color: #7fc1e6!important;
-}
+
 
 .btn-filter:before {
     float: right;
-    color: #0185cf!important;
     margin-top: 4px!important;
     margin-left: 3px!important;
     margin-right: 4px!important;
     font-weight: 700!important;
 }
 
+.info-subscription {
+    border: none!important;
+    padding-top: 5px!important;
+    padding-bottom: 0!important;
+}
+
+.btn-icon-color {
+    color: #713d70!important;
+}
+
+.btn-subscribe {
+    font-size: 10px!important;
+    font-weight: 100!important;
+    margin-top: 30px!important;
+}
+.btn-subscribe-6 {
+    font-size: 10px!important;
+    font-weight: 100!important;
+    margin-top: 14px!important;
+}
+
+.tag-subscribe-6{
+    position: relative;
+    bottom: 12px;
+}
+
 .btn-icon-cnae:before {
     float: right;
-    color: #0185cf!important;
     margin-top: 4px!important;
-    margin-left: 3px!important;
+    margin-left: 10px!important;
     margin-right: 4px!important;
     font-weight: 700!important;
 }
@@ -841,6 +941,7 @@
 }
 
 .subtitle-input{
+    font-size: 14px!important;
     color: #95989a!important;
     font-weight: 100!important;
 }
@@ -861,11 +962,11 @@
 }
 
 .btn-positive{
-    background-color: #0185cf!important;
+    background-color: #c6658a!important;
 }
 
 .border-header{
-    border-bottom: 1px solid #713d70!important;
+    /*border-bottom: 1px solid #713d70!important;*/
 }
 
 .list-content {
@@ -891,8 +992,8 @@
 }
 
 .span-item {
-    font-size: 16px!important;
-    color: #a6a6a6!important;
+    font-size: 14px!important;
+    color: #95989a!important;
 }
 
 .border-top-bottm {
@@ -900,4 +1001,55 @@
     border-top: 1px solid #ddd!important;
     padding-left: 5px!important;
     padding-right: 10px!important;
+}
+
+.div-search {
+    padding-bottom: 0px!important;
+}
+
+.selected-button {
+    padding-top: 10px;
+    padding-left: 6px;
+    padding-right: 5px;
+}
+.subtitle-right {
+    font-size: 24px;
+    margin-top: 0px;
+    float: right;
+    margin-right: 10px;
+    color: #a7aaaa;
+}
+
+.list-payment {
+    margin-left: 10px!important;
+    margin-right: 10px!important;
+}
+
+.gray-text {
+    color: #95989a!important;
+    font-size: 14px!important;
+    margin-bottom: 2px!important;
+}
+
+.row-payment {
+    padding-left: 0px!important;
+    padding-bottom: 0px!important;
+}
+
+.padding-not-l-r {
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+
+.input-label-payment {
+    font-size: 12px!important;
+    padding-right: 0!important;
+    width: 0px!important;
+}
+
+.span-left {
+    margin-left: 5px!important;
+    font-size: 12px!important;
+    font-weight: 100!important;
 }

@@ -1,6 +1,6 @@
 <ion-side-menus enable-menu-with-back-views="true">
     <ion-side-menu-content drag-content="dragStatus">
-        <ion-nav-bar class="bar-light border-header">
+        <ion-nav-bar class="bar-light border-header header-bar">
             <ion-nav-title>
                 <div class="center" style="text-align: center">
                     <img src="img/findness.png" class="logo">
@@ -8,8 +8,9 @@
             </ion-nav-title>
 
             <ion-nav-buttons side="left">
-                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-                </button>
+                <img src="img/MenuIcon.png" class="menu-btn" menu-toggle="left" alt="">
+                <!--<button class="button button-icon button-clear ion-navicon-round" menu-toggle="left">
+                </button>-->
             </ion-nav-buttons>
             <ion-nav-buttons side="right" >
                 <img src="img/search.png" class="search-btn" ui-sref="app.filter">
