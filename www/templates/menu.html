@@ -23,17 +23,16 @@
         <ion-header-bar class="bar-light">
             <div class="header-menu">
                 <div class="legend">
-                    <div class="left">
+                    <div class="up">
                         <p ng-if="customer.firstName.length <= 21">{{customer.firstName}}</p>
                         <p ng-if="customer.firstName.length >= 24">{{customer.firstName| limitTo:22}} <span ng-if="customer.firstName.length >= 24">...</span></p>
-                        <p ng-if="username.length <= 21">{{username}}</p>
-                        <p ng-if="username.length >= 24">{{username| limitTo:22}} <span ng-if="username.length >= 24">...</span></p>
+                        <p style="font-weight: 200" ng-if="username.length <= 21">{{username}}</p>
+                        <p style="font-weight: 200"ng-if="username.length >= 24">{{username| limitTo:22}} <span ng-if="username.length >= 24">...</span></p>
                     </div>
-                    <div class="right">
+                    <div class="down">
                         <span>
-                            <ng-pluralize count="daysRemaining" when="{'0': 'Expiro', '1': '1 día', 'other': '{{daysRemaining}} días'}"></ng-pluralize>
+                            <i class="ion-clock"></i>&nbsp;Tu cuenta caduca el {{subscription.endDate|date :'dd/MM/yyyy'}}
                         </span>
-                        <img src="img/cart.png" ui-sref="app.profile" menu-close>
                     </div>
                 </div>
             </div>
@@ -41,28 +40,25 @@
         <ion-content class="categories">
             <ion-list>
                 <ion-item menu-close ng-click="stateChange('app.profile')">
-                    Mi perfil
+                    <img src="img/user.png"> <span>Mi perfil</span>
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.map')">
-                    Ver mapa
+                    <img src="img/search_.png"> <span>Buscar Empresas</span>
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.companies')">
-                    Mis listados
+                    <img src="img/list.png"> <span>Mis listados</span>
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.routes')">
-                    Mis rutas
+                    <img src="img/route.png"> <span>Mis rutas</span>
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.searches')">
-                    Historial de búsquedas
+                    <img src="img/history.png"> <span>Historial de búsquedas</span>
                 </ion-item>
                 <ion-item menu-close ng-click="stateChange('app.pricing')">
-                    SUSCRÍBETE
+                    <img src="img/pro.png" style="margin-right: 16px!important;"> <span>Hazte PRO</span>
                 </ion-item>
-                <!--<ion-item menu-close ng-click="stateChange('app.faq')">-->
-                    <!--FAQs-->
-                <!--</ion-item>-->
                 <ion-item menu-close ng-click="stateChange('app.advice')">
-                    Aviso legal
+                    <img src="img/legal.png"> <span>Aviso legal</span>
                 </ion-item>
             </ion-list>
         </ion-content>

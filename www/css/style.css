@@ -600,17 +600,33 @@
 }
 
 #mainMenu .bar-header {
-    height: 140px;
-    background-image: url("../img/bg/menu.jpg");
+    height: 235px;
+    background-image: url("../img/bg/menu.png");
     background-size: cover;
 }
 
 .categories {
-    margin-top: 95px;
+    margin-top: 190px;
+}
+
+.categories img{
+    height: 20px;
+    margin-right: 10px;
+}
+
+.categories .list{
+    padding: 0!important;
 }
 
 .categories .item {
-    color: #000000;
+    color: #949799;
+    font-size: 18px;
+    padding: 9px 10px;
+}
+
+.categories .list span{
+    margin-top: -5px !important;
+    position: relative;
 }
 
 .header-menu {
@@ -618,33 +634,37 @@
 }
 
 .header-menu .legend {
-    margin-top: 80px;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
-.header-menu .legend .left {
-    width: 90%;
-    display: inline-block;
+.header-menu .legend .up {
+    width: 100%;
     color: #ffffff;
     font-weight: bold;
     font-size: 13px;
+    float: right;
+    position: relative;
+    text-align: right;
 }
 
-.header-menu .legend .left p {
+.header-menu .legend .up p {
     margin-top: 0px;
     margin-left: 10px;
     margin-bottom: 0;
 }
 
-.header-menu .legend .right {
-    width: 35%;
+.header-menu .legend .down {
+    width: 100%;
     display: block;
     color: #fff;
     position: absolute;
-    margin-top: -75px;
-    margin-left: 65%;
-    font-size: 14px;
+    font-size: 12px;
     float: right;
+    text-align: right;
     line-height: 40px;
+    margin-top: 150px;
+    padding: 20px;
 }
 
 .header-menu .legend .right img {
@@ -1052,4 +1072,22 @@
     text-align: left !important;
     margin-left: 10px !important;
     margin-right: 10px !important;
+}
+
+.item-input-new{
+    padding: 2px !important;
+    border: none !important;
+    color: #767676 !important;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.item-input-new .item-input input, .item-input-new .item-input span{
+    font-size: 12px !important;
+    color: #767676 !important;
+    font-family: "Helvetica Neue" !important;
+}
+
+.profile-inputs{
+    margin: 5px !important;
 }
