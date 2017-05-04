@@ -18,7 +18,7 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
         }
         else if (!$scope.data.email) {
             $ionicPopup.alert({
-                title: "Ingrese su email"
+                title: "Ingrese un email valido"
             });
         }
         else if (!$scope.data.password) {
