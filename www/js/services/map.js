@@ -1,4 +1,4 @@
-app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup, subscriptionSrv, $state, userDatastore) {
+app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company, routeService, searchService, COMPANY_STYLE, $ionicPopup, subscriptionSrv, $state, $http, userDatastore) {
 
     //var map;
     var markers = [];
@@ -50,6 +50,45 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         }
     }
 
+    function infoRouteModal(){
+        var type = {
+            'WALKING': 'A pie',
+            'DRIVING': 'En automóvil',
+            'TRANSIT': 'Transporte público'
+        };
+        var modalScope = $rootScope.$new();
+        modalScope.name = routeService.getRouteName();
+        modalScope.transport = type[routeService.getRouteTransport()];
+        modalScope.distance = 0;
+        modalScope.duration = 0;
+        modalScope.counter = 0;
+        for (var p in paths) {
+            var temp = paths[p]["data"]["distance"];
+            modalScope.distance += parseFloat((temp) ? temp : 0);
+            temp = paths[p]["data"]["duration"];
+            modalScope.duration += parseFloat((temp) ? temp : 0);
+            modalScope.counter += 1;
+        }
+
+        var infoRoute = {};
+
+        infoRoute["name"] = modalScope.name;
+        infoRoute["transport"] = modalScope.transport;
+        infoRoute["distance"] = modalScope.distance;
+        infoRoute["duration"] = modalScope.duration;
+        infoRoute["counter"] = modalScope.counter;
+
+        userDatastore.setModalInfo(JSON.stringify(infoRoute));
+
+        //Muestra información de la ruta
+        $ionicModal.fromTemplateUrl('templates/route-info.html', {
+            scope: modalScope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            modal.show();
+        });
+    }
+
     function infoRoute() {
         var type = {
             'WALKING': 'A pie',
@@ -87,17 +126,28 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         }).then(function (modal) {
 //            modal.show();
         });
+        console.log('infoRoute', infoRoute);
+//        debugger;
         $state.go('app.orderRoutes');
     }
 
-    function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position) {
-
+    function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position, cif, billing, employees, cnae, sector) {
+//        console.log('sectorSelected(sector)', sectorSelected(sector));
+//        console.log('sectorSelected(sector).$$state', sectorSelected(sector).$$state);
+//        console.log('sectorSelected(sector status)', sectorSelected(sector).$$state);
+//        console.log('nameSector', sectorSelected());
+//        console.log('nameSector', nameSector);
+        var nameSector = sectorSelected(sector);
         var modalScope = $rootScope.$new();
         modalScope.marker = marker;
         modalScope.title = title;
         modalScope.socialObject = socialObject;
         modalScope.companyId = companyId;
         modalScope.style = style;
+        modalScope.cif = cif;
+        modalScope.billing = billing;
+        modalScope.employees = employees;
+        modalScope.sector = nameSector +' (cnae ' + cnae + ')';
         var modes = routeService.getModes();
         if (modes.routeMode || modes.viewRoute) {
             modalScope.routeMode = true
@@ -248,7 +298,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
 
     }
 
-    function addMaker(position, title, socialObject, companyId, address, phoneNumber, style, isNumeric) {
+    function addMaker(position, title, socialObject, companyId, address, phoneNumber, style, isNumeric, cif, billing, employees, cnae, sector) {
 
         if (isNumeric) {
             var icon = COMPANY_STYLE.NUM + style + '.png';
@@ -264,7 +314,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         });
 
         marker.addListener('click', function () {
-            infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position);
+            infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position, cif, billing, employees, cnae, sector);
         });
 
         if (isNumeric) {
@@ -316,11 +366,21 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         }
         var nro = 1;
         for (var item in items) {
+            console.info('processMakers items=>', items);
+//            debugger;
 
             if (typeof items[item].style != 'undefined') {
                 var style = items[item].style;
             } else {
-                var style = 'RED';
+                var style = '';
+
+                if (items[item].freelance == 'NO'){
+                    style = 'COMPANY';
+                }else if(items[item].freelance == 'SI'){
+                    style = 'FREELANCE';
+                }else {
+                    style = 'COMPANY';
+                }
             }
 
             if (isNumeric) {
@@ -341,7 +401,12 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                 items[item].address,
                 items[item].phoneNumber,
                 style,
-                isNumeric
+                isNumeric,
+                items[item].cif,
+                items[item].billing,
+                items[item].employees,
+                items[item].cnae,
+                items[item].sector
             );
             nro += 1;
         }
@@ -492,7 +557,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         var routePath = new google.maps.Polyline({
             path: path,
             geodesic: true,
-            strokeColor: '#FF0000',
+            strokeColor: '#713d70',
             strokeOpacity: strokeOpacity,
             strokeWeight: 3
         });
@@ -562,6 +627,108 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         });
     }
 
+    function sectorSelected(sector) {
+        var nameSector = '';
+        switch (sector) {
+            case "A":
+                nameSector = "Agricultura, caza, silvicultura y pesca.eak";
+                break;
+            case "B":
+                nameSector = "Industrias extractivas.";
+                break;
+            case "C":
+                nameSector = "Industrias manufactureras.";
+                break;
+            case "D":
+                nameSector = "Suministro de energía eléctrica, gas, vapor y aire acondicionado.";
+                break;
+            case "E":
+                nameSector = "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación.";
+                break;
+            case "F":
+                nameSector = "Construcción.";
+                break;
+            case "G":
+                nameSector = "Comercio al por mayor y menor, reparación de vehículos de motor y motocicletas.";
+                break;
+            case "H":
+                nameSector = "Transporte y almacenamiento.";
+                break;
+            case "I":
+                nameSector = "Hostelería.";
+                break;
+            case "J":
+                nameSector = "Información y comunicaciones.";
+                break;
+            case "K":
+                nameSector = "Actividades financieras y de seguros.";
+                break;
+            case "L":
+                nameSector = "Actividades inmobiliarias.";
+                break;
+            case "M":
+                nameSector = "Actividades profesionales científicas y técnicas.";
+                break;
+            case "N":
+                nameSector = "Actividades administrativas y servicios auxiliares.";
+                break;
+            case "O":
+                nameSector = "Administración Pública y defensa, seguridad social obligatoria.";
+                break;
+            case "P":
+                nameSector = "Educación.";
+                break;
+            case "Q":
+                nameSector = "Actividades sanitarias y de servicios sociales.";
+                break;
+            case "R":
+                nameSector = "Actividades artísticas recreativas y de entretenimiento.";
+                break;
+            case "S":
+                nameSector = "Otros Servicios.";
+                break;
+            case "T":
+                nameSector = "Actividades De Los Hogares Como Empleadores De Personal Domestico; Actividades De Los Hogares Como Productores De Bienes Y Servicios Para Uso Propio";
+                break;
+            case "U":
+                nameSector = "Actividades De Organizaciones Y Organismos Extraterritoriales";
+                break;
+            case "V":
+                nameSector = "Desconocido o No Informado.";
+                break;
+        }
+        return nameSector;
+    }
+
+    /*function sectorSelected(sector) {
+        /!*$http({
+            method: 'GET',
+            url: '/someUrl'
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });*!/
+
+        var deferred = $q.defer();
+        $http.get('js/sectors.json',
+            {header: {'Content-Type': 'application/json; charset=UTF-8'}}
+        ).then(function (sectorArray) {
+            for (i = 0; i < sectorArray.data.length; i++){
+                var sectorSelected = sectorArray.data[i].id;
+                if(sectorSelected == sector){
+                    deferred.resolve(sectorArray.data[i].name);
+                }
+            }
+        }).catch(function () {
+            deferred.reject(false);
+        });
+
+        return deferred.promise;
+    }*/
+
     return {
         init: init,
         processMakers: processMakers,
@@ -576,6 +743,8 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         showMyLocation: showMyLocation,
         infoRoute: infoRoute,
         resetMap: resetMap,
-        checkLocation: checkLocation
+        checkLocation: checkLocation,
+        sectorSelected: sectorSelected,
+        infoRouteModal: infoRouteModal
     };
 });

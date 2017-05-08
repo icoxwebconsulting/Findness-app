@@ -1,28 +1,167 @@
-<ion-modal-view class="modal-company-detail">
-    <ion-header-bar>
-        <div class="header-company-detail">
-            <i class="ion-arrow-left-c back-icon" ng-click="closeDetail()"></i>
-            <div class="title-center">
+<ion-modal-view class="">
+    <ion-nav-bar class="bar-light border-header header-bar">
+        <ion-nav-title>
+            <div class="title-header-compay" style="text-align: center; margin-right: 18px;">
+                Detalles Empresa
+            </div>
+        </ion-nav-title>
+        <ion-nav-buttons side="left">
+            <i class="ion-chevron-left back-icon" ng-click="closeDetail()"></i>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+
+    <ion-content scroll="true" style="margin-top: 40px;">
+        <div class="row name-company">
+            <div class="col center">
                 {{title | uppercase}}
             </div>
         </div>
-    </ion-header-bar>
-    <ion-content scroll="true">
-        <div class="row subtitle">
-            <div class="col col-100">
-                <div class="left">
-                    <span>DETALLE DE EMPRESA</span>
+
+        <div class="row subtitle-input ">
+            <div class="col border-bottom">
+                Información de Contacto
+            </div>
+        </div>
+
+        <div class="list">
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding row-padding">
+                    <div class="col">
+                        <i class="ion-document-text icon-info"></i>
+                        <!--<img src="img/cif.png" alt="" class="icon-modal-info-details icon-center-vertical" style="">-->
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">RAZÓN SOCIAL</span>
+                        <p class="list-pricing-text">{{(title != '') ? title : "N/A"}}</p>
+                    </div>
                 </div>
-                <div class="center">
-                    <br>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding row-padding">
+                    <div class="col">
+                        <img src="img/cif.png" alt="" class="icon-modal-info-details icon-center-vertical" style="">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">CIF</span>
+                        <p class="list-pricing-text">{{(cif != '') ? cif : "N/A"}}</p>
+                    </div>
                 </div>
-                <div class="right">
-                    <br>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <img src="img/phone.png" alt="" class="icon-modal-info-details icon-center-vertical" style="">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">TELÉFONO</span>
+                        <p class="list-pricing-text">{{(phoneNumber != '') ? phoneNumber : "N/A"}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <img src="img/address.png" alt="" class="icon-modal-info-details icon-center-vertical"
+                             style="margin-left: 0!important; width: 38px!important;">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">DIRECCIÓN</span>
+                        <p class="list-pricing-text">{{(address != '') ? address : "N/A" }}</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="row row-info">
+        <div class="row subtitle-input ">
+            <div class="col border-bottom">
+                Información de Comercial
+            </div>
+        </div>
+
+        <div class="list">
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding row-padding">
+                    <div class="col">
+                        <img src="img/cif.png" alt="" class="icon-modal-info-details icon-center-vertical" style="">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">ACTIVIDAD</span>
+                        <p class="list-pricing-text">{{(sector != '') ? sector : "N/A"}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding row-padding">
+                    <div class="col">
+                        <i class="ion-document-text icon-info"></i>
+                        <!--<img src="img/cif.png" alt="" class="icon-modal-info-details icon-center-vertical" style="">-->
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">OBJETO SOCIAL</span>
+                        <p class="list-pricing-text">{{(socialObject != '') ? socialObject : "N/A"}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/sector.png" alt="" class="icon-modal-info-details icon-center-vertical" style="">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">SECTOR</span>
+                        <p class="list-pricing-text">{{(sector != '') ? sector : "N/A"}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/billing.png" alt="" class="icon-modal-info-details icon-center-vertical">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">FACTURACIÓN</span>
+                        <p class="list-pricing-text" ng-if="billing != ''">{{(billing | number:2) + ' €' }}</p>
+                        <p class="list-pricing-text" ng-if="billing == ''">"N/A"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/employess.png" alt="" class="icon-modal-info-details icon-center-vertical">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">NÚMERO DE EMPLEADOS</span>
+                        <p class="list-pricing-text">{{(employees != '') ? employees : "N/A"}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="padding row" style="text-align: center">
+            <div class="col col-offset-10">
+                <button class="button button-outline btn-positive-outline btn-text col col-45" style="margin-right: 5px"
+                        ng-click="navigateTo()">GOOGLE MAPS
+                </button>
+            </div>
+            <div class="col col-10"></div>
+        </div>
+
+        <!--<div class="row row-info">
             <div class="col col-100">
                 <div class="up">
                     <span>Cliente</span>
@@ -71,13 +210,14 @@
                     <br>
                 </div>
             </div>
-        </div>
-        <div class="row row-info row-map" ng-init="initializeMap()" scroll="false">
+        </div>-->
+        <!--<div class="row row-info row-map" ng-init="initializeMap()" scroll="false">
             <a class="my-location" ng-click="showMyLocation()" title="Mi ubicación">
                 <img src="img/map/my_location.png">
             </a>
-            <div style="width:111%;height:70%;left: -40px !important; position: absolute!important;" id="map_canvas_detail" data-tap-disabled="true">
+            <div style="width:111%;height:70%;left: -40px !important; position: absolute!important;"
+                 id="map_canvas_detail" data-tap-disabled="true">
             </div>
-        </div>
+        </div>-->
     </ion-content>
 </ion-modal-view>

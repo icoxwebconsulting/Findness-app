@@ -6,7 +6,18 @@
         <i class="ion-information-circled"></i>
         ¡Este campo es requerido!
     </div>
-    <label class="item item-input item-select">
+    <div class="row" style="text-align: center; font-size: 30px">
+        <div class="col col-33 selected-transporter" ng-class="driving" ng-click="transporter('DRIVING')">
+            <i class="ion-model-s"></i>
+        </div>
+        <div class="col col-33 " ng-class="transit" ng-click="transporter('TRANSIT')">
+            <i class="ion-android-bus"></i>
+        </div>
+        <div class="col col-33" ng-class="walking"  ng-click="transporter('WALKING')">
+            <i class="ion-android-walk"></i>
+        </div>
+    </div>
+    <label class="item item-input item-select" style="display: none">
         <div class="input-label">
             Transporte
         </div>

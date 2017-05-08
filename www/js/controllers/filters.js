@@ -35,7 +35,6 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.hideListState = false;
     $scope.hideListCity = true;
     $scope.hideListZipcode = false;
-    console.log('init typeof',$scope.hideListCnaes);
 
 
 //    $scope.states = [];
@@ -44,7 +43,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         $scope.init();
     });
 
-    $http.get('js/cnae-categories.json').success(function (data) {
+    $http.get('js/sectors.json').success(function (data) {
         data.unshift({"id": '', "name": "Sectores de activad"});
         $scope.cnaesCategories = data;
     });
@@ -166,7 +165,6 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             query = query.toLowerCase();
 
             $scope.hideListCnaes = true;
-            console.log('haschange typeof',query);
 
             return searchService.getCnaes(query).then(function (cnaes) {
                 return $scope.cnaesItems = cnaes.items;
@@ -466,9 +464,9 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             } else {
                 if (validate == true) {
                     $ionicPopup.alert({
-                        title: 'Suscripción',
+                        title: 'HAZTE PRO',
                         template: '<div>Se han encontrado ' + searchService.getNonConsultedElements() + ' empresas.</div>',
-                        okText: 'SUSCRÍBETE',
+                        okText: 'HAZTE PRO',
                     }).then(function (res) {
                         if (res) {
                             $state.go('app.pricing');

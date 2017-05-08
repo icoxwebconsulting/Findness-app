@@ -1,15 +1,38 @@
-<ion-view>
+<ion-view class="filters">
 
     <ion-header-bar class="bar-subheader subtitle-subheader">
-        <h3 class="title">Mis rutas</h3>
+        <div class="row subtitle " scroll="false">
+            <div class="col col-100">
+                <div class="left">
+                    <span class="title-views">Mis Rutas</span>
+                </div>
+                <div class="center">
+                    <br>
+                </div>
+                <div class="right">
+                    <br>
+                </div>
+
+            </div>
+        </div>
     </ion-header-bar>
 
-    <ion-content class="has-subheader">
+    <ion-content>
         <ion-list show-delete="shouldShowDelete">
             <ion-item ng-repeat="item in items" class="item-button-right" ng-click="callRoute(item)">
-                <h3>{{item.name}} - {{type[item.transport]}}</h3>
-                <ion-option-button class="button-energized icon ion-edit" ng-click="showChangeName(item)"></ion-option-button>
-                <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteRoute(item, $index)"></ion-option-button>
+                <div class="row">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/address.png" alt="" class="list-companies icon-center-vertical" style="">
+                    </div>
+                    <div class="col col-90">
+                        <h3>{{item.name}} - {{type[item.transport]}}</h3>
+                        <ion-option-button class="button-energized icon ion-edit" ng-click="showChangeName(item)"></ion-option-button>
+                        <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteRoute(item, $index)"></ion-option-button>
+                    </div>
+                </div>
+
+
             </ion-item>
         </ion-list>
     </ion-content>

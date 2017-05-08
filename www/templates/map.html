@@ -11,24 +11,25 @@
             </div>
         </div>
 
-        <div id="infoMapButton" class="info-map-button" ng-show="showRoute && (routeMode || viewRoute)">
-            <i class="icon ion-information-circled" ng-click="showRouteInfo()"></i>
-        </div>
+        <!--<div id="infoMapButton" class="info-map-button" ng-show="showRoute && (routeMode || viewRoute)">
+            &lt;!&ndash;<i class="icon ion-ios-information-outline " ng-click="showRouteInfo()"></i>&ndash;&gt;
+            <img src="img/info.png" alt="" class="" style="">
+        </div>-->
 
         <div id="mapButtons" class="map-buttons" ng-show="showRoute">
             <div class="row">
                 <div class="col-10">
                 </div>
                 <div class="col-80">
-                    <button class="button button-block button-assertive" ng-click="createRoute()" ng-hide="routeMode || viewRoute">
+                    <button class="button button-block button button-sign btn-text" ng-click="createRoute()" ng-hide="routeMode || viewRoute">
                     CREAR RUTA
                     </button>
 
-                    <button class="button button-block button-assertive" ng-click="finishRoute()" ng-show="routeMode">
+                    <button class="button button-block button button-sign btn-text" ng-click="finishRoute()" ng-show="routeMode">
                     GENERAR RUTA
                     </button>
 
-                    <button class="button button-block button-assertive" ng-click="finishEditRoute()" ng-show="viewRoute">
+                    <button class="button button-block button button-sign btn-text" ng-click="finishEditRoute()" ng-show="viewRoute">
                     GUARDAR CAMBIOS
                     </button>
                 </div>
@@ -39,5 +40,27 @@
 
         <div style="width:100%;height:100%" id="map_canvas" data-tap-disabled="true">
         </div>
+
+
+        <div class="btn-float-right-map" ng-show="(!showRoute && !routeMode && !viewRoute) || (!routeMode && !viewRoute)">
+            <a href="#app/list" class="button button-light btn-float btn-float-list">
+                Ver listado
+            </a>
+            <a href="#app/map" class="button button-light btn-float btn-float-map btn-float-active">
+                Ver mapa
+            </a>
+        </div>
+
+
+        <div class="btn-float-right-info" style="" ng-show="showRoute && (routeMode || viewRoute)">
+            <a href="#app/list" class="button button-light btn-info-text" style="width: 80%; text-align: left">
+                Selecciona las empresas que quieres añadir a la ruta
+            </a>
+            <a href="#app/map" class="button button-light btn-info" ng-click="showRouteModal()">
+                <img src="img/info.png" alt="" class="icon-center-vertical img-info">
+            </a>
+        </div>
+
+
     </ion-content>
 </ion-view>

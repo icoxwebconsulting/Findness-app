@@ -50,9 +50,9 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
             } else {
                 if (validate == true) {
                     $ionicPopup.alert({
-                        title: 'Suscripción',
+                        title: 'HAZTE PRO',
                         template: '<div>Se han encontrado ' + searchService.getNonConsultedElements() + ' empresas.</div>',
-                        okText: 'SUSCRÍBETE',
+                        okText: 'HAZTE PRO'
                     }).then(function (res) {
                         if (res) {
                             $state.go('app.pricing');

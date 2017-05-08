@@ -1,16 +1,104 @@
-<ion-modal-view class="modal-company-info">
+<ion-modal-view class="modal-company-info shadow-modal">
     <!--<ion-header-bar class="bar-positive">-->
         <!--<h1 class="title">{{title | uppercase}}</h1>-->
     <!--</ion-header-bar>-->
     <ion-content scroll="true">
-        <div class="bar-positive" style="padding: 10px; color: #fff;">
+        <div class="bar-positive" style="text-align: center;padding-top: 6px;color: #6e6e6e;background-color: #fff!important;font-weight: 600;font-size: 10px">
             {{title | uppercase}}
         </div>
-        <p class="address">
-            <span style="font-weight: 500;font-size: 12px;" ng-show="routeMode">Ruta: {{routeName}}</span>
-        </p>
         <hr ng-show="routeMode">
-        <p class="address">
+
+        <div class="list">
+            <!--<span style="font-weight: 500;font-size: 12px;" ng-show="routeMode">Ruta: {{routeName}}</span>-->
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/cif.png" alt="" class="icon-modal-info icon-center-vertical" style="">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">CIF</span>
+                        <p class="list-pricing-text">{{cif}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/sector.png" alt="" class="icon-modal-info icon-center-vertical"
+                             style="width: 33px!important;padding-left: 2px!important;margin-left: -4px;">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">SECTOR</span>
+                        <p class="list-pricing-text">{{sector}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/phone.png" alt="" class="icon-modal-info icon-center-vertical" style="">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">TELÉFONO</span>
+                        <p class="list-pricing-text">{{phoneNumber}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/address.png" alt="" class="icon-modal-info icon-center-vertical"
+                             style="margin-left: -5px!important; width: 38px!important;">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">DIRECCIÓN</span>
+                        <p class="list-pricing-text">{{address}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="list" style="border-top: 2px solid #DAD8DE !important;">
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/billing.png" alt="" class="icon-modal-info icon-center-vertical">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">FACTURACIÓN</span>
+                        <p class="list-pricing-text" ng-if="billing.length > 1">{{(billing | number:2) + ' €' }}</p>
+                        <p class="list-pricing-text" ng-if="billing == ''">"N/A"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-text-wrap item-modal-info">
+                <div class="row row-padding">
+                    <div class="col">
+                        <!--<i class="ion-ios-list-outline icons-pricing"></i>-->
+                        <img src="img/employess.png" alt="" class="icon-modal-info icon-center-vertical">
+                    </div>
+                    <div class="col col-90 modal-padding-left">
+                        <span class="include-text">NÚMERO DE EMPLEADOS</span>
+                        <p class="list-pricing-text">{{employees | number: 0}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--<p class="address">
             <b ng-if="address.length > 1">Direcci&oacute;n: </b>
             {{address | capitalize}} <span ng-if="address.length > 1">.</span><br>
             <b ng-if="phoneNumber.length > 1">Tel&eacute;fono: </b> <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a><br>
@@ -21,40 +109,67 @@
             <div style="text-align: center" ng-show="isAddedd">
                 <button class="button button-small button-positive" ng-click="navigateTo()">Navegar a esta empresa</button>
             </div>
-        </p>
+        </p>-->
 
-    </ion-content>
-    <ion-footer-bar>
-        <div class="row" ng-hide="routeMode">
-            <div class="col-50">
-                <span style="font-weight: 500;font-size: 12px;">Cambiar color:</span>
+        <div class="row" style="text-align: center" ng-show="(routeMode && isAddedd) || (routeMode && !isAddedd)">
+            <div class="col col-info">
+                <button class="button button-outline btn-positive-outline btn-text btn-google col col-45" style=""
+                        ng-click="navigateTo()">GOOGLE MAPS
+                </button>
             </div>
-            <div class="col-10">
-                <img src="img/color/blue.png" ng-click="changeStyle(marker,'BLUE',companyId)" ng-class="{'active': style  == 'BLUE'}">
-            </div>
-            <div class="col-10">
-                <img src="img/color/pink.png" ng-click="changeStyle(marker,'PINK',companyId)" ng-class="{'active': style  == 'PINK'}">
-            </div>
-            <div class="col-10">
-                <img src="img/color/yellow.png" ng-click="changeStyle(marker,'YELLOW',companyId)" ng-class="{'active': style  == 'YELLOW'}">
-            </div>
-            <div class="col-10">
-                <img src="img/color/red.png" ng-click="changeStyle(marker,'RED',companyId)" ng-class="{'active': style  == 'RED'}">
-            </div>
-            <div class="col-10">
-                <img src="img/color/green.png" ng-click="changeStyle(marker,'GREEN',companyId)" ng-class="{'active': style  == 'GREEN'}">
-            </div>
-            </a>
         </div>
 
-        <div style="text-align: center; width: 100%" ng-show="routeMode">
+    </ion-content>
+    <ion-footer-bar class="bar-footer-modal">
+
+        <div class="padding row" >
+            <button class="button button-outline btn-positive-outline btn-text col col-45" style="margin-right: 5px"
+                    ng-click="navigateTo()" ng-show="!routeMode">GOOGLE MAPS
+            </button>
+
+            <button class="button button-outline btn-positive-outline btn-text col col-45" style="margin-right: 5px"
+                    ng-show="routeMode && !isAddedd" ng-click="addToRoute()">AÑADIR A RUTA
+            </button>
+            <button class="button button-outline btn-rose-outline btn-text col col-45" style="margin-right: 5px"
+                    ng-show="routeMode && isAddedd" ng-click="removePoint(companyId)">QUITAR DE RUTA
+            </button>
+
+            <button class="button button-outline btn-rose-outline btn-text col col-45" ng-click="openDetail()">MÁS
+                INFORMACIÓN
+            </button>
+
+        </div>
+
+        <!--<div style="text-align: center; width: 100%" ng-show="routeMode">
             <button class="button button-small button-assertive" ng-click="addToRoute()" ng-show="!isAddedd">
                 Agregar a ruta
             </button>
             <button class="button button-small button-assertive" ng-click="removePoint(companyId)" ng-show="isAddedd">
                 Quitar de ruta
             </button>
-        </div>
+        </div>-->
+
+        <!--<div class="row" ng-hide="routeMode">-->
+            <!--<div class="col-50">-->
+                <!--<span style="font-weight: 500;font-size: 12px;">Cambiar color:</span>-->
+            <!--</div>-->
+            <!--<div class="col-10">-->
+                <!--<img src="img/color/blue.png" ng-click="changeStyle(marker,'BLUE',companyId)" ng-class="{'active': style  == 'BLUE'}">-->
+            <!--</div>-->
+            <!--<div class="col-10">-->
+                <!--<img src="img/color/pink.png" ng-click="changeStyle(marker,'PINK',companyId)" ng-class="{'active': style  == 'PINK'}">-->
+            <!--</div>-->
+            <!--<div class="col-10">-->
+                <!--<img src="img/color/yellow.png" ng-click="changeStyle(marker,'YELLOW',companyId)" ng-class="{'active': style  == 'YELLOW'}">-->
+            <!--</div>-->
+            <!--<div class="col-10">-->
+                <!--<img src="img/color/red.png" ng-click="changeStyle(marker,'RED',companyId)" ng-class="{'active': style  == 'RED'}">-->
+            <!--</div>-->
+            <!--<div class="col-10">-->
+                <!--<img src="img/color/green.png" ng-click="changeStyle(marker,'GREEN',companyId)" ng-class="{'active': style  == 'GREEN'}">-->
+            <!--</div>-->
+            <!--</a>-->
+        <!--</div>-->
 
     </ion-footer-bar>
 </ion-modal-view>

@@ -1,6 +1,6 @@
-<ion-view>
+<ion-view class="filters">
     <ion-header-bar class="bar-subheader subtitle-subheader">
-        <h3 class="title">{{listName}}</h3>
+        <h3 class="title title-views" style="color:#713d70;font-weight: 700; "; >{{listName}}</h3>
         <div class="buttons">
             <button class="button button-positive" ng-click="openShare()">
                 <i class="icon ion-share"></i>
@@ -15,11 +15,11 @@
         </div>
     </ion-header-bar>
 
-    <ion-content class="has-subheader">
+    <ion-content>
         <div class="list" scroll="true">
             <a class="item item-icon-left" href="#" ng-repeat="list in companies | orderBy:'social_reason':reverseOrder"
                ng-click="showCompanyDetail(list.id)">
-                <i class="icon ion-ios-bookmarks"></i>
+                <img src="img/business.png" alt="" class="list-companies icon-center-vertical" style="">
                 {{list.social_reason}}
             </a>
         </div>

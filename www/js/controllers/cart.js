@@ -34,7 +34,7 @@ app.controller('CartCtrl', function ($scope, $rootScope, $state, $filter, cart, 
         }else if($scope.view.subscription.lapse == 0 ){
             $scope.lapse = 'Período de Prueba';
         }else {
-            $scope.lapse = 'Suscripción '+$scope.view.subscription.lapse+ ' Meses';
+            $scope.lapse = 'Cuenta de '+$scope.view.subscription.lapse+ ' Meses';
         }
 
     };

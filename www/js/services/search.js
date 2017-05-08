@@ -188,12 +188,14 @@ app.factory('searchService', function ($q, $http, $rootScope, userDatastore, qua
             callSearch(token.accessToken, query).then(function (response) {
                 if (!response.hasOwnProperty("error")) {
                     if (query.page == 1) {
+                        console.log('response.TotalElementos',response.TotalElementos);
                         total = response.TotalElementos - response.TotalElementosNoConsultados;
                         llevo = response.ElementosDevueltos;
                     } else {
                         llevo += response.ElementosDevueltos;
                     }
-                    console.log("query nro", query.page, llevo, '<', total);
+                    console.log("query nro "+ query.page  + ' llevo ' + ' < ' + 'total ' + total);
+//                    debugger;
                     query.page += 1;
                     setResultSearch(response);
                     if (llevo < total) {

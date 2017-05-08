@@ -1,4 +1,4 @@
-app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, map, cart, searchService, routeService, subscriptionSrv, userDatastore, $ionicModal) {
+app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, $ionicModal, $location, map, cart, searchService, routeService, subscriptionSrv, userDatastore) {
 
     subscriptionSrv.requestSubscription(true, 'búsquedas');
 
@@ -165,17 +165,48 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         $scope.modal.hide()
     };
 
+    $scope.isActive = function (route) {
+
+        if (route === map) {
+            $scope.list = 'btn-float-active';
+            $scope.map = '';
+        } else {
+            $scope.map = 'btn-float-active';
+            $scope.list = '';
+        }
+
+        return route === $location.path();
+    };
+
+    $scope.transporter = function (transporter) {
+        if (transporter == 'DRIVING'){
+            $scope.driving = 'selected-transporter';
+            $scope.transit = 'not-selected-transporter';
+            $scope.walking = 'not-selected-transporter';
+        }else if(transporter == 'TRANSIT'){
+            $scope.transit = 'selected-transporter';
+            $scope.driving = 'not-selected-transporter';
+            $scope.walking = 'not-selected-transporter';
+        }else{
+            $scope.walking = 'selected-transporter';
+            $scope.transit = 'not-selected-transporter';
+            $scope.driving = 'not-selected-transporter';
+        }
+
+        $scope.formRoute.selectedOption.id = transporter;
+    }
+
     $scope.createRoute = function () {
         $scope.formRoute.name = '';
         var routePopup = $ionicPopup.show({
             templateUrl: 'templates/createRoute-popup.html',
-            title: 'Findness',
-            subTitle: 'Crear ruta',
+            title: 'Crear ruta',
+//            subTitle: '',
             scope: $scope,
             buttons: [
                 {
                     text: 'Aceptar',
-                    type: 'button-positive',
+                    type: 'button button-outline btn-rose-outline btn-text',
                     onTap: function (e) {
                         if ($scope.formRoute.hasOwnProperty("name") && $scope.formRoute.name.trim() != "") {
                             $scope.routeMode = true;
@@ -192,7 +223,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                 },
                 {
                     text: 'Cancelar',
-                    type: 'button-positive',
+                    type: 'button button-outline btn-positive-outline btn-text',
                     onTap: function (e) {
                         routePopup.close();
                         return true;
@@ -253,6 +284,10 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     $scope.showRouteInfo = function () {
         map.infoRoute();
+    }
+
+    $scope.showRouteModal = function () {
+        map.infoRouteModal();
     }
 
 }).filter('capitalize', function () {

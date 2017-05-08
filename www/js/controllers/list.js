@@ -7,6 +7,7 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
         var list = searchService.getResultSearch();
         if (typeof  list == "object" && list.hasOwnProperty("items")) {
             $scope.list = list.items;
+            console.log('$scope.list', $scope.list)
         }
     });
 

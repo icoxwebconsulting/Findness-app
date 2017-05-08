@@ -1,0 +1,90 @@
+[
+  {
+    "id":"A",
+    "name": "Agricultura, caza, silvicultura y pesca."
+  },
+  {
+    "id":"B",
+    "name": "Industrias extractivas."
+  },
+  {
+    "id":"C",
+    "name": "Industrias manufactureras."
+  },
+  {
+    "id":"D",
+    "name": "Suministro de energía eléctrica, gas, vapor y aire acondicionado."
+  },
+  {
+    "id":"E",
+    "name": "Suministro de agua, actividades de saneamiento, gestión de residuos y descontaminación."
+  },
+  {
+    "id":"F",
+    "name": "Construcción."
+  },
+  {
+    "id":"G",
+    "name": "Comercio al por mayor y menor, reparación de vehículos de motor y motocicletas."
+  },
+  {
+    "id":"H",
+    "name": "Transporte y almacenamiento."
+  },
+  {
+    "id":"I",
+    "name": "Hostelería."
+  },
+  {
+    "id":"J",
+    "name": "Información y comunicaciones."
+  },
+  {
+    "id":"K",
+    "name": "Actividades financieras y de seguros."
+  },
+  {
+    "id":"L",
+    "name": "Actividades inmobiliarias."
+  },
+  {
+    "id":"M",
+    "name": "Actividades profesionales científicas y técnicas."
+  },
+  {
+    "id":"N",
+    "name": "Actividades administrativas y servicios auxiliares."
+  },
+  {
+    "id":"O",
+    "name": "Administración Pública y defensa, seguridad social obligatoria."
+  },
+  {
+    "id":"P",
+    "name": "Educación."
+  },
+  {
+    "id":"Q",
+    "name": "Actividades sanitarias y de servicios sociales."
+  },
+  {
+    "id":"R",
+    "name": "Actividades artísticas recreativas y de entretenimiento."
+  },
+  {
+    "id":"S",
+    "name": "Otros Servicios."
+  },
+  {
+    "id":"T",
+    "name": "Actividades De Los Hogares Como Empleadores De Personal Domestico; Actividades De Los Hogares Como Productores De Bienes Y Servicios Para Uso Propio"
+  },
+  {
+    "id":"U",
+    "name": "Actividades De Organizaciones Y Organismos Extraterritoriales"
+  },
+  {
+    "id":"V",
+    "name": "Desconocido o No Informado."
+  }
+]
