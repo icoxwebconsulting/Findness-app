@@ -140,18 +140,18 @@
                     </div>
 
                     <!-- Zipcodes -->
-                    <div class="row div-search" ng-show="!selectedState.id" style="margin-top: 5px">
+                    <!--<div class="row div-search" ng-show="!selectedState.id" style="margin-top: 5px">
                         <label class="item item-input col border-radius">
                             <input type="search" ng-model="searchZipcodes"
                                    ng-change="listZipcodes(searchZipcodes)"
                                    class="ng-pristine ng-valid ng-touched input-search"
                                    placeholder="Código Postal">
                         </label>
-                        <!--<button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
+                        &lt;!&ndash;<button class="ion-autocomplete-cancel button button-clear button-ok col col-offset-5 col-10"
                                 ng-class="searchZipcodes.length > 3 ? 'button-positive btn-positive' : 'button-clear'"
                                 ng-click="searchZipcodes = ''">listo
-                        </button>-->
-                    </div>
+                        </button>&ndash;&gt;
+                    </div>-->
                     <div class="list">
                         <ion-item style="text-transform: capitalize" ng-repeat="zip in zipcodes"
                                   ng-show="searchZipcodes.length > 3 && hideListZipcode == true"

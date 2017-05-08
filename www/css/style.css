@@ -1402,3 +1402,7 @@
 .popup-buttons .button {
     font-size: 12px!important;
 }
+
+.button.button-positive {
+    background-color: #51A6BA!important;
+}
