@@ -126,17 +126,10 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         }).then(function (modal) {
 //            modal.show();
         });
-        console.log('infoRoute', infoRoute);
-//        debugger;
         $state.go('app.orderRoutes');
     }
 
     function infoWindowOpen(marker, title, socialObject, companyId, address, phoneNumber, style, position, cif, billing, employees, cnae, sector) {
-//        console.log('sectorSelected(sector)', sectorSelected(sector));
-//        console.log('sectorSelected(sector).$$state', sectorSelected(sector).$$state);
-//        console.log('sectorSelected(sector status)', sectorSelected(sector).$$state);
-//        console.log('nameSector', sectorSelected());
-//        console.log('nameSector', nameSector);
         var nameSector = sectorSelected(sector);
         var modalScope = $rootScope.$new();
         modalScope.marker = marker;
@@ -366,8 +359,6 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         }
         var nro = 1;
         for (var item in items) {
-            console.info('processMakers items=>', items);
-//            debugger;
 
             if (typeof items[item].style != 'undefined') {
                 var style = items[item].style;
