@@ -57,10 +57,10 @@
                                   ng-class="{active: isGroupShow(group)}">
                             <i class="icon icon-right" style="font-size: 20px;"
                                ng-class="isGroupShow(group) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
-                            <span class="span-item" ng-if="(selectedCNAE.length == 0) || (selectedCNAE.length != 0 && categoriesValid == false)">
+                            <span class="span-item" ng-if="selectedSector.length == 0">
                                 Sectores de actividad
                             </span>
-                            <span ng-if="selectedCNAE.length != 0 && categoriesValid == true">{{selectedCNAE[0].view}}</span>
+                            <span ng-if="selectedSector.length != 0 && categoriesValid == true">{{selectedSector[0].view}}</span>
                         </ion-item>
                         <div class="list-radio" ng-show="isGroupShow(group)">
                             <ion-radio ng-repeat="item in cnaesCategories"

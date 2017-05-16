@@ -23,6 +23,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.clickedZipCodeModel = "";
     $scope.removedZipCodeModel = "";
     $scope.selectedCNAE = [];
+    $scope.selectedSector = [];
     $scope.selectedState = {};
     $scope.selectedCity = {};
     $scope.selectedZipCode = [];
@@ -58,14 +59,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
 
     $scope.hasChanged = function (id, name, group) {
         $scope.categoriesValid = true;
-        console.log('isGroupShow', group)
-        $scope.selectedCNAE = [];
+        $scope.selectedSector = [];
         if (id != ''){
             objectCnae = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
-            $scope.selectedCNAE.push(objectCnae);
+            $scope.selectedSector.push(objectCnae);
         }
         $scope.toggleGroup(group);
-        console.info($scope.selectedCNAE);
     };
 
 
@@ -88,7 +87,6 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.billingChanged = function (id, group) {
         $scope.selectedBilling = [];
         item = $scope.listBilling;
-        console.log(id);
         if (id != ''){
             for (i = 0; i < item.length; i++){
                 if ( id == item[i].id){
@@ -96,11 +94,8 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
                     $scope.selectedBilling.push(objectBilling);
                 }
             }
-//            objectBilling = {id: id, name: name, max: max};
-//            $scope.selectedBilling.push(objectBilling);
         }
         $scope.toggleBilling(group);
-        console.info($scope.selectedBilling);
     };
 
     $scope.listEmployees = [
@@ -122,7 +117,6 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.employeesChanged = function (id, name, group) {
         $scope.selectedEmployees = [];
         item = $scope.listEmployees;
-        console.log(id);
         if (id != ''){
             for (i = 0; i < item.length; i++){
                 if ( id == item[i].id){
@@ -132,7 +126,6 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             }
         }
         $scope.toggleEmployees(group);
-        console.info($scope.selectedEmployees);
     };
 
     $scope.cancel = function () {
@@ -306,6 +299,10 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             $scope.lastFilter['employees'] = $scope.selectedEmployees[0];
         }
 
+        if ($scope.selectedSector.length > 0){
+            $scope.lastFilter['sector'] = $scope.selectedSector;
+        }
+
         userDatastore.setLastFilter($scope.lastFilter);
         console.log('$scope.lastFilterE', $scope.lastFilter);
     };
@@ -313,13 +310,14 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     // Get LastFilter
     $scope.getLastFilter = function () {
         var lastFilter =  userDatastore.getLastFilter();
-        console.log('userDatastore.getLastFilter',userDatastore.getLastFilter());
 
         if (userDatastore.getLastFilter()){
-            if (lastFilter.cnaes.length > 0){
-                $scope.categoriesValid = false;
-                for (i = 0; i < lastFilter.cnaes.length; i++){
-                    $scope.selectedCNAE.push(lastFilter.cnaes[i]);
+            if (lastFilter.cnaes){
+                if (lastFilter.cnaes.length > 0){
+                    $scope.categoriesValid = false;
+                    for (i = 0; i < lastFilter.cnaes.length; i++){
+                        $scope.selectedCNAE.push(lastFilter.cnaes[i]);
+                    }
                 }
             }
             if (lastFilter.state){
@@ -337,7 +335,12 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             if (lastFilter.employees){
                 $scope.selectedEmployees.push(lastFilter.employees);
             }
+            if (lastFilter.sector){
+                $scope.selectedSector = lastFilter.sector;
+            }
         }
+
+        console.log('lastFilter', lastFilter);
 
     };
 
@@ -499,13 +502,17 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             billing_min: null,
             billing_max: null,
             employees_min: [],
-            employees_max: []
+            employees_max: [],
+            sector: null
         };
 
-        if ($scope.selectedCNAE.length == 0) {
-            $ionicPopup.alert({
-                title: "Debe seleccionar por lo menos un CNAE para realizar la búsqueda."
-            });
+
+        if ($scope.selectedCNAE.length == 0 && $scope.selectedSector.length == 0) {
+            if ($scope.selectedCNAE.length == 0 ){
+                $ionicPopup.alert({
+                    title: "Debe seleccionar por lo menos un CNAE o un Sector para realizar la búsqueda."
+                });
+            }
             return;
         }
 
@@ -517,6 +524,10 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         if ($scope.selectedEmployees.length > 0){
             options.employees_min = $scope.selectedEmployees[0].min;
             options.employees_max = $scope.selectedEmployees[0].max;
+        }
+
+        if ($scope.selectedSector.length > 0){
+            options.sector = $scope.selectedSector[0].id;
         }
 
 
@@ -599,7 +610,6 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
             $scope.setLastFilter();
 
             console.log('options', options);
-//            debugger;
 
 
             $ionicLoading.show({
