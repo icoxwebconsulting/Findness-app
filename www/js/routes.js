@@ -1,17 +1,41 @@
-app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, KEY_ANALYTICS) {
     $stateProvider
 
         .state('slides', {
             url: '/slides',
             templateUrl: 'templates/slides.html',
-            controller: 'SlidesCtrl'
+            controller: 'SlidesCtrl',
+            resolve: {
+                data: function ($ionicPlatform, KEY_ANALYTICS) {
+                    $ionicPlatform.ready(function() {
+                        if (typeof analytics !== 'undefined'){
+                            analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                            analytics.trackView('Slide View');
+                        } else {
+                            console.info('Google analytics plugin not be loaded.');
+                        }
+                    });
+                }
+            }
         })
 
         .state('register', {
             cache: false,
             url: '/register',
             templateUrl: 'templates/register.html',
-            controller: 'RegisterCtrl'
+            controller: 'RegisterCtrl',
+            resolve: {
+                data: function ($ionicPlatform, KEY_ANALYTICS) {
+                    $ionicPlatform.ready(function() {
+                        if (typeof analytics !== 'undefined'){
+                            analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                            analytics.trackView('register View');
+                        } else {
+                            console.info('Google analytics plugin not be loaded.');
+                        }
+                    });
+                }
+            }
         })
 
         .state('recover-password', {
@@ -35,7 +59,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         .state('login', {
             url: '/login',
             templateUrl: 'templates/login.html',
-            controller: 'LoginCtrl'
+            controller: 'LoginCtrl',
+            resolve: {
+                data: function ($ionicPlatform, KEY_ANALYTICS) {
+                    $ionicPlatform.ready(function() {
+                        if (typeof analytics !== 'undefined'){
+                            analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                            analytics.trackView('Login View');
+                        } else {
+                            console.info('Google analytics plugin not be loaded.');
+                        }
+                    });
+                }
+            }
         })
 
         .state('terms', {
@@ -55,7 +91,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/map.html',
-                    controller: 'MapCtrl'
+                    controller: 'MapCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Map View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -65,7 +113,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/list.html',
-                    controller: 'ListCtrl'
+                    controller: 'ListCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('List View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -76,7 +136,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/filters.html',
-                    controller: 'FiltersCtrl'
+                    controller: 'FiltersCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Filters View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -86,7 +158,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/payment.html',
-                    controller: 'PaymentCtrl'
+                    controller: 'PaymentCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Payment View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -106,7 +190,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/profile.html',
-                    controller: 'ProfileCtrl'
+                    controller: 'ProfileCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Profile View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -116,7 +212,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/routes.html',
-                    controller: 'RoutesCtrl'
+                    controller: 'RoutesCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Routes View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -167,7 +275,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/account.html',
-                    controller: 'AccountCtrl'
+                    controller: 'AccountCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('My account View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -177,7 +297,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/pricing.html',
-                    controller: 'PricingCtrl'
+                    controller: 'PricingCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Pricing View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -187,7 +319,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/faq.html',
-                    controller: 'FaqCtrl'
+                    controller: 'FaqCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Faq View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -196,8 +340,20 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             url: '/advice',
             views: {
                 'menuContent': {
-                    templateUrl: 'templates/advice.html'//,
+                    templateUrl: 'templates/advice.html',//,
                     //controller: 'FaqCtrl'
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Advice View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -208,7 +364,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/cart.html',
-                    controller: 'CartCtrl'
+                    controller: 'CartCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Cart View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -219,7 +387,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/checkout.html',
-                    controller: 'CheckoutCtrl'
+                    controller: 'CheckoutCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('Checkout View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         })
@@ -230,7 +410,19 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
             views: {
                 'menuContent': {
                     templateUrl: 'templates/result-payment.html',
-                    controller: 'ResultPaymentCtrl'
+                    controller: 'ResultPaymentCtrl',
+                    resolve: {
+                        data: function ($ionicPlatform, KEY_ANALYTICS) {
+                            $ionicPlatform.ready(function() {
+                                if (typeof analytics !== 'undefined'){
+                                    analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
+                                    analytics.trackView('checkout View');
+                                } else {
+                                    console.info('Google analytics plugin not be loaded.');
+                                }
+                            });
+                        }
+                    }
                 }
             }
         });

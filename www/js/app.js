@@ -1,6 +1,6 @@
 var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete', 'credit-cards'])
 
-    .run(function ($ionicPlatform, $rootScope, $state, device, sqliteDatastore, userDatastore, user, pushNotification, notificationMessage, PAYMENT_CONF, KEY_ANALYTICS) {
+    .run(function ($ionicPlatform, $rootScope, $state, device, sqliteDatastore, userDatastore, user, pushNotification, notificationMessage, PAYMENT_CONF) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -13,12 +13,7 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            if (typeof analytics !== 'undefined'){
-                analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
-                analytics.trackView('Slide View');
-            } else {
-                console.info('Google analytics plugin not be loaded.');
-            }
+
 
             init();
         });
