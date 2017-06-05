@@ -128,7 +128,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
                 var position = new google.maps.LatLng(lat, lon);
                 map.showMyLocation(position);
             }
-            map.moveCamera(lat, lon, 9);
+            map.moveCamera(lat, lon);
         }, 1500);
         $scope.showRoute = true;
         $scope.routeMode = false;

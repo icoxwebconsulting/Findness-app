@@ -76,7 +76,7 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
                     $ionicLoading.hide();
                     $state.go('app.map');
                     setTimeout(function () {
-                        map.moveCamera(lat, lng, 9);
+                        map.moveCamera(lat, lng, 14);
                     }, 1500);
                 }).catch(function () {
                     $ionicLoading.hide();

@@ -8,6 +8,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         $scope.getLastFilter();
     };
 
+    $scope.searching = false;
     $scope.data = {};
     $scope.data.pickupAfter = 3;
     $scope.model = "";
@@ -152,6 +153,8 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
         $scope.cnaesItems = data.items;
     });*/
 
+
+
     $scope.listCnaes = function (query) {
         if (query && (query.length > 1 || (query[0] == '0' && query.length == 2) )) {
             query = searchService.omitirAcentos(query);
@@ -159,9 +162,16 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
 
             $scope.hideListCnaes = true;
 
-            return searchService.getCnaes(query).then(function (cnaes) {
-                return $scope.cnaesItems = cnaes.items;
-            });
+            if ($scope.searching == false) {
+                $scope.searching = true;
+                setTimeout(function () {
+                    return searchService.getCnaes(query).then(function (cnaes) {
+                        $scope.searching = false;
+                        return $scope.cnaesItems = cnaes.items;
+                    });
+                }, 1000);
+            }
+
         }
     };
 

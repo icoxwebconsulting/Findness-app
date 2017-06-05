@@ -140,7 +140,12 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         modalScope.cif = cif;
         modalScope.billing = billing;
         modalScope.employees = employees;
-        modalScope.sector = nameSector +' (cnae ' + cnae + ')';
+
+        if(typeof cnae !== 'undefined' )
+            modalScope.sector = nameSector +' (cnae ' + cnae + ')';
+        else
+            modalScope.sector = nameSector;
+
         var modes = routeService.getModes();
         if (modes.routeMode || modes.viewRoute) {
             modalScope.routeMode = true
@@ -408,9 +413,10 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
     }
 
     function moveCamera(lat, long, zoom) {
-        console.log("moviendo la camara", lat, long, zoom, typeof lat, typeof long, typeof zoom);
+        console.log("moviendo la camara", lat, long, zoom);
         map.setCenter(new google.maps.LatLng(lat, long));
-        map.setZoom(zoom);
+        if( typeof zoom !== 'undefined')
+            map.setZoom(zoom);
     }
 
     function clear() {

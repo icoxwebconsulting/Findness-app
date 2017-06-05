@@ -174,6 +174,7 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
                 animation: 'slide-in-up',
                 hardwareBackButtonClose: false
             }).then(function (modal) {
+                console.info('modal', modal);
                 modalScope.modal = modal;
                 modalScope.modal.show();
             });
