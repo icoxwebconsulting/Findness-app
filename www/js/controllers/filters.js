@@ -61,6 +61,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
     $scope.hasChanged = function (id, name, group) {
         $scope.categoriesValid = true;
         $scope.selectedSector = [];
+        $scope.selectedCNAE = [];
         if (id != ''){
             objectCnae = {id: id, name: id + ' - ' + name, view: id + ' - ' + name};
             $scope.selectedSector.push(objectCnae);
@@ -182,7 +183,7 @@ app.controller('FiltersCtrl', function ($scope, $rootScope, $q, $state, $filter,
 
     $scope.clickCNAE = function (id, name, view) {
         var index = $scope.selectedCNAE.map(function (element) {return element.id;}).indexOf(id);
-
+        $scope.selectedSector = [];
         if ($scope.selectedCNAE.length > 0 && $scope.categoriesValid == true) {
             $scope.selectedCNAE = [];
             $scope.categoriesValid = false;
