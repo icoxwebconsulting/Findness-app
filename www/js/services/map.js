@@ -141,10 +141,16 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         modalScope.billing = billing;
         modalScope.employees = employees;
 
-        if(typeof cnae !== 'undefined' )
+        if(typeof cnae !== 'undefined' && cnae.length > 1)
             modalScope.sector = nameSector +' (cnae ' + cnae + ')';
         else
-            modalScope.sector = nameSector;
+        {
+            if(nameSector.length > 1)
+                modalScope.sector = nameSector;
+            else
+                modalScope.sector = '---';
+        }
+
 
         var modes = routeService.getModes();
         if (modes.routeMode || modes.viewRoute) {
