@@ -232,7 +232,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                     new google.maps.Marker({
                         position: myPosition,
                         map: modalScope.mapDetail,
-                        icon: 'img/map/my-location-icon.png',
+                        icon: 'img/map/current_location.gif',
                         optimized: false,
                         zIndex: -1
                     });
