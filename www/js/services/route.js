@@ -37,6 +37,10 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
 
         var deferred = $q.defer();
 
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('right-panel'));
+
         directionsService.route(request, function (response, status) {
 
             if (status == google.maps.DirectionsStatus.OK) {
@@ -45,6 +49,11 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 for (var s = 0; s < gRoute.length; s++) {
                     theRoute.push(new google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
                 }
+
+                console.info('CARGANDO texto', response);
+
+                directionsDisplay.setDirections(response);
+
                 deferred.resolve({
                     route: theRoute,
                     distance: response.routes[0]['legs'][0]['distance']['text'],

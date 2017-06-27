@@ -290,6 +290,21 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         map.infoRouteModal();
     }
 
+    $scope.showRouteDescriptionModal = function(){
+
+        var modalScope = $rootScope.$new();
+        var description = angular.element(document.querySelector('#right-panel')).html();
+        modalScope.description = description;
+
+        //Muestra información de la ruta
+        $ionicModal.fromTemplateUrl('templates/route-description.html', {
+            scope: modalScope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            modal.show();
+        });
+    }
+
 }).filter('capitalize', function () {
     return function (input) {
         return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
