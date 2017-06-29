@@ -145,11 +145,11 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         {
             $scope.watchId = navigator.geolocation.watchPosition(
                 function(position) {
-                    console.info('position in watch', position);
-                    map.showMyLocation(position);
+                    console.info('position in watch', position.coords);
+                    map.showMyLocation(position.coords);
                 },function(err) {
                     // error
-                }, { maximumAge: 0, enableHighAccuracy: true } );
+                }, { maximumAge: 4, enableHighAccuracy: true } );
         }
     });
 
