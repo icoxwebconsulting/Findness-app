@@ -146,7 +146,8 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             $scope.watchId = navigator.geolocation.watchPosition(
                 function(position) {
                     console.info('position in watch', position.coords);
-                    map.showMyLocation(position.coords);
+                    var myLatLng = { lat: position.coords.latitude, lng: position.coords.longitude};
+                    map.showMyLocation(myLatLng);
                 },function(err) {
                     // error
                 }, { maximumAge: 4, enableHighAccuracy: true } );
