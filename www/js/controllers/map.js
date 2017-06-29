@@ -130,35 +130,33 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             if ($scope.showMyLocation) {
                 var position = new google.maps.LatLng(lat, lon);
                 map.showMyLocation(position);
+
+                $scope.watchId = navigator.geolocation.watchPosition(
+                    function(position) {
+                        map.showMyLocation(position);
+                    },function(err) {
+                        // error
+                    }, { maximumAge: 0, enableHighAccuracy: true } );
             }
             map.moveCamera(lat, lon);
         }, 1500);
         $scope.showRoute = true;
         $scope.routeMode = false;
     }
-
-    $scope.updatePosition = function(){
-        var watchOptions = {
-            timeout : 3000,
-            enableHighAccuracy: false // may cause errors if true
-        };
-
-        var watch = navigator.geolocation.watchPosition(watchOptions);
-        watch.then(
-            null,
-            function(err) {
-                // error
-            },
-            function(position) {
-                map.showMyLocation(position);
-            });
-    };
-
+    
 
     $scope.$watch('showMyLocation', function(newValue, oldValue) {
-        console.log('location new  value',newValue);
-        if(newValue)
-            $scope.updatePosition();
+        if(!newValue)
+            window.navigator.geolocation.clearWatch( $scope.watchId );
+        else
+        {
+            $scope.watchId = navigator.geolocation.watchPosition(
+                function(position) {
+                    map.showMyLocation(position);
+                },function(err) {
+                    // error
+                }, { maximumAge: 0, enableHighAccuracy: true } );
+        }
     });
 
 
