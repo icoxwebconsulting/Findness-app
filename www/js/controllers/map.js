@@ -130,20 +130,13 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             if ($scope.showMyLocation) {
                 var position = new google.maps.LatLng(lat, lon);
                 map.showMyLocation(position);
-
-                $scope.watchId = navigator.geolocation.watchPosition(
-                    function(position) {
-                        map.showMyLocation(position);
-                    },function(err) {
-                        // error
-                    }, { maximumAge: 0, enableHighAccuracy: true } );
             }
             map.moveCamera(lat, lon);
         }, 1500);
         $scope.showRoute = true;
         $scope.routeMode = false;
     }
-    
+
 
     $scope.$watch('showMyLocation', function(newValue, oldValue) {
         if(!newValue)
@@ -152,6 +145,7 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         {
             $scope.watchId = navigator.geolocation.watchPosition(
                 function(position) {
+                    console.info('position in watch', position);
                     map.showMyLocation(position);
                 },function(err) {
                     // error
