@@ -155,12 +155,12 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
     };
 
 
-    scope.$watch('showMyLocation', function(newValue, oldValue) {
+    $scope.$watch('showMyLocation', function(newValue, oldValue) {
         console.log('location new  value',newValue);
         if(newValue)
             $scope.updatePosition();
     });
-    
+
 
     function showPopUp() {
         var query = searchService.getLastQuery();
