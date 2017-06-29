@@ -1,5 +1,7 @@
 app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, $ionicModal, $location, map, cart, searchService, routeService, subscriptionSrv, userDatastore) {
 
+    $scope.showMyLocation = false;
+
     subscriptionSrv.requestSubscription(true, 'búsquedas');
 
     $scope.showRoute = false; //controla la visualización de todos los botones
@@ -108,8 +110,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         proccessMarkers(query.lastQuery);
     });
 
+
+
     function proccessMarkers(query) {
-        var showMyLocation = false;
         map.resize();
         var result = searchService.getResultSearch();
         map.processMakers(result.items, $scope.viewRoute);//2d parameter to use numeric icons
@@ -118,13 +121,13 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             lat = result.items[first].latitude;
             lon = result.items[first].longitude;
         } else {
-            showMyLocation = true;
+            $scope.showMyLocation = true;
             var lat = query.geoLocations.latitude;
             var lon = query.geoLocations.longitude;
         }
         setTimeout(function () {
 
-            if (showMyLocation) {
+            if ($scope.showMyLocation) {
                 var position = new google.maps.LatLng(lat, lon);
                 map.showMyLocation(position);
             }
@@ -133,6 +136,31 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         $scope.showRoute = true;
         $scope.routeMode = false;
     }
+
+    $scope.updatePosition = function(){
+        var watchOptions = {
+            timeout : 3000,
+            enableHighAccuracy: false // may cause errors if true
+        };
+
+        var watch = navigator.geolocation.watchPosition(watchOptions);
+        watch.then(
+            null,
+            function(err) {
+                // error
+            },
+            function(position) {
+                map.showMyLocation(position);
+            });
+    };
+
+
+    scope.$watch('showMyLocation', function(newValue, oldValue) {
+        console.log('location new  value',newValue);
+        if(newValue)
+            $scope.updatePosition();
+    });
+    
 
     function showPopUp() {
         var query = searchService.getLastQuery();
