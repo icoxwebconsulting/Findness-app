@@ -1,20 +1,23 @@
 app.constant("SERVER_CONF", {
 
-    //HOST: "http://findness.icox.mobi/",
-    //API_HOST: "http://findness.icox.mobi/api/v1/"
-    HOST: "http://62.75.162.219/",  
-    API_HOST: "http://62.75.162.219/api/v1/"    
+    //HOST: "http://127.0.0.1:8000/",
+    //API_HOST: "http://127.0.0.1:8000/api/v1/"
+    HOST: "http://findness.mobi/",
+    //HOST: "http://62.75.162.219/develop/framework/web/app_dev.php/",
+    API_HOST: "http://findness.mobi/api/v1/"
+    //API_HOST: "http://62.75.162.219/develop/framework/web/app_dev.php/api/v1/"
 });
 
 app.constant("OAUTH_CONF", {
 
-    //OAUTH_HOST: "http://findness.icox.mobi/oauth/v2/",
-    OAUTH_HOST: "http://62.75.162.219/oauth/v2/",
+    //OAUTH_HOST: "http://127.0.0.1:8000/oauth/v2/",
+    OAUTH_HOST: "http://findness.mobi/oauth/v2/",
 
+    //CLIENT_ID: "5g7eui04df8coss08occ8cc4ksc40s8wck408cs4k0wc0wsgko",
+    //CLIENT_SECRET: "5ib2qb0n3400wkwcks0kcw4wk4okk84g80ccs8kgks8040c4gk",
+// Servidor de desarrollo
     CLIENT_ID: "583f1e27a2c18_5x1kc695sw004skckso80ggoc8gckcocwcwgwgkk8g04k0g4gw",
     CLIENT_SECRET: "27irdm72pzpcgs8kgso4goswsog0ss8cwwcokgwk40w0wo4484",
-    //CLIENT_ID: "578e7e8f7aa12_4uxoquy48b6sooocgws0wgg4wgcs8ooks8cwsw0ks84so0c0g8",
-    //CLIENT_SECRET: "1cyx26089gys0k4gskcgg8c8gskcw44gog4co04sckkoog4s0w",
 
     REFRESH_INTERVAL: 600000
 });
@@ -25,7 +28,9 @@ app.constant("APP_STORE_CONF", {
 
 app.constant("PAYMENT_CONF", {
 
+    //STRIPE_KEY: "pk_test_zoMMfUODuBkMi9XwaKdTASSa",
     STRIPE_KEY: "pk_live_ltYbnS1lHMag1qNfSuzyqHmZ",
+    //STRIPE_SECRET: "sk_test_vjLaTolrN7GWKUpT6w6JTh2t",
     STRIPE_SECRET: "sk_live_nNj9otxhjFHQ4BZH4uDIWs9T",
     STRIPE_HOST: "https://api.stripe.com/v1/",
 
@@ -44,10 +49,7 @@ app.constant("COMPANY_STYLE", {
         PINK:'http://icox.com/img_findness/pink-dot.png',
         YELLOW:'http://icox.com/img_findness/yellow-dot.png',
         RED: 'http://icox.com/img_findness/red-dot.png',
-        GREEN: 'http://icox.com/img_findness/green-dot.png',
-        FREELANCE: 'http://icox.com/img_findness/Icon_autonomo.png',
-        COMPANY: 'http://icox.com/img_findness/Icon_empresa.png',
-        PURPLE: 'http://icox.com/img_findness/icon_direccion@2x.png'
+        GREEN: 'http://icox.com/img_findness/green-dot.png'
     },
     ICON:{
         FREELANCE: 'http://icox.com/img_findness/freelance.png',
