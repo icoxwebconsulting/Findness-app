@@ -13,11 +13,6 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            if(typeof analytics !== undefined) {
-                analytics.startTrackerWithId(KEY_ANALYTICS.TRACK_ID);
-            } else {
-                console.log("Google Analytics Unavailable");
-            }
 
 	    if ( $ionicPlatform.is('ios') ) {
 	      GappTrack.track("854062907", "Bee2CM2ep3IQu-6flwM", "0.99", false);

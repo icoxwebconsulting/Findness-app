@@ -57,6 +57,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             'TRANSIT': 'Transporte público'
         };
         var modalScope = $rootScope.$new();
+        modalScope.descriptionRoute =  angular.element(document.querySelector('#right-panel')).html();
         modalScope.name = routeService.getRouteName();
         modalScope.transport = type[routeService.getRouteTransport()];
         modalScope.distance = 0;

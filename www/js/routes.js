@@ -1,4 +1,4 @@
-app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, KEY_ANALYTICS) {
+app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider,KEY_ANALYTICS) {
     $stateProvider
 
         .state('slides', {
