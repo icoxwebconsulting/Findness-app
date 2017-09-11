@@ -15,7 +15,7 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
             }
 
 	    if ( $ionicPlatform.is('ios') ) {
-	      GappTrack.track("854062907", "Bee2CM2ep3IQu-6flwM", "0.99", false);
+//	      GappTrack.track("854062907", "Bee2CM2ep3IQu-6flwM", "0.99", false);
 	    }
 
             init();

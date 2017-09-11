@@ -20,7 +20,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform,
         $state.go(to);
     };
 
-    $scope.$on('menu:drag', function (event, args) {
+  /*  $scope.$on('menu:drag', function (event, args) {
         $scope.dragStatus = args;
 
         subscriptionSrv.requestSubscription(false, '').then(function () {
@@ -42,7 +42,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $state, $ionicPlatform,
         });
 
 //        $scope.daysRemaining = userDatastore.getDaysRemaining();
-    });
+    }); */
 
     $scope.init = function () {
         $scope.customer = user.getProfile();
