@@ -249,10 +249,10 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         };
 
         modalScope.openDetail = function () {
-            var res = subscriptionSrv.validateSubscription('búsquedas');
+           /* var res = subscriptionSrv.validateSubscription('búsquedas');
             if (res == true){
                 modalScope.thisModal.remove();
-            }else{
+            }else{*/
                 $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                     scope: modalScope,
                     animation: 'slide-in-up',
@@ -261,7 +261,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                     modalScope.modal = modal;
                     modalScope.modal.show();
                 });
-            }
+          //  }
         };
 
         modalScope.navigateTo = function () {
