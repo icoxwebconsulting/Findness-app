@@ -35,7 +35,7 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
                 userDatastore.setProfile($scope.data.name, $scope.data.lastName);
                 userDatastore.setUsername($scope.data.email);
                 userDatastore.setPassword($scope.data.password);
-                $state.go('confirm');
+                $state.go('app.map');
 
             }, 2000);
 
