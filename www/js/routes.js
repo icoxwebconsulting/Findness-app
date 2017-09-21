@@ -431,10 +431,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider,KE
     if (window.localStorage.getItem('isLogged') == 1) {
         $urlRouterProvider.otherwise('/app/map');
     } else {
-        if (window.localStorage.getItem('isConfirm') == 0) {
-            $urlRouterProvider.otherwise('/confirm');
-        } else {
-            $urlRouterProvider.otherwise('/slides');
-        }
+        $urlRouterProvider.otherwise('/slides');
     }
 });
