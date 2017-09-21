@@ -41,7 +41,7 @@ app.controller('LoginCtrl', function ($scope, $state, $ionicLoading, $ionicPopup
                     }).then(function () {
                         if (error.data.message == 'Usuario no confirmado.') {
                             userDatastore.setUsername($scope.data.email);
-                            $state.go('confirm');
+                            $state.go('app.map');
                         }
                     });
                 });

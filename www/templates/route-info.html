@@ -13,6 +13,11 @@
             <p><b>{{distance | number: 2}} km</b> total de recorrido</p>
             <p><b>{{duration | number: 0}} minutos</b> total de recorrido</p>
         </div>
+        <hr>
+        <div class="padding">
+            <p ng-bind-html="descriptionRoute"></p>
+        </div>
+        <div id="right-panel"></div>
     </ion-content>
 
 </ion-modal-view>

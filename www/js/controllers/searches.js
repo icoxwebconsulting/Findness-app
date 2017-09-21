@@ -48,7 +48,7 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                 //caso 3 mostrar mapa sin popup
                 map.setShowPopup(false);
             } else {
-                if (validate == true) {
+               /* if (validate == true) {
                     $ionicPopup.alert({
                         title: 'HAZTE PRO',
                         template: '<div>Se han encontrado ' + searchService.getNonConsultedElements() + ' empresas.</div>',
@@ -60,10 +60,10 @@ app.controller('SearchesCtrl', function ($scope, $rootScope, $state, $ionicModal
                     });
                     map.setShowPopup(false);
                 }
-                else {
+                else {*/
                     //caso 4 mostrar mapa con popup
                     map.setShowPopup(true);
-                }
+               // }
             }
             routeService.setModes(false, false);
             map.deleteRouteLines().then(function () {

@@ -1,5 +1,7 @@
 app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, $ionicPopup, $ionicLoading, $ionicHistory, $ionicModal, $location, map, cart, searchService, routeService, subscriptionSrv, userDatastore) {
 
+    $scope.showMyLocation = false;
+
     subscriptionSrv.requestSubscription(true, 'búsquedas');
 
     $scope.showRoute = false; //controla la visualización de todos los botones
@@ -108,8 +110,9 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         proccessMarkers(query.lastQuery);
     });
 
+
+
     function proccessMarkers(query) {
-        var showMyLocation = false;
         map.resize();
         var result = searchService.getResultSearch();
         map.processMakers(result.items, $scope.viewRoute);//2d parameter to use numeric icons
@@ -118,13 +121,13 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
             lat = result.items[first].latitude;
             lon = result.items[first].longitude;
         } else {
-            showMyLocation = true;
+            $scope.showMyLocation = true;
             var lat = query.geoLocations.latitude;
             var lon = query.geoLocations.longitude;
         }
         setTimeout(function () {
 
-            if (showMyLocation) {
+            if ($scope.showMyLocation) {
                 var position = new google.maps.LatLng(lat, lon);
                 map.showMyLocation(position);
             }
@@ -133,6 +136,24 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
         $scope.showRoute = true;
         $scope.routeMode = false;
     }
+
+
+    $scope.$watch('showMyLocation', function(newValue, oldValue) {
+        if(!newValue)
+            window.navigator.geolocation.clearWatch( $scope.watchId );
+        else
+        {
+            $scope.watchId = navigator.geolocation.watchPosition(
+                function(position) {
+                    console.info('position in watch', position.coords);
+                    var myLatLng = { lat: position.coords.latitude, lng: position.coords.longitude};
+                    map.showMyLocation(myLatLng);
+                },function(err) {
+                    // error
+                }, { maximumAge: 4, enableHighAccuracy: true } );
+        }
+    });
+
 
     function showPopUp() {
         var query = searchService.getLastQuery();
@@ -288,6 +309,21 @@ app.controller('MapCtrl', function ($scope, $rootScope, $state, $ionicPlatform, 
 
     $scope.showRouteModal = function () {
         map.infoRouteModal();
+    }
+
+    $scope.showRouteDescriptionModal = function(){
+
+        var modalScope = $rootScope.$new();
+        var description = angular.element(document.querySelector('#right-panel')).html();
+        modalScope.description = description;
+
+        //Muestra información de la ruta
+        $ionicModal.fromTemplateUrl('templates/route-description.html', {
+            scope: modalScope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            modal.show();
+        });
     }
 
 }).filter('capitalize', function () {

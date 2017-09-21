@@ -57,6 +57,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
             'TRANSIT': 'Transporte público'
         };
         var modalScope = $rootScope.$new();
+        modalScope.descriptionRoute =  angular.element(document.querySelector('#right-panel')).html();
         modalScope.name = routeService.getRouteName();
         modalScope.transport = type[routeService.getRouteTransport()];
         modalScope.distance = 0;
@@ -232,7 +233,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                     new google.maps.Marker({
                         position: myPosition,
                         map: modalScope.mapDetail,
-                        icon: 'img/map/my-location-icon.png',
+                        icon: 'img/map/current_location.gif',
                         optimized: false,
                         zIndex: -1
                     });
@@ -248,10 +249,10 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
         };
 
         modalScope.openDetail = function () {
-            var res = subscriptionSrv.validateSubscription('búsquedas');
+           /* var res = subscriptionSrv.validateSubscription('búsquedas');
             if (res == true){
                 modalScope.thisModal.remove();
-            }else{
+            }else{*/
                 $ionicModal.fromTemplateUrl('templates/company-detail.html', {
                     scope: modalScope,
                     animation: 'slide-in-up',
@@ -260,7 +261,7 @@ app.service('map', function ($q, $ionicModal, $rootScope, $ionicLoading, company
                     modalScope.modal = modal;
                     modalScope.modal.show();
                 });
-            }
+          //  }
         };
 
         modalScope.navigateTo = function () {

@@ -7,7 +7,8 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
 
 
     function requestSubscription(detail, site) {
-        return transaction(localStorage.getItem('accessToken')).getSubscription().$promise
+        return true;
+        /*return transaction(localStorage.getItem('accessToken')).getSubscription().$promise
             .then(function (response) {
                 userDatastore.setSubscription(response.subscription);
                 console.log("seteado la suscripcion en ", response);
@@ -26,12 +27,13 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
             .catch(function(){
                 throw 'Error subscription localStorage';
             });
-        return response.subscription;
+        return response.subscription; */
 
     }
 
     function init(){
-        objectSubscription = userDatastore.getSubscription();
+        return true;
+       /* objectSubscription = userDatastore.getSubscription();
         dateSubscription = moment(objectSubscription.endDate).format('YYYY-MM-DD');
         dateNow = moment().format('YYYY-MM-DD');
         //dateNow = moment().add(10,'months').format('YYYY-MM-DD');
@@ -40,11 +42,12 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
             userDatastore.setDaysRemaining($rootScope.daysRemaining._i);
         }else{
             userDatastore.setDaysRemaining(0);
-        }
+        }*/
     }
 
     function detailSubscription(){
-        if (dateNow < dateSubscription){
+        return true;
+     /*   if (dateNow < dateSubscription){
 
             var startDate = moment(objectSubscription.startDate).format('YYYY-MM-DD');
             var endDate = moment(objectSubscription.endDate).format('YYYY-MM-DD');
@@ -66,11 +69,12 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
                 title: 'HAZTE PRO',
                 template: html
             });
-        }
+        } */
     }
 
     function validateSubscription(site){
-        if (dateNow > dateSubscription){
+        return true;
+      /*  if (dateNow > dateSubscription){
             if (site != ''){
                 $ionicPopup.alert({
                     title: 'Hazte Pro',
@@ -83,7 +87,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
                 });
             }
             return true;
-        }
+        } */
     }
 
     return {

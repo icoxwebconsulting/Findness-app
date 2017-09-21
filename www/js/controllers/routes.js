@@ -55,7 +55,10 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
 
             //borro las rutas
             map.resetMap().then(function () {
+                console.info('reseteando');
                 routeService.getRouteDetail(item).then(function (detail) {
+                    console.info('getRouteDetail');
+
                     var items = {};
                     for (var i = 0; i < detail.points.length; i++) {
                         items[detail.points[i].id] = detail.points[i];

@@ -1,6 +1,6 @@
 var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete', 'credit-cards'])
 
-    .run(function ($ionicPlatform, $rootScope, $state, device, sqliteDatastore, userDatastore, user, pushNotification, notificationMessage, PAYMENT_CONF) {
+    .run(function ($ionicPlatform, $rootScope, $state, device, sqliteDatastore, userDatastore, user, pushNotification, notificationMessage, PAYMENT_CONF, KEY_ANALYTICS) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -14,6 +14,9 @@ var app = angular.module('findness', ['ionic', 'ngResource', 'ion-autocomplete',
                 StatusBar.styleDefault();
             }
 
+	    if ( $ionicPlatform.is('ios') ) {
+//	      GappTrack.track("854062907", "Bee2CM2ep3IQu-6flwM", "0.99", false);
+	    }
 
             init();
         });

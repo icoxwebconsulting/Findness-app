@@ -1406,3 +1406,11 @@
 .button.button-positive {
     background-color: #51A6BA!important;
 }
+
+#map_canvas {
+    height: 100%;
+}
+
+.warnbox-content, .warnbox-c1, .warnbox-c2{
+    background: none !important;
+}

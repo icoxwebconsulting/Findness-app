@@ -63,12 +63,12 @@ app.controller('CompaniesCtrl', function ($rootScope, $scope, $state, $statePara
     };
 
     $scope.showDetail = function (id, name) {
-        var res = subscriptionSrv.validateSubscription('listados');
+      /*  var res = subscriptionSrv.validateSubscription('listados');
         if (res == true){
             console.info('expired subscription');
-        }else{
+        }else{*/
             $state.go('app.companies-detail', {'id': id, 'name': name});
-        }
+      //  }
     };
 
     $scope.init = function () {

@@ -37,6 +37,11 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
 
         var deferred = $q.defer();
 
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('right-panel'));
+        directionsDisplay.setOptions( { suppressMarkers: true } );
+
         directionsService.route(request, function (response, status) {
 
             if (status == google.maps.DirectionsStatus.OK) {
@@ -45,6 +50,11 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 for (var s = 0; s < gRoute.length; s++) {
                     theRoute.push(new google.maps.LatLng(gRoute[s].lat(), gRoute[s].lng()));
                 }
+
+                console.info('CARGANDO texto', response);
+
+                directionsDisplay.setDirections(response);
+
                 deferred.resolve({
                     route: theRoute,
                     distance: response.routes[0]['legs'][0]['distance']['text'],
@@ -297,6 +307,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
     }
 
     function setRoutes(item) {
+
+         console.info('item -->', item);
+
         var deferred = $q.defer();
         try {
             viewRoute = true; //establezco que estoy en modo de visualización de una ruta
@@ -310,11 +323,31 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                 points: {}
             };
 
+            var last = {};
+            last.latitude = 00;
+            last.longitude = 00;
             var count = 0;
             var keys = Object.keys(item.points);
             var id = keys[count];
 
             function addElement(element) {
+
+                if(element.latitude == last.latitude && element.longitude == last.longitude)
+                {
+                    if (count < keys.length) {
+                        count += 1;
+                        var id = keys[count];
+                        addElement(item.points[id]);
+                    } else {
+                        route.isEdit = false; //esto porque addPoint coloca la ruta como editada
+                        deferred.resolve();
+                    }
+
+                }else{
+                    last.latitude = element.latitude;
+                    last.longitude = element.longitude;
+                }
+
                 addPoint({
                     id: element.id,
                     position: new google.maps.LatLng(element.latitude, element.longitude),
@@ -328,7 +361,9 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
                         route.isEdit = false; //esto porque addPoint coloca la ruta como editada
                         deferred.resolve();
                     }
-                })
+                }).catch(function (e) {
+                    deferred.resolve();
+                });
             }
 
             addElement(item.points[id]);
@@ -367,16 +402,23 @@ app.service('routeService', function ($q, $rootScope, routes, userDatastore, COM
     function getRouteDetail(item) {
         var token = userDatastore.getTokens();
 
+        console.info('route detail 1');
         return routes(token.accessToken).getRouteDetail(null, {
             mapRoute: item.id
         }).$promise.then(function (detail) {
+            console.info('route detail 2');
+
             routeMode = false;
             viewRoute = true; //modo de visualizar ruta
 
             return setRoutes(detail).then(function () {
+                console.info('route detail 3');
+
                 return detail;
             })
         }, function (e) { //error
+            console.info('route detail 4');
+
             throw e;
         });
     }
