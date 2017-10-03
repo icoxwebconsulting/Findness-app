@@ -25,10 +25,10 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
 
     $scope.showDetail = function (id) {
         company(localStorage.getItem('accessToken')).getCompany({'company': id}).$promise.then(function (response) {
-            var res = subscriptionSrv.validateSubscription('búsquedas');
+         /*   var res = subscriptionSrv.validateSubscription('búsquedas');
             if (res == true){
                 console.info('expired subscription');
-            }else{
+            }else{ */
                 console.info('response company', response);
                 var modalScope = $rootScope.$new();
                 modalScope.title = response.company.social_reason;
@@ -82,7 +82,7 @@ app.controller('ListCtrl', function ($scope, $rootScope, $state, searchService, 
                     modalScope.modal = modal;
                     modalScope.modal.show();
                 });
-            }
+           // }
         });
     }
 });

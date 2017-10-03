@@ -73,7 +73,7 @@ app.factory('subscriptionSrv', function ($q, $rootScope, $http, transaction, use
     }
 
     function validateSubscription(site){
-        return true;
+        return false;
       /*  if (dateNow > dateSubscription){
             if (site != ''){
                 $ionicPopup.alert({

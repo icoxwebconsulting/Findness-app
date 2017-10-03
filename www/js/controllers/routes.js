@@ -26,29 +26,32 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
     });
 
     $scope.callRoute = function (item) {
+        console.info('call route');
         var res = subscriptionSrv.validateSubscription('rutas');
 
-        if (res == true){
+     /*   if (res == true){
 
-        }else {
-            /*$ionicLoading.show({
+        }else { */
+            $ionicLoading.show({
                 template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
-            });*/
+            });
 
             map.resetMap().then(function () {
                 routeService.getRouteDetailOrder(item).then(function (detail) {
+                    console.info('detail', item);
                     showCallRoute(item);
                 })
             })
 
-        }
+      //  }
 
     };
 
     function showCallRoute(item){
-        var res = subscriptionSrv.validateSubscription('rutas');
+        /*var res = subscriptionSrv.validateSubscription('rutas');
         if (res == true){
-        }else{
+        }else{ */
+            console.info('show call');
             $ionicLoading.show({
                 template: '<p>Obteniendo ruta seleccionada...</p><p><ion-spinner icon="android"></ion-spinner></p>'
             });
@@ -89,7 +92,7 @@ app.controller('RoutesCtrl', function ($rootScope, $scope, $state, $ionicLoading
                     });
                 });
             });
-        }
+      //  }
     }
 
     $scope.deleteRoute = function (item, index) {
