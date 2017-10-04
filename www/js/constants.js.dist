@@ -49,7 +49,10 @@ app.constant("COMPANY_STYLE", {
         PINK:'http://icox.com/img_findness/pink-dot.png',
         YELLOW:'http://icox.com/img_findness/yellow-dot.png',
         RED: 'http://icox.com/img_findness/red-dot.png',
-        GREEN: 'http://icox.com/img_findness/green-dot.png'
+        GREEN: 'http://icox.com/img_findness/green-dot.png',
+        PURPLE: 'http://icox.com/img_findness/icon_direccion@2x.png',
+        FREELANCE: 'http://icox.com/img_findness/Icon_autonomo.png',
+        COMPANY: 'http://icox.com/img_findness/Icon_empresa.png'
     },
     ICON:{
         FREELANCE: 'http://icox.com/img_findness/freelance.png',
