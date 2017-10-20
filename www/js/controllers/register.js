@@ -1,4 +1,4 @@
-app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPopup, user, $timeout, userDatastore) {
+app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicHistory, $ionicPopup, user, $timeout, userDatastore) {
 
     $scope.data = {};
     $scope.error = false;
@@ -48,7 +48,25 @@ app.controller('RegisterCtrl', function ($scope, $state, $ionicLoading, $ionicPo
             }).then(function (result) {
                 $ionicLoading.hide();
                 if (result) {
-                    $state.go('app.map');
+                    user.login({
+                        username: $scope.data.email,
+                        password: userDatastore.getPassword()
+                    }).then(function () {
+                        $ionicLoading.hide();
+                        $ionicHistory.nextViewOptions({
+                            disableAnimate: false,
+                            disableBack: true,
+                            historyRoot: true
+                        });
+                        window.localStorage.setItem('firstTime', 1);
+                        $state.go('app.map');
+                    }, function (error) {
+                        $ionicLoading.hide();
+                        $ionicPopup.alert({
+                            title: "Ocurrió un error al intentar iniciar sesión."
+                        });
+                        console.log(error);
+                    });
                 } else {
                     $ionicPopup.alert({
                         title: "¡Ups! Ocurrió un error durante el registro, por favor intente más tarde."
